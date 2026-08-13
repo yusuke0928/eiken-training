@@ -1,5 +1,6 @@
 import Dexie, { type Table } from 'dexie';
-import type { Attempt, DayLog, PracticeMode, SrsCard, WritingSubmission } from '../types';
+import type { MockPaper } from '../engine/mock';
+import type { Attempt, DayLog, MockRecord, PracticeMode, SrsCard, WritingSubmission } from '../types';
 
 class EikenDB extends Dexie {
   attempts!: Table<Attempt, number>;
@@ -7,6 +8,7 @@ class EikenDB extends Dexie {
   days!: Table<DayLog, string>;
   kv!: Table<{ key: string; value: unknown }, string>;
   writings!: Table<WritingSubmission, number>;
+  mocks!: Table<MockRecord, number>;
 
   constructor() {
     super('eiken-pre2');
@@ -18,6 +20,9 @@ class EikenDB extends Dexie {
     });
     this.version(2).stores({
       writings: '++id, promptId, section, submittedAt',
+    });
+    this.version(3).stores({
+      mocks: '++id, scope, finishedAt',
     });
   }
 }
@@ -52,6 +57,22 @@ export interface SavedSession {
 export const saveSession = (s: SavedSession) => setKv('session', s);
 export const loadSession = () => getKv<SavedSession>('session');
 export const clearSession = () => db.kv.delete('session');
+
+export interface SavedMock {
+  paper: MockPaper;
+  phase: 'written' | 'listening';
+  cursor: number;
+  mcq: Record<string, number>;
+  writings: Record<string, string>;
+  flags: string[];
+  writtenRemainingMs: number;
+  startedAt: number;
+  updatedAt: number;
+}
+
+export const saveMock = (m: SavedMock) => setKv('mock', m);
+export const loadMock = () => getKv<SavedMock>('mock');
+export const clearMock = () => db.kv.delete('mock');
 
 const draftKey = (promptId: string) => `draft:${promptId}`;
 export const saveDraft = (promptId: string, text: string) => setKv(draftKey(promptId), text);

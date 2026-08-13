@@ -24,6 +24,7 @@ export function HomeScreen({
   onWriting,
   onListening,
   onFocus,
+  onMock,
 }: {
   onMini: () => void;
   onTraining: () => void;
@@ -31,6 +32,7 @@ export function HomeScreen({
   onWriting: () => void;
   onListening: () => void;
   onFocus: () => void;
+  onMock: () => void;
 }) {
   const today = useLiveQuery(() => todayCount(), [], 0) ?? 0;
   const streak = useLiveQuery(() => loadStreak(), [], 0) ?? 0;
@@ -178,10 +180,35 @@ export function HomeScreen({
           </Card>
         </div>
 
+        {/* 本番形式の通し。時間配分はここでしか身につかない */}
+        <button
+          type="button"
+          onClick={onMock}
+          className="mb-4 flex w-full items-center gap-4 rounded-3xl border border-line bg-surface p-5 text-left transition-transform active:scale-[0.99]"
+        >
+          <span className="text-[26px]" aria-hidden>
+            ⏱
+          </span>
+          <span className="flex-1">
+            <span className="block text-[16px] font-bold text-ink">模擬テスト</span>
+            <span className="block text-[13px] text-ink-sub">
+              本番と同じ構成で通す。筆記80分＋リスニング
+            </span>
+          </span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path
+              d="M9 5l7 7-7 7"
+              stroke="var(--ink-faint)"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
         <div className="rounded-3xl border border-dashed border-line p-4">
           <p className="text-[13px] font-semibold text-ink-sub">これから追加されるもの</p>
           <ul className="mt-2 flex flex-col gap-1 text-[13px] text-ink-faint">
-            <li>・模擬テスト（9月中旬）</li>
             <li>・面接シミュレーター（一次のあと）</li>
           </ul>
           <p className="mt-3 text-[12px] text-ink-faint">

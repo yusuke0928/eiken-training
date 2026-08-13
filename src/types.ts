@@ -128,7 +128,7 @@ export interface Passage {
   wordCount: number;
 }
 
-export type PracticeMode = 'diagnostic' | 'mini' | 'training' | 'review';
+export type PracticeMode = 'diagnostic' | 'mini' | 'training' | 'review' | 'mock';
 
 export interface Attempt {
   id?: number;
@@ -273,6 +273,35 @@ export interface WritingSubmission {
   /** 観点キー → 0〜4 の自己採点 */
   scores: Record<string, number>;
   total: number;
+}
+
+/* ---------------- 模擬テスト ---------------- */
+
+export interface MockAnswer {
+  itemId: string;
+  /** 無回答は null。本番の「解ききれなかった」を記録に残すため */
+  selected: number | null;
+  correct: boolean;
+}
+
+export interface MockWriting {
+  promptId: string;
+  text: string;
+  wordCount: number;
+  /** 自己採点は後回しにできる */
+  scores?: Record<string, number>;
+  total?: number;
+}
+
+export interface MockRecord {
+  id?: number;
+  scope: 'full' | 'written' | 'listening';
+  startedAt: number;
+  finishedAt: number;
+  /** 筆記に実際に使った時間 */
+  writtenElapsedMs: number;
+  answers: MockAnswer[];
+  writings: MockWriting[];
 }
 
 export interface DayLog {

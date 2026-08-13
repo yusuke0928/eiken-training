@@ -163,6 +163,24 @@ export function Screen({ children }: { children: ReactNode }) {
   return <div className="mx-auto flex min-h-full w-full max-w-[560px] flex-col">{children}</div>;
 }
 
+/**
+ * 問題文の ( ) は、本番の冊子と同じくらいの幅で見えないと空所だと気づきにくい。
+ * 演習画面と模試で見た目を揃えるためここに置いている。
+ */
+export function renderStem(stem: string) {
+  return stem.split(/(\(\s*\))/g).map((part, i) =>
+    /^\(\s*\)$/.test(part) ? (
+      <span
+        key={i}
+        aria-label="空所"
+        className="mx-1 inline-block h-[1.3em] w-[76px] translate-y-[0.2em] rounded-md border-b-2 border-primary bg-primary-soft align-baseline"
+      />
+    ) : (
+      <span key={i}>{part}</span>
+    ),
+  );
+}
+
 export function Pill({ children, tone = 'default' }: { children: ReactNode; tone?: 'default' | 'again' | 'correct' }) {
   const tones = {
     default: 'bg-surface-2 text-ink-sub',

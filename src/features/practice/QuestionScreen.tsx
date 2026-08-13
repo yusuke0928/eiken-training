@@ -3,7 +3,7 @@ import { ITEM_BY_ID, PASSAGES } from '../../content';
 import { db, bumpDayLog, clearSession, saveSession } from '../../data/db';
 import { applyResult } from '../../engine/srs';
 import { choicesAreSpoken, isListening, type PracticeMode } from '../../types';
-import { Button, ProgressBar, Screen, TopBar } from '../../ui/primitives';
+import { Button, ProgressBar, Screen, TopBar, renderStem } from '../../ui/primitives';
 import { ExplanationSheet } from './ExplanationSheet';
 import { ListeningPanel } from './ListeningPanel';
 import { PassageView } from './PassageView';
@@ -12,21 +12,6 @@ export interface SessionResult {
   itemId: string;
   correct: boolean;
   selected: number;
-}
-
-/** 問題文の ( ) は、本番の冊子と同じくらいの幅で見えないと空所だと気づきにくい */
-function renderStem(stem: string) {
-  return stem.split(/(\(\s*\))/g).map((part, i) =>
-    /^\(\s*\)$/.test(part) ? (
-      <span
-        key={i}
-        aria-label="空所"
-        className="mx-1 inline-block h-[1.3em] w-[76px] translate-y-[0.2em] rounded-md border-b-2 border-primary bg-primary-soft align-baseline"
-      />
-    ) : (
-      <span key={i}>{part}</span>
-    ),
-  );
 }
 
 export function QuestionScreen({

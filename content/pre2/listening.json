@@ -2,13 +2,24 @@
   {
     "id": "p2-l1-001",
     "section": "l-part1",
-    "tags": ["listen:gist"],
+    "tags": [
+      "listen:gist"
+    ],
     "difficulty": 1,
     "stem": "",
     "dialogue": [
-      { "speaker": "W", "text": "Hi, Tom. You look really tired today." },
-      { "speaker": "M", "text": "Yeah, I stayed up late finishing my science report." },
-      { "speaker": "W", "text": "Did you get it done?" }
+      {
+        "speaker": "W",
+        "text": "Hi, Tom. You look really tired today."
+      },
+      {
+        "speaker": "M",
+        "text": "Yeah, I stayed up late finishing my science report."
+      },
+      {
+        "speaker": "W",
+        "text": "Did you get it done?"
+      }
     ],
     "choices": [
       "Yes, but I only slept four hours.",
@@ -27,15 +38,30 @@
   {
     "id": "p2-l1-002",
     "section": "l-part1",
-    "tags": ["listen:detail"],
+    "tags": [
+      "listen:detail"
+    ],
     "difficulty": 1,
     "stem": "",
     "dialogue": [
-      { "speaker": "M", "text": "Excuse me. Does this bus go to the train station?" },
-      { "speaker": "W", "text": "No, you need to take the number 12." },
-      { "speaker": "M", "text": "Where does it stop?" }
+      {
+        "speaker": "M",
+        "text": "Excuse me. Does this bus go to the train station?"
+      },
+      {
+        "speaker": "W",
+        "text": "No, you need to take the number 12."
+      },
+      {
+        "speaker": "M",
+        "text": "Where does it stop?"
+      }
     ],
-    "choices": ["Just across the street.", "It costs two dollars.", "About twenty minutes."],
+    "choices": [
+      "Just across the street.",
+      "It costs two dollars.",
+      "About twenty minutes."
+    ],
     "answerIndex": 0,
     "translation": "M: すみません、このバスは駅に行きますか。／W: いいえ、12番に乗る必要がありますよ。／M: それはどこに停まりますか。\n→ すぐ向かい側です。",
     "explanation": "Where は場所を聞く疑問詞。答えも場所（across the street = 通りの向かい）でなければならない。疑問詞と答えの種類を合わせるのがこの形式の基本。",
@@ -48,13 +74,24 @@
   {
     "id": "p2-l1-003",
     "section": "l-part1",
-    "tags": ["listen:inference"],
+    "tags": [
+      "listen:inference"
+    ],
     "difficulty": 2,
     "stem": "",
     "dialogue": [
-      { "speaker": "W", "text": "Dad, can I go to Nana's house after school today?" },
-      { "speaker": "M", "text": "Have you finished your homework?" },
-      { "speaker": "W", "text": "Not yet, but I'll do it tonight." }
+      {
+        "speaker": "W",
+        "text": "Dad, can I go to Nana's house after school today?"
+      },
+      {
+        "speaker": "M",
+        "text": "Have you finished your homework?"
+      },
+      {
+        "speaker": "W",
+        "text": "Not yet, but I'll do it tonight."
+      }
     ],
     "choices": [
       "Then finish it first, and you can go.",
@@ -73,13 +110,24 @@
   {
     "id": "p2-l1-004",
     "section": "l-part1",
-    "tags": ["listen:gist"],
+    "tags": [
+      "listen:gist"
+    ],
     "difficulty": 2,
     "stem": "",
     "dialogue": [
-      { "speaker": "M", "text": "I'm thinking about joining the swimming club." },
-      { "speaker": "W", "text": "That's great. Have you swum much before?" },
-      { "speaker": "M", "text": "Only a little, back in elementary school." }
+      {
+        "speaker": "M",
+        "text": "I'm thinking about joining the swimming club."
+      },
+      {
+        "speaker": "W",
+        "text": "That's great. Have you swum much before?"
+      },
+      {
+        "speaker": "M",
+        "text": "Only a little, back in elementary school."
+      }
     ],
     "choices": [
       "Don't worry. They'll teach you from the beginning.",
@@ -98,13 +146,24 @@
   {
     "id": "p2-l1-005",
     "section": "l-part1",
-    "tags": ["listen:detail"],
+    "tags": [
+      "listen:detail"
+    ],
     "difficulty": 3,
     "stem": "",
     "dialogue": [
-      { "speaker": "W", "text": "Excuse me, I'd like to return this book." },
-      { "speaker": "M", "text": "Certainly. Was it due today?" },
-      { "speaker": "W", "text": "Actually, it was due last Friday." }
+      {
+        "speaker": "W",
+        "text": "Excuse me, I'd like to return this book."
+      },
+      {
+        "speaker": "M",
+        "text": "Certainly. Was it due today?"
+      },
+      {
+        "speaker": "W",
+        "text": "Actually, it was due last Friday."
+      }
     ],
     "choices": [
       "In that case, there's a small late fee.",
@@ -123,15 +182,30 @@
   {
     "id": "p2-l1-006",
     "section": "l-part1",
-    "tags": ["listen:numbers"],
+    "tags": [
+      "listen:numbers"
+    ],
     "difficulty": 3,
     "stem": "",
     "dialogue": [
-      { "speaker": "M", "text": "How was your trip to Okinawa?" },
-      { "speaker": "W", "text": "It was wonderful, but our flight home was delayed." },
-      { "speaker": "M", "text": "How long did you have to wait at the airport?" }
+      {
+        "speaker": "M",
+        "text": "How was your trip to Okinawa?"
+      },
+      {
+        "speaker": "W",
+        "text": "It was wonderful, but our flight home was delayed."
+      },
+      {
+        "speaker": "M",
+        "text": "How long did you have to wait at the airport?"
+      }
     ],
-    "choices": ["Almost three hours.", "It was really beautiful there.", "We went by plane, of course."],
+    "choices": [
+      "Almost three hours.",
+      "It was really beautiful there.",
+      "We went by plane, of course."
+    ],
     "answerIndex": 0,
     "translation": "M: 沖縄旅行はどうだった？／W: すばらしかったけど、帰りの便が遅れたの。／M: 空港でどのくらい待ったの？\n→ 3時間近く。",
     "explanation": "How long は時間の長さを聞く。答えも時間でなければならない。疑問詞を聞き逃さないことがすべて。",
@@ -141,18 +215,175 @@
       "手段を答えている。How did you go? への答えなら正しい"
     ]
   },
-
   {
-    "id": "p2-l2-001",
-    "section": "l-part2",
-    "tags": ["listen:gist"],
+    "id": "p2-l1-007",
+    "section": "l-part1",
+    "tags": [
+      "listen:detail"
+    ],
     "difficulty": 1,
     "stem": "",
     "dialogue": [
-      { "speaker": "W", "text": "Dad, have you seen my tennis racket anywhere?" },
-      { "speaker": "M", "text": "I think I saw it in the garage yesterday." },
-      { "speaker": "W", "text": "I looked there this morning, but it wasn't there." },
-      { "speaker": "M", "text": "Then maybe your brother took it to practice." }
+      {
+        "speaker": "M",
+        "text": "Sorry I'm late. Did the movie already start?"
+      },
+      {
+        "speaker": "W",
+        "text": "No, we still have about ten minutes."
+      },
+      {
+        "speaker": "M",
+        "text": "Good. Should I buy some popcorn?"
+      }
+    ],
+    "choices": [
+      "Sure, but hurry up.",
+      "It was a great movie.",
+      "I've never seen it before."
+    ],
+    "answerIndex": 0,
+    "translation": "M: 遅れてごめん。映画もう始まっちゃった？／W: ううん、まだ10分くらいあるよ。／M: よかった。ポップコーン買ってこようか。\n→ いいけど、急いでね。",
+    "explanation": "Should I ~?（〜しようか）への返事。時間に余裕がないという文脈から、許可＋急かす形が自然。",
+    "distractorNotes": [
+      "許可しつつ、残り10分という状況にも合っている",
+      "「いい映画だった」は見終わったあとの感想。まだ始まっていない",
+      "「見たことがない」はポップコーンを買う話と関係がない"
+    ]
+  },
+  {
+    "id": "p2-l1-008",
+    "section": "l-part1",
+    "tags": [
+      "listen:inference"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Your English has really improved this year."
+      },
+      {
+        "speaker": "M",
+        "text": "Thanks. I've been watching movies without subtitles."
+      },
+      {
+        "speaker": "W",
+        "text": "Isn't that difficult at first?"
+      }
+    ],
+    "choices": [
+      "It was, but I got used to it.",
+      "Yes, I watch them every Sunday.",
+      "No, I don't have a TV at home."
+    ],
+    "answerIndex": 0,
+    "translation": "W: 今年、英語すごく上達したね。／M: ありがとう。字幕なしで映画を見てるんだ。／W: 最初は難しくない？\n→ 難しかったよ、でも慣れた。",
+    "explanation": "Isn't it difficult? という質問に、過去の状態（難しかった）と現在（慣れた）で答えている。get used to ~ は「慣れる」。",
+    "distractorNotes": [
+      "最初は難しかったが慣れた、と質問に正面から答えている",
+      "頻度の答え。How often ~? なら正しい",
+      "テレビの有無は聞かれていないし、映画を見ている話と矛盾する"
+    ]
+  },
+  {
+    "id": "p2-l1-009",
+    "section": "l-part1",
+    "tags": [
+      "listen:numbers"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Excuse me, when does the next train to Nagoya leave?"
+      },
+      {
+        "speaker": "W",
+        "text": "The 3:15 just left, I'm afraid."
+      },
+      {
+        "speaker": "M",
+        "text": "Oh no. When's the one after that?"
+      }
+    ],
+    "choices": [
+      "At 3:45.",
+      "From platform two.",
+      "It takes an hour."
+    ],
+    "answerIndex": 0,
+    "translation": "M: すみません、名古屋行きの次の電車はいつ出ますか。／W: 3時15分のは、あいにく出たばかりです。／M: しまった。その次は何時ですか。\n→ 3時45分です。",
+    "explanation": "When's ~? は時刻を聞く。3:15 が出たあとなので、それより後の時刻が答えになる。時刻が2つ出てくるので取り違えに注意。",
+    "distractorNotes": [
+      "3:15 の次の時刻。質問と一致する",
+      "場所の答え。Which platform ~? なら正しい",
+      "所要時間の答え。How long ~? なら正しい"
+    ]
+  },
+  {
+    "id": "p2-l1-010",
+    "section": "l-part1",
+    "tags": [
+      "listen:gist"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "I'm thinking of cutting my hair short before summer."
+      },
+      {
+        "speaker": "M",
+        "text": "Really? You've had long hair as long as I've known you."
+      },
+      {
+        "speaker": "W",
+        "text": "I know. Do you think it would suit me?"
+      }
+    ],
+    "choices": [
+      "I think you'd look great.",
+      "Yes, it's getting hotter.",
+      "I go there about once a month."
+    ],
+    "answerIndex": 0,
+    "translation": "W: 夏の前に髪を短く切ろうかと思ってるの。／M: 本当？ 知り合ってからずっと長かったよね。／W: そうなの。似合うと思う？\n→ すごく似合うと思うよ。",
+    "explanation": "Do you think it would suit me?（似合うと思う？）は意見を求める質問。感想で答える。suit = 似合う。",
+    "distractorNotes": [
+      "似合うかどうかへの答えになっている",
+      "気温の話。似合うかどうかに答えていない",
+      "美容院に行く頻度の答え。聞かれていない"
+    ]
+  },
+  {
+    "id": "p2-l2-001",
+    "section": "l-part2",
+    "tags": [
+      "listen:gist"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Dad, have you seen my tennis racket anywhere?"
+      },
+      {
+        "speaker": "M",
+        "text": "I think I saw it in the garage yesterday."
+      },
+      {
+        "speaker": "W",
+        "text": "I looked there this morning, but it wasn't there."
+      },
+      {
+        "speaker": "M",
+        "text": "Then maybe your brother took it to practice."
+      }
     ],
     "question": "Question: What is the girl's problem?",
     "choices": [
@@ -174,14 +405,28 @@
   {
     "id": "p2-l2-002",
     "section": "l-part2",
-    "tags": ["listen:detail"],
+    "tags": [
+      "listen:detail"
+    ],
     "difficulty": 2,
     "stem": "",
     "dialogue": [
-      { "speaker": "M", "text": "Excuse me. I ordered the pasta about twenty minutes ago." },
-      { "speaker": "W", "text": "I'm very sorry, sir. The kitchen is quite busy tonight." },
-      { "speaker": "M", "text": "I understand, but I have to leave by seven." },
-      { "speaker": "W", "text": "I'll check with the kitchen right away and bring it as soon as I can." }
+      {
+        "speaker": "M",
+        "text": "Excuse me. I ordered the pasta about twenty minutes ago."
+      },
+      {
+        "speaker": "W",
+        "text": "I'm very sorry, sir. The kitchen is quite busy tonight."
+      },
+      {
+        "speaker": "M",
+        "text": "I understand, but I have to leave by seven."
+      },
+      {
+        "speaker": "W",
+        "text": "I'll check with the kitchen right away and bring it as soon as I can."
+      }
     ],
     "question": "Question: What will the woman do next?",
     "choices": [
@@ -203,14 +448,29 @@
   {
     "id": "p2-l2-003",
     "section": "l-part2",
-    "tags": ["listen:detail", "listen:numbers"],
+    "tags": [
+      "listen:detail",
+      "listen:numbers"
+    ],
     "difficulty": 2,
     "stem": "",
     "dialogue": [
-      { "speaker": "W", "text": "Are you coming to the school festival on Saturday?" },
-      { "speaker": "M", "text": "I'd like to, but I have a piano lesson in the morning." },
-      { "speaker": "W", "text": "The festival goes until five, so you can come after your lesson." },
-      { "speaker": "M", "text": "Really? Then I'll get there around two." }
+      {
+        "speaker": "W",
+        "text": "Are you coming to the school festival on Saturday?"
+      },
+      {
+        "speaker": "M",
+        "text": "I'd like to, but I have a piano lesson in the morning."
+      },
+      {
+        "speaker": "W",
+        "text": "The festival goes until five, so you can come after your lesson."
+      },
+      {
+        "speaker": "M",
+        "text": "Really? Then I'll get there around two."
+      }
     ],
     "question": "Question: What will the man do on Saturday?",
     "choices": [
@@ -232,14 +492,28 @@
   {
     "id": "p2-l2-004",
     "section": "l-part2",
-    "tags": ["listen:detail"],
+    "tags": [
+      "listen:detail"
+    ],
     "difficulty": 3,
     "stem": "",
     "dialogue": [
-      { "speaker": "M", "text": "Welcome to City Sports Center. How can I help you?" },
-      { "speaker": "W", "text": "I'd like to join the swimming class for beginners." },
-      { "speaker": "M", "text": "I'm afraid the beginner class is full, but we have another one on Thursday evenings." },
-      { "speaker": "W", "text": "Thursday is fine for me. I'll take that one." }
+      {
+        "speaker": "M",
+        "text": "Welcome to City Sports Center. How can I help you?"
+      },
+      {
+        "speaker": "W",
+        "text": "I'd like to join the swimming class for beginners."
+      },
+      {
+        "speaker": "M",
+        "text": "I'm afraid the beginner class is full, but we have another one on Thursday evenings."
+      },
+      {
+        "speaker": "W",
+        "text": "Thursday is fine for me. I'll take that one."
+      }
     ],
     "question": "Question: What did the woman decide to do?",
     "choices": [
@@ -261,14 +535,28 @@
   {
     "id": "p2-l2-005",
     "section": "l-part2",
-    "tags": ["listen:gist"],
+    "tags": [
+      "listen:gist"
+    ],
     "difficulty": 3,
     "stem": "",
     "dialogue": [
-      { "speaker": "W", "text": "You look happy today. Did something good happen?" },
-      { "speaker": "M", "text": "My host family in Canada sent me a birthday present." },
-      { "speaker": "W", "text": "That's nice. What did they send you?" },
-      { "speaker": "M", "text": "A book about Canadian history. I've already started reading it." }
+      {
+        "speaker": "W",
+        "text": "You look happy today. Did something good happen?"
+      },
+      {
+        "speaker": "M",
+        "text": "My host family in Canada sent me a birthday present."
+      },
+      {
+        "speaker": "W",
+        "text": "That's nice. What did they send you?"
+      },
+      {
+        "speaker": "M",
+        "text": "A book about Canadian history. I've already started reading it."
+      }
     ],
     "question": "Question: Why is the man happy?",
     "choices": [
@@ -287,11 +575,229 @@
       "会いに来たのではなく、送ってきた"
     ]
   },
-
+  {
+    "id": "p2-l2-006",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Hi, Ms. Tanaka. I'd like to borrow this book, but I forgot my library card."
+      },
+      {
+        "speaker": "W",
+        "text": "That's all right. Can you tell me your student number?"
+      },
+      {
+        "speaker": "M",
+        "text": "It's 3-B-24."
+      },
+      {
+        "speaker": "W",
+        "text": "Thank you. Please return it by next Friday."
+      }
+    ],
+    "question": "Question: What does the boy have to do?",
+    "choices": [
+      "Return the book by next Friday.",
+      "Bring his library card tomorrow.",
+      "Ask his teacher for permission.",
+      "Pay a fee for the book."
+    ],
+    "answerIndex": 0,
+    "translation": "M: 田中先生、この本を借りたいのですが、図書カードを忘れました。／W: 大丈夫よ。学籍番号を教えてくれる？／M: 3-B-24です。／W: ありがとう。来週の金曜までに返してね。\n問: 男の子は何をしなければならないか。→ 来週の金曜までに本を返す。",
+    "explanation": "最後の発言 Please return it by next Friday. がそのまま答え。「しなければならないこと」は指示や依頼の文を探す。",
+    "distractorNotes": [
+      "Please return it by next Friday. と一致",
+      "カードは忘れたが、持ってくるようには言われていない",
+      "許可を求める話は出ていない",
+      "料金の話は出ていない"
+    ]
+  },
+  {
+    "id": "p2-l2-007",
+    "section": "l-part2",
+    "tags": [
+      "listen:inference"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Did you finish the history homework?"
+      },
+      {
+        "speaker": "M",
+        "text": "Not yet. I couldn't find enough information about the topic."
+      },
+      {
+        "speaker": "W",
+        "text": "Have you tried the school library? They have a whole shelf on it."
+      },
+      {
+        "speaker": "M",
+        "text": "No, I only looked online. I'll go there after lunch."
+      }
+    ],
+    "question": "Question: What will the boy probably do after lunch?",
+    "choices": [
+      "Go to the school library.",
+      "Finish his homework online.",
+      "Ask his teacher for more time.",
+      "Eat lunch with the girl."
+    ],
+    "answerIndex": 0,
+    "translation": "W: 歴史の宿題終わった？／M: まだ。テーマについて十分な情報が見つからなくて。／W: 学校の図書館は試した？ 棚ひとつぶんあるよ。／M: いや、ネットで調べただけ。昼のあとに行ってみる。\n問: 男の子は昼のあとおそらく何をするか。→ 学校の図書館へ行く。",
+    "explanation": "I'll go there after lunch の there が何かを押さえる。直前に出た the school library のこと。",
+    "distractorNotes": [
+      "there = 学校の図書館。after lunch とも一致",
+      "ネットではもう調べたが足りなかった、というのがきっかけ",
+      "締め切り延長の話は出ていない",
+      "一緒に昼食をとるとは言っていない"
+    ]
+  },
+  {
+    "id": "p2-l2-008",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail",
+      "listen:numbers"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Hello, I'd like to book a table for Saturday evening."
+      },
+      {
+        "speaker": "W",
+        "text": "Certainly. For how many people?"
+      },
+      {
+        "speaker": "M",
+        "text": "Six adults and two children."
+      },
+      {
+        "speaker": "W",
+        "text": "We have a table at seven or at eight thirty. Which would you prefer?"
+      }
+    ],
+    "question": "Question: What does the woman ask the man to decide?",
+    "choices": [
+      "What time he wants the table.",
+      "How many people are coming.",
+      "What food he would like.",
+      "Which day he wants to come."
+    ],
+    "answerIndex": 0,
+    "translation": "M: もしもし、土曜の夜にテーブルを予約したいのですが。／W: かしこまりました。何名様ですか。／M: 大人6人と子ども2人です。／W: 7時か8時半のお席がございます。どちらがよろしいですか。\n問: 女性は男性に何を決めるよう求めているか。→ 何時にするか。",
+    "explanation": "最後の Which would you prefer? が指すのは、直前の at seven or at eight thirty という2つの時間。",
+    "distractorNotes": [
+      "7時か8時半か、という時間の選択",
+      "人数はすでに答えている（6人と2人）",
+      "料理の話は出ていない",
+      "曜日は最初に土曜と決まっている"
+    ]
+  },
+  {
+    "id": "p2-l2-009",
+    "section": "l-part2",
+    "tags": [
+      "listen:gist"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "You've been running every morning lately, haven't you?"
+      },
+      {
+        "speaker": "M",
+        "text": "Yes. I signed up for a ten-kilometer race in November."
+      },
+      {
+        "speaker": "W",
+        "text": "Wow. Have you ever run that far before?"
+      },
+      {
+        "speaker": "M",
+        "text": "Never. The longest I've done is five, so I have a lot of training to do."
+      }
+    ],
+    "question": "Question: Why has the man been running every morning?",
+    "choices": [
+      "He is preparing for a race.",
+      "He wants to lose weight.",
+      "He runs with his friends.",
+      "His doctor told him to exercise."
+    ],
+    "answerIndex": 0,
+    "translation": "W: 最近、毎朝走ってるよね。／M: うん。11月の10キロレースに申し込んだんだ。／W: すごい。そんなに長く走ったことある？／M: 一度も。最長で5キロだから、練習がたくさん必要だよ。\n問: 男性はなぜ毎朝走っているのか。→ レースに備えているから。",
+    "explanation": "Why を問われたら理由。I signed up for a ten-kilometer race が走っている理由にあたる。",
+    "distractorNotes": [
+      "レースに申し込んだから練習している",
+      "減量の話は出ていない",
+      "友達と走っているとは言っていない",
+      "医者の話は出ていない"
+    ]
+  },
+  {
+    "id": "p2-l2-010",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Mom, my bike's front tire is flat again."
+      },
+      {
+        "speaker": "W",
+        "text": "Again? Didn't we fix it last month?"
+      },
+      {
+        "speaker": "M",
+        "text": "Yeah, but it keeps happening. Maybe I need a new tire."
+      },
+      {
+        "speaker": "W",
+        "text": "Let's take it to the shop on Sunday and ask them."
+      }
+    ],
+    "question": "Question: What will they do on Sunday?",
+    "choices": [
+      "Take the bike to a shop.",
+      "Buy a new bicycle.",
+      "Fix the tire themselves.",
+      "Return the bike to the store."
+    ],
+    "answerIndex": 0,
+    "translation": "M: お母さん、自転車の前のタイヤがまたパンクしてる。／W: また？ 先月直さなかった？／M: うん、でも繰り返すんだ。新しいタイヤが必要かも。／W: 日曜に店に持っていって聞いてみましょう。\n問: 二人は日曜に何をするか。→ 自転車を店に持っていく。",
+    "explanation": "最後の Let's take it to the shop on Sunday がそのまま答え。it = 自転車。新しいタイヤは息子の推測にすぎない点に注意。",
+    "distractorNotes": [
+      "Let's take it to the shop と一致",
+      "新しい自転車を買う話は出ていない。必要かもと言ったのはタイヤ",
+      "自分で直すのではなく、店で聞く",
+      "返品の話は出ていない"
+    ]
+  },
   {
     "id": "p2-l3-001",
     "section": "l-part3",
-    "tags": ["listen:announcement", "listen:detail"],
+    "tags": [
+      "listen:announcement",
+      "listen:detail"
+    ],
     "difficulty": 1,
     "stem": "",
     "dialogue": [
@@ -320,7 +826,9 @@
   {
     "id": "p2-l3-002",
     "section": "l-part3",
-    "tags": ["listen:detail"],
+    "tags": [
+      "listen:detail"
+    ],
     "difficulty": 2,
     "stem": "",
     "dialogue": [
@@ -349,7 +857,10 @@
   {
     "id": "p2-l3-003",
     "section": "l-part3",
-    "tags": ["listen:detail", "listen:inference"],
+    "tags": [
+      "listen:detail",
+      "listen:inference"
+    ],
     "difficulty": 2,
     "stem": "",
     "dialogue": [
@@ -378,7 +889,9 @@
   {
     "id": "p2-l3-004",
     "section": "l-part3",
-    "tags": ["listen:announcement"],
+    "tags": [
+      "listen:announcement"
+    ],
     "difficulty": 3,
     "stem": "",
     "dialogue": [
@@ -402,6 +915,193 @@
       "撮影自体は許可されている（You may take photographs）",
       "1階はむしろ展示が移動した先",
       "ショップは早く閉まるだけで、入ってはいけないわけではない"
+    ]
+  },
+  {
+    "id": "p2-l3-005",
+    "section": "l-part3",
+    "tags": [
+      "listen:announcement"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Good morning, students. Today's after-school soccer practice has been moved from the field to the gym because of the rain. Practice starts at four as usual. Please bring indoor shoes. If you forget them, you will have to watch instead of playing."
+      }
+    ],
+    "question": "Question: What has changed about today's practice?",
+    "choices": [
+      "The place where it will be held.",
+      "The time it will start.",
+      "The sport they will play.",
+      "The teacher in charge."
+    ],
+    "answerIndex": 0,
+    "translation": "おはようございます。本日の放課後のサッカー練習は、雨のためグラウンドから体育館に変更になりました。練習は通常どおり4時開始です。上履きを持ってきてください。忘れた場合は、参加せずに見学することになります。\n問: 今日の練習について何が変わったか。→ 行う場所。",
+    "explanation": "moved from the field to the gym が変更点。時間は as usual（通常どおり）と明言されているので変わっていない。",
+    "distractorNotes": [
+      "グラウンドから体育館へ。場所の変更",
+      "4時開始で as usual。変わっていない",
+      "サッカーのまま",
+      "担当の先生の話は出ていない"
+    ]
+  },
+  {
+    "id": "p2-l3-006",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Daniel moved to Japan two years ago and could not speak any Japanese. He decided to join a local cooking class, thinking he could learn the language while doing something fun. The other students helped him with new words every week. Now he can hold a simple conversation, and he still goes to the class every Tuesday."
+      }
+    ],
+    "question": "Question: Why did Daniel join the cooking class?",
+    "choices": [
+      "To learn Japanese while enjoying himself.",
+      "To become a professional chef.",
+      "Because his company told him to.",
+      "To make Japanese food for his family."
+    ],
+    "answerIndex": 0,
+    "translation": "ダニエルは2年前に日本へ引っ越してきて、日本語がまったく話せなかった。彼は楽しいことをしながら言葉を学べると考え、地元の料理教室に入ることにした。他の生徒が毎週新しい単語を教えてくれた。今では簡単な会話ができ、今も毎週火曜に教室へ通っている。\n問: ダニエルはなぜ料理教室に入ったか。→ 楽しみながら日本語を学ぶため。",
+    "explanation": "thinking he could learn the language while doing something fun が理由にあたる。while ~ing（〜しながら）が聞き取りのカギ。",
+    "distractorNotes": [
+      "楽しみながら言語を学ぶため。本文の理由と一致",
+      "プロの料理人を目指すという記述はない",
+      "会社に言われたとは書かれていない",
+      "家族に作るためとは書かれていない"
+    ]
+  },
+  {
+    "id": "p2-l3-007",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail",
+      "listen:numbers"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Sakura High School holds a marathon every December. Last year, about two hundred students took part, but this year more than three hundred signed up. The school says this is because students can now choose between a five-kilometer and a ten-kilometer course. The shorter course was added for beginners."
+      }
+    ],
+    "question": "Question: Why did more students join this year?",
+    "choices": [
+      "A shorter course was added.",
+      "The race was held in summer.",
+      "Students received prize money.",
+      "The school made it necessary."
+    ],
+    "answerIndex": 0,
+    "translation": "さくら高校は毎年12月にマラソン大会を開いている。昨年は約200人の生徒が参加したが、今年は300人以上が申し込んだ。学校によると、これは5キロと10キロのコースを選べるようになったためだという。短いコースは初心者のために追加された。",
+    "explanation": "because 以降が理由。students can now choose between ... と The shorter course was added for beginners が根拠。数字（200→300）は増えたことを示すだけで、理由ではない。",
+    "distractorNotes": [
+      "初心者向けに5キロのコースが加わったから",
+      "12月開催のまま。夏ではない",
+      "賞金の話は出ていない",
+      "必修にしたとは書かれていない"
+    ]
+  },
+  {
+    "id": "p2-l3-008",
+    "section": "l-part3",
+    "tags": [
+      "listen:announcement"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Thank you for visiting Riverside Park. Please note that the north gate will be closed from tomorrow for repairs, so visitors should use the east or south gate. The work is expected to take about three weeks. During this time, the parking area near the north gate will also be unavailable."
+      }
+    ],
+    "question": "Question: What should visitors do from tomorrow?",
+    "choices": [
+      "Use a different gate.",
+      "Park near the north gate.",
+      "Visit the park in three weeks.",
+      "Pay an entrance fee."
+    ],
+    "answerIndex": 0,
+    "translation": "リバーサイド公園にお越しいただきありがとうございます。北門は明日から修理のため閉鎖されますので、東門または南門をご利用ください。工事はおよそ3週間かかる見込みです。この期間中、北門近くの駐車場もご利用いただけません。\n問: 来園者は明日から何をすべきか。→ 別の門を使う。",
+    "explanation": "visitors should use the east or south gate が指示。should を含む文が「すべきこと」。",
+    "distractorNotes": [
+      "東門か南門を使う。指示と一致",
+      "北門近くの駐車場は使えない",
+      "3週間待てとは言っていない。別の門で入れる",
+      "入園料の話は出ていない"
+    ]
+  },
+  {
+    "id": "p2-l3-009",
+    "section": "l-part3",
+    "tags": [
+      "listen:inference"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Naomi wanted to study in Australia, but her parents were worried about the cost. She spent a year researching scholarships and finally found one for high school students. She had to write an essay and take an interview in English. Last month, she learned that she had been accepted, and she will leave in September."
+      }
+    ],
+    "question": "Question: How did Naomi solve the problem of money?",
+    "choices": [
+      "She won a scholarship.",
+      "She got a part-time job.",
+      "Her parents changed their minds.",
+      "She chose a cheaper country."
+    ],
+    "answerIndex": 0,
+    "translation": "ナオミはオーストラリアで学びたかったが、両親は費用を心配していた。彼女は1年かけて奨学金を調べ、ついに高校生向けのものを見つけた。英語で小論文を書き、面接を受けなければならなかった。先月、合格したと知らされ、9月に発ちます。\n問: ナオミはお金の問題をどう解決したか。→ 奨学金を得た。",
+    "explanation": "「費用が心配 → 奨学金を探した → 合格した」という流れをたどる。scholarship（奨学金）が聞き取れるかがカギ。",
+    "distractorNotes": [
+      "奨学金に合格した",
+      "アルバイトの話は出ていない",
+      "両親が考えを変えたとは書かれていない",
+      "国を変えてはいない。オーストラリアへ行く"
+    ]
+  },
+  {
+    "id": "p2-l3-010",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "The city library started a new service last spring. People can now borrow books online and pick them up at a locker outside the building, even after closing time. The service was made for people who work late and cannot visit during opening hours. In the first six months, more than a thousand people used it."
+      }
+    ],
+    "question": "Question: Who was this new service made for?",
+    "choices": [
+      "People who cannot come during opening hours.",
+      "People who live far from the library.",
+      "Students who need books for school.",
+      "People who have lost their library cards."
+    ],
+    "answerIndex": 0,
+    "translation": "市立図書館は昨春、新しいサービスを始めた。人々はオンラインで本を借り、閉館後でも建物の外のロッカーで受け取れるようになった。このサービスは、遅くまで働いていて開館時間中に来られない人のために作られた。最初の6か月で1000人以上が利用した。\n問: この新しいサービスは誰のために作られたか。→ 開館時間中に来られない人。",
+    "explanation": "The service was made for ~ の for 以降がそのまま答え。「誰のために」は for を聞き取る。",
+    "distractorNotes": [
+      "遅くまで働いていて開館時間に来られない人",
+      "距離の話は出ていない",
+      "学生に限定されていない",
+      "カードを失くした人の話は出ていない"
     ]
   }
 ]

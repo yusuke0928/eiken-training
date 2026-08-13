@@ -157,11 +157,81 @@ await page.locator('button', { hasText: '音楽フェス' }).first().click();
 await page.getByText('相手からのメール').waitFor();
 await shot('20-writing-email');
 
+console.log('模擬テスト');
+await page.goto(URL, { waitUntil: 'networkidle' });
+await page.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await page.locator('button', { hasText: '模擬テスト' }).first().click();
+await page.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+await shot('22-mock-setup');
+
+await page.locator('button', { hasText: '筆記のみ' }).first().click();
+await page.locator('main ul > li > button').first().waitFor({ timeout: 10000 });
+await shot('23-mock-q1');
+
+// 最初の数問に答える
+for (let i = 0; i < 4; i++) {
+  await page.locator('main ul > li > button').nth(i % 4).click();
+  await page.getByRole('button', { name: /^次へ$/ }).click();
+  await page.waitForTimeout(100);
+}
+
+// 見直しフラグ → 一覧から飛べること
+await page.getByRole('button', { name: /見直す/ }).click();
+await page.locator('button', { hasText: '一覧' }).first().click();
+await page.getByText('見直す', { exact: true }).first().waitFor({ timeout: 5000 });
+await shot('24-mock-navigator');
+
+// ライティング（大問5・6 = 30問目と31問目）へ飛ぶ
+await page.getByRole('button', { name: '30', exact: true }).click();
+await page.locator('textarea').waitFor({ timeout: 8000 });
+await page
+  .locator('textarea')
+  .fill(
+    'Hi Alex! Thank you for your e-mail. I like pop music the best. I have two questions about the festival. Where was it held? How many bands did you see there?',
+  );
+await shot('25-mock-writing');
+
+await page.locator('button', { hasText: '一覧' }).first().click();
+await page.getByRole('button', { name: '31', exact: true }).click();
+await page.locator('textarea').waitFor({ timeout: 8000 });
+await page
+  .locator('textarea')
+  .fill(
+    'I think students should join a club at school. I have two reasons. First, they can make many friends there. Second, club activities teach them how to work with other people. For these reasons, I agree.',
+  );
+
+// 中断からの復帰（模試は長いので必須）
+await page.waitForTimeout(400);
+await page.reload({ waitUntil: 'networkidle' });
+await page.locator('textarea').waitFor({ timeout: 12000 });
+const resumed = await page.locator('textarea').inputValue();
+if (!resumed.includes('join a club')) throw new Error('模試が復帰していない');
+console.log('  ✓ 模試が途中から復帰');
+
+// 最終問題では画面下のボタンも「提出する」になるので、シート側（DOM で後ろ）を指す
+await page.locator('button', { hasText: '一覧' }).first().click();
+await page.getByRole('button', { name: '提出する' }).last().click();
+await page.getByText('提出していい？').waitFor({ timeout: 5000 });
+await page.getByRole('button', { name: '提出する' }).last().click();
+await page.getByText('技能べつ').waitFor({ timeout: 15000 });
+await shot('26-mock-result');
+
+// ライティングの自己採点
+await page.getByRole('button', { name: /モデル解答を見て採点する/ }).first().click();
+await page.getByText('モデル解答').first().waitFor({ timeout: 8000 });
+// 開いている採点欄の観点ぶんだけ「4」を押す（Eメールは内容・語彙・文法の3観点）
+const fours = page.getByRole('button', { name: '4', exact: true });
+const criteria = await fours.count();
+for (let i = 0; i < criteria; i++) await fours.nth(i).click();
+await page.getByRole('button', { name: 'この採点で記録する' }).click();
+await page.waitForTimeout(500);
+await shot('27-mock-scored');
+
 console.log('ダークモード');
 await page.emulateMedia({ colorScheme: 'dark' });
 await page.goto(URL, { waitUntil: 'networkidle' });
 await page.getByText('今日のミッション').waitFor({ timeout: 8000 });
-await shot('21-home-dark');
+await shot('28-home-dark');
 
 /* ---- 回帰テスト：中断からの復帰 ----
    通学中・寝る前に使うので、着信や電波切れでページが読み直されるのは普通に起きる。
@@ -219,7 +289,7 @@ await p2
     throw new Error(`下書きが消えている（"${await p2.locator('textarea').inputValue()}"）`);
   });
 console.log('  ✓ ライティングの下書きが残っている');
-await p2.screenshot({ path: join(OUT, '22-resume.png') });
+await p2.screenshot({ path: join(OUT, '29-resume.png') });
 
 await browser.close();
 

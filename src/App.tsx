@@ -7,9 +7,22 @@ import {
   buildTagQueue,
 } from './engine/selector';
 import { FocusScreen } from './features/focus/FocusScreen';
-import { clearSession, getKv, loadSession, setKv } from './data/db';
-import { ITEM_BY_ID } from './content';
-import { TAG_LABEL, type DiagnosticResult, type PracticeMode } from './types';
+import { clearSession, db, getKv, loadMock, loadSession, setKv, type SavedMock } from './data/db';
+import { ITEM_BY_ID, WRITING_BY_ID } from './content';
+import { applyResult } from './engine/srs';
+import { bumpDayLog } from './data/db';
+import { countWords } from './engine/writing';
+import { buildPaper, type MockPaper, type MockScope } from './engine/mock';
+import { MockSetupScreen } from './features/mock/MockSetupScreen';
+import { MockRunScreen, type MockDraft } from './features/mock/MockRunScreen';
+import { MockResultScreen } from './features/mock/MockResultScreen';
+import {
+  TAG_LABEL,
+  type DiagnosticResult,
+  type MockAnswer,
+  type MockWriting,
+  type PracticeMode,
+} from './types';
 import { HomeScreen } from './features/home/HomeScreen';
 import { WelcomeScreen } from './features/onboarding/WelcomeScreen';
 import { TrainingScreen } from './features/training/TrainingScreen';
@@ -36,7 +49,10 @@ type Route =
   | { k: 'writingList' }
   | { k: 'writingEditor'; promptId: string }
   | { k: 'writingReview'; promptId: string; text: string }
-  | { k: 'focus' };
+  | { k: 'focus' }
+  | { k: 'mockSetup' }
+  | { k: 'mockRun'; paper: MockPaper; restore?: SavedMock }
+  | { k: 'mockResult'; mockId: number };
 
 const MINI_SIZE = 8;
 /** 中断した演習に自動で戻す時間の上限 */
@@ -57,6 +73,14 @@ export default function App() {
       // ただし戻すのは直近 RESUME_WINDOW 以内のものだけ。
       // 昨日の途中セッションに毎回引き戻されると、別のことをしたいときに邪魔になる。
       // 解答自体は attempts と復習ボックスに記録済みなので、捨てても失われるものはない。
+      // 模試は長丁場なので、途中で閉じても24時間は続きから戻れるようにする
+      const savedMock = await loadMock();
+      if (savedMock && Date.now() - savedMock.updatedAt < 24 * 60 * 60 * 1000) {
+        setStack([{ k: 'home' }, { k: 'mockRun', paper: savedMock.paper, restore: savedMock }]);
+        window.history.pushState({}, '');
+        return;
+      }
+
       const saved = await loadSession();
       const fresh = !!saved && Date.now() - saved.updatedAt < RESUME_WINDOW_MS;
       if (saved && !fresh) await clearSession();
@@ -156,11 +180,38 @@ export default function App() {
           onWriting={() => push({ k: 'writingList' })}
           onListening={startListening}
           onFocus={() => push({ k: 'focus' })}
+          onMock={() => push({ k: 'mockSetup' })}
         />
       );
 
     case 'focus':
       return <FocusScreen onBack={back} />;
+
+    case 'mockSetup':
+      return (
+        <MockSetupScreen
+          onBack={back}
+          onStart={(scope: MockScope) => push({ k: 'mockRun', paper: buildPaper(scope) })}
+          onOpenResult={(mockId) => push({ k: 'mockResult', mockId })}
+        />
+      );
+
+    case 'mockRun':
+      return (
+        <MockRunScreen
+          paper={route.paper}
+          restore={route.restore}
+          onExit={goHome}
+          onFinish={async (draft, startedAt) => {
+            const mockId = await recordMock(route.paper, draft, startedAt);
+            setStack([{ k: 'home' }, { k: 'mockResult', mockId }]);
+            window.scrollTo({ top: 0 });
+          }}
+        />
+      );
+
+    case 'mockResult':
+      return <MockResultScreen mockId={route.mockId} onDone={goHome} />;
 
     case 'training':
       return <TrainingScreen onPickTag={startTag} onBack={back} />;
@@ -211,6 +262,55 @@ export default function App() {
     case 'result':
       return <SessionResultScreen results={route.results} onHome={goHome} onMore={startMini} />;
   }
+}
+
+/**
+ * 模試の採点と記録。
+ * 無回答も「解ききれなかった」として残す（時間配分の反省材料になるので）。
+ * まちがえた問題は通常の演習と同じく復習ボックスへ送る。
+ */
+async function recordMock(paper: MockPaper, draft: MockDraft, startedAt: number): Promise<number> {
+  const sessionId = `mock-${startedAt}`;
+  const answers: MockAnswer[] = [];
+
+  for (const q of [...paper.written, ...paper.listening]) {
+    if (q.kind !== 'mcq') continue;
+    const item = ITEM_BY_ID.get(q.itemId);
+    if (!item) continue;
+    const selected = draft.mcq[q.itemId] ?? null;
+    const correct = selected === item.answerIndex;
+    answers.push({ itemId: q.itemId, selected, correct });
+
+    await db.attempts.add({
+      itemId: q.itemId,
+      sessionId,
+      mode: 'mock',
+      answeredAt: Date.now(),
+      selected: selected ?? -1,
+      correct,
+      elapsedMs: 0,
+    });
+    await applyResult(q.itemId, correct);
+    await bumpDayLog(correct, 1);
+  }
+
+  const writings: MockWriting[] = paper.written
+    .filter((q) => q.kind === 'writing')
+    .map((q) => {
+      const promptId = (q as { promptId: string }).promptId;
+      const text = draft.writings[promptId] ?? '';
+      return { promptId, text, wordCount: countWords(text) };
+    })
+    .filter((w) => WRITING_BY_ID.has(w.promptId));
+
+  return await db.mocks.add({
+    scope: paper.scope,
+    startedAt,
+    finishedAt: Date.now(),
+    writtenElapsedMs: draft.writtenElapsedMs,
+    answers,
+    writings,
+  });
 }
 
 async function saveDiagnostic(results: SessionResult[]) {

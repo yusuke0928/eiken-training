@@ -181,6 +181,7 @@ export default function App() {
           onListening={startListening}
           onFocus={() => push({ k: 'focus' })}
           onMock={() => push({ k: 'mockSetup' })}
+          onOpenMockResult={(mockId) => push({ k: 'mockResult', mockId })}
         />
       );
 
@@ -308,6 +309,7 @@ async function recordMock(paper: MockPaper, draft: MockDraft, startedAt: number)
     startedAt,
     finishedAt: Date.now(),
     writtenElapsedMs: draft.writtenElapsedMs,
+    writingRemainingMs: draft.writingRemainingMs,
     answers,
     writings,
   });

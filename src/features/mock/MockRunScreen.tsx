@@ -19,6 +19,8 @@ export interface MockDraft {
   mcq: Record<string, number>;
   writings: Record<string, string>;
   writtenElapsedMs: number;
+  /** ライティングに入った時点の残り時間。模試の主目的はここを測ること */
+  writingRemainingMs: number | null;
 }
 
 const keyOf = (q: MockQuestion) => (q.kind === 'mcq' ? q.itemId : q.promptId);
@@ -46,11 +48,23 @@ export function MockRunScreen({
   const [navOpen, setNavOpen] = useState(false);
   const [confirmSubmit, setConfirmSubmit] = useState(false);
   const [audioDone, setAudioDone] = useState(false);
+  const [textFallback, setTextFallback] = useState(false);
   const [answerWindow, setAnswerWindow] = useState<number | null>(null);
+  const [writingRemaining, setWritingRemaining] = useState<number | null>(
+    restore?.writingRemainingMs ?? null,
+  );
   const startedAt = useRef(restore?.startedAt ?? Date.now());
 
   const list = phase === 'written' ? paper.written : paper.listening;
   const q = list[cursor];
+
+  // 大問5に入った瞬間の残り時間を1度だけ記録する
+  useEffect(() => {
+    if (phase === 'written' && q?.kind === 'writing' && writingRemaining === null) {
+      setWritingRemaining(remaining);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q, phase]);
 
   /* ---- 筆記のタイマー ---- */
   useEffect(() => {
@@ -74,10 +88,11 @@ export function MockRunScreen({
       writings,
       flags: [...flags],
       writtenRemainingMs: remaining,
+      writingRemainingMs: writingRemaining,
       startedAt: startedAt.current,
       updatedAt: Date.now(),
     });
-  }, [paper, phase, cursor, mcq, writings, flags, remaining]);
+  }, [paper, phase, cursor, mcq, writings, flags, remaining, writingRemaining]);
 
   /* ---- リスニングは放送が終わると約10秒で次へ進む（本番と同じ） ---- */
   useEffect(() => {
@@ -94,6 +109,7 @@ export function MockRunScreen({
 
   function resetPerQuestion() {
     setAudioDone(false);
+    setTextFallback(false);
     setAnswerWindow(null);
     window.scrollTo({ top: 0 });
   }
@@ -126,7 +142,12 @@ export function MockRunScreen({
   function submit() {
     void clearMock();
     onFinish(
-      { mcq, writings, writtenElapsedMs: hasWritten ? WRITTEN_MS - remaining : 0 },
+      {
+        mcq,
+        writings,
+        writtenElapsedMs: hasWritten ? WRITTEN_MS - remaining : 0,
+        writingRemainingMs: writingRemaining,
+      },
       startedAt.current,
     );
   }
@@ -174,6 +195,8 @@ export function MockRunScreen({
           )}
         </div>
         <ProgressBar value={cursor} total={list.length} />
+        {/* 語数はテキストエリアの下だと画面外に隠れる。書きながら見える位置に出す */}
+        {q?.kind === 'writing' && <WordMeter promptId={q.promptId} text={writings[keyOf(q)] ?? ''} />}
       </header>
 
       <main className="flex-1 px-4 pt-4 pb-40">
@@ -194,6 +217,11 @@ export function MockRunScreen({
             onSelect={(i) => setMcq({ ...mcq, [key]: i })}
             listening={isListening(ITEM_BY_ID.get(q.itemId)!.section)}
             audioDone={audioDone}
+            textFallback={textFallback}
+            onTextFallback={() => {
+              setTextFallback(true);
+              setAudioDone(true);
+            }}
             onAudioDone={() => {
               setAudioDone(true);
               setAnswerWindow(LISTENING_ANSWER_MS);
@@ -334,6 +362,8 @@ function McqBlock({
   onSelect,
   listening,
   audioDone,
+  textFallback,
+  onTextFallback,
   onAudioDone,
 }: {
   itemId: string;
@@ -341,6 +371,8 @@ function McqBlock({
   onSelect: (i: number) => void;
   listening: boolean;
   audioDone: boolean;
+  textFallback: boolean;
+  onTextFallback: () => void;
   onAudioDone: () => void;
 }) {
   const item = ITEM_BY_ID.get(itemId)!;
@@ -351,9 +383,17 @@ function McqBlock({
   return (
     <>
       {listening ? (
-        <ListeningPanel key={item.id} item={item} examLike onPlayedOnce={onAudioDone} />
+        <ListeningPanel
+          key={item.id}
+          item={item}
+          examLike
+          forceScript={textFallback}
+          onPlayedOnce={onAudioDone}
+        />
       ) : (
-        passage && <PassageView passage={passage} activeBlank={blankNo ? Number(blankNo) : undefined} />
+        passage && (
+          <PassageView passage={passage} activeBlank={blankNo ? Number(blankNo) : undefined} compact />
+        )
       )}
 
       {!listening && (
@@ -367,10 +407,10 @@ function McqBlock({
           <p className="text-[14px] text-ink-sub">選択肢は音声だけで流れます</p>
           <button
             type="button"
-            onClick={onAudioDone}
+            onClick={onTextFallback}
             className="mt-3 min-h-[44px] text-[13px] font-medium text-primary underline underline-offset-4"
           >
-            音が出ないときは、文字で表示する
+            音が出ないときは、会話も選択肢も文字で出す
           </button>
         </div>
       ) : (
@@ -399,6 +439,30 @@ function McqBlock({
         </ul>
       )}
     </>
+  );
+}
+
+/** ヘッダーに出す語数メーター。書きながら常に見える位置に置く */
+function WordMeter({ promptId, text }: { promptId: string; text: string }) {
+  const prompt = WRITING_BY_ID.get(promptId)!;
+  const [min, max] = WRITING_SPEC[prompt.section].wordRange;
+  const words = countWords(text);
+  const inRange = words >= min && words <= max;
+  return (
+    <div className="mt-2 flex items-center justify-between">
+      <span className="text-[11px] text-ink-faint">語数</span>
+      <span
+        className={`rounded-full px-2.5 py-0.5 text-[12px] font-bold tabular-nums ${
+          words === 0
+            ? 'bg-surface-2 text-ink-faint'
+            : inRange
+              ? 'bg-correct-soft text-correct'
+              : 'bg-again-soft text-again'
+        }`}
+      >
+        {words} / {min}–{max}語
+      </span>
+    </div>
   );
 }
 
@@ -449,8 +513,7 @@ function WritingBlock({
         rows={10}
         className="en w-full resize-y rounded-3xl border-2 border-line bg-surface p-4 text-ink outline-none focus:border-primary"
       />
-      {/* 本番でも語数は自分で数えるので、カウンターだけは出す。
-          型や表現のヒントは試験モードでは出さない */}
+      {/* 語数はヘッダーにも常時出している。型や表現のヒントは試験モードでは出さない */}
       <p
         className={`mt-2 text-right text-[13px] font-bold tabular-nums ${
           words === 0 ? 'text-ink-faint' : inRange ? 'text-correct' : 'text-again'

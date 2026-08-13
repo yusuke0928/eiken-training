@@ -66,6 +66,8 @@ export interface SavedMock {
   writings: Record<string, string>;
   flags: string[];
   writtenRemainingMs: number;
+  /** ライティングに入った時点の残り時間（まだ入っていなければ null） */
+  writingRemainingMs: number | null;
   startedAt: number;
   updatedAt: number;
 }

@@ -11,10 +11,13 @@ import { Play, Warning } from '../../ui/icons';
 export function ListeningPanel({
   item,
   examLike,
+  forceScript,
   onPlayedOnce,
 }: {
   item: MCQItem;
   examLike: boolean;
+  /** 音声が出せない端末で「文字で出す」を選んだとき。会話の中身も見せる */
+  forceScript?: boolean;
   onPlayedOnce: () => void;
 }) {
   const { supported, speaking, lineIndex, speak, stop } = useSpeech();
@@ -128,7 +131,17 @@ export function ListeningPanel({
         </div>
       )}
 
-      {showScript && <Script item={item} />}
+      {(showScript || forceScript) && (
+        <>
+          {forceScript && !showScript && (
+            <p className="mt-3 rounded-xl bg-surface px-3 py-2 text-[12px] leading-relaxed text-ink-sub">
+              音声のかわりに会話の中身を文字で出しています。本番は音だけなので、
+              音が出せる環境ではイヤホンをつけて受け直してみて。
+            </p>
+          )}
+          <Script item={item} />
+        </>
+      )}
 
       {plays === 0 && (
         <p className="mt-3 flex gap-2 text-[12px] leading-relaxed text-ink-faint">

@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { loadStreak, todayCount } from '../../data/db';
+import { db, loadStreak, todayCount } from '../../data/db';
 import { loadReport } from '../../engine/selector';
 import { reviewBacklog } from '../../engine/srs';
 import { scoreView } from '../../engine/scoring';
@@ -26,6 +26,7 @@ export function HomeScreen({
   onListening,
   onFocus,
   onMock,
+  onOpenMockResult,
 }: {
   onMini: () => void;
   onTraining: () => void;
@@ -34,11 +35,17 @@ export function HomeScreen({
   onListening: () => void;
   onFocus: () => void;
   onMock: () => void;
+  onOpenMockResult: (id: number) => void;
 }) {
   const today = useLiveQuery(() => todayCount(), [], 0) ?? 0;
   const streak = useLiveQuery(() => loadStreak(), [], 0) ?? 0;
   const backlog = useLiveQuery(() => reviewBacklog(), [], 0) ?? 0;
   const report = useLiveQuery(() => loadReport(), [], undefined);
+  // 自己採点を後回しにした模試は忘れられやすいので、ここから戻れるようにする
+  const pendingMock = useLiveQuery(async () => {
+    const rows = await db.mocks.orderBy('finishedAt').reverse().limit(5).toArray();
+    return rows.find((m) => m.writings.some((w) => w.total === undefined)) ?? null;
+  }, [], null);
 
   const milestone = nextMilestone();
   const reminder = applyReminder();
@@ -99,6 +106,27 @@ export function HomeScreen({
             </p>
           </div>
         </div>
+
+        {pendingMock && (
+          <button
+            type="button"
+            onClick={() => pendingMock.id && onOpenMockResult(pendingMock.id)}
+            className="mb-4 flex w-full items-center gap-3 rounded-2xl bg-accent-soft px-4 py-3 text-left"
+          >
+            <span className="text-accent">
+              <Pen size={18} />
+            </span>
+            <span className="flex-1 text-[13px] font-medium text-ink">
+              まだ採点していないライティングがあるよ
+              <span className="mt-0.5 block text-[12px] font-normal text-ink-sub">
+                模試の結果からモデル解答を見て採点しよう
+              </span>
+            </span>
+            <span className="text-ink-faint">
+              <ChevronRight size={18} />
+            </span>
+          </button>
+        )}
 
         {reminder && (
           <div className="mb-4 flex items-center gap-2 rounded-2xl bg-again-soft px-4 py-3 text-[13px] font-medium text-again">

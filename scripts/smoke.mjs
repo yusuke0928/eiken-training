@@ -92,6 +92,11 @@ const fallback = page.getByRole('button', { name: /音が出ないときは/ });
 if (await fallback.count()) {
   await fallback.click();
   await page.locator('main ul > li > button').first().waitFor({ timeout: 5000 });
+  // 選択肢だけ出しても第1部は解けない。会話の中身も文字になっていること
+  await page
+    .getByText('音声のかわりに会話の中身を文字で出しています', { exact: false })
+    .waitFor({ timeout: 5000 });
+  console.log('  ✓ 音声なしでも会話が文字で出る');
   await shot('10-listening-fallback');
 }
 await answer(0);
@@ -214,6 +219,10 @@ await page.getByRole('button', { name: '提出する' }).last().click();
 await page.getByText('提出していい？').waitFor({ timeout: 5000 });
 await page.getByRole('button', { name: '提出する' }).last().click();
 await page.getByText('技能べつ').waitFor({ timeout: 15000 });
+// 模試の主目的は時間配分。総経過時間ではなく内訳が出ていること
+await page.getByText('ライティングに残せた').waitFor({ timeout: 8000 });
+await page.getByText('選択問題29問に使った').waitFor({ timeout: 8000 });
+console.log('  ✓ 選択問題とライティングの時間の内訳が出る');
 await shot('26-mock-result');
 
 // ライティングの自己採点
@@ -227,11 +236,18 @@ await page.getByRole('button', { name: 'この採点で記録する' }).click();
 await page.waitForTimeout(500);
 await shot('27-mock-scored');
 
+// 2題目は未採点のまま。ホームから戻れること
+await page.goto(URL, { waitUntil: 'networkidle' });
+await page.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await page.getByText('まだ採点していないライティングがあるよ').waitFor({ timeout: 8000 });
+console.log('  ✓ 未採点のライティングがホームから戻れる');
+await shot('28-home-pending-writing');
+
 console.log('ダークモード');
 await page.emulateMedia({ colorScheme: 'dark' });
 await page.goto(URL, { waitUntil: 'networkidle' });
 await page.getByText('今日のミッション').waitFor({ timeout: 8000 });
-await shot('28-home-dark');
+await shot('29-home-dark');
 
 /* ---- 回帰テスト：中断からの復帰 ----
    通学中・寝る前に使うので、着信や電波切れでページが読み直されるのは普通に起きる。
@@ -289,7 +305,7 @@ await p2
     throw new Error(`下書きが消えている（"${await p2.locator('textarea').inputValue()}"）`);
   });
 console.log('  ✓ ライティングの下書きが残っている');
-await p2.screenshot({ path: join(OUT, '29-resume.png') });
+await p2.screenshot({ path: join(OUT, '30-resume.png') });
 
 await browser.close();
 

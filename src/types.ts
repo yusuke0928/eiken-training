@@ -300,6 +300,12 @@ export interface MockRecord {
   finishedAt: number;
   /** 筆記に実際に使った時間 */
   writtenElapsedMs: number;
+  /**
+   * ライティング（大問5）に入った時点の残り時間。
+   * 模試の主目的は「選択問題を早く抜けて、ここに30〜35分残せたか」なので、
+   * 総経過時間ではなくこの値を見せないと意味がない。
+   */
+  writingRemainingMs?: number | null;
   answers: MockAnswer[];
   writings: MockWriting[];
 }

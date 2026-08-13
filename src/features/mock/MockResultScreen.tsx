@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ITEM_BY_ID, WRITING_BY_ID } from '../../content';
 import { db } from '../../data/db';
-import { formatClock, WRITTEN_MS } from '../../engine/mock';
+import { formatClock, WRITING_TARGET_MS, WRITTEN_MS } from '../../engine/mock';
 import { PRE2, estimateSkillCse } from '../../engine/scoring';
 import { totalScore } from '../../engine/writing';
 import { RUBRIC, SECTION_LABEL, WRITING_SPEC, type MockRecord, type SectionId } from '../../types';
@@ -41,6 +41,9 @@ export function MockResultScreen({ mockId, onDone }: { mockId: number; onDone: (
 
   const unanswered = record.answers.filter((a) => a.selected === null).length;
   const usedRatio = record.writtenElapsedMs / WRITTEN_MS;
+  // ライティングに入った時点の残り時間。古い記録には入っていないので null 許容
+  const left = record.writingRemainingMs ?? null;
+  const mcqMs = left === null ? 0 : WRITTEN_MS - left;
 
   return (
     <Screen>
@@ -99,22 +102,77 @@ export function MockResultScreen({ mockId, onDone }: { mockId: number; onDone: (
         {record.writtenElapsedMs > 0 && (
           <Section title="時間の使い方">
             <div className="rounded-3xl border border-line bg-surface p-5">
-              <p className="text-[15px] font-semibold text-ink">
-                筆記 {formatClock(record.writtenElapsedMs)} / 80:00
-              </p>
-              <div className="my-3 h-2.5 overflow-hidden rounded-full bg-surface-2">
-                <div
-                  className={`h-full rounded-full ${usedRatio > 0.98 ? 'bg-again' : 'bg-primary'}`}
-                  style={{ width: `${Math.min(100, usedRatio * 100)}%` }}
-                />
-              </div>
-              <p className="text-[13px] leading-relaxed text-ink-sub">
-                {unanswered > 0
-                  ? `${unanswered}問が無回答のままだった。時間が足りていない可能性が高い。選択問題を早く抜けて、ライティングに30分残すのが目標。`
-                  : usedRatio > 0.98
-                    ? '時間ぎりぎりだった。選択問題で迷う時間を減らせると、ライティングが楽になる。'
-                    : '時間内に終えられている。この配分を覚えておこう。'}
-              </p>
+              {/* 模試の主目的は「選択を早く抜けて、ライティングに30〜35分残せたか」。
+                  総経過時間だけでは、その良し悪しが分からない */}
+              {left !== null ? (
+                <>
+                  <div className="mb-3 flex items-end justify-between gap-3">
+                    <div>
+                      <p className="text-[12px] text-ink-sub">選択問題29問に使った</p>
+                      <p className="text-[24px] font-bold leading-tight tabular-nums text-ink">
+                        {formatClock(mcqMs)}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[12px] text-ink-sub">ライティングに残せた</p>
+                      <p
+                        className={`text-[24px] font-bold leading-tight tabular-nums ${
+                          left >= WRITING_TARGET_MS ? 'text-correct' : 'text-again'
+                        }`}
+                      >
+                        {formatClock(left)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mb-2 flex h-3 overflow-hidden rounded-full bg-surface-2">
+                    <div className="h-full bg-primary" style={{ width: `${(mcqMs / WRITTEN_MS) * 100}%` }} />
+                    <div
+                      className={`h-full ${left >= WRITING_TARGET_MS ? 'bg-correct' : 'bg-again'}`}
+                      style={{ width: `${(left / WRITTEN_MS) * 100}%` }}
+                    />
+                  </div>
+                  <div className="mb-3 flex gap-4 text-[11px] text-ink-faint">
+                    <span className="flex items-center gap-1.5">
+                      <span className="h-2 w-2 rounded-full bg-primary" />選択問題
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span
+                        className={`h-2 w-2 rounded-full ${
+                          left >= WRITING_TARGET_MS ? 'bg-correct' : 'bg-again'
+                        }`}
+                      />
+                      ライティング（目標30分以上）
+                    </span>
+                  </div>
+
+                  <p className="text-[13px] leading-relaxed text-ink-sub">
+                    {left >= WRITING_TARGET_MS
+                      ? `ライティングに${Math.round(left / 60000)}分残せている。この配分を覚えておこう。`
+                      : `ライティングに残せたのは${Math.round(left / 60000)}分。1題300点あるので、
+                         ここが足りないと大きく落とす。選択問題を あと${Math.ceil(
+                           (WRITING_TARGET_MS - left) / 60000,
+                         )}分 短くするのが目標。`}
+                    {unanswered > 0 && ` なお${unanswered}問が無回答のままだった。`}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-[15px] font-semibold text-ink">
+                    筆記 {formatClock(record.writtenElapsedMs)} / 80:00
+                  </p>
+                  <div className="my-3 h-2.5 overflow-hidden rounded-full bg-surface-2">
+                    <div
+                      className={`h-full rounded-full ${usedRatio > 0.98 ? 'bg-again' : 'bg-primary'}`}
+                      style={{ width: `${Math.min(100, usedRatio * 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-[13px] leading-relaxed text-ink-sub">
+                    ライティングまで進まなかったので、時間配分は測れていません。
+                    {unanswered > 0 && `${unanswered}問が無回答のままだった。`}
+                  </p>
+                </>
+              )}
             </div>
           </Section>
         )}

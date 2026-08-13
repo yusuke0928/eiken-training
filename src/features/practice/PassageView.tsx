@@ -9,11 +9,14 @@ export function PassageView({
   passage,
   activeBlank,
   showTranslation,
+  compact,
 }: {
   passage: Passage;
   /** 長文の語句空所補充で、いま解いている空所の番号 */
   activeBlank?: number;
   showTranslation?: boolean;
+  /** 模試向け。本文を低くして、選択肢が画面内に入りやすいようにする */
+  compact?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [ja, setJa] = useState(false);
@@ -28,7 +31,9 @@ export function PassageView({
       </div>
 
       <div
-        className={`relative overflow-y-auto ${expanded ? 'max-h-[70vh]' : 'max-h-[38vh]'}`}
+        className={`relative overflow-y-auto ${
+          expanded ? 'max-h-[70vh]' : compact ? 'max-h-[30vh]' : 'max-h-[38vh]'
+        }`}
         style={{ scrollbarWidth: 'thin' }}
       >
         {paragraphs.map((para, i) => (

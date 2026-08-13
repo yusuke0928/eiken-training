@@ -49,6 +49,8 @@ export const LISTENING_BLUEPRINT: MockBlock[] = [
 ];
 
 export const WRITTEN_MS = 80 * 60 * 1000;
+/** ライティング2題に残しておきたい時間。1題300点あるので、ここを削ると致命傷になる */
+export const WRITING_TARGET_MS = 30 * 60 * 1000;
 /** リスニングは放送に合わせて進むので、目安として持っておくだけ */
 export const LISTENING_APPROX_MS = 25 * 60 * 1000;
 /** 本番は放送が終わると約10秒で次の問題へ進む */

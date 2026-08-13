@@ -37,6 +37,7 @@ export function QuestionScreen({
   const [results, setResults] = useState<SessionResult[]>(resume?.results ?? []);
   const [confirmExit, setConfirmExit] = useState(false);
   const [audioPlayed, setAudioPlayed] = useState(false);
+  const [textFallback, setTextFallback] = useState(false);
   const sessionId = useRef(`s-${Date.now()}`).current;
   const startedAt = useRef(Date.now());
 
@@ -102,6 +103,7 @@ export function QuestionScreen({
     setSheetOpen(false);
     setSelected(null);
     setAudioPlayed(false);
+    setTextFallback(false);
     startedAt.current = Date.now();
     if (index + 1 >= queue.length) {
       void clearSession();
@@ -143,6 +145,7 @@ export function QuestionScreen({
             key={item.id}
             item={item}
             examLike={isExamLike}
+            forceScript={textFallback}
             onPlayedOnce={() => setAudioPlayed(true)}
           />
         ) : (
@@ -169,10 +172,13 @@ export function QuestionScreen({
             {/* 端末によっては音声が出ない。行き止まりにしないための逃げ道 */}
             <button
               type="button"
-              onClick={() => setAudioPlayed(true)}
+              onClick={() => {
+                setTextFallback(true);
+                setAudioPlayed(true);
+              }}
               className="mt-4 min-h-[44px] text-[13px] font-medium text-primary underline underline-offset-4"
             >
-              音が出ないときは、文字で表示する
+              音が出ないときは、会話も選択肢も文字で出す
             </button>
           </div>
         ) : (

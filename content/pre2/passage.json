@@ -1,71 +1,275 @@
 [
   {
-    "id": "p2-p-email-001",
-    "section": "r-passage",
-    "format": "email",
-    "title": "A Message from Grandma",
-    "body": "From: Helen Baker\nTo: Lucy Baker\nDate: September 12\nSubject: Your visit\n\nHi Lucy,\n\nThank you for your e-mail. I'm so glad you can stay with me during your school holiday. Your room is ready, and I've already washed the sheets.\n\nI have some news. The train company is repairing the tracks between your town and mine, so the express train won't run on October 3. If you still want to arrive on that day, you'll have to take the local train, and it takes almost three hours. Another choice is to come one day later on the express, which only takes ninety minutes. Please tell me which one you prefer by this Sunday, because I need to ask your uncle to pick you up at the station.\n\nAlso, you wrote that you wanted to try making apple pie together. There's a farm near my house where visitors can pick their own apples in October, so let's go there first and choose the best ones. Bring comfortable shoes because the ground gets muddy.\n\nI can't wait to see you.\n\nLove,\nGrandma",
-    "translation": "差出人: ヘレン・ベイカー／宛先: ルーシー・ベイカー／日付: 9月12日／件名: あなたの訪問\n\nルーシーへ\n\nメールをありがとう。学校の休みの間にうちに泊まれるなんて、とてもうれしいわ。部屋は準備できているし、シーツももう洗ったのよ。\n\nお知らせがあります。鉄道会社があなたの町とこちらの間の線路を修理しているので、10月3日は急行が走りません。その日に到着したいなら普通列車に乗る必要があって、3時間近くかかります。もう一つの選択肢は、1日遅れて急行で来ることで、こちらは90分しかかかりません。おじさんに駅まで迎えに行ってもらうよう頼む必要があるので、どちらがいいか今週の日曜までに教えてね。\n\nそれから、一緒にアップルパイを作ってみたいと書いていたわね。家の近くに10月に自分でりんごを摘める農園があるから、まずそこへ行って一番いいものを選びましょう。地面がぬかるむので歩きやすい靴を持ってきてね。\n\n会えるのが待ちきれません。\n\n愛を込めて、おばあちゃんより",
-    "wordCount": 181,
+    "id": "p2-p-cloze-001",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Sleep and Study",
+    "body": "Many students believe that staying up late to study is the best way to prepare for a test. However, researchers say this idea is often ( 1 ). In one study, two groups of students learned a list of new words. One group slept for eight hours, and the other stayed awake all night. The next morning, the group that had slept remembered far more words.\n\nWhile we sleep, the brain organizes what we have learned during the day and stores it for later use. If we do not sleep enough, this process cannot finish properly. ( 2 ), reviewing for thirty minutes and then going to bed early may help you more than studying until two in the morning.",
+    "translation": "多くの生徒は、夜更かしして勉強するのがテストに備える最良の方法だと信じている。しかし研究者たちは、この考えはしばしば誤りだと言う。ある研究では、2つのグループの生徒が新しい単語のリストを覚えた。一方のグループは8時間眠り、もう一方は一晩中起きていた。翌朝、眠ったグループのほうがはるかに多くの単語を覚えていた。\n\n私たちが眠っている間、脳はその日に学んだことを整理し、後で使えるように保存する。十分に眠らないと、この過程がきちんと終わらない。したがって、30分復習して早く寝るほうが、夜中の2時まで勉強するよりも役に立つかもしれない。",
+    "wordCount": 128,
     "items": [
       {
-        "id": "p2-p-email-001-q1",
-        "tags": ["read:detail"],
-        "difficulty": 2,
-        "stem": "Why can't Lucy take the express train on October 3?",
-        "choices": [
-          "The tracks are being repaired.",
-          "All of the seats have been sold.",
-          "The train company has gone out of business.",
-          "A storm is expected on that day."
+        "id": "p2-p-cloze-001-q1",
+        "tags": [
+          "read:vocab-in-context"
         ],
-        "answerIndex": 0,
-        "explanation": "第2段落の The train company is repairing the tracks ... so the express train won't run on October 3. がそのまま根拠。設問のキーワード（October 3, express）を本文から探すのが基本動作。",
-        "distractorNotes": [
-          "本文の repairing the tracks を being repaired と言いかえたもの",
-          "座席が売り切れたという記述はどこにもない",
-          "鉄道会社が廃業したとは書かれていない。修理をしているだけ",
-          "嵐については一切触れられていない"
-        ]
-      },
-      {
-        "id": "p2-p-email-001-q2",
-        "tags": ["read:detail", "read:inference"],
         "difficulty": 3,
-        "stem": "What does Grandma ask Lucy to do by Sunday?",
+        "stem": "( 1 )",
         "choices": [
-          "Decide how she will travel.",
-          "Buy a ticket for the local train.",
-          "Call her uncle at the station.",
-          "Send a photo of her new shoes."
+          "wrong",
+          "popular",
+          "expensive",
+          "difficult"
         ],
         "answerIndex": 0,
-        "explanation": "Please tell me which one you prefer by this Sunday とある。which one が指すのは、直前に並べられた「10月3日に普通列車」か「1日遅れて急行」かという2つの移動方法。指示語が何を指すかを押さえる問題。",
+        "explanation": "空所の前に However があり、直後の実験では「眠ったグループのほうが覚えていた」と続く。つまり「夜更かしが最良」という考えは誤りだという流れ。逆接の語のあとは、前の内容を否定する語が入る。",
         "distractorNotes": [
-          "2つの移動方法のどちらかを選ぶこと。which one の指す内容と一致する",
-          "切符を買うようにとは書かれていない。まだ列車も決まっていない",
-          "おじさんに連絡するのはおばあちゃんの方（I need to ask your uncle）",
-          "靴については「持ってきて」と言っているだけで、写真の話はない"
+          "wrong = 誤った。However と実験結果の両方に合う",
+          "popular = 人気がある。However で否定する内容にならない",
+          "expensive = 高価な。お金の話は出ていない",
+          "difficult = 難しい。考えが「難しい」では実験結果とつながらない"
         ]
       },
       {
-        "id": "p2-p-email-001-q3",
-        "tags": ["read:detail"],
-        "difficulty": 2,
-        "stem": "What will Lucy and her grandmother do before making apple pie?",
+        "id": "p2-p-cloze-001-q2",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
         "choices": [
-          "Pick apples at a nearby farm.",
-          "Buy apples at a supermarket.",
-          "Wash the sheets in her room.",
-          "Visit Lucy's uncle at his house."
+          "Therefore",
+          "However",
+          "For example",
+          "In addition"
         ],
         "answerIndex": 0,
-        "explanation": "最終段落の let's go there first and choose the best ones が根拠。there は直前の a farm ... where visitors can pick their own apples を指す。first という語が「パイを作る前に」に対応している。",
+        "explanation": "前で「眠らないと記憶の整理が終わらない」と理由を述べ、空所のあとで「早く寝たほうがよい」という結論を述べている。理由→結論なので Therefore（したがって）。",
         "distractorNotes": [
-          "農園でりんごを摘む。let's go there first と一致する",
-          "スーパーで買うとは書かれていない。農園で自分たちで摘む",
-          "シーツを洗ったのはおばあちゃんで、しかも到着前にすでに済んでいる",
-          "おじさんは駅に迎えに来るだけで、家を訪ねる話は出ていない"
+          "Therefore = したがって。理由のあとに結論を導く",
+          "However = しかし。前後は逆の内容ではなく、素直につながっている",
+          "For example = 例えば。あとに続くのは例ではなくアドバイス（結論）",
+          "In addition = さらに。情報を追加する語だが、ここは前の内容から導かれる結論"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-cloze-002",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Standing Desks",
+    "body": "A few schools in Europe have replaced some of their chairs with tall desks that students use while standing. Teachers there say the change has been ( 1 ). Students who used to lose focus in the afternoon now stay awake, and several of them say their backs hurt less than before.\n\nOf course, standing all day would be tiring. ( 2 ), most of these schools let students choose. They can stand for one lesson and sit for the next, or share a standing desk with a classmate. The important thing, one teacher said, is simply not staying in the same position for six hours.",
+    "translation": "ヨーロッパのいくつかの学校では、椅子の一部を、立ったまま使う背の高い机に取り替えている。そこの教師たちは、この変更は成功だったと言う。以前は午後に集中力を失っていた生徒たちが、いまは眠くならず、何人かは以前より背中が痛くないと言っている。\n\nもちろん、一日中立っているのは疲れるだろう。そのため、これらの学校のほとんどは生徒に選ばせている。1時間は立ち、次の時間は座ることもできるし、クラスメートと立ち机を共有することもできる。大切なのは、6時間も同じ姿勢でいないことだ、とある教師は言った。",
+    "wordCount": 118,
+    "items": [
+      {
+        "id": "p2-p-cloze-002-q1",
+        "tags": [
+          "read:vocab-in-context"
+        ],
+        "difficulty": 2,
+        "stem": "( 1 )",
+        "choices": [
+          "a success",
+          "a mistake",
+          "a secret",
+          "a tradition"
+        ],
+        "answerIndex": 0,
+        "explanation": "空所のあとに「集中力が続く」「背中が痛くない」と良い結果が2つ並んでいる。空所には良い評価を表す語が入る。空所の直後に理由や具体例が来るパターン。",
+        "distractorNotes": [
+          "success = 成功。あとに続く良い結果とつながる",
+          "mistake = 失敗。良い結果が続くのと矛盾する",
+          "secret = 秘密。教師が公に語っている内容と合わない",
+          "tradition = 伝統。始めたばかりの新しい取り組みなので合わない"
+        ]
+      },
+      {
+        "id": "p2-p-cloze-002-q2",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "For this reason",
+          "However",
+          "By contrast",
+          "For example"
+        ],
+        "answerIndex": 0,
+        "explanation": "前で「一日中立つのは疲れる」と述べ、あとで「だから選ばせている」と対応策を述べている。理由→結果の流れなので For this reason。",
+        "distractorNotes": [
+          "For this reason = そのため。理由から結果を導く",
+          "However は逆接。前後は逆の内容ではなく、素直につながっている",
+          "By contrast は対比。2つのものを比べているわけではない",
+          "For example は例示。あとに続くのは例ではなく対応策"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-cloze-003",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Buying Clothes Twice",
+    "body": "Shops that sell used clothes are becoming popular among young people. Ten years ago, many shoppers thought second-hand clothing was only for people who could not ( 1 ) new items. Today the reason is different. Buyers say they enjoy finding designs that no longer appear in ordinary stores, and they like paying less for good quality.\n\nThere is another reason as well. Making a single T-shirt uses a surprising amount of water, so buying one that already exists is better for the planet. ( 2 ), some large clothing companies have started selling used versions of their own products.",
+    "translation": "古着を売る店が若者の間で人気になっている。10年前、多くの買い物客は、中古の衣類は新品を買う余裕がない人のためのものだと考えていた。今日ではその理由は違う。買い手たちは、普通の店にはもう出ていないデザインを見つけるのが楽しいと言い、良い品質のものを安く買えるのを気に入っている。\n\nもう一つ理由がある。Tシャツを1枚作るのには驚くほど大量の水を使うので、すでに存在するものを買うほうが地球にとって良い。実際、大手の衣料品会社の中には、自社製品の中古版を売り始めたところもある。",
+    "wordCount": 113,
+    "items": [
+      {
+        "id": "p2-p-cloze-003-q1",
+        "tags": [
+          "read:vocab-in-context"
+        ],
+        "difficulty": 3,
+        "stem": "( 1 )",
+        "choices": [
+          "afford",
+          "wear",
+          "return",
+          "borrow"
+        ],
+        "answerIndex": 0,
+        "explanation": "「中古品は◯◯できない人のためのもの」という文脈。直後に「今日では理由が違う」と続き、あとで安さが利点として出てくることから、金銭的な余裕の話だと分かる。afford = 買う余裕がある。",
+        "distractorNotes": [
+          "afford = （金銭的に）買う余裕がある。安さの話とつながる",
+          "wear = 着る。「新品を着られない人」では意味が通らない",
+          "return = 返す。買い物の場面だが文意に合わない",
+          "borrow = 借りる。服を買う話なので合わない"
+        ]
+      },
+      {
+        "id": "p2-p-cloze-003-q2",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "In fact",
+          "Instead",
+          "Otherwise",
+          "In short"
+        ],
+        "answerIndex": 0,
+        "explanation": "前で「中古を買うほうが地球に良い」と述べ、あとでそれを裏づける実例（大手企業まで中古を売り始めた）を挙げている。In fact は「実際に」と、前の内容を具体例で補強するときに使う。",
+        "distractorNotes": [
+          "In fact = 実際に。前の主張を具体例で裏づける",
+          "Instead = その代わりに。入れ替えの話ではない",
+          "Otherwise = さもなければ。条件の話ではない",
+          "In short = 要するに。あとに続くのはまとめではなく新しい事実"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-cloze-004",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Teaching to Learn",
+    "body": "Many students believe that the best way to prepare for a test is to read their notes again and again. Researchers, however, have found a more ( 1 ) method: explaining the material to someone else. When you teach, you cannot hide the parts you do not understand, so you notice your own weak points immediately.\n\nYou do not even need a real student. Some learners simply talk to an empty chair, or write an explanation as if for a younger brother or sister. ( 2 ) you say the ideas out loud in your own words, the effect seems to be the same.",
+    "translation": "多くの生徒は、テストに備える最良の方法はノートを何度も読み返すことだと信じている。しかし研究者たちは、もっと効果的な方法を見つけている。それは、教材を誰かに説明することだ。教えるときには、理解していない部分を隠せないので、自分の弱点にすぐ気づく。\n\n本物の生徒すら必要ない。学習者の中には、空の椅子に向かって話したり、弟や妹に向けるつもりで説明を書いたりする人もいる。自分の言葉で声に出して言いさえすれば、効果は同じようだ。",
+    "wordCount": 108,
+    "items": [
+      {
+        "id": "p2-p-cloze-004-q1",
+        "tags": [
+          "read:vocab-in-context"
+        ],
+        "difficulty": 2,
+        "stem": "( 1 )",
+        "choices": [
+          "effective",
+          "expensive",
+          "difficult",
+          "traditional"
+        ],
+        "answerIndex": 0,
+        "explanation": "however で「読み返すより良い方法」を示す流れ。しかもその理由（弱点にすぐ気づく）が続く。effective = 効果的な。",
+        "distractorNotes": [
+          "effective = 効果的な。more effective method で「より効果のある方法」",
+          "expensive = 高価な。お金の話は出ていない",
+          "difficult = 難しい。「より難しい方法」を研究者が勧めるのは不自然",
+          "traditional = 伝統的な。読み返すほうが従来のやり方"
+        ]
+      },
+      {
+        "id": "p2-p-cloze-004-q2",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "As long as",
+          "Even though",
+          "Because of",
+          "In order to"
+        ],
+        "answerIndex": 0,
+        "explanation": "「相手が本物でなくても、自分の言葉で声に出しさえすれば効果は同じ」という条件の文。as long as ~ = 〜しさえすれば。",
+        "distractorNotes": [
+          "As long as = 〜しさえすれば。条件を表す",
+          "Even though = 〜だけれども。逆接になり、後半の「効果は同じ」とつながらない",
+          "Because of は前置詞句で、後ろに文（you say ...）は続かない",
+          "In order to のあとは動詞の原形。you say という文は続かない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-cloze-005",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "The Quiet Car",
+    "body": "On some train lines, one car is marked as a \"quiet car.\" Passengers there agree not to make phone calls or play music without earphones. The rule is not enforced by staff; it ( 1 ) on passengers reminding one another politely.\n\nSurveys show that most riders like the idea, but a few say the quiet car makes them nervous. They worry about a crying baby or a sudden cough. Railway companies answer that the rule is about choosing to be considerate, ( 2 ) about staying perfectly silent. Nobody, they say, has ever been asked to leave for sneezing.",
+    "translation": "一部の路線では、1両が「静かな車両」と表示されている。そこでは乗客が、電話をしたり、イヤホンなしで音楽を流したりしないことに同意している。この規則は係員が強制するものではなく、乗客どうしが礼儀正しく注意し合うことに頼っている。\n\n調査によれば、乗客の多くはこの考えを気に入っているが、静かな車両は緊張すると言う人も少数いる。彼らは赤ちゃんの泣き声や突然のせきを心配する。鉄道会社は、この規則は完全に静かにしていることではなく、思いやりを選ぶことについてのものだと答えている。くしゃみをしたせいで降りるよう求められた人は一人もいない、と彼らは言う。",
+    "wordCount": 112,
+    "items": [
+      {
+        "id": "p2-p-cloze-005-q1",
+        "tags": [
+          "read:vocab-in-context"
+        ],
+        "difficulty": 3,
+        "stem": "( 1 )",
+        "choices": [
+          "depends",
+          "insists",
+          "decides",
+          "arrives"
+        ],
+        "answerIndex": 0,
+        "explanation": "「係員が強制するのではなく」に続く部分。何によって成り立っているかを述べている。depend on ~ = 〜に頼る、〜次第である。前置詞 on がヒント。",
+        "distractorNotes": [
+          "depend on ~ = 〜に頼る。on とセットで使う",
+          "insist on ~ は「〜を主張する」。規則が主張するのは不自然",
+          "decide は on を伴うこともあるが「決める」意味で文意に合わない",
+          "arrive on という組み合わせは使わない（arrive at / in）"
+        ]
+      },
+      {
+        "id": "p2-p-cloze-005-q2",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "not",
+          "and",
+          "or",
+          "also"
+        ],
+        "answerIndex": 0,
+        "explanation": "A, not B（BではなくA）の形。「思いやりを選ぶこと」であって「完全に黙っていること」ではない、という対比。最後の文（くしゃみで降ろされた人はいない）もこの読みを支えている。",
+        "distractorNotes": [
+          "not = A, not B の形で「BではなくA」",
+          "and だと「思いやりも完全な沈黙も」となり、最後の文と矛盾する",
+          "or だと「どちらか」となり、対比がぼやける",
+          "also だと「完全な沈黙も」となって、やはり最後の文と合わない"
         ]
       }
     ]
@@ -81,7 +285,9 @@
     "items": [
       {
         "id": "p2-p-article-001-q1",
-        "tags": ["read:detail"],
+        "tags": [
+          "read:detail"
+        ],
         "difficulty": 2,
         "stem": "What made Rachel Doyle think of the tool library?",
         "choices": [
@@ -101,7 +307,9 @@
       },
       {
         "id": "p2-p-article-001-q2",
-        "tags": ["read:detail"],
+        "tags": [
+          "read:detail"
+        ],
         "difficulty": 2,
         "stem": "What did Rachel learn when she asked her neighbors?",
         "choices": [
@@ -121,7 +329,9 @@
       },
       {
         "id": "p2-p-article-001-q3",
-        "tags": ["read:detail"],
+        "tags": [
+          "read:detail"
+        ],
         "difficulty": 3,
         "stem": "How can people use the tool library?",
         "choices": [
@@ -141,7 +351,10 @@
       },
       {
         "id": "p2-p-article-001-q4",
-        "tags": ["read:main-idea", "read:inference"],
+        "tags": [
+          "read:main-idea",
+          "read:inference"
+        ],
         "difficulty": 3,
         "stem": "What is one result that Rachel did not expect?",
         "choices": [
@@ -162,42 +375,610 @@
     ]
   },
   {
-    "id": "p2-p-cloze-001",
-    "section": "r-cloze",
+    "id": "p2-p-article-002",
+    "section": "r-passage",
     "format": "article",
-    "title": "Sleep and Study",
-    "body": "Many students believe that staying up late to study is the best way to prepare for a test. However, researchers say this idea is often ( 1 ). In one study, two groups of students learned a list of new words. One group slept for eight hours, and the other stayed awake all night. The next morning, the group that had slept remembered far more words.\n\nWhile we sleep, the brain organizes what we have learned during the day and stores it for later use. If we do not sleep enough, this process cannot finish properly. ( 2 ), reviewing for thirty minutes and then going to bed early may help you more than studying until two in the morning.",
-    "translation": "多くの生徒は、夜更かしして勉強するのがテストに備える最良の方法だと信じている。しかし研究者たちは、この考えはしばしば誤りだと言う。ある研究では、2つのグループの生徒が新しい単語のリストを覚えた。一方のグループは8時間眠り、もう一方は一晩中起きていた。翌朝、眠ったグループのほうがはるかに多くの単語を覚えていた。\n\n私たちが眠っている間、脳はその日に学んだことを整理し、後で使えるように保存する。十分に眠らないと、この過程がきちんと終わらない。したがって、30分復習して早く寝るほうが、夜中の2時まで勉強するよりも役に立つかもしれない。",
-    "wordCount": 128,
+    "title": "The Railway That Became a Garden",
+    "body": "For almost fifty years, freight trains carried meat and vegetables along a raised railway on the west side of Manhattan. Then trucks took over the work, and the last train ran in 1980. The metal structure stood empty above the streets, and by the 1990s the city was ready to pull it down.\n\nTwo neighbors, Joshua David and Robert Hammond, went to a public meeting about the plan. Neither of them had any experience in city planning. They expected to find a crowd of people fighting to save the railway, but they were the only two who spoke in favor of keeping it. Afterward they decided to work together.\n\nWhat changed their minds was something they had noticed from the street. Wild plants had been growing on the old tracks for twenty years, without anyone caring for them. Photographs of these plants, taken in every season, helped the two men explain their idea: instead of a ruin, the city could have a long, narrow garden in the air.\n\nIt took nine years of meetings before the first section opened in 2009. Today around eight million people walk there every year, and property values nearby have risen sharply. That last fact has brought criticism as well as praise: some longtime residents have had to move because they can no longer pay their rent.",
+    "translation": "50年近くのあいだ、貨物列車がマンハッタン西側の高架鉄道で肉や野菜を運んでいた。やがてトラックがその仕事を引き継ぎ、最後の列車は1980年に走った。金属の構造物は街路の上に空のまま残され、1990年代までに市はそれを取り壊す準備をしていた。\n\n二人の近隣住民、ジョシュア・デイヴィッドとロバート・ハモンドは、その計画についての公開集会に行った。二人とも都市計画の経験はなかった。鉄道を守ろうと戦う人々が大勢いると思っていたが、残すことに賛成の意見を述べたのは二人だけだった。その後、彼らは協力することにした。\n\n二人の考えを変えたのは、街路から気づいていたあることだった。古い線路の上では、誰の世話も受けずに20年間、野生の植物が育っていたのだ。季節ごとに撮られたこれらの植物の写真が、二人の考えを説明する助けになった。廃墟ではなく、空中の細長い庭園を市は持てるのだ、と。\n\n最初の区間が2009年に開くまでに9年間の話し合いがかかった。今日では年間およそ800万人がそこを歩き、近隣の地価は大きく上がった。その最後の事実は称賛とともに批判ももたらしている。家賃を払えなくなり、引っ越さざるをえなかった昔からの住民もいるのだ。",
+    "wordCount": 219,
     "items": [
       {
-        "id": "p2-p-cloze-001-q1",
-        "tags": ["read:vocab-in-context"],
-        "difficulty": 3,
-        "stem": "( 1 )",
-        "choices": ["wrong", "popular", "expensive", "difficult"],
+        "id": "p2-p-article-002-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Why did the railway stop being used?",
+        "choices": [
+          "Trucks began doing the same work.",
+          "The structure had become dangerous.",
+          "The city wanted to build a garden.",
+          "There were too few passengers."
+        ],
         "answerIndex": 0,
-        "explanation": "空所の前に However があり、直後の実験では「眠ったグループのほうが覚えていた」と続く。つまり「夜更かしが最良」という考えは誤りだという流れ。逆接の語のあとは、前の内容を否定する語が入る。",
+        "explanation": "第1段落の Then trucks took over the work が根拠。take over = 引き継ぐ。原因を問う設問は出来事の順番をたどる。",
         "distractorNotes": [
-          "wrong = 誤った。However と実験結果の両方に合う",
-          "popular = 人気がある。However で否定する内容にならない",
-          "expensive = 高価な。お金の話は出ていない",
-          "difficult = 難しい。考えが「難しい」では実験結果とつながらない"
+          "トラックが同じ仕事を引き継いだから",
+          "危険になったとは書かれていない",
+          "庭園の案が出るのはずっとあと",
+          "貨物列車なので乗客の話は出てこない"
         ]
       },
       {
-        "id": "p2-p-cloze-001-q2",
-        "tags": ["read:structure"],
+        "id": "p2-p-article-002-q2",
+        "tags": [
+          "read:detail",
+          "read:inference"
+        ],
         "difficulty": 3,
-        "stem": "( 2 )",
-        "choices": ["Therefore", "However", "For example", "In addition"],
+        "stem": "What surprised David and Hammond at the public meeting?",
+        "choices": [
+          "Almost no one else wanted to save the railway.",
+          "The city had already started taking it down.",
+          "They were asked to lead the project.",
+          "Many people knew more about planning than they did."
+        ],
         "answerIndex": 0,
-        "explanation": "前で「眠らないと記憶の整理が終わらない」と理由を述べ、空所のあとで「早く寝たほうがよい」という結論を述べている。理由→結論なので Therefore（したがって）。",
+        "explanation": "They expected to find a crowd ... but they were the only two who spoke in favor. expected ... but ~ は「予想と違った」＝驚きを表す形。",
         "distractorNotes": [
-          "Therefore = したがって。理由のあとに結論を導く",
-          "However = しかし。前後は逆の内容ではなく、素直につながっている",
-          "For example = 例えば。あとに続くのは例ではなくアドバイス（結論）",
-          "In addition = さらに。情報を追加する語だが、ここは前の内容から導かれる結論"
+          "残そうと言ったのは自分たち二人だけだった",
+          "取り壊しは準備段階で、まだ始まっていない",
+          "その場でリーダーを頼まれたとは書かれていない",
+          "経験がなかったのは二人自身のこと。驚いた内容ではない"
+        ]
+      },
+      {
+        "id": "p2-p-article-002-q3",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 3,
+        "stem": "How did photographs help the two men?",
+        "choices": [
+          "They showed what the plants on the tracks looked like.",
+          "They proved that the structure was still safe.",
+          "They recorded the last train that ran there.",
+          "They were sold to pay for the project."
+        ],
+        "answerIndex": 0,
+        "explanation": "Photographs of these plants ... helped the two men explain their idea が根拠。these plants は線路の上に育っていた野生の植物を指す。指示語をたどる。",
+        "distractorNotes": [
+          "線路の上の植物の様子を見せた",
+          "安全性を証明したという記述はない",
+          "最後の列車を写したのではなく、植物を写した",
+          "売って資金にしたとは書かれていない"
+        ]
+      },
+      {
+        "id": "p2-p-article-002-q4",
+        "tags": [
+          "read:main-idea",
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "What problem does the last paragraph mention?",
+        "choices": [
+          "Some local people can no longer afford to live there.",
+          "The park has become too crowded to enjoy.",
+          "The plants have started to die.",
+          "The city has run out of money for repairs."
+        ],
+        "answerIndex": 0,
+        "explanation": "最終段落。地価上昇が批判も招いており、家賃を払えず引っ越した住民がいる、と述べている。criticism（批判）という語のあとに問題の中身が来る。",
+        "distractorNotes": [
+          "家賃が払えず引っ越さざるをえなかった住民がいる",
+          "800万人が歩くとあるが、混雑が問題だとは書かれていない",
+          "植物が枯れ始めたという記述はない",
+          "修理費の話は出ていない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-article-003",
+    "section": "r-passage",
+    "format": "article",
+    "title": "Lunch from the School Field",
+    "body": "At a small high school in Nagano, the vegetables in the lunchroom come from a field behind the gym. The school started the field six years ago, not to save money, but because too much food was being thrown away. The teacher who suggested it, Mr. Sasaki, had noticed that students left about a quarter of their vegetables on their plates every day.\n\nEach class now takes care of one row of the field for a year. Students plant, water, and pull weeds during a thirty-minute period twice a week. When the vegetables are ready, the school kitchen uses them in the following week's lunches, and a small sign in the lunchroom shows which class grew what.\n\nThe amount of food left over has fallen by more than half. Mr. Sasaki says the reason is simple: it is hard to throw away a carrot when you remember pulling it out of the ground yourself. Several students have also said that vegetables they once disliked taste different now.\n\nThe school has had difficulties too. In the first year, insects destroyed most of the tomatoes, and some parents asked whether the time would be better spent on study. The school's answer was to keep records: attendance during the field period is now higher than in any other class.",
+    "translation": "長野の小さな高校では、食堂の野菜は体育館の裏の畑からやって来る。学校がこの畑を始めたのは6年前で、お金を節約するためではなく、食べ物が捨てられすぎていたからだった。それを提案した佐々木先生は、生徒が毎日、野菜の約4分の1を皿に残していることに気づいていた。\n\n現在は各クラスが1年間、畑の1列の世話をする。生徒たちは週に2回、30分の時間に植えたり、水をやったり、草を抜いたりする。野菜ができると、学校の調理場が翌週の給食に使い、食堂の小さな札がどのクラスが何を育てたかを示す。\n\n残される食べ物の量は半分以下に減った。佐々木先生は理由は簡単だと言う。自分で土から抜いたのを覚えていると、そのニンジンを捨てるのは難しいのだ。以前は嫌いだった野菜が今は違う味がする、と言う生徒も何人かいる。\n\n学校には困難もあった。1年目には虫がトマトのほとんどをだめにし、その時間は勉強に使ったほうがよいのではないかと尋ねた保護者もいた。学校の答えは記録を取ることだった。畑の時間の出席率は、いまや他のどの授業よりも高い。",
+    "wordCount": 214,
+    "items": [
+      {
+        "id": "p2-p-article-003-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Why did the school start the field?",
+        "choices": [
+          "Students were leaving too much food uneaten.",
+          "The school needed to spend less on lunches.",
+          "Parents asked for healthier meals.",
+          "There was no other use for the land."
+        ],
+        "answerIndex": 0,
+        "explanation": "第1段落に not to save money, but because too much food was being thrown away とある。not A but B の形で、B が本当の理由。",
+        "distractorNotes": [
+          "食べ物が捨てられすぎていたから",
+          "not to save money と明確に否定されている",
+          "保護者が求めたのではない。むしろあとで疑問を出している",
+          "土地の使い道の話は出ていない"
+        ]
+      },
+      {
+        "id": "p2-p-article-003-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "How often do students work in the field?",
+        "choices": [
+          "Twice a week for thirty minutes.",
+          "Every day after lunch.",
+          "Once a month for a whole morning.",
+          "Only when the vegetables are ready."
+        ],
+        "answerIndex": 0,
+        "explanation": "during a thirty-minute period twice a week がそのまま根拠。頻度と時間が並ぶ箇所は設問になりやすい。",
+        "distractorNotes": [
+          "週2回・30分。本文と一致する",
+          "毎日ではない",
+          "月1回ではない",
+          "収穫時だけでなく、植える・水やり・草取りもする"
+        ]
+      },
+      {
+        "id": "p2-p-article-003-q3",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "According to Mr. Sasaki, why do students waste less food now?",
+        "choices": [
+          "They feel connected to the vegetables they grew.",
+          "They are given smaller portions than before.",
+          "They are told to finish everything on their plates.",
+          "The kitchen cooks the vegetables differently."
+        ],
+        "answerIndex": 0,
+        "explanation": "it is hard to throw away a carrot when you remember pulling it out of the ground yourself を言いかえたもの。自分で育てたという実感が理由。",
+        "distractorNotes": [
+          "自分で育てた野菜だから捨てにくい",
+          "量を減らしたという記述はない",
+          "全部食べるよう指導したとは書かれていない",
+          "調理法を変えたとは書かれていない"
+        ]
+      },
+      {
+        "id": "p2-p-article-003-q4",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 3,
+        "stem": "How did the school answer the parents' question?",
+        "choices": [
+          "By showing that attendance was higher during field work.",
+          "By reducing the time spent in the field.",
+          "By inviting parents to work in the field.",
+          "By moving the field period to after school."
+        ],
+        "answerIndex": 0,
+        "explanation": "The school's answer was to keep records: attendance during the field period is now higher than in any other class. コロンのあとが答えの中身。",
+        "distractorNotes": [
+          "畑の時間の出席率が他より高いと記録で示した",
+          "時間を減らしたとは書かれていない",
+          "保護者を畑に招いたという記述はない",
+          "放課後に移したとは書かれていない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-article-004",
+    "section": "r-passage",
+    "format": "article",
+    "title": "Sleeping on the Train Again",
+    "body": "Night trains with beds were once common across Europe. Travelers could get on in one capital in the evening and step out in another the next morning. By 2010, however, most of these services had disappeared. Cheap flights were faster and often cost less, and railway companies found the old sleeping cars expensive to repair.\n\nIn the last few years, night trains have started to return. One Austrian company now runs services to more than twenty cities, and other countries have joined. The main reason is that many travelers have become uncomfortable with the amount of pollution produced by short flights. A night train between Vienna and Paris creates a small fraction of the pollution of the same journey by air.\n\nThere is a practical reason as well. A passenger who sleeps on the train does not pay for a hotel, and arrives in the city center rather than at an airport far outside it. For a trip of about a thousand kilometers, the total time from door to door can be similar.\n\nThe trains are not perfect. Tickets are often more expensive than a plane seat, and the beds are narrow. Still, the Austrian company reports that its night services are usually full, and it has ordered new carriages with rooms for single travelers.",
+    "translation": "寝台のある夜行列車は、かつてヨーロッパ中で当たり前だった。旅行者は夕方にある首都で乗り、翌朝に別の首都で降りることができた。しかし2010年までに、こうした便のほとんどは姿を消していた。格安の飛行機のほうが速く、しばしば安かったし、鉄道会社は古い寝台車の修理に費用がかかることに気づいたのだ。\n\nここ数年、夜行列車が戻り始めている。あるオーストリアの会社はいま20を超える都市へ運行しており、他の国も加わっている。主な理由は、多くの旅行者が短距離の飛行機が出す汚染の量に居心地の悪さを感じるようになったことだ。ウィーンとパリの間の夜行列車は、同じ旅を飛行機でするときのごく一部の汚染しか出さない。\n\n実用的な理由もある。列車で眠る乗客はホテル代を払わないし、遠く離れた空港ではなく都市の中心に着く。約1000キロの旅なら、玄関から玄関までの合計時間は同じくらいになりうる。\n\nこの列車は完璧ではない。切符は飛行機の座席より高いことが多く、ベッドは狭い。それでもオーストリアの会社は、夜行便はたいてい満席だと報告しており、一人旅用の個室がある新しい客車を発注している。",
+    "wordCount": 213,
+    "items": [
+      {
+        "id": "p2-p-article-004-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Why did most night trains disappear by 2010?",
+        "choices": [
+          "Flights were faster and often cheaper.",
+          "Fewer people wanted to travel at night.",
+          "Governments stopped supporting railways.",
+          "The trains were too slow for long distances."
+        ],
+        "answerIndex": 0,
+        "explanation": "第1段落の Cheap flights were faster and often cost less が根拠。cost less を cheaper と言いかえている。",
+        "distractorNotes": [
+          "飛行機のほうが速く、しばしば安かったから",
+          "夜に旅したい人が減ったとは書かれていない",
+          "政府の支援については触れられていない",
+          "遅さそのものではなく、飛行機との比較が理由"
+        ]
+      },
+      {
+        "id": "p2-p-article-004-q2",
+        "tags": [
+          "read:main-idea"
+        ],
+        "difficulty": 2,
+        "stem": "What is the main reason night trains are returning?",
+        "choices": [
+          "Travelers are worried about pollution from flights.",
+          "Airports have become too crowded.",
+          "Train tickets are now cheaper than plane tickets.",
+          "New railways have been built between cities."
+        ],
+        "answerIndex": 0,
+        "explanation": "The main reason is that many travelers have become uncomfortable with the amount of pollution produced by short flights. と明示されている。The main reason is ~ を探す。",
+        "distractorNotes": [
+          "短距離の飛行機が出す汚染への懸念",
+          "空港の混雑については書かれていない",
+          "最終段落で切符はむしろ高いことが多いとある",
+          "新しい路線を作ったとは書かれていない"
+        ]
+      },
+      {
+        "id": "p2-p-article-004-q3",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 3,
+        "stem": "What is one practical advantage mentioned in the third paragraph?",
+        "choices": [
+          "Passengers save the cost of a hotel.",
+          "Passengers can carry more luggage.",
+          "Tickets can be bought on the train.",
+          "Meals are included in the price."
+        ],
+        "answerIndex": 0,
+        "explanation": "A passenger who sleeps on the train does not pay for a hotel が根拠。practical（実用的な）という語が段落の最初にあるので、その段落を探す。",
+        "distractorNotes": [
+          "ホテル代がかからない",
+          "荷物の量については書かれていない",
+          "車内で切符を買えるとは書かれていない",
+          "食事が含まれるという記述はない"
+        ]
+      },
+      {
+        "id": "p2-p-article-004-q4",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "What does the last paragraph suggest about the Austrian company?",
+        "choices": [
+          "It expects demand to keep growing.",
+          "It plans to lower its ticket prices.",
+          "It will stop running some services.",
+          "It has had trouble finding passengers."
+        ],
+        "answerIndex": 0,
+        "explanation": "満席が続き、新しい客車を発注している＝今後も需要が伸びると見ている、と読める。事実から会社の判断を推測させる問題。",
+        "distractorNotes": [
+          "満席が続き新車両を発注＝需要の拡大を見込んでいる",
+          "値下げの話は出ていない",
+          "運行をやめるどころか増やそうとしている",
+          "たいてい満席なので乗客不足ではない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-email-001",
+    "section": "r-passage",
+    "format": "email",
+    "title": "A Message from Grandma",
+    "body": "From: Helen Baker\nTo: Lucy Baker\nDate: September 12\nSubject: Your visit\n\nHi Lucy,\n\nThank you for your e-mail. I'm so glad you can stay with me during your school holiday. Your room is ready, and I've already washed the sheets.\n\nI have some news. The train company is repairing the tracks between your town and mine, so the express train won't run on October 3. If you still want to arrive on that day, you'll have to take the local train, and it takes almost three hours. Another choice is to come one day later on the express, which only takes ninety minutes. Please tell me which one you prefer by this Sunday, because I need to ask your uncle to pick you up at the station.\n\nAlso, you wrote that you wanted to try making apple pie together. There's a farm near my house where visitors can pick their own apples in October, so let's go there first and choose the best ones. Bring comfortable shoes because the ground gets muddy.\n\nI can't wait to see you.\n\nLove,\nGrandma",
+    "translation": "差出人: ヘレン・ベイカー／宛先: ルーシー・ベイカー／日付: 9月12日／件名: あなたの訪問\n\nルーシーへ\n\nメールをありがとう。学校の休みの間にうちに泊まれるなんて、とてもうれしいわ。部屋は準備できているし、シーツももう洗ったのよ。\n\nお知らせがあります。鉄道会社があなたの町とこちらの間の線路を修理しているので、10月3日は急行が走りません。その日に到着したいなら普通列車に乗る必要があって、3時間近くかかります。もう一つの選択肢は、1日遅れて急行で来ることで、こちらは90分しかかかりません。おじさんに駅まで迎えに行ってもらうよう頼む必要があるので、どちらがいいか今週の日曜までに教えてね。\n\nそれから、一緒にアップルパイを作ってみたいと書いていたわね。家の近くに10月に自分でりんごを摘める農園があるから、まずそこへ行って一番いいものを選びましょう。地面がぬかるむので歩きやすい靴を持ってきてね。\n\n会えるのが待ちきれません。\n\n愛を込めて、おばあちゃんより",
+    "wordCount": 181,
+    "items": [
+      {
+        "id": "p2-p-email-001-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Why can't Lucy take the express train on October 3?",
+        "choices": [
+          "The tracks are being repaired.",
+          "All of the seats have been sold.",
+          "The train company has gone out of business.",
+          "A storm is expected on that day."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落の The train company is repairing the tracks ... so the express train won't run on October 3. がそのまま根拠。設問のキーワード（October 3, express）を本文から探すのが基本動作。",
+        "distractorNotes": [
+          "本文の repairing the tracks を being repaired と言いかえたもの",
+          "座席が売り切れたという記述はどこにもない",
+          "鉄道会社が廃業したとは書かれていない。修理をしているだけ",
+          "嵐については一切触れられていない"
+        ]
+      },
+      {
+        "id": "p2-p-email-001-q2",
+        "tags": [
+          "read:detail",
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "What does Grandma ask Lucy to do by Sunday?",
+        "choices": [
+          "Decide how she will travel.",
+          "Buy a ticket for the local train.",
+          "Call her uncle at the station.",
+          "Send a photo of her new shoes."
+        ],
+        "answerIndex": 0,
+        "explanation": "Please tell me which one you prefer by this Sunday とある。which one が指すのは、直前に並べられた「10月3日に普通列車」か「1日遅れて急行」かという2つの移動方法。指示語が何を指すかを押さえる問題。",
+        "distractorNotes": [
+          "2つの移動方法のどちらかを選ぶこと。which one の指す内容と一致する",
+          "切符を買うようにとは書かれていない。まだ列車も決まっていない",
+          "おじさんに連絡するのはおばあちゃんの方（I need to ask your uncle）",
+          "靴については「持ってきて」と言っているだけで、写真の話はない"
+        ]
+      },
+      {
+        "id": "p2-p-email-001-q3",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What will Lucy and her grandmother do before making apple pie?",
+        "choices": [
+          "Pick apples at a nearby farm.",
+          "Buy apples at a supermarket.",
+          "Wash the sheets in her room.",
+          "Visit Lucy's uncle at his house."
+        ],
+        "answerIndex": 0,
+        "explanation": "最終段落の let's go there first and choose the best ones が根拠。there は直前の a farm ... where visitors can pick their own apples を指す。first という語が「パイを作る前に」に対応している。",
+        "distractorNotes": [
+          "農園でりんごを摘む。let's go there first と一致する",
+          "スーパーで買うとは書かれていない。農園で自分たちで摘む",
+          "シーツを洗ったのはおばあちゃんで、しかも到着前にすでに済んでいる",
+          "おじさんは駅に迎えに来るだけで、家を訪ねる話は出ていない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-email-002",
+    "section": "r-passage",
+    "format": "email",
+    "title": "A Message from Your Host Family",
+    "body": "From: Karen Miller\nTo: Yuki Nakamura\nDate: July 8\nSubject: Before you arrive\n\nDear Yuki,\n\nWe are all looking forward to having you stay with us next month. My daughter Beth has already moved her books off the second desk in her room, so you will have your own space to study.\n\nThere are a few things you should know. Our house is a twenty-minute walk from the school, and Beth walks there every morning at 7:40. If it rains, my husband can drive you both, but he leaves at 7:20, so you would need to be ready earlier.\n\nAlso, you wrote that you are allergic to peanuts. Thank you for telling us. I have already checked our kitchen and removed everything that contains them. Please tell us right away if there is any other food you cannot eat.\n\nOne last thing. Beth's birthday is on the second Saturday after you arrive, and we are planning a small dinner at home. She would be very happy if you could tell us about a Japanese dish we could make together for that evening.\n\nSee you soon,\nKaren",
+    "translation": "差出人: カレン・ミラー／宛先: 中村ユキ／日付: 7月8日／件名: 到着前に\n\nユキへ\n\n来月あなたがうちに滞在してくれるのを、家族みんな楽しみにしています。娘のベスは自分の部屋の2つ目の机から本をどけたので、あなた専用の勉強スペースができますよ。\n\nいくつか知っておいてほしいことがあります。うちの家は学校から歩いて20分で、ベスは毎朝7時40分に歩いて行きます。雨が降ったら夫が二人を車で送れますが、夫は7時20分に出るので、もっと早く準備する必要があります。\n\nそれから、ピーナッツのアレルギーがあると書いていましたね。教えてくれてありがとう。もう台所を確認して、ピーナッツを含むものは全部取り除きました。他に食べられないものがあれば、すぐに教えてください。\n\n最後にもう一つ。ベスの誕生日はあなたが着いてから2回目の土曜日で、家でちょっとした夕食会を計画しています。その晩に一緒に作れる日本料理を教えてもらえたら、ベスはとても喜ぶと思います。\n\nまた近いうちに、カレンより",
+    "wordCount": 202,
+    "items": [
+      {
+        "id": "p2-p-email-002-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What will Yuki have to do if it rains?",
+        "choices": [
+          "Get ready twenty minutes earlier than usual.",
+          "Walk to school by herself.",
+          "Wait at home until Beth returns.",
+          "Ask Beth's father to come back for her."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落。歩く場合は7:40、車の場合は7:20 出発。差の20分だけ早く準備する必要がある。2つの時刻を引き算させるのは頻出のパターン。",
+        "distractorNotes": [
+          "7:40 と 7:20 の差が20分。earlier という語とも一致する",
+          "雨の日は車で送ってもらえるので、一人で歩く必要はない",
+          "家で待つという話は出ていない",
+          "迎えに戻ってもらうのではなく、一緒に出発する"
+        ]
+      },
+      {
+        "id": "p2-p-email-002-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What has Karen already done?",
+        "choices": [
+          "She has taken peanut products out of the kitchen.",
+          "She has bought a new desk for Yuki.",
+          "She has asked the school about Yuki's allergy.",
+          "She has cooked a Japanese dish for Beth."
+        ],
+        "answerIndex": 0,
+        "explanation": "I have already checked our kitchen and removed everything that contains them がそのまま根拠。them はピーナッツを指す。already / have + 過去分詞に印をつけておくと探しやすい。",
+        "distractorNotes": [
+          "ピーナッツを含むものを台所から取り除いた",
+          "机は新しく買ったのではなく、ベスが本をどけて空けた",
+          "学校に問い合わせたという記述はない",
+          "日本料理はこれから一緒に作る話"
+        ]
+      },
+      {
+        "id": "p2-p-email-002-q3",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "What does Karen ask Yuki to do?",
+        "choices": [
+          "Suggest a Japanese dish for Beth's birthday.",
+          "Buy a present for Beth in Japan.",
+          "Arrive on the second Saturday of the month.",
+          "Cook dinner for the family every Saturday."
+        ],
+        "answerIndex": 0,
+        "explanation": "最終段落の She would be very happy if you could tell us about a Japanese dish ... が依頼にあたる。would be happy if you could ~ は丁寧な依頼の形。",
+        "distractorNotes": [
+          "誕生日の夕食に一緒に作れる日本料理を教えてほしい",
+          "プレゼントの話は出ていない",
+          "第2土曜は誕生日であって、到着日ではない",
+          "毎週料理をしてほしいとは書かれていない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-email-003",
+    "section": "r-passage",
+    "format": "email",
+    "title": "An Invitation to Camp",
+    "body": "From: Daniel Cooper\nTo: Sora Kimura\nDate: May 30\nSubject: Camp in August?\n\nHi Sora,\n\nHow have you been? I have some news. My uncle runs a summer camp in the mountains, and this year he asked me to help as a junior leader for one week in August. He said I could invite one friend, so I thought of you right away.\n\nThe camp is for children between eight and eleven years old. Junior leaders help them put up tents, cook simple meals, and find their way with a map. We would not be paid, but food and the train ticket are free, and we would get a certificate at the end.\n\nI should be honest about one thing. The camp has no Wi-Fi, and phones are collected on the first morning and returned on the last day. My uncle says this is the part most people worry about before they come, but nobody misses it after two days.\n\nThe dates are August 5 to 11. Could you let me know by June 20? My uncle needs the names early because he has to arrange insurance for everyone.\n\nTalk soon,\nDaniel",
+    "translation": "差出人: ダニエル・クーパー／宛先: 木村ソラ／日付: 5月30日／件名: 8月にキャンプは？\n\nソラへ\n\n元気にしてた？ 知らせがあるんだ。おじが山でサマーキャンプを運営していて、今年、8月の1週間、ジュニアリーダーとして手伝ってほしいと頼まれたんだ。友達を1人招待していいと言われたので、すぐ君のことを思い浮かべたよ。\n\nキャンプは8歳から11歳の子ども向け。ジュニアリーダーは、子どもたちがテントを張ったり、簡単な食事を作ったり、地図で道を見つけたりするのを手伝う。給料は出ないけど、食事と電車のチケットは無料だし、最後に修了証がもらえる。\n\n一つ正直に言っておくべきことがある。キャンプにはWi-Fiがなくて、携帯は初日の朝に集められて最終日に返される。おじが言うには、来る前にみんなが一番心配するのがこの点だけど、2日たてば誰も気にしなくなるそうだ。\n\n日程は8月5日から11日。6月20日までに返事をもらえる？ おじは全員の保険を手配しないといけないから、名前を早めに知る必要があるんだ。\n\nまた連絡するね、ダニエル",
+    "wordCount": 198,
+    "items": [
+      {
+        "id": "p2-p-email-003-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What would Sora and Daniel do at the camp?",
+        "choices": [
+          "Help younger children with camping skills.",
+          "Teach children how to swim in a river.",
+          "Cook all the meals for the whole camp.",
+          "Look after the camp office during the day."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落の help them put up tents, cook simple meals, and find their way with a map をまとめたもの。them は8〜11歳の子どもたち。",
+        "distractorNotes": [
+          "テント設営・調理・地図の読み方を子どもたちに手伝う",
+          "水泳の話は出ていない",
+          "自分たちが全食事を作るのではなく、子どもの調理を手伝う",
+          "事務所の留守番については書かれていない"
+        ]
+      },
+      {
+        "id": "p2-p-email-003-q2",
+        "tags": [
+          "read:detail",
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "What does Daniel say about phones?",
+        "choices": [
+          "They are kept by the staff during the camp.",
+          "They can be used only in the evening.",
+          "They must be left at home before leaving.",
+          "They are allowed if they are turned off."
+        ],
+        "answerIndex": 0,
+        "explanation": "phones are collected on the first morning and returned on the last day とある。初日に集めて最終日に返す＝期間中は預かられている、という言いかえ。",
+        "distractorNotes": [
+          "初日に集められ最終日に返される＝期間中は預かられる",
+          "夜だけ使えるとは書かれていない",
+          "家に置いてくるのではなく、持って行って集められる",
+          "電源を切れば使えるという記述はない"
+        ]
+      },
+      {
+        "id": "p2-p-email-003-q3",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Why does Daniel need an answer by June 20?",
+        "choices": [
+          "His uncle has to arrange insurance.",
+          "The train tickets will become expensive.",
+          "Only a few places are left at the camp.",
+          "He wants to invite someone else if Sora refuses."
+        ],
+        "answerIndex": 0,
+        "explanation": "最終段落の My uncle needs the names early because he has to arrange insurance for everyone. が理由。because のあとを読む。",
+        "distractorNotes": [
+          "全員分の保険を手配する必要があるから",
+          "チケットは無料と書かれている",
+          "残席が少ないという記述はない",
+          "別の人を誘うとは書かれていない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-notice-001",
+    "section": "r-passage",
+    "format": "notice",
+    "title": "Library Helpers Wanted",
+    "body": "Riverdale Junior High School\nLibrary Helpers Wanted\n\nThe school library is looking for students to help during lunch break. Helpers put returned books back on the shelves, keep the reading tables tidy, and help younger students find what they need.\n\nWho can apply: Students in the second and third year. First-year students may join from January.\n\nWhen: Monday to Thursday, 12:40 to 1:10. You choose one day a week. Friday is not included because the library closes early for cleaning.\n\nWhat you get: Helpers may borrow up to eight books at a time instead of the usual four, and they can enter the library thirty minutes before school starts.\n\nHow to apply: Write your name and class on the sheet outside the library door by October 20. There is space for twelve students. If more than twelve apply, we will hold a short meeting on October 22 to decide together.\n\nQuestions? Ask Ms. Hara in the library after school.",
+    "translation": "リバーデール中学校／図書委員募集\n\n学校図書館では、昼休みに手伝ってくれる生徒を探しています。手伝いの内容は、返却された本を棚に戻すこと、閲覧テーブルを整えること、下級生が探し物を見つけるのを手伝うことです。\n\n応募できる人: 2年生と3年生。1年生は1月から参加できます。\n\n日時: 月曜から木曜の12時40分〜13時10分。週に1日を選びます。金曜は清掃のため図書館が早く閉まるので含まれません。\n\n特典: 手伝いをする人は、通常の4冊ではなく一度に8冊まで借りられ、始業の30分前に図書館に入れます。\n\n応募方法: 10月20日までに、図書館のドアの外にある用紙に名前とクラスを書いてください。定員は12人です。12人を超えた場合は、10月22日に短い話し合いを開いて一緒に決めます。\n\n質問は放課後、図書館の原先生まで。",
+    "wordCount": 165,
+    "items": [
+      {
+        "id": "p2-p-notice-001-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Why is Friday not included?",
+        "choices": [
+          "The library closes early that day.",
+          "Ms. Hara is not at school on Fridays.",
+          "First-year students use the library then.",
+          "There are no classes on Friday afternoon."
+        ],
+        "answerIndex": 0,
+        "explanation": "When の項目に Friday is not included because the library closes early for cleaning. と理由が書かれている。because の直後を読む。",
+        "distractorNotes": [
+          "清掃のため早く閉まるから",
+          "原先生の予定については書かれていない",
+          "1年生は1月から参加できるだけで、金曜の話ではない",
+          "金曜の授業については触れられていない"
+        ]
+      },
+      {
+        "id": "p2-p-notice-001-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What is one thing helpers can do?",
+        "choices": [
+          "Borrow twice as many books as other students.",
+          "Leave class early on their helping day.",
+          "Use the library during the weekend.",
+          "Choose which books the library buys."
+        ],
+        "answerIndex": 0,
+        "explanation": "What you get の項目に up to eight books ... instead of the usual four とある。8は4の2倍なので twice as many と言いかえられている。数の言いかえに注意。",
+        "distractorNotes": [
+          "通常4冊のところ8冊。twice as many と一致する",
+          "早退できるとは書かれていない。始業30分前に入れるだけ",
+          "週末の利用については触れられていない",
+          "購入する本を選べるとは書かれていない"
+        ]
+      },
+      {
+        "id": "p2-p-notice-001-q3",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "What will happen if fifteen students apply?",
+        "choices": [
+          "A meeting will be held on October 22.",
+          "The first twelve names will be accepted.",
+          "All fifteen students will become helpers.",
+          "Applications will close before October 20."
+        ],
+        "answerIndex": 0,
+        "explanation": "If more than twelve apply, we will hold a short meeting on October 22 とある。15人は12人を超えているので、この条件に当てはまる。数字を条件に当てはめて考える問題。",
+        "distractorNotes": [
+          "12人を超えたら10月22日に話し合いを開く",
+          "先着順とは書かれていない。話し合いで決める",
+          "定員は12人なので全員は入れない",
+          "締切が早まるとは書かれていない"
         ]
       }
     ]

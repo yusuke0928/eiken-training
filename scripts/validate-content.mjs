@@ -184,6 +184,28 @@ for (const w of writing) {
 }
 console.log(`content/pre2/writing.json: Eメール${emailCount}題 / 意見論述${opinionCount}題`);
 
+/* ---------- 模擬テストが本番どおり組めるか ----------
+   長文は「1大問＝1セット」で使うので、必要な設問数を1セットでまかなえる
+   組み合わせが何通りあるかを数える。少ないと毎回同じ本文が出る。 */
+const MOCK_PASSAGE_BLOCKS = [
+  { label: '大問3 長文の語句空所補充', section: 'r-cloze', formats: null, count: 2 },
+  { label: '大問4A Eメール・掲示', section: 'r-passage', formats: ['email', 'notice'], count: 3 },
+  { label: '大問4B 説明文', section: 'r-passage', formats: ['article'], count: 4 },
+];
+console.log('\n模擬テストで使える長文セット:');
+for (const b of MOCK_PASSAGE_BLOCKS) {
+  const sets = passages.filter(
+    (p) => p.section === b.section && (!b.formats || b.formats.includes(p.format)),
+  );
+  const usable = sets.filter((p) => (p.items?.length ?? 0) >= b.count);
+  console.log(`  ${b.label}: ${usable.length}セット（${b.count}問必要）`);
+  if (usable.length === 0) {
+    errors.push(`模擬テスト: ${b.label} に使える長文セットがない`);
+  } else if (usable.length < 3) {
+    warnings.push(`模擬テスト: ${b.label} が${usable.length}セットしかなく、繰り返すと同じ本文が出る`);
+  }
+}
+
 // 診断テストが成立するだけの問題数があるか（src/content.ts の DIAGNOSTIC_PLAN と揃えること）
 const plan = { 'r-vocab': 10, 'r-conversation': 3, 'r-cloze': 2, 'r-passage': 5 };
 const counts = { 'r-vocab': 0, 'r-conversation': 0, 'r-cloze': 0, 'r-passage': 0 };

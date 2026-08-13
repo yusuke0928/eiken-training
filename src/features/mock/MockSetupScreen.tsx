@@ -117,7 +117,7 @@ export function MockSetupScreen({
             </ul>
             <p className="mt-3 border-t border-line pt-3 text-[12px] leading-relaxed text-ink-faint">
               合格ラインの目安は一次1800点中 {PRE2.firstStagePass}点。
-              長文は用意しているセットが少ないので、何度か受けると同じ本文が出ます。
+              問題は受けるたびに選び直されます（長文も毎回ちがう本文から出ます）。
             </p>
           </div>
         </section>

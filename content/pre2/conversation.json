@@ -1,0 +1,232 @@
+[
+  {
+    "id": "p2-c-001",
+    "section": "r-conversation",
+    "tags": ["conv:suggestion"],
+    "difficulty": 1,
+    "stem": "A: I have a bad headache today.\nB: ( ) You don't look well at all.\nA: Thanks. I think I will.",
+    "choices": [
+      "Why don't you go home early?",
+      "Where did you buy it?",
+      "How long have you lived here?",
+      "What time does it start?"
+    ],
+    "answerIndex": 0,
+    "translation": "A: 今日はひどい頭痛がするんだ。／B: 早めに帰ったら？ 全然顔色がよくないよ。／A: ありがとう。そうするよ。",
+    "explanation": "Aの最後の I think I will. は「そうするつもり」という返事。will のあとに省略されている動詞が go home だと分かる。空所の後ろだけでなく、その次のセリフまで読むのが会話文のコツ。",
+    "distractorNotes": [
+      "Why don't you ~? = 〜したらどう？ という提案。I think I will. という返事とかみ合う",
+      "「どこで買ったの？」では、頭痛の話ともAの返事ともつながらない",
+      "「どのくらいここに住んでいるの？」は話題が急に変わってしまう",
+      "「何時に始まるの？」も文脈と無関係で、I think I will. の答えにならない"
+    ],
+    "vocab": [{ "word": "Why don't you ~?", "meaning": "〜したらどうですか（提案）" }]
+  },
+  {
+    "id": "p2-c-002",
+    "section": "r-conversation",
+    "tags": ["conv:request"],
+    "difficulty": 2,
+    "stem": "A: Excuse me. ( )\nB: Sure. Go straight for two blocks and turn left. It'll be on your right.\nA: Thank you so much.",
+    "choices": [
+      "Could you tell me how to get to the post office?",
+      "Would you like something to drink?",
+      "May I take a message?",
+      "Do you know when he will come back?"
+    ],
+    "answerIndex": 0,
+    "translation": "A: すみません。郵便局への行き方を教えていただけますか。／B: いいですよ。2ブロックまっすぐ行って左に曲がってください。右手にありますよ。／A: どうもありがとうございます。",
+    "explanation": "Bが道順を説明しているので、空所は道を尋ねる表現。答えの内容から逆算して質問を選ぶ典型パターン。",
+    "distractorNotes": [
+      "how to get to ~ = 〜への行き方。道案内の答えと完全に一致する",
+      "「何か飲みますか」は店員の言葉。道順の答えは返ってこない",
+      "「ご伝言を承りましょうか」は電話での表現",
+      "「彼がいつ戻るか知っていますか」なら時間の答えが返るはず"
+    ],
+    "vocab": [{ "word": "how to get to ~", "meaning": "〜への行き方" }]
+  },
+  {
+    "id": "p2-c-003",
+    "section": "r-conversation",
+    "tags": ["conv:phone"],
+    "difficulty": 2,
+    "stem": "A: Hello, this is Mika. May I speak to Emma, please?\nB: I'm sorry, she's out right now. ( )\nA: Yes, please tell her to call me back.",
+    "choices": [
+      "Would you like to leave a message?",
+      "Could you speak more slowly?",
+      "How about meeting at six?",
+      "Did you enjoy the movie?"
+    ],
+    "answerIndex": 0,
+    "translation": "A: もしもし、ミカです。エマさんをお願いできますか。／B: すみません、今出かけています。ご伝言を残されますか。／A: はい、折り返し電話するよう伝えてください。",
+    "explanation": "電話で相手が不在のときの定番の流れ。Aが Yes, please tell her ... と伝言を頼んでいるので、直前は伝言を勧める表現。",
+    "distractorNotes": [
+      "leave a message = 伝言を残す。不在時の決まり文句",
+      "「もっとゆっくり話してもらえますか」では Yes, please tell her ... につながらない",
+      "「6時に会うのはどう？」は約束の話で、不在の説明の直後には来ない",
+      "「映画は楽しかった？」は話題が無関係"
+    ],
+    "vocab": [{ "word": "leave a message", "meaning": "伝言を残す" }]
+  },
+  {
+    "id": "p2-c-004",
+    "section": "r-conversation",
+    "tags": ["conv:shopping"],
+    "difficulty": 2,
+    "stem": "A: Excuse me, I like this jacket, but it's a little too big.\nB: ( )\nA: Yes, please. That would be great.",
+    "choices": [
+      "Shall I bring you a smaller size?",
+      "Would you like to pay by credit card?",
+      "I'm afraid we're closed now.",
+      "It was on sale last week."
+    ],
+    "answerIndex": 0,
+    "translation": "A: すみません、このジャケットが気に入ったのですが、少し大きすぎます。／B: 小さいサイズをお持ちしましょうか。／A: はい、お願いします。助かります。",
+    "explanation": "「大きすぎる」という問題に対する店員の解決策。Yes, please. という返事は、Shall I ~?（〜しましょうか）への自然な応答。",
+    "distractorNotes": [
+      "Shall I ~? = 〜しましょうか。サイズの問題への解決策として自然",
+      "支払い方法の話はまだ早い。サイズが合っていない段階",
+      "「閉店です」では Yes, please. と答えられない",
+      "「先週セールでした」は問題の解決になっていない"
+    ],
+    "vocab": [{ "word": "Shall I ~?", "meaning": "〜しましょうか（申し出）" }]
+  },
+  {
+    "id": "p2-c-005",
+    "section": "r-conversation",
+    "tags": ["conv:suggestion"],
+    "difficulty": 2,
+    "stem": "A: We need to finish this science project by Friday.\nB: I know. ( )\nA: Good idea. Let's meet in the library after school.",
+    "choices": [
+      "Why don't we work on it together tomorrow?",
+      "I've already given it to the teacher.",
+      "I didn't know you had a brother.",
+      "The library closes at four on Sundays."
+    ],
+    "answerIndex": 0,
+    "translation": "A: 金曜日までにこの理科の課題を終わらせないと。／B: そうだね。明日一緒にやらない？／A: いい考えだね。放課後に図書館で会おう。",
+    "explanation": "Good idea. Let's meet ... という返事から、空所は提案の文。Why don't we ~? は「（一緒に）〜しませんか」。",
+    "distractorNotes": [
+      "Why don't we ~? = 一緒に〜しませんか。Good idea. という返事に対応する",
+      "「もう先生に出した」では、これから終わらせる話と矛盾する",
+      "「兄がいるとは知らなかった」は話題が無関係",
+      "図書館の閉館時間の情報は提案になっておらず、Good idea. と応じられない"
+    ],
+    "vocab": [{ "word": "Why don't we ~?", "meaning": "一緒に〜しませんか" }]
+  },
+  {
+    "id": "p2-c-006",
+    "section": "r-conversation",
+    "tags": ["conv:restaurant"],
+    "difficulty": 1,
+    "stem": "A: Are you ready to order?\nB: ( ) Could you give us a few more minutes?\nA: Certainly. I'll come back soon.",
+    "choices": [
+      "Not yet, sorry.",
+      "Yes, it was delicious.",
+      "No, I've never been there.",
+      "Sure, here's the money."
+    ],
+    "answerIndex": 0,
+    "translation": "A: ご注文はお決まりですか。／B: すみません、まだです。もう少し時間をいただけますか。／A: かしこまりました。またすぐ参ります。",
+    "explanation": "「もう少し時間をください」と続くので、まだ決まっていないという返事。Not yet. は「まだです」の定番。",
+    "distractorNotes": [
+      "Not yet = まだです。a few more minutes を求める理由になる",
+      "「おいしかった」は食後の感想。注文前の場面と合わない",
+      "「そこに行ったことがない」は場所の話で無関係",
+      "「はい、お金です」は会計の場面"
+    ],
+    "vocab": [{ "word": "Not yet.", "meaning": "まだです" }]
+  },
+  {
+    "id": "p2-c-007",
+    "section": "r-conversation",
+    "tags": ["conv:greeting"],
+    "difficulty": 2,
+    "stem": "A: I heard you won first prize in the piano contest. ( )\nB: Thank you. I practiced really hard for it.",
+    "choices": [
+      "Congratulations!",
+      "That's too bad.",
+      "I'm sorry to hear that.",
+      "Never mind."
+    ],
+    "answerIndex": 0,
+    "translation": "A: ピアノコンクールで1位になったんだってね。おめでとう！／B: ありがとう。すごく練習したんだ。",
+    "explanation": "「1位を取った」という良い知らせへの反応。Thank you. と返していることからも、祝福の言葉だと分かる。",
+    "distractorNotes": [
+      "Congratulations! = おめでとう。良い知らせへの反応",
+      "That's too bad. = それは残念だね。悪い知らせに使う",
+      "I'm sorry to hear that. も悪い知らせへの反応で、Thank you. とは返さない",
+      "Never mind. = 気にしないで。相手が謝ったときなどに使う"
+    ],
+    "vocab": [{ "word": "Congratulations!", "meaning": "おめでとう" }]
+  },
+  {
+    "id": "p2-c-008",
+    "section": "r-conversation",
+    "tags": ["conv:request"],
+    "difficulty": 3,
+    "stem": "A: Dad, ( )\nB: Sorry, but you have homework tonight. Maybe on the weekend.\nA: OK, I understand.",
+    "choices": [
+      "can I go to the movies with Nana tonight?",
+      "when did you come home yesterday?",
+      "have you seen my textbook anywhere?",
+      "why don't you like watching movies?"
+    ],
+    "answerIndex": 0,
+    "translation": "A: お父さん、今夜ナナと映画に行ってもいい？／B: 悪いけど今夜は宿題があるだろう。週末ならいいよ。／A: うん、わかった。",
+    "explanation": "Bが Sorry, but ... と断り、Maybe on the weekend.（週末なら）と代案を出しているので、空所は許可を求める依頼。断られる前提の会話は「許可・依頼」を疑う。",
+    "distractorNotes": [
+      "can I ~? = 〜してもいい？ という許可を求める表現。断りと代案に対応する",
+      "「昨日いつ帰ってきたの？」なら時刻が答えとして返るはず",
+      "「教科書見なかった？」なら場所が答えになる",
+      "「なぜ映画が好きじゃないの？」では Sorry, but you have homework. という答えにならない"
+    ],
+    "vocab": []
+  },
+  {
+    "id": "p2-c-009",
+    "section": "r-conversation",
+    "tags": ["conv:suggestion"],
+    "difficulty": 3,
+    "stem": "A: I'm thinking about joining a club, but I can't choose one.\nB: ( )\nA: That sounds fun. I'll go and watch their practice tomorrow.",
+    "choices": [
+      "How about the drama club? My sister really enjoys it.",
+      "I joined the drama club three years ago.",
+      "The drama club won the contest last year.",
+      "You should have joined the drama club."
+    ],
+    "answerIndex": 0,
+    "translation": "A: 部活に入ろうと思ってるんだけど、決められないんだ。／B: 演劇部はどう？ 姉がすごく楽しんでるよ。／A: 楽しそうだね。明日練習を見に行ってみる。",
+    "explanation": "That sounds fun.（楽しそう）＋これから見に行く、という反応なので、空所は「これから入る部活の提案」。過去の事実を述べる選択肢では提案にならない。",
+    "distractorNotes": [
+      "How about ~? = 〜はどう？ という提案。That sounds fun. につながる",
+      "「3年前に入った」は自分の過去の話で、Aへの提案になっていない",
+      "「去年コンテストで優勝した」は事実の説明。提案の形になっていない",
+      "should have + 過去分詞は「〜すべきだったのに」。まだ入部していないAには使えない"
+    ],
+    "vocab": [{ "word": "How about ~?", "meaning": "〜はどうですか" }]
+  },
+  {
+    "id": "p2-c-010",
+    "section": "r-conversation",
+    "tags": ["conv:request"],
+    "difficulty": 3,
+    "stem": "A: Ms. Green, I'm afraid I can't hand in my essay tomorrow.\nB: Oh? ( )\nA: I've had a fever since Monday, so I couldn't finish it.",
+    "choices": [
+      "What's the matter?",
+      "That's very kind of you.",
+      "Help yourself.",
+      "You're welcome."
+    ],
+    "answerIndex": 0,
+    "translation": "A: グリーン先生、明日エッセイを提出できそうにありません。／B: あら、どうしたの？／A: 月曜から熱があって、終わらせられませんでした。",
+    "explanation": "Aが空所のあとで理由を説明しているので、Bは理由を尋ねている。What's the matter? = どうしたの。",
+    "distractorNotes": [
+      "What's the matter? = どうしたの。相手に事情を尋ねる表現",
+      "That's very kind of you. = ご親切にどうも。親切にされたときの返事",
+      "Help yourself. = ご自由にどうぞ。食べ物などをすすめる表現",
+      "You're welcome. = どういたしまして。お礼への返事"
+    ],
+    "vocab": [{ "word": "What's the matter?", "meaning": "どうしたのですか" }]
+  }
+]

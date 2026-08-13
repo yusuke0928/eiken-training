@@ -1,0 +1,205 @@
+[
+  {
+    "id": "p2-p-email-001",
+    "section": "r-passage",
+    "format": "email",
+    "title": "A Message from Grandma",
+    "body": "From: Helen Baker\nTo: Lucy Baker\nDate: September 12\nSubject: Your visit\n\nHi Lucy,\n\nThank you for your e-mail. I'm so glad you can stay with me during your school holiday. Your room is ready, and I've already washed the sheets.\n\nI have some news. The train company is repairing the tracks between your town and mine, so the express train won't run on October 3. If you still want to arrive on that day, you'll have to take the local train, and it takes almost three hours. Another choice is to come one day later on the express, which only takes ninety minutes. Please tell me which one you prefer by this Sunday, because I need to ask your uncle to pick you up at the station.\n\nAlso, you wrote that you wanted to try making apple pie together. There's a farm near my house where visitors can pick their own apples in October, so let's go there first and choose the best ones. Bring comfortable shoes because the ground gets muddy.\n\nI can't wait to see you.\n\nLove,\nGrandma",
+    "translation": "差出人: ヘレン・ベイカー／宛先: ルーシー・ベイカー／日付: 9月12日／件名: あなたの訪問\n\nルーシーへ\n\nメールをありがとう。学校の休みの間にうちに泊まれるなんて、とてもうれしいわ。部屋は準備できているし、シーツももう洗ったのよ。\n\nお知らせがあります。鉄道会社があなたの町とこちらの間の線路を修理しているので、10月3日は急行が走りません。その日に到着したいなら普通列車に乗る必要があって、3時間近くかかります。もう一つの選択肢は、1日遅れて急行で来ることで、こちらは90分しかかかりません。おじさんに駅まで迎えに行ってもらうよう頼む必要があるので、どちらがいいか今週の日曜までに教えてね。\n\nそれから、一緒にアップルパイを作ってみたいと書いていたわね。家の近くに10月に自分でりんごを摘める農園があるから、まずそこへ行って一番いいものを選びましょう。地面がぬかるむので歩きやすい靴を持ってきてね。\n\n会えるのが待ちきれません。\n\n愛を込めて、おばあちゃんより",
+    "wordCount": 181,
+    "items": [
+      {
+        "id": "p2-p-email-001-q1",
+        "tags": ["read:detail"],
+        "difficulty": 2,
+        "stem": "Why can't Lucy take the express train on October 3?",
+        "choices": [
+          "The tracks are being repaired.",
+          "All of the seats have been sold.",
+          "The train company has gone out of business.",
+          "A storm is expected on that day."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落の The train company is repairing the tracks ... so the express train won't run on October 3. がそのまま根拠。設問のキーワード（October 3, express）を本文から探すのが基本動作。",
+        "distractorNotes": [
+          "本文の repairing the tracks を being repaired と言いかえたもの",
+          "座席が売り切れたという記述はどこにもない",
+          "鉄道会社が廃業したとは書かれていない。修理をしているだけ",
+          "嵐については一切触れられていない"
+        ]
+      },
+      {
+        "id": "p2-p-email-001-q2",
+        "tags": ["read:detail", "read:inference"],
+        "difficulty": 3,
+        "stem": "What does Grandma ask Lucy to do by Sunday?",
+        "choices": [
+          "Decide how she will travel.",
+          "Buy a ticket for the local train.",
+          "Call her uncle at the station.",
+          "Send a photo of her new shoes."
+        ],
+        "answerIndex": 0,
+        "explanation": "Please tell me which one you prefer by this Sunday とある。which one が指すのは、直前に並べられた「10月3日に普通列車」か「1日遅れて急行」かという2つの移動方法。指示語が何を指すかを押さえる問題。",
+        "distractorNotes": [
+          "2つの移動方法のどちらかを選ぶこと。which one の指す内容と一致する",
+          "切符を買うようにとは書かれていない。まだ列車も決まっていない",
+          "おじさんに連絡するのはおばあちゃんの方（I need to ask your uncle）",
+          "靴については「持ってきて」と言っているだけで、写真の話はない"
+        ]
+      },
+      {
+        "id": "p2-p-email-001-q3",
+        "tags": ["read:detail"],
+        "difficulty": 2,
+        "stem": "What will Lucy and her grandmother do before making apple pie?",
+        "choices": [
+          "Pick apples at a nearby farm.",
+          "Buy apples at a supermarket.",
+          "Wash the sheets in her room.",
+          "Visit Lucy's uncle at his house."
+        ],
+        "answerIndex": 0,
+        "explanation": "最終段落の let's go there first and choose the best ones が根拠。there は直前の a farm ... where visitors can pick their own apples を指す。first という語が「パイを作る前に」に対応している。",
+        "distractorNotes": [
+          "農園でりんごを摘む。let's go there first と一致する",
+          "スーパーで買うとは書かれていない。農園で自分たちで摘む",
+          "シーツを洗ったのはおばあちゃんで、しかも到着前にすでに済んでいる",
+          "おじさんは駅に迎えに来るだけで、家を訪ねる話は出ていない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-article-001",
+    "section": "r-passage",
+    "format": "article",
+    "title": "The Library That Lends Tools",
+    "body": "In most towns, a library is a place where people borrow books. But in a small city in Canada, there is a library where people borrow hammers, ladders, and even sewing machines. It is called a \"tool library,\" and it started about ten years ago.\n\nThe idea came from a woman named Rachel Doyle. One weekend, she wanted to build a bookshelf, but she did not have the right tools. Buying them would have cost her more than the wood itself, and she knew she would probably use them only once. When she asked her neighbors, she found that three of them already owned the same drill. \"Most of these tools sit in a garage for years,\" she said. \"That seemed like a waste.\"\n\nRachel collected tools that people no longer needed and put them in an empty room at the community center. Members pay a small fee once a year and can then borrow up to five items at a time for one week. Today the library has more than two thousand tools and about nine hundred members.\n\nThe tool library has had effects that Rachel did not expect. Because people must return the tools, they often stay and talk with the volunteers who repair them, and some members have become friends. The city also reports that less equipment is thrown away than before. Several other cities have now asked Rachel for advice, and she is writing a short guide to help them start their own.",
+    "translation": "たいていの町では、図書館は本を借りる場所だ。しかしカナダのある小さな市には、人々がハンマーやはしご、さらにはミシンまで借りられる「図書館」がある。それは「ツール・ライブラリー（道具の図書館）」と呼ばれ、約10年前に始まった。\n\nこのアイデアはレイチェル・ドイルという女性から生まれた。ある週末、彼女は本棚を作りたかったが、適した道具を持っていなかった。買えば木材そのものより高くついただろうし、おそらく一度しか使わないと分かっていた。近所の人に尋ねてみると、そのうち3人がすでに同じドリルを持っていることが分かった。「こうした道具のほとんどは何年もガレージに置かれたままです」と彼女は言った。「それはもったいないことに思えました」\n\nレイチェルは、人々がもう必要としなくなった道具を集め、公民館の空き部屋に置いた。会員は年に一度少額の会費を払い、一度に5点まで1週間借りることができる。現在この図書館には2000点を超える道具と、約900人の会員がいる。\n\nツール・ライブラリーには、レイチェルが予想しなかった効果もあった。道具を返さなければならないため、人々は修理をするボランティアと立ち話をすることが多く、友人になった会員もいる。市によれば、以前より捨てられる器具が減ったという。現在では他のいくつかの市がレイチェルに助言を求めており、彼女はそれらの市が自分たちの図書館を始めるのを助けるための短い手引きを書いている。",
+    "wordCount": 249,
+    "items": [
+      {
+        "id": "p2-p-article-001-q1",
+        "tags": ["read:detail"],
+        "difficulty": 2,
+        "stem": "What made Rachel Doyle think of the tool library?",
+        "choices": [
+          "She needed tools for a project but did not want to buy them.",
+          "She was asked by the city to use an empty room.",
+          "She wanted to sell the tools in her garage.",
+          "She read a guide written by another city."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落。本棚を作りたかったが道具がなく、買うと高い上に一度しか使わないと考えた、という流れがきっかけ。「なぜ思いついたか」は原因を問う設問なので、出来事の順番に注目する。",
+        "distractorNotes": [
+          "本棚作りに道具が必要だったが買いたくなかった。第2段落の内容と一致",
+          "空き部屋を使ったのは事実だが、市に頼まれたとは書かれていない",
+          "道具を売ったのではなく、要らなくなった道具を集めて貸し出した",
+          "手引きを書いているのはレイチェル自身。しかも設立の後の話"
+        ]
+      },
+      {
+        "id": "p2-p-article-001-q2",
+        "tags": ["read:detail"],
+        "difficulty": 2,
+        "stem": "What did Rachel learn when she asked her neighbors?",
+        "choices": [
+          "Several of them owned the same tool.",
+          "None of them had ever built a bookshelf.",
+          "They wanted to buy her old tools.",
+          "They had already started a tool library."
+        ],
+        "answerIndex": 0,
+        "explanation": "she found that three of them already owned the same drill が根拠。three of them を Several of them と言いかえている。数を表す語の言いかえは頻出。",
+        "distractorNotes": [
+          "3人が同じドリルを持っていた。Several = 数人と対応する",
+          "本棚を作ったことがないという記述はない",
+          "近所の人が買いたがったという記述はない",
+          "ツール・ライブラリーを始めたのはレイチェル。近所の人ではない"
+        ]
+      },
+      {
+        "id": "p2-p-article-001-q3",
+        "tags": ["read:detail"],
+        "difficulty": 3,
+        "stem": "How can people use the tool library?",
+        "choices": [
+          "They pay a yearly fee and can borrow five items for a week.",
+          "They pay each time they borrow a tool.",
+          "They can borrow as many tools as they want for a month.",
+          "They must work as volunteers before borrowing anything."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落の Members pay a small fee once a year and can then borrow up to five items at a time for one week. をそのまま整理したもの。数字と期間が並ぶ箇所は設問になりやすいので印をつけておく。",
+        "distractorNotes": [
+          "年会費を払い、5点まで1週間。本文の条件と完全に一致する",
+          "借りるたびに払うのではなく、年に一度（once a year）",
+          "上限は5点（up to five items）で、期間は1週間。どちらも異なる",
+          "ボランティアは道具を修理する人。借りる条件ではない"
+        ]
+      },
+      {
+        "id": "p2-p-article-001-q4",
+        "tags": ["read:main-idea", "read:inference"],
+        "difficulty": 3,
+        "stem": "What is one result that Rachel did not expect?",
+        "choices": [
+          "Some members have become friends with each other.",
+          "The library has run out of space for new tools.",
+          "Members have started to buy their own drills.",
+          "The city has decided to close the community center."
+        ],
+        "answerIndex": 0,
+        "explanation": "最終段落の effects that Rachel did not expect のあとに書かれている内容を探す。some members have become friends が該当。「予想しなかった効果」という前置きの直後に答えがある構成。",
+        "distractorNotes": [
+          "会員同士が友人になった。予想外の効果として本文に明記されている",
+          "場所が足りなくなったという記述はない",
+          "むしろ買わずに借りられるようにするのが目的",
+          "公民館を閉鎖するという話は出ていない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p2-p-cloze-001",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Sleep and Study",
+    "body": "Many students believe that staying up late to study is the best way to prepare for a test. However, researchers say this idea is often ( 1 ). In one study, two groups of students learned a list of new words. One group slept for eight hours, and the other stayed awake all night. The next morning, the group that had slept remembered far more words.\n\nWhile we sleep, the brain organizes what we have learned during the day and stores it for later use. If we do not sleep enough, this process cannot finish properly. ( 2 ), reviewing for thirty minutes and then going to bed early may help you more than studying until two in the morning.",
+    "translation": "多くの生徒は、夜更かしして勉強するのがテストに備える最良の方法だと信じている。しかし研究者たちは、この考えはしばしば誤りだと言う。ある研究では、2つのグループの生徒が新しい単語のリストを覚えた。一方のグループは8時間眠り、もう一方は一晩中起きていた。翌朝、眠ったグループのほうがはるかに多くの単語を覚えていた。\n\n私たちが眠っている間、脳はその日に学んだことを整理し、後で使えるように保存する。十分に眠らないと、この過程がきちんと終わらない。したがって、30分復習して早く寝るほうが、夜中の2時まで勉強するよりも役に立つかもしれない。",
+    "wordCount": 128,
+    "items": [
+      {
+        "id": "p2-p-cloze-001-q1",
+        "tags": ["read:vocab-in-context"],
+        "difficulty": 3,
+        "stem": "( 1 )",
+        "choices": ["wrong", "popular", "expensive", "difficult"],
+        "answerIndex": 0,
+        "explanation": "空所の前に However があり、直後の実験では「眠ったグループのほうが覚えていた」と続く。つまり「夜更かしが最良」という考えは誤りだという流れ。逆接の語のあとは、前の内容を否定する語が入る。",
+        "distractorNotes": [
+          "wrong = 誤った。However と実験結果の両方に合う",
+          "popular = 人気がある。However で否定する内容にならない",
+          "expensive = 高価な。お金の話は出ていない",
+          "difficult = 難しい。考えが「難しい」では実験結果とつながらない"
+        ]
+      },
+      {
+        "id": "p2-p-cloze-001-q2",
+        "tags": ["read:structure"],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": ["Therefore", "However", "For example", "In addition"],
+        "answerIndex": 0,
+        "explanation": "前で「眠らないと記憶の整理が終わらない」と理由を述べ、空所のあとで「早く寝たほうがよい」という結論を述べている。理由→結論なので Therefore（したがって）。",
+        "distractorNotes": [
+          "Therefore = したがって。理由のあとに結論を導く",
+          "However = しかし。前後は逆の内容ではなく、素直につながっている",
+          "For example = 例えば。あとに続くのは例ではなくアドバイス（結論）",
+          "In addition = さらに。情報を追加する語だが、ここは前の内容から導かれる結論"
+        ]
+      }
+    ]
+  }
+]

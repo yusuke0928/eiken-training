@@ -1,0 +1,163 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   デザイントークン（docs/DESIGN.md §4.2）
+   色は :root の CSS 変数で定義し、@theme inline で Tailwind に公開する。
+   こうすると bg-surface のようなクラスがそのままテーマ追従になり、
+   コンポーネント側に dark: を書かなくて済む。
+-------------------------------------------------------------------*/
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-sub: var(--ink-sub);
+  --color-ink-faint: var(--ink-faint);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-ink: var(--primary-ink);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-correct: var(--correct);
+  --color-correct-soft: var(--correct-soft);
+  --color-again: var(--again);
+  --color-again-soft: var(--again-soft);
+  --color-line: var(--line);
+
+  --font-ja: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', system-ui, sans-serif;
+  --font-en: 'Helvetica Neue', 'Segoe UI', Arial, system-ui, sans-serif;
+}
+
+:root {
+  --bg: #fbf9f6;
+  --surface: #ffffff;
+  --surface-2: #f4f1ec;
+  --ink: #2a2530;
+  --ink-sub: #6e6878;
+  --ink-faint: #9c96a6;
+  --primary: #7a6be8;
+  --primary-soft: #ece9fd;
+  --primary-ink: #ffffff;
+  --accent: #ff9aae;
+  --accent-soft: #ffeef2;
+  --correct: #3e9e82;
+  --correct-soft: #e4f4ef;
+  --again: #e8845a;
+  --again-soft: #fdeee7;
+  --line: #ede8e2;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #17151c;
+    --surface: #211e28;
+    --surface-2: #2b2734;
+    --ink: #f0edf5;
+    --ink-sub: #a9a2b6;
+    --ink-faint: #776f85;
+    --primary: #9c8fff;
+    --primary-soft: #2e2842;
+    --primary-ink: #17151c;
+    --accent: #ff9aae;
+    --accent-soft: #3a2831;
+    --correct: #5ec3a4;
+    --correct-soft: #1e3129;
+    --again: #f0946c;
+    --again-soft: #38251d;
+    --line: #332e3e;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #17151c;
+  --surface: #211e28;
+  --surface-2: #2b2734;
+  --ink: #f0edf5;
+  --ink-sub: #a9a2b6;
+  --ink-faint: #776f85;
+  --primary: #9c8fff;
+  --primary-soft: #2e2842;
+  --primary-ink: #17151c;
+  --accent: #ff9aae;
+  --accent-soft: #3a2831;
+  --correct: #5ec3a4;
+  --correct-soft: #1e3129;
+  --again: #f0946c;
+  --again-soft: #38251d;
+  --line: #332e3e;
+  color-scheme: dark;
+}
+
+/* ---------------------------------------------------------------- */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ja);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* 英文は日本語と別フォント・1段大きく（DESIGN.md §4.3）。
+   無意識に「ここは英語」と切り替わり、読解の負荷が下がる。 */
+.en {
+  font-family: var(--font-en);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+.ja-body {
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+/* 文字サイズ設定（標準 / 大 / 特大） */
+:root[data-fontsize='l'] {
+  font-size: 112.5%;
+}
+:root[data-fontsize='xl'] {
+  font-size: 125%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.anim-sheet {
+  animation: sheet-up 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.anim-fade {
+  animation: fade-in 0.2s ease-out;
+}

@@ -1,0 +1,291 @@
+[
+  {
+    "id": "p2-w-email-001",
+    "section": "w-email",
+    "topic": "音楽フェスに行った友達",
+    "difficulty": 1,
+    "sourceText": "Hi!\n\nGuess what! I went to a music festival last weekend with my brother. I had a really good time there, and I want to tell you more about it.\n\nAnyway, I have a question. What kind of music do you like the best?\n\nYour friend,\nAlex",
+    "underline": "I went to a music festival last weekend with my brother.",
+    "usefulPhrases": [
+      "Thank you for your e-mail.",
+      "I have two questions about ~.",
+      "Where did you ~?",
+      "How many ~ did you ~?",
+      "Talk to you soon!"
+    ],
+    "modelAnswer": "Hi Alex! Thank you for your e-mail. I like pop music the best because it always makes me feel happy. I have two questions about the music festival. Where was the festival held? How many bands did you and your brother see there?",
+    "modelNote": "1文目で相手の質問に答え、2文目以降で下線部（音楽フェス）について質問を2つ。質問はどちらも主語と動詞のある完全な文になっている。",
+    "commonMistakes": [
+      "質問を1つしか書いていない（最大の失点）",
+      "「Tell me more about it.」で済ませてしまう（これは質問ではない）",
+      "相手の質問（好きな音楽）に答えるのを忘れる"
+    ]
+  },
+  {
+    "id": "p2-w-email-002",
+    "section": "w-email",
+    "topic": "新しいペットを飼い始めた友達",
+    "difficulty": 1,
+    "sourceText": "Hi!\n\nHow are you? I have some news. My family got a new dog last month. He is very cute, and I take him to the park every morning.\n\nBy the way, do you have any pets at home?\n\nYour friend,\nChris",
+    "underline": "My family got a new dog last month.",
+    "usefulPhrases": [
+      "That sounds great!",
+      "I'd like to know more about ~.",
+      "What is his name?",
+      "How old is ~?",
+      "Please send me a photo."
+    ],
+    "modelAnswer": "Hi Chris! Thank you for your e-mail. I don't have any pets, but I really want a cat someday. I have two questions about your new dog. What is his name? Where did your family get him? I hope I can meet him someday.",
+    "modelNote": "ペットがいない場合も「いない」で終わらせず、but のあとに一言足すと内容点が取りやすい。",
+    "commonMistakes": [
+      "「No, I don't.」だけで終わってしまい、内容が薄くなる",
+      "質問が下線部（犬）と関係ないものになっている"
+    ]
+  },
+  {
+    "id": "p2-w-email-003",
+    "section": "w-email",
+    "topic": "料理教室に通い始めた友達",
+    "difficulty": 2,
+    "sourceText": "Hi!\n\nThanks for your last e-mail. I started going to a cooking school near my house last month. I go there every Saturday, and it's a lot of fun.\n\nBy the way, what do you usually eat for breakfast?\n\nYour friend,\nEmma",
+    "underline": "I started going to a cooking school near my house last month.",
+    "usefulPhrases": [
+      "That sounds interesting.",
+      "I usually have ~ for breakfast.",
+      "What kind of food do you ~?",
+      "How long is ~?",
+      "I want to try it, too."
+    ],
+    "modelAnswer": "Hi Emma! Thank you for your e-mail. I usually have rice and miso soup for breakfast because it gives me a lot of energy. I have two questions about the cooking school. What kind of food do you make there? How many students are in your class?",
+    "modelNote": "朝食の答えに because を足すと、語数を稼ぎながら文法点も取れる。質問は「何を作るか」「何人いるか」と具体的。",
+    "commonMistakes": [
+      "語数が足りず40語に届かない（理由を1つ足すと解決する）",
+      "質問が Do you like it? のように yes/no で終わるものになっている"
+    ]
+  },
+  {
+    "id": "p2-w-email-004",
+    "section": "w-email",
+    "topic": "引っ越した友達",
+    "difficulty": 2,
+    "sourceText": "Hi!\n\nI have big news. My family moved to a new town last week. Our new house is bigger, and I have my own room now.\n\nAnyway, I have a question. What do you like to do on weekends?\n\nYour friend,\nSam",
+    "underline": "My family moved to a new town last week.",
+    "usefulPhrases": [
+      "Congratulations on ~!",
+      "On weekends, I usually ~.",
+      "What is the new town like?",
+      "Is your new school far from ~?",
+      "I hope you like your new home."
+    ],
+    "modelAnswer": "Hi Sam! Thank you for your e-mail. On weekends, I usually play tennis with my friends in the park. I have two questions about your new town. What is the town like? How far is your new school from your house?",
+    "modelNote": "What is ~ like? は「〜はどんなところ？」を聞く便利な形。丸ごと覚えておくと使い回せる。",
+    "commonMistakes": [
+      "How is the town? としてしまう（「調子はどう」の意味になり不自然）",
+      "質問を1文にまとめてしまう"
+    ]
+  },
+  {
+    "id": "p2-w-email-005",
+    "section": "w-email",
+    "topic": "ボランティアに参加した友達",
+    "difficulty": 3,
+    "sourceText": "Hi!\n\nHow have you been? Last Sunday, I joined a volunteer activity and cleaned a beach with about thirty people. I was tired, but I felt really good afterward.\n\nBy the way, is there anything you want to try this year?\n\nYour friend,\nTaylor",
+    "underline": "Last Sunday, I joined a volunteer activity and cleaned a beach with about thirty people.",
+    "usefulPhrases": [
+      "I want to try ~ this year.",
+      "That's wonderful.",
+      "How did you find out about ~?",
+      "How long did it take?",
+      "Maybe I can join you next time."
+    ],
+    "modelAnswer": "Hi Taylor! Thank you for your e-mail. This year, I want to try learning to play the piano because I love music. I have two questions about the volunteer activity. How did you find out about it? How many hours did you clean the beach?",
+    "modelNote": "want to try ~ing の形を使えると自然。質問は「どうやって知ったか」「どのくらいかかったか」と具体的な情報を求めている。",
+    "commonMistakes": [
+      "I want to try piano. のように動詞が抜ける",
+      "質問が Was it fun? のような感想を聞くものになり、具体性がない"
+    ]
+  },
+  {
+    "id": "p2-w-email-006",
+    "section": "w-email",
+    "topic": "文化祭でスピーチをした友達",
+    "difficulty": 3,
+    "sourceText": "Hi!\n\nThanks for writing back. I gave a speech in English at my school festival last Friday. I practiced for two months, so I was very nervous but happy.\n\nAnyway, what subject do you like the best at school?\n\nYour friend,\nJordan",
+    "underline": "I gave a speech in English at my school festival last Friday.",
+    "usefulPhrases": [
+      "My favorite subject is ~.",
+      "You must have been nervous.",
+      "What was your speech about?",
+      "How many people were ~?",
+      "I'm proud of you."
+    ],
+    "modelAnswer": "Hi Jordan! Thank you for your e-mail. My favorite subject is science because I enjoy doing experiments in class. I have two questions about your English speech. What was your speech about? How many people were listening to you? I want to hear it someday.",
+    "modelNote": "How many people were listening? のように過去進行形を使うと文法点が取りやすい。無理に難しくする必要はない。",
+    "commonMistakes": [
+      "下線部ではなく「学校生活全般」について質問してしまう",
+      "締めの一言がなく、唐突に終わる"
+    ]
+  },
+
+  {
+    "id": "p2-w-opinion-001",
+    "section": "w-opinion",
+    "topic": "部活動",
+    "difficulty": 1,
+    "question": "Do you think students should join a club at school?",
+    "usefulPhrases": [
+      "I think ~. / I do not think ~.",
+      "I have two reasons.",
+      "First, ~. For example, ~.",
+      "Second, ~.",
+      "For these reasons, I think ~."
+    ],
+    "modelAnswer": "I think students should join a club at school. I have two reasons. First, they can make many friends there. For example, I met my best friend in the tennis club. Second, club activities teach them how to work with other people. For these reasons, I think students should join a club.",
+    "modelNote": "型どおりに書けば52語前後になる。理由1つ目に For example を足すのが語数を満たす最短ルート。",
+    "commonMistakes": [
+      "理由が1つしかない（内容点が大きく下がる）",
+      "First / Second を使わず、理由の境目が分からない（構成点が下がる）",
+      "最後のまとめの文がない"
+    ]
+  },
+  {
+    "id": "p2-w-opinion-002",
+    "section": "w-opinion",
+    "topic": "スマートフォン",
+    "difficulty": 1,
+    "question": "Do you think it is good for junior high school students to have their own smartphones?",
+    "usefulPhrases": [
+      "I think it is good for ~ to ~.",
+      "First, they can ~.",
+      "Second, ~ is useful when ~.",
+      "For example, ~.",
+      "For these reasons, ~."
+    ],
+    "modelAnswer": "I think it is good for junior high school students to have their own smartphones. I have two reasons. First, they can call their families when they are in trouble. Second, smartphones are useful for studying. For example, students can look up new words quickly. For these reasons, I think so.",
+    "modelNote": "最後を For these reasons, I think so. と短くまとめる手もある。語数が足りているときに便利。",
+    "commonMistakes": [
+      "students can look up new words quickly の quickly のような副詞を入れず、文が単調になる",
+      "理由が「便利だから」だけで具体例がない"
+    ]
+  },
+  {
+    "id": "p2-w-opinion-003",
+    "section": "w-opinion",
+    "topic": "読書",
+    "difficulty": 2,
+    "question": "Do you think people should read more books?",
+    "usefulPhrases": [
+      "I think people should ~.",
+      "First, reading books helps us ~.",
+      "Second, ~.",
+      "For example, ~.",
+      "That is why I think ~."
+    ],
+    "modelAnswer": "I think people should read more books. I have two reasons. First, reading books helps us learn many new words. For example, I learned a lot of English words from a story book. Second, books teach us about different ways of thinking. For these reasons, I think people should read more.",
+    "modelNote": "help us + 動詞の原形（原形不定詞）は準2級レベルで使えると文法点が上がる。",
+    "commonMistakes": [
+      "helps us to learn / helps us learning など形が崩れる",
+      "同じ語（books）を何度も繰り返して語彙点を落とす"
+    ]
+  },
+  {
+    "id": "p2-w-opinion-004",
+    "section": "w-opinion",
+    "topic": "都会と田舎",
+    "difficulty": 2,
+    "question": "Do you think it is better to live in a city than in the countryside?",
+    "usefulPhrases": [
+      "I think it is better to ~.",
+      "I do not think so.",
+      "First, there are many ~ in cities.",
+      "Second, it is easy to ~.",
+      "For these reasons, ~."
+    ],
+    "modelAnswer": "I do not think it is better to live in a city. I have two reasons. First, the countryside has clean air and beautiful nature. Second, people in the countryside are usually friendly to each other. For example, my grandmother knows all of her neighbors. For these reasons, I prefer the countryside.",
+    "modelNote": "反対意見でもまったく同じ型で書ける。I do not think ~ で始めれば、あとの流れは変わらない。",
+    "commonMistakes": [
+      "質問が than を含むのに比較の形を無視してしまう",
+      "賛成か反対かが最後まではっきりしない"
+    ]
+  },
+  {
+    "id": "p2-w-opinion-005",
+    "section": "w-opinion",
+    "topic": "朝食",
+    "difficulty": 2,
+    "question": "Do you think it is important to eat breakfast every day?",
+    "usefulPhrases": [
+      "I think it is important to ~.",
+      "First, breakfast gives us ~.",
+      "Second, ~.",
+      "Without ~, we cannot ~.",
+      "For these reasons, ~."
+    ],
+    "modelAnswer": "I think it is important to eat breakfast every day. I have two reasons. First, breakfast gives us energy for the morning. Without it, we cannot study well at school. Second, eating breakfast helps us keep a good rhythm in our daily lives. For these reasons, I think eating breakfast every day is important.",
+    "modelNote": "Without it, we cannot ~ は理由を1文ぶん伸ばすのに便利な形。For example のかわりに使える。",
+    "commonMistakes": [
+      "I think breakfast is important. と繰り返すだけで理由が具体的でない",
+      "語数が足りない"
+    ]
+  },
+  {
+    "id": "p2-w-opinion-006",
+    "section": "w-opinion",
+    "topic": "夏休みの長さ",
+    "difficulty": 3,
+    "question": "Do you think schools should have longer summer vacations?",
+    "usefulPhrases": [
+      "I think schools should ~.",
+      "First, students need time to ~.",
+      "Second, ~.",
+      "On the other hand, ~.",
+      "For these reasons, ~."
+    ],
+    "modelAnswer": "I think schools should have longer summer vacations. I have two reasons. First, students need enough time to rest after a busy school year. Second, they can try new things during a long vacation. For example, my brother traveled abroad and learned about a different culture. For these reasons, I agree.",
+    "modelNote": "For these reasons, I agree. で締めると短くまとまる。理由2つ目に具体例を置くパターン。",
+    "commonMistakes": [
+      "during と while を混同する（during のあとは名詞）",
+      "理由が「楽しいから」だけで説得力がない"
+    ]
+  },
+  {
+    "id": "p2-w-opinion-007",
+    "section": "w-opinion",
+    "topic": "留学",
+    "difficulty": 3,
+    "question": "Do you think more students should study abroad?",
+    "usefulPhrases": [
+      "I think more students should ~.",
+      "First, they can improve ~.",
+      "Second, living in another country ~.",
+      "For example, ~.",
+      "That is why ~."
+    ],
+    "modelAnswer": "I think more students should study abroad. I have two reasons. First, they can improve their language skills faster by using them every day. Second, living in another country helps them understand different cultures. For example, my cousin studied in Australia and made friends from many countries. That is why I agree.",
+    "modelNote": "by ~ing（〜することによって）が使えると語数も内容も稼げる。",
+    "commonMistakes": [
+      "improve their English を2回書いてしまい語彙点を落とす",
+      "For example のあとが文になっていない"
+    ]
+  },
+  {
+    "id": "p2-w-opinion-008",
+    "section": "w-opinion",
+    "topic": "環境",
+    "difficulty": 3,
+    "question": "Do you think people will use fewer plastic bags in the future?",
+    "usefulPhrases": [
+      "I think people will ~.",
+      "First, more people are worried about ~.",
+      "Second, many shops ~.",
+      "For example, ~.",
+      "For these reasons, ~."
+    ],
+    "modelAnswer": "I think people will use fewer plastic bags in the future. I have two reasons. First, more people are worried about the environment now. Second, many shops have started to charge money for plastic bags. For example, my local supermarket asks customers to bring their own bags. For these reasons, I agree.",
+    "modelNote": "未来のことを聞かれているので will を使い、理由は「今すでに起きている変化」で説明すると書きやすい。",
+    "commonMistakes": [
+      "質問が will なのに現在形だけで答えてしまう",
+      "fewer と less を混同する（数えられる名詞には fewer）"
+    ]
+  }
+]

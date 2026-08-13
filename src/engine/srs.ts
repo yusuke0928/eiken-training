@@ -1,3 +1,4 @@
+import { ITEM_BY_ID } from '../content';
 import { db } from '../data/db';
 import type { SrsCard } from '../types';
 
@@ -49,7 +50,8 @@ export async function dueCards(now = Date.now()): Promise<SrsCard[]> {
   return rows.sort((a, b) => a.dueAt - b.dueAt);
 }
 
-/** 「卒業」していない＝まだ覚えきっていない件数 */
+/** 期限が来た件数。すでに削除された問題は数えない */
 export async function reviewBacklog(now = Date.now()): Promise<number> {
-  return (await dueCards(now)).length;
+  const due = await dueCards(now);
+  return due.filter((c) => ITEM_BY_ID.has(c.itemId)).length;
 }

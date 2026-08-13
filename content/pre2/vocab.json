@@ -1,29 +1,18 @@
 [
   {
-    "id": "p2-v-001",
-    "section": "r-vocab",
-    "tags": ["vocab:verb"],
-    "difficulty": 1,
-    "stem": "A: I can't ( ) what to wear to Mika's party.\nB: How about that blue dress?",
-    "choices": ["decide", "arrive", "happen", "belong"],
-    "answerIndex": 0,
-    "translation": "A: ミカのパーティーに何を着ていくか決められないの。／B: あの青いワンピースはどう？",
-    "explanation": "decide what to ~ で「何を〜するか決める」。Bが服を提案していることから、Aは服装を「決めかねている」と分かる。",
-    "distractorNotes": [
-      "decide = 決める。decide what to wear で「何を着るか決める」",
-      "arrive = 到着する。目的語を取らない自動詞なので what を続けられない",
-      "happen = 起こる。「出来事が起こる」意味で、人が主語で「決める」意味にはならない",
-      "belong = 所属する。belong to ~ の形で使い、ここでは意味が通らない"
-    ],
-    "vocab": [{ "word": "decide", "meaning": "決める", "example": "I decided to join the tennis club." }]
-  },
-  {
     "id": "p2-v-002",
     "section": "r-vocab",
-    "tags": ["vocab:verb"],
+    "tags": [
+      "vocab:verb"
+    ],
     "difficulty": 2,
     "stem": "I'd like to ( ) a table for four at seven o'clock tonight.",
-    "choices": ["reserve", "prepare", "collect", "produce"],
+    "choices": [
+      "reserve",
+      "prepare",
+      "collect",
+      "produce"
+    ],
     "answerIndex": 0,
     "translation": "今夜7時に4人用のテーブルを予約したいのですが。",
     "explanation": "レストランに電話するときの定番表現。reserve a table = 席を予約する。book a table とも言う。",
@@ -33,15 +22,29 @@
       "collect = 集める。テーブルを集めることになってしまう",
       "produce = 生産する。工場などで物を作る意味"
     ],
-    "vocab": [{ "word": "reserve", "meaning": "予約する", "example": "I reserved a room at the hotel." }]
+    "vocab": [
+      {
+        "word": "reserve",
+        "meaning": "予約する",
+        "example": "I reserved a room at the hotel."
+      }
+    ]
   },
   {
     "id": "p2-v-003",
     "section": "r-vocab",
-    "tags": ["vocab:verb", "vocab:collocation"],
+    "tags": [
+      "vocab:verb",
+      "vocab:collocation"
+    ],
     "difficulty": 3,
     "stem": "My family can't ( ) to buy a new car this year, so we'll keep using the old one.",
-    "choices": ["afford", "allow", "spend", "offer"],
+    "choices": [
+      "afford",
+      "allow",
+      "spend",
+      "offer"
+    ],
     "answerIndex": 0,
     "translation": "うちの家族は今年新しい車を買う余裕がないので、古い車を使い続けます。",
     "explanation": "afford to ~ で「〜する（金銭的な）余裕がある」。can't afford の形で使われることが非常に多い。",
@@ -51,15 +54,28 @@
       "spend = (お金・時間を)使う。spend money on ~ の形で、to不定詞は続かない",
       "offer = 申し出る。「買うことを申し出られない」となり後半とつながらない"
     ],
-    "vocab": [{ "word": "afford", "meaning": "〜する余裕がある", "example": "I can't afford a new phone." }]
+    "vocab": [
+      {
+        "word": "afford",
+        "meaning": "〜する余裕がある",
+        "example": "I can't afford a new phone."
+      }
+    ]
   },
   {
     "id": "p2-v-004",
     "section": "r-vocab",
-    "tags": ["grammar:conjunction"],
+    "tags": [
+      "grammar:conjunction"
+    ],
     "difficulty": 2,
     "stem": "( ) of taking the bus, Emma decided to walk to school.",
-    "choices": ["Instead", "Because", "Although", "During"],
+    "choices": [
+      "Instead",
+      "Because",
+      "Although",
+      "During"
+    ],
     "answerIndex": 0,
     "translation": "バスに乗る代わりに、エマは学校まで歩くことにした。",
     "explanation": "instead of ~ing で「〜する代わりに」。of が後ろにあるのが最大のヒント。",
@@ -69,33 +85,28 @@
       "although は接続詞で、後ろに of は続かない",
       "during は前置詞だが during of とは言わない"
     ],
-    "vocab": [{ "word": "instead of", "meaning": "〜の代わりに", "example": "I drank tea instead of coffee." }]
-  },
-  {
-    "id": "p2-v-005",
-    "section": "r-vocab",
-    "tags": ["vocab:idiom"],
-    "difficulty": 1,
-    "stem": "I'm looking ( ) to seeing you again next summer.",
-    "choices": ["forward", "ahead", "after", "over"],
-    "answerIndex": 0,
-    "translation": "来年の夏にまた会えるのを楽しみにしています。",
-    "explanation": "look forward to ~ing で「〜するのを楽しみに待つ」。この to は前置詞なので、後ろは動詞の原形ではなく ~ing になる点が頻出ポイント。",
-    "distractorNotes": [
-      "look forward to ~ing = 〜を楽しみにする。手紙やメールの結びの定番",
-      "look ahead = 先を見る。to は続かない",
-      "look after = 世話をする。look after my dog のように直接目的語が来る",
-      "look over = ざっと目を通す。to は続かない"
-    ],
-    "vocab": [{ "word": "look forward to", "meaning": "〜を楽しみに待つ", "example": "I'm looking forward to the trip." }]
+    "vocab": [
+      {
+        "word": "instead of",
+        "meaning": "〜の代わりに",
+        "example": "I drank tea instead of coffee."
+      }
+    ]
   },
   {
     "id": "p2-v-006",
     "section": "r-vocab",
-    "tags": ["vocab:phrasal-verb"],
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
     "difficulty": 2,
     "stem": "The baseball game was ( ) off because of the heavy rain.",
-    "choices": ["put", "taken", "got", "made"],
+    "choices": [
+      "put",
+      "taken",
+      "got",
+      "made"
+    ],
     "answerIndex": 0,
     "translation": "その野球の試合は大雨のため延期された。",
     "explanation": "put off = 延期する。ここは受動態なので be put off の形。「雨で試合が→延期」という流れ。",
@@ -105,15 +116,28 @@
       "get off = (乗り物から)降りる",
       "make off = 逃げる。準2級ではまず出ない上に意味が合わない"
     ],
-    "vocab": [{ "word": "put off", "meaning": "延期する", "example": "They put off the concert until May." }]
+    "vocab": [
+      {
+        "word": "put off",
+        "meaning": "延期する",
+        "example": "They put off the concert until May."
+      }
+    ]
   },
   {
     "id": "p2-v-007",
     "section": "r-vocab",
-    "tags": ["grammar:perfect"],
+    "tags": [
+      "grammar:perfect"
+    ],
     "difficulty": 2,
     "stem": "Kate ( ) in Japan since she was ten years old.",
-    "choices": ["has lived", "lives", "lived", "is living"],
+    "choices": [
+      "has lived",
+      "lives",
+      "lived",
+      "is living"
+    ],
     "answerIndex": 0,
     "translation": "ケイトは10歳のときから日本に住んでいる。",
     "explanation": "since ~（〜以来）があるので現在完了。過去のある時点から今まで続いていることを表す。since を見たら have/has + 過去分詞を疑う。",
@@ -128,10 +152,17 @@
   {
     "id": "p2-v-008",
     "section": "r-vocab",
-    "tags": ["grammar:relative"],
+    "tags": [
+      "grammar:relative"
+    ],
     "difficulty": 2,
     "stem": "The girl ( ) is talking with Mr. Sato is my sister.",
-    "choices": ["who", "which", "whose", "what"],
+    "choices": [
+      "who",
+      "which",
+      "whose",
+      "what"
+    ],
     "answerIndex": 0,
     "translation": "佐藤先生と話している女の子は私の妹です。",
     "explanation": "先行詞が The girl（人）で、空所のあとが is talking と動詞なので、主格の関係代名詞 who が入る。",
@@ -144,84 +175,19 @@
     "vocab": []
   },
   {
-    "id": "p2-v-009",
-    "section": "r-vocab",
-    "tags": ["grammar:passive"],
-    "difficulty": 2,
-    "stem": "This temple ( ) about 400 years ago.",
-    "choices": ["was built", "built", "has built", "is building"],
-    "answerIndex": 0,
-    "translation": "この寺はおよそ400年前に建てられた。",
-    "explanation": "主語の This temple は「建てられる」側なので受動態。400 years ago という過去を表す語があるので過去の受動態 was built。",
-    "distractorNotes": [
-      "was built = 過去の受動態。「建てられた」",
-      "built は能動態。「寺が(何かを)建てた」となり意味が通らない",
-      "has built も能動態。さらに ago は現在完了と一緒に使えない",
-      "is building は現在進行形の能動態。寺が今何かを建てていることになる"
-    ],
-    "vocab": []
-  },
-  {
-    "id": "p2-v-010",
-    "section": "r-vocab",
-    "tags": ["grammar:infinitive"],
-    "difficulty": 1,
-    "stem": "Nancy went to the library ( ) some books about space.",
-    "choices": ["to borrow", "borrow", "borrowing", "borrowed"],
-    "answerIndex": 0,
-    "translation": "ナンシーは宇宙についての本を借りに図書館へ行った。",
-    "explanation": "「〜するために」という目的を表す不定詞の副詞的用法。went と borrow の2つの動詞を1文につなぐには to が必要。",
-    "distractorNotes": [
-      "to borrow = 「借りるために」。目的を表す不定詞",
-      "borrow だと動詞が2つ並んでしまい文法的に成立しない",
-      "borrowing だと「本を借りている図書館」のように意味がずれる",
-      "borrowed も動詞が2つ並ぶ形になり不可"
-    ],
-    "vocab": []
-  },
-  {
-    "id": "p2-v-011",
-    "section": "r-vocab",
-    "tags": ["grammar:gerund"],
-    "difficulty": 1,
-    "stem": "My little brother enjoys ( ) comic books before he goes to bed.",
-    "choices": ["reading", "to read", "read", "reads"],
-    "answerIndex": 0,
-    "translation": "弟は寝る前にマンガを読むのを楽しんでいる。",
-    "explanation": "enjoy は目的語に動名詞（~ing）だけを取る動詞。enjoy / finish / stop / mind などはこのグループ。",
-    "distractorNotes": [
-      "reading = 動名詞。enjoy ~ing が正しい形",
-      "to read は不定詞。enjoy は不定詞を目的語に取れない",
-      "read は原形。動詞が2つ並んでしまう",
-      "reads も動詞。主語が1つの文に動詞は1つ"
-    ],
-    "vocab": [{ "word": "enjoy ~ing", "meaning": "〜するのを楽しむ", "example": "She enjoys cooking." }]
-  },
-  {
-    "id": "p2-v-012",
-    "section": "r-vocab",
-    "tags": ["grammar:comparative"],
-    "difficulty": 2,
-    "stem": "This bag is ( ) than the one I bought last year.",
-    "choices": ["more expensive", "expensive", "most expensive", "the most expensive"],
-    "answerIndex": 0,
-    "translation": "このかばんは去年買ったものより高い。",
-    "explanation": "than があるので比較級。expensive は長い形容詞なので more をつけて比較級を作る。",
-    "distractorNotes": [
-      "more expensive = 比較級。than とセットで使う",
-      "expensive は原級。than とは一緒に使えない",
-      "most expensive は最上級。than ではなく in / of と使う",
-      "the most expensive も最上級。「〜より」とは言えない"
-    ],
-    "vocab": []
-  },
-  {
     "id": "p2-v-013",
     "section": "r-vocab",
-    "tags": ["grammar:conjunction"],
+    "tags": [
+      "grammar:conjunction"
+    ],
     "difficulty": 2,
     "stem": "The box was ( ) heavy that Kenta couldn't carry it by himself.",
-    "choices": ["so", "too", "very", "such"],
+    "choices": [
+      "so",
+      "too",
+      "very",
+      "such"
+    ],
     "answerIndex": 0,
     "translation": "その箱はとても重かったので、健太は一人で運べなかった。",
     "explanation": "so + 形容詞 + that ... で「とても〜なので…」。後ろに that があるのが決め手。",
@@ -236,10 +202,17 @@
   {
     "id": "p2-v-014",
     "section": "r-vocab",
-    "tags": ["grammar:conjunction"],
+    "tags": [
+      "grammar:conjunction"
+    ],
     "difficulty": 2,
     "stem": "( ) it was raining hard, the children kept playing soccer outside.",
-    "choices": ["Although", "However", "Because", "Since"],
+    "choices": [
+      "Although",
+      "However",
+      "Because",
+      "Since"
+    ],
     "answerIndex": 0,
     "translation": "激しく雨が降っていたが、子どもたちは外でサッカーを続けた。",
     "explanation": "「雨が降っていた」と「外でサッカーを続けた」は逆の内容。逆接の接続詞 Although が入る。",
@@ -254,10 +227,17 @@
   {
     "id": "p2-v-015",
     "section": "r-vocab",
-    "tags": ["vocab:noun"],
+    "tags": [
+      "vocab:noun"
+    ],
     "difficulty": 2,
     "stem": "The ( ) clapped loudly when the singer finished her last song.",
-    "choices": ["audience", "staff", "passenger", "customer"],
+    "choices": [
+      "audience",
+      "staff",
+      "passenger",
+      "customer"
+    ],
     "answerIndex": 0,
     "translation": "歌手が最後の曲を歌い終えると、観客が大きな拍手をした。",
     "explanation": "コンサートで演奏を聴いている人たちは audience（観客・聴衆）。場所と行動から判断する。",
@@ -267,15 +247,27 @@
       "passenger = 乗客。乗り物に乗っている人",
       "customer = 客だが、店で買い物をする客を指す"
     ],
-    "vocab": [{ "word": "audience", "meaning": "観客、聴衆" }]
+    "vocab": [
+      {
+        "word": "audience",
+        "meaning": "観客、聴衆"
+      }
+    ]
   },
   {
     "id": "p2-v-016",
     "section": "r-vocab",
-    "tags": ["vocab:adjective"],
+    "tags": [
+      "vocab:adjective"
+    ],
     "difficulty": 2,
     "stem": "This app is really ( ). You can check the train times in a few seconds.",
-    "choices": ["convenient", "nervous", "similar", "possible"],
+    "choices": [
+      "convenient",
+      "nervous",
+      "similar",
+      "possible"
+    ],
     "answerIndex": 0,
     "translation": "このアプリは本当に便利だ。数秒で電車の時刻を確認できる。",
     "explanation": "2文目が「数秒で確認できる」という便利さの説明になっているので convenient。空所の理由が次の文に書かれているパターン。",
@@ -285,15 +277,27 @@
       "similar = 似ている。similar to ~ の形で使い、ここでは何と似ているのか不明",
       "possible = 可能な。「アプリが可能だ」では意味をなさない"
     ],
-    "vocab": [{ "word": "convenient", "meaning": "便利な" }]
+    "vocab": [
+      {
+        "word": "convenient",
+        "meaning": "便利な"
+      }
+    ]
   },
   {
     "id": "p2-v-017",
     "section": "r-vocab",
-    "tags": ["vocab:adverb"],
+    "tags": [
+      "vocab:adverb"
+    ],
     "difficulty": 3,
     "stem": "I could ( ) hear what Tom said because the room was very noisy.",
-    "choices": ["hardly", "almost", "nearly", "mostly"],
+    "choices": [
+      "hardly",
+      "almost",
+      "nearly",
+      "mostly"
+    ],
     "answerIndex": 0,
     "translation": "部屋がとてもうるさかったので、トムが何を言ったのかほとんど聞き取れなかった。",
     "explanation": "hardly は「ほとんど〜ない」という否定の意味を持つ副詞。hard（一生懸命）と混同しやすい要注意単語。",
@@ -303,51 +307,28 @@
       "nearly = ほぼ。肯定の意味なので「うるさかった」と噛み合わない",
       "mostly = たいていは、主に。頻度を表す語"
     ],
-    "vocab": [{ "word": "hardly", "meaning": "ほとんど〜ない", "example": "I can hardly believe it." }]
-  },
-  {
-    "id": "p2-v-018",
-    "section": "r-vocab",
-    "tags": ["vocab:phrasal-verb"],
-    "difficulty": 1,
-    "stem": "A: This math problem is too difficult.\nB: Don't ( ) up. Let's try it together.",
-    "choices": ["give", "take", "put", "come"],
-    "answerIndex": 0,
-    "translation": "A: この数学の問題、難しすぎる。／B: あきらめないで。一緒にやってみよう。",
-    "explanation": "give up = あきらめる。励ます場面の定番表現。",
-    "distractorNotes": [
-      "give up = あきらめる",
-      "take up = (趣味などを)始める。「始めるな」では話が逆になる",
-      "put up は put up with ~（我慢する）の形で使うことが多い",
-      "come up = 近づく、話題に上がる。命令文で励ます意味にはならない"
-    ],
-    "vocab": [{ "word": "give up", "meaning": "あきらめる" }]
-  },
-  {
-    "id": "p2-v-019",
-    "section": "r-vocab",
-    "tags": ["vocab:idiom"],
-    "difficulty": 2,
-    "stem": "Could you ( ) care of my cat while I'm on vacation?",
-    "choices": ["take", "make", "give", "do"],
-    "answerIndex": 0,
-    "translation": "私が休暇の間、猫の世話をしてもらえませんか。",
-    "explanation": "take care of ~ = 〜の世話をする。look after ~ とほぼ同じ意味。",
-    "distractorNotes": [
-      "take care of ~ = 〜の世話をする",
-      "make care は英語として存在しない組み合わせ",
-      "give care も一般的な言い方ではない",
-      "do care は「気にかける」の強調で、of は続かない"
-    ],
-    "vocab": [{ "word": "take care of", "meaning": "〜の世話をする" }]
+    "vocab": [
+      {
+        "word": "hardly",
+        "meaning": "ほとんど〜ない",
+        "example": "I can hardly believe it."
+      }
+    ]
   },
   {
     "id": "p2-v-020",
     "section": "r-vocab",
-    "tags": ["vocab:phrasal-verb"],
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
     "difficulty": 3,
     "stem": "Yuki ( ) along well with all of her classmates.",
-    "choices": ["gets", "makes", "takes", "puts"],
+    "choices": [
+      "gets",
+      "makes",
+      "takes",
+      "puts"
+    ],
     "answerIndex": 0,
     "translation": "ユキはクラスメート全員とうまくやっている。",
     "explanation": "get along with ~ = 〜と仲良くやっていく。人間関係を表す頻出熟語。",
@@ -357,15 +338,28 @@
       "take along は「連れていく」。take my sister along のように使う",
       "put along という熟語は存在しない"
     ],
-    "vocab": [{ "word": "get along with", "meaning": "〜と仲良くやる" }]
+    "vocab": [
+      {
+        "word": "get along with",
+        "meaning": "〜と仲良くやる"
+      }
+    ]
   },
   {
     "id": "p2-v-021",
     "section": "r-vocab",
-    "tags": ["vocab:verb", "vocab:collocation"],
+    "tags": [
+      "vocab:verb",
+      "vocab:collocation"
+    ],
     "difficulty": 2,
     "stem": "Whether we go to the beach tomorrow ( ) on the weather.",
-    "choices": ["depends", "believes", "decides", "expects"],
+    "choices": [
+      "depends",
+      "believes",
+      "decides",
+      "expects"
+    ],
     "answerIndex": 0,
     "translation": "明日ビーチに行くかどうかは天気次第だ。",
     "explanation": "depend on ~ = 〜次第である、〜による。前置詞 on とセットで覚える。",
@@ -375,15 +369,27 @@
       "decide は on を伴うこともあるが、主語が「行くかどうか」なので意味が通らない",
       "expect は前置詞なしで目的語を取る"
     ],
-    "vocab": [{ "word": "depend on", "meaning": "〜次第である、〜に頼る" }]
+    "vocab": [
+      {
+        "word": "depend on",
+        "meaning": "〜次第である、〜に頼る"
+      }
+    ]
   },
   {
     "id": "p2-v-022",
     "section": "r-vocab",
-    "tags": ["grammar:tense"],
+    "tags": [
+      "grammar:tense"
+    ],
     "difficulty": 2,
     "stem": "I ( ) to play the piano when I was in elementary school, but I don't anymore.",
-    "choices": ["used", "was used", "am used", "use"],
+    "choices": [
+      "used",
+      "was used",
+      "am used",
+      "use"
+    ],
     "answerIndex": 0,
     "translation": "小学生のころピアノを弾いていたが、今はもう弾いていない。",
     "explanation": "used to ~ = 「昔は〜していた（今はしていない）」。後半の but I don't anymore がヒント。",
@@ -393,15 +399,27 @@
       "am used も同様に「慣れている」の意味になり、過去の話と噛み合わない",
       "use は現在形。when I was ... という過去の話と時制が合わない"
     ],
-    "vocab": [{ "word": "used to", "meaning": "以前は〜していた" }]
+    "vocab": [
+      {
+        "word": "used to",
+        "meaning": "以前は〜していた"
+      }
+    ]
   },
   {
     "id": "p2-v-023",
     "section": "r-vocab",
-    "tags": ["grammar:tense"],
+    "tags": [
+      "grammar:tense"
+    ],
     "difficulty": 2,
     "stem": "If it ( ) tomorrow, we will visit the museum instead of the park.",
-    "choices": ["rains", "will rain", "rained", "is raining"],
+    "choices": [
+      "rains",
+      "will rain",
+      "rained",
+      "is raining"
+    ],
     "answerIndex": 0,
     "translation": "もし明日雨が降ったら、公園ではなく博物館に行きます。",
     "explanation": "「条件を表す if 節の中では、未来のことでも現在形で表す」というルール。主節は will でよい。",
@@ -414,30 +432,19 @@
     "vocab": []
   },
   {
-    "id": "p2-v-024",
-    "section": "r-vocab",
-    "tags": ["vocab:verb"],
-    "difficulty": 2,
-    "stem": "A: Can I ( ) your eraser for a minute?\nB: Sure, here you are.",
-    "choices": ["borrow", "lend", "rent", "return"],
-    "answerIndex": 0,
-    "translation": "A: ちょっと消しゴムを借りてもいい？／B: いいよ、はいどうぞ。",
-    "explanation": "borrow = （無料で）借りる。話し手が「借りる」側なので borrow。lend との使い分けが頻出。",
-    "distractorNotes": [
-      "borrow = 借りる。borrow 物 from 人",
-      "lend = 貸す。貸す側が使う語で、ここでは意味が逆",
-      "rent = お金を払って借りる。消しゴムには使わない",
-      "return = 返す。まだ借りていないので順番が合わない"
-    ],
-    "vocab": [{ "word": "borrow", "meaning": "借りる（無料で）" }]
-  },
-  {
     "id": "p2-v-025",
     "section": "r-vocab",
-    "tags": ["vocab:noun"],
+    "tags": [
+      "vocab:noun"
+    ],
     "difficulty": 3,
     "stem": "Many people are worried about the ( ) and try to use less plastic.",
-    "choices": ["environment", "government", "experiment", "instrument"],
+    "choices": [
+      "environment",
+      "government",
+      "experiment",
+      "instrument"
+    ],
     "answerIndex": 0,
     "translation": "多くの人が環境を心配して、プラスチックの使用を減らそうとしている。",
     "explanation": "「プラスチックを減らす」という後半から environment（環境）。似た形の単語が並ぶので、意味で選ぶ。",
@@ -447,15 +454,27 @@
       "experiment = 実験",
       "instrument = 楽器、器具"
     ],
-    "vocab": [{ "word": "environment", "meaning": "環境" }]
+    "vocab": [
+      {
+        "word": "environment",
+        "meaning": "環境"
+      }
+    ]
   },
   {
     "id": "p2-v-026",
     "section": "r-vocab",
-    "tags": ["vocab:verb"],
+    "tags": [
+      "vocab:verb"
+    ],
     "difficulty": 3,
     "stem": "Our school is trying to ( ) the amount of food waste in the cafeteria.",
-    "choices": ["reduce", "increase", "produce", "collect"],
+    "choices": [
+      "reduce",
+      "increase",
+      "produce",
+      "collect"
+    ],
     "answerIndex": 0,
     "translation": "私たちの学校は食堂での食品廃棄の量を減らそうとしている。",
     "explanation": "food waste（食べ残し）は減らすべきもの。reduce = 減らす。環境関連の長文でも頻出。",
@@ -465,15 +484,28 @@
       "produce = 生産する。「廃棄を生産する」では意図が逆",
       "collect = 集める。集めること自体は目的にならない"
     ],
-    "vocab": [{ "word": "reduce", "meaning": "減らす" }]
+    "vocab": [
+      {
+        "word": "reduce",
+        "meaning": "減らす"
+      }
+    ]
   },
   {
     "id": "p2-v-027",
     "section": "r-vocab",
-    "tags": ["vocab:verb", "vocab:collocation"],
+    "tags": [
+      "vocab:verb",
+      "vocab:collocation"
+    ],
     "difficulty": 2,
     "stem": "Ken is ( ) for the entrance exam every night these days.",
-    "choices": ["preparing", "planning", "expecting", "hoping"],
+    "choices": [
+      "preparing",
+      "planning",
+      "expecting",
+      "hoping"
+    ],
     "answerIndex": 0,
     "translation": "ケンは最近毎晩、入学試験に向けて準備している。",
     "explanation": "prepare for ~ = 〜に備えて準備する。前置詞 for とセット。",
@@ -483,15 +515,27 @@
       "expect は目的語を直接取る。expect for とは言わない",
       "hope は hope for ~ とも言うが「試験を望む」となり不自然"
     ],
-    "vocab": [{ "word": "prepare for", "meaning": "〜の準備をする" }]
+    "vocab": [
+      {
+        "word": "prepare for",
+        "meaning": "〜の準備をする"
+      }
+    ]
   },
   {
     "id": "p2-v-028",
     "section": "r-vocab",
-    "tags": ["vocab:verb"],
+    "tags": [
+      "vocab:verb"
+    ],
     "difficulty": 3,
     "stem": "My teacher ( ) me to try the speech contest, so I decided to enter.",
-    "choices": ["encouraged", "reminded", "allowed", "refused"],
+    "choices": [
+      "encouraged",
+      "reminded",
+      "allowed",
+      "refused"
+    ],
     "answerIndex": 0,
     "translation": "先生がスピーチコンテストに挑戦するよう励ましてくれたので、出場することにした。",
     "explanation": "encourage 人 to ~ = 人に〜するよう励ます・勧める。「だから出場を決めた」という流れに合う。",
@@ -501,15 +545,27 @@
       "allow 人 to ~ は「許可する」。許可だけでは決心の理由として弱い",
       "refuse は「断る」。refuse 人 to ~ という形も取らない"
     ],
-    "vocab": [{ "word": "encourage", "meaning": "励ます、勧める" }]
+    "vocab": [
+      {
+        "word": "encourage",
+        "meaning": "励ます、勧める"
+      }
+    ]
   },
   {
     "id": "p2-v-029",
     "section": "r-vocab",
-    "tags": ["vocab:noun"],
+    "tags": [
+      "vocab:noun"
+    ],
     "difficulty": 3,
     "stem": "Studying abroad gave Aya a great ( ) to make friends from many countries.",
-    "choices": ["opportunity", "experience", "condition", "situation"],
+    "choices": [
+      "opportunity",
+      "experience",
+      "condition",
+      "situation"
+    ],
     "answerIndex": 0,
     "translation": "留学はアヤに、多くの国の友達を作るすばらしい機会を与えてくれた。",
     "explanation": "opportunity to ~ = 〜する機会。空所のあとに to不定詞が続いている点がヒント。",
@@ -519,15 +575,27 @@
       "condition = 状態、条件。to不定詞は続かない",
       "situation = 状況。同じく to不定詞を伴わない"
     ],
-    "vocab": [{ "word": "opportunity", "meaning": "機会" }]
+    "vocab": [
+      {
+        "word": "opportunity",
+        "meaning": "機会"
+      }
+    ]
   },
   {
     "id": "p2-v-030",
     "section": "r-vocab",
-    "tags": ["vocab:verb"],
+    "tags": [
+      "vocab:verb"
+    ],
     "difficulty": 2,
     "stem": "A: I'm going to Kyoto next month. Do you know any good places?\nB: I ( ) Fushimi Inari Shrine. It's amazing.",
-    "choices": ["recommend", "introduce", "advise", "suggest"],
+    "choices": [
+      "recommend",
+      "introduce",
+      "advise",
+      "suggest"
+    ],
     "answerIndex": 0,
     "translation": "A: 来月京都に行くんだ。どこかいい場所知ってる？／B: 伏見稲荷大社をおすすめするよ。すごいから。",
     "explanation": "recommend + 名詞 で「〜をすすめる」。おすすめを聞かれたときの最も自然な答え方。",
@@ -537,33 +605,27 @@
       "advise は advise 人 to ~ の形が基本で、場所を直接目的語には取りにくい",
       "suggest も「提案する」だが、suggest going のように動名詞や that節を伴うことが多い"
     ],
-    "vocab": [{ "word": "recommend", "meaning": "すすめる" }]
-  },
-  {
-    "id": "p2-v-031",
-    "section": "r-vocab",
-    "tags": ["grammar:perfect"],
-    "difficulty": 2,
-    "stem": "A: Have you finished your science report?\nB: No, I haven't started it ( ).",
-    "choices": ["yet", "already", "still", "ever"],
-    "answerIndex": 0,
-    "translation": "A: 理科のレポートは終わった？／B: ううん、まだ始めてもいないよ。",
-    "explanation": "現在完了の否定文の文末に置く yet は「まだ（〜ない）」。肯定文・疑問文・否定文で使う語が違う点が狙われる。",
-    "distractorNotes": [
-      "yet = まだ。否定文・疑問文の文末で使う",
-      "already = すでに。肯定文で使う語で、否定文とは合わない",
-      "still は「まだ」だが not の前に置く（I still haven't ...）。文末には来ない",
-      "ever は疑問文で「今までに」の意味。否定文の文末では使わない"
-    ],
-    "vocab": []
+    "vocab": [
+      {
+        "word": "recommend",
+        "meaning": "すすめる"
+      }
+    ]
   },
   {
     "id": "p2-v-032",
     "section": "r-vocab",
-    "tags": ["grammar:participle"],
+    "tags": [
+      "grammar:participle"
+    ],
     "difficulty": 3,
     "stem": "Look at the girl ( ) the guitar over there. She's my cousin.",
-    "choices": ["playing", "plays", "played", "to play"],
+    "choices": [
+      "playing",
+      "plays",
+      "played",
+      "to play"
+    ],
     "answerIndex": 0,
     "translation": "向こうでギターを弾いている女の子を見て。私のいとこなの。",
     "explanation": "現在分詞の後置修飾。the girl playing the guitar = 「ギターを弾いている女の子」。関係代名詞を使えば who is playing。",
@@ -576,30 +638,19 @@
     "vocab": []
   },
   {
-    "id": "p2-v-033",
-    "section": "r-vocab",
-    "tags": ["grammar:tense"],
-    "difficulty": 2,
-    "stem": "You'll ( ) able to speak English well if you keep practicing every day.",
-    "choices": ["be", "are", "being", "been"],
-    "answerIndex": 0,
-    "translation": "毎日練習を続ければ、英語をうまく話せるようになるでしょう。",
-    "explanation": "will のあとは必ず動詞の原形。be able to ~ の be がそのまま入る。",
-    "distractorNotes": [
-      "be = 原形。will be able to ~ = 〜できるようになるだろう",
-      "are は現在形。will のあとには置けない",
-      "being は ~ing 形。will のあとには置けない",
-      "been は過去分詞。will have been なら可能だが have がない"
-    ],
-    "vocab": [{ "word": "be able to", "meaning": "〜できる" }]
-  },
-  {
     "id": "p2-v-034",
     "section": "r-vocab",
-    "tags": ["vocab:idiom"],
+    "tags": [
+      "vocab:idiom"
+    ],
     "difficulty": 3,
     "stem": "Sarah looks young, but ( ) fact, she is almost fifty.",
-    "choices": ["in", "on", "at", "by"],
+    "choices": [
+      "in",
+      "on",
+      "at",
+      "by"
+    ],
     "answerIndex": 0,
     "translation": "サラは若く見えるが、実際には50歳近い。",
     "explanation": "in fact = 実際は。前の内容と対比して意外な事実を述べるときに使う。",
@@ -609,15 +660,27 @@
       "at fact という言い方は存在しない",
       "by fact という言い方は存在しない"
     ],
-    "vocab": [{ "word": "in fact", "meaning": "実際は" }]
+    "vocab": [
+      {
+        "word": "in fact",
+        "meaning": "実際は"
+      }
+    ]
   },
   {
     "id": "p2-v-035",
     "section": "r-vocab",
-    "tags": ["vocab:verb"],
+    "tags": [
+      "vocab:verb"
+    ],
     "difficulty": 3,
     "stem": "The band will ( ) at the school festival next Saturday.",
-    "choices": ["perform", "appear", "happen", "attend"],
+    "choices": [
+      "perform",
+      "appear",
+      "happen",
+      "attend"
+    ],
     "answerIndex": 0,
     "translation": "そのバンドは次の土曜日、学園祭で演奏する。",
     "explanation": "perform = 演奏する、演じる。バンドや劇の主語と結びつく代表的な動詞。",
@@ -627,15 +690,27 @@
       "happen = 起こる。人やバンドが主語にならない",
       "attend = 出席する。attend the festival なら可能だが「観客として参加する」意味になる"
     ],
-    "vocab": [{ "word": "perform", "meaning": "演奏する、上演する" }]
+    "vocab": [
+      {
+        "word": "perform",
+        "meaning": "演奏する、上演する"
+      }
+    ]
   },
   {
     "id": "p2-v-036",
     "section": "r-vocab",
-    "tags": ["grammar:tense"],
+    "tags": [
+      "grammar:tense"
+    ],
     "difficulty": 2,
     "stem": "Please call me when you ( ) at the station. I'll come and pick you up.",
-    "choices": ["arrive", "will arrive", "arrived", "are arriving"],
+    "choices": [
+      "arrive",
+      "will arrive",
+      "arrived",
+      "are arriving"
+    ],
     "answerIndex": 0,
     "translation": "駅に着いたら電話してください。迎えに行きます。",
     "explanation": "時を表す when 節の中では、未来のことでも現在形を使う。if 節と同じルール。",
@@ -648,30 +723,19 @@
     "vocab": []
   },
   {
-    "id": "p2-v-037",
-    "section": "r-vocab",
-    "tags": ["vocab:adjective"],
-    "difficulty": 2,
-    "stem": "I was ( ) when I heard that my best friend was moving to Osaka.",
-    "choices": ["surprised", "surprising", "surprise", "surprises"],
-    "answerIndex": 0,
-    "translation": "親友が大阪に引っ越すと聞いて驚いた。",
-    "explanation": "感情を表す動詞は、人が「〜させられる」側なので過去分詞（-ed）。物事が主語なら -ing になる。",
-    "distractorNotes": [
-      "surprised = 驚いた。人の気持ちを表すときは -ed",
-      "surprising = 驚かせるような。The news was surprising. なら正しい",
-      "surprise は名詞または動詞の原形。be動詞のあとには置けない",
-      "surprises も同様に be動詞のあとには置けない"
-    ],
-    "vocab": [{ "word": "be surprised", "meaning": "驚く" }]
-  },
-  {
     "id": "p2-v-038",
     "section": "r-vocab",
-    "tags": ["vocab:noun"],
+    "tags": [
+      "vocab:noun"
+    ],
     "difficulty": 3,
     "stem": "You need to make a ( ) at the clinic before you see the doctor.",
-    "choices": ["appointment", "promise", "invitation", "schedule"],
+    "choices": [
+      "appointment",
+      "promise",
+      "invitation",
+      "schedule"
+    ],
     "answerIndex": 0,
     "translation": "医者に診てもらう前に、クリニックの予約を取る必要があります。",
     "explanation": "make an appointment = （病院・美容院などの）予約を取る。reserve は席や部屋、appointment は人と会う約束。",
@@ -681,15 +745,27 @@
       "invitation = 招待",
       "schedule = 予定表。make a schedule は「予定を立てる」で意味が違う"
     ],
-    "vocab": [{ "word": "make an appointment", "meaning": "（医者などの）予約を取る" }]
+    "vocab": [
+      {
+        "word": "make an appointment",
+        "meaning": "（医者などの）予約を取る"
+      }
+    ]
   },
   {
     "id": "p2-v-039",
     "section": "r-vocab",
-    "tags": ["grammar:relative"],
+    "tags": [
+      "grammar:relative"
+    ],
     "difficulty": 3,
     "stem": "This is the restaurant ( ) my parents had their first date.",
-    "choices": ["where", "which", "who", "what"],
+    "choices": [
+      "where",
+      "which",
+      "who",
+      "what"
+    ],
     "answerIndex": 0,
     "translation": "ここが両親が初デートをしたレストランです。",
     "explanation": "先行詞が場所（restaurant）で、後ろが「主語＋動詞＋目的語」の完全な文になっているので関係副詞 where。",
@@ -702,21 +778,817 @@
     "vocab": []
   },
   {
-    "id": "p2-v-040",
+    "id": "p2-v-041",
     "section": "r-vocab",
-    "tags": ["vocab:idiom"],
-    "difficulty": 3,
-    "stem": "The concert was canceled ( ) of the typhoon.",
-    "choices": ["because", "instead", "thanks", "in spite"],
-    "answerIndex": 0,
-    "translation": "台風のためコンサートは中止になった。",
-    "explanation": "because of ~ = 〜のせいで、〜のために。後ろに名詞が来る。接続詞 because（後ろは文）との違いに注意。",
-    "distractorNotes": [
-      "because of + 名詞 = 〜が原因で",
-      "instead of ~ は「〜の代わりに」。中止の理由にならない",
-      "thanks to ~ は「〜のおかげで」。of ではなく to を使う上、良い結果に使う",
-      "in spite of ~ は「〜にもかかわらず」。台風でも開催された、という逆の意味になる"
+    "tags": [
+      "vocab:verb"
     ],
-    "vocab": [{ "word": "because of", "meaning": "〜のために（原因）" }]
+    "difficulty": 2,
+    "stem": "I really ( ) your help. I couldn't have finished the project without you.",
+    "choices": [
+      "appreciate",
+      "expect",
+      "receive",
+      "attend"
+    ],
+    "answerIndex": 0,
+    "translation": "手伝ってくれて本当に感謝しています。あなたなしでは課題を終えられませんでした。",
+    "explanation": "appreciate = 感謝する。「〜がなければ終えられなかった」と続くので、助けへのお礼だと分かる。thank は人を目的語に取るが、appreciate は行為や物を目的語に取る。",
+    "distractorNotes": [
+      "appreciate = ありがたく思う。appreciate your help の形で覚える",
+      "expect = 予期する。助けを「予期している」では後半とつながらない",
+      "receive = 受け取る。事実を述べるだけでお礼にならない",
+      "attend = 出席する。目的語が help では意味をなさない"
+    ],
+    "vocab": [
+      {
+        "word": "appreciate",
+        "meaning": "感謝する",
+        "example": "I appreciate your advice."
+      }
+    ]
+  },
+  {
+    "id": "p2-v-042",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "Several customers ( ) about the noise from the construction site next door.",
+    "choices": [
+      "complained",
+      "explained",
+      "agreed",
+      "succeeded"
+    ],
+    "answerIndex": 0,
+    "translation": "数人の客が、隣の工事現場からの騒音について苦情を言った。",
+    "explanation": "complain about ~ = 〜について苦情を言う。騒音というマイナスの対象なので、不満を表す動詞が入る。前置詞 about とセットで覚える。",
+    "distractorNotes": [
+      "complain about ~ = 〜に苦情を言う",
+      "explain は「説明する」。explain about とは普通言わず、意味も合わない",
+      "agree about ~ は「〜について意見が一致する」。騒音に賛成するのは不自然",
+      "succeed in ~ が正しい形。about は取らない"
+    ],
+    "vocab": [
+      {
+        "word": "complain about",
+        "meaning": "〜について苦情を言う"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-043",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "This drink ( ) no sugar, so it's a good choice if you're on a diet.",
+    "choices": [
+      "contains",
+      "collects",
+      "supports",
+      "produces"
+    ],
+    "answerIndex": 0,
+    "translation": "この飲み物は砂糖を含んでいないので、ダイエット中ならよい選択だ。",
+    "explanation": "contain = （中身として）含む。成分表示や食品の説明で頻出。include と近いが、contain は「中に入っている」というニュアンス。",
+    "distractorNotes": [
+      "contain = 含む。飲み物と成分の関係を表す",
+      "collect = 集める。飲み物が砂糖を集めることはない",
+      "support = 支える、支持する",
+      "produce = 生産する。飲み物が砂糖を作ることになる"
+    ],
+    "vocab": [
+      {
+        "word": "contain",
+        "meaning": "含む",
+        "example": "This soup contains milk."
+      }
+    ]
+  },
+  {
+    "id": "p2-v-044",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "A: How was the concert?\nB: Better than I ( ). The new singer was amazing.",
+    "choices": [
+      "expected",
+      "remembered",
+      "decided",
+      "promised"
+    ],
+    "answerIndex": 0,
+    "translation": "A: コンサートはどうだった？／B: 思っていたより良かったよ。新しい歌手がすごかった。",
+    "explanation": "better than I expected = 思っていたより良い。予想と結果を比べる定番の形。感想を述べる場面でよく使う。",
+    "distractorNotes": [
+      "expect = 予期する。than I expected で「予想より」",
+      "remember = 覚えている。「覚えていたより良い」は不自然",
+      "decide = 決める。比較の対象にならない",
+      "promise = 約束する。誰も何も約束していない"
+    ],
+    "vocab": [
+      {
+        "word": "than I expected",
+        "meaning": "思っていたより"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-045",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "Her Japanese has ( ) a lot since she started living with a host family.",
+    "choices": [
+      "improved",
+      "increased",
+      "continued",
+      "repeated"
+    ],
+    "answerIndex": 0,
+    "translation": "ホストファミリーと暮らし始めてから、彼女の日本語はずいぶん上達した。",
+    "explanation": "improve = 上達する、良くなる。技能や状態が向上するときに使う。increase（量が増える）との使い分けが問われる。",
+    "distractorNotes": [
+      "improve = 上達する。語学力・技能に使う",
+      "increase = （数量が）増える。日本語の「量」が増えるのは不自然",
+      "continue = 続く。上達したかどうかを表さない",
+      "repeat = 繰り返す"
+    ],
+    "vocab": [
+      {
+        "word": "improve",
+        "meaning": "上達する、改善する"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-046",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "It will take about a week to ( ) your bicycle because we need to order a new part.",
+    "choices": [
+      "repair",
+      "return",
+      "reduce",
+      "replace"
+    ],
+    "answerIndex": 0,
+    "translation": "新しい部品を注文する必要があるので、自転車を修理するのに1週間ほどかかります。",
+    "explanation": "repair = 修理する。「新しい部品を注文する」という理由から、直す作業だと分かる。",
+    "distractorNotes": [
+      "repair = 修理する。部品を注文する理由と合う",
+      "return = 返す。自分の自転車を返す相手がいない",
+      "reduce = 減らす。自転車には使わない",
+      "replace = 取り替える。部品ではなく自転車ごと交換する意味になり、1週間かかる理由と合わない"
+    ],
+    "vocab": [
+      {
+        "word": "repair",
+        "meaning": "修理する"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-047",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "It took the class two hours to ( ) the math problem, but they finally found the answer.",
+    "choices": [
+      "solve",
+      "answer",
+      "search",
+      "discover"
+    ],
+    "answerIndex": 0,
+    "translation": "そのクラスが数学の問題を解くのに2時間かかったが、ついに答えを見つけた。",
+    "explanation": "solve a problem = 問題を解く／解決する。problem とセットで使う動詞。answer は question に対して使う。",
+    "distractorNotes": [
+      "solve = 解く。solve a problem の組み合わせが定番",
+      "answer は answer a question の形。problem には使いにくい",
+      "search = 探す。search for ~ の形で使う",
+      "discover = 発見する。すでに存在するものを見つける意味"
+    ],
+    "vocab": [
+      {
+        "word": "solve",
+        "meaning": "解く、解決する",
+        "example": "We solved the problem together."
+      }
+    ]
+  },
+  {
+    "id": "p2-v-048",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "The ( ) of this meeting is to decide the date of the school trip.",
+    "choices": [
+      "purpose",
+      "reason",
+      "result",
+      "chance"
+    ],
+    "answerIndex": 0,
+    "translation": "この会議の目的は、修学旅行の日程を決めることです。",
+    "explanation": "purpose = 目的。The purpose of ~ is to ... という形で頻出。reason（理由）との違いに注意。",
+    "distractorNotes": [
+      "purpose = 目的。これから何をするために開くのかを表す",
+      "reason = 理由。The reason is that ... の形で使い、to不定詞は続きにくい",
+      "result = 結果。会議の前に結果は出ていない",
+      "chance = 機会。「機会は日程を決めることだ」では意味をなさない"
+    ],
+    "vocab": [
+      {
+        "word": "purpose",
+        "meaning": "目的"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-049",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "Thanks to everyone's ( ), we collected enough money to build the new library.",
+    "choices": [
+      "efforts",
+      "results",
+      "chances",
+      "reasons"
+    ],
+    "answerIndex": 0,
+    "translation": "みんなの努力のおかげで、新しい図書館を建てるのに十分なお金が集まった。",
+    "explanation": "effort = 努力。Thanks to ~（〜のおかげで）に続くのは、良い結果を生んだ原因。make an effort（努力する）の形でも覚えておく。",
+    "distractorNotes": [
+      "effort = 努力。お金が集まった原因として自然",
+      "result = 結果。お金が集まったこと自体が結果なので重複する",
+      "chance = 機会。「みんなの機会のおかげで」は不自然",
+      "reason = 理由。thanks to と組み合わせると意味が重なる"
+    ],
+    "vocab": [
+      {
+        "word": "effort",
+        "meaning": "努力",
+        "example": "She made an effort to be on time."
+      }
+    ]
+  },
+  {
+    "id": "p2-v-050",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "The typhoon caused serious ( ) to the farms along the river.",
+    "choices": [
+      "damage",
+      "trouble",
+      "accident",
+      "danger"
+    ],
+    "answerIndex": 0,
+    "translation": "台風は川沿いの農場に深刻な被害をもたらした。",
+    "explanation": "cause damage to ~ = 〜に被害を与える。自然災害と被害を結ぶ定型表現。damage は数えられない名詞なので a がつかない。",
+    "distractorNotes": [
+      "damage = 被害、損害。cause damage to ~ の形で使う",
+      "trouble = 面倒、困りごと。物理的な被害には使わない",
+      "accident は数えられる名詞なので serious accident には a が必要",
+      "danger = 危険（という状態）。すでに起きた被害を表さない"
+    ],
+    "vocab": [
+      {
+        "word": "damage",
+        "meaning": "被害、損害"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-051",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "The shop sells ( ) kinds of tea from around the world.",
+    "choices": [
+      "various",
+      "several",
+      "much",
+      "another"
+    ],
+    "answerIndex": 0,
+    "translation": "その店は世界中のさまざまな種類のお茶を売っている。",
+    "explanation": "various = さまざまな。種類の多さを表す。「世界中の」と合わせて多様性を示している。",
+    "distractorNotes": [
+      "various = さまざまな。種類の幅を表す",
+      "several = いくつかの。数を示すだけで「世界中の」という広がりと合わない",
+      "much は数えられない名詞につく。kinds は複数形なので不可",
+      "another = もう一つの。単数名詞につくので kinds とは合わない"
+    ],
+    "vocab": [
+      {
+        "word": "various",
+        "meaning": "さまざまな"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-052",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 2,
+    "stem": "It is ( ) to bring your student ID card when you take the exam.",
+    "choices": [
+      "necessary",
+      "possible",
+      "careful",
+      "similar"
+    ],
+    "answerIndex": 0,
+    "translation": "試験を受けるときは学生証を持ってくることが必要です。",
+    "explanation": "It is necessary to ~ = 〜することが必要だ。持ち物の案内で使われる定型。",
+    "distractorNotes": [
+      "necessary = 必要な。持ち物の指示として自然",
+      "possible = 可能な。「持ってくることが可能」では指示にならない",
+      "careful は人が主語。It is careful to ~ とは言わない",
+      "similar = 似ている。similar to ~ の形で使う"
+    ],
+    "vocab": [
+      {
+        "word": "necessary",
+        "meaning": "必要な"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-053",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adverb"
+    ],
+    "difficulty": 3,
+    "stem": "At first he could only run one kilometer, but he ( ) built up his strength.",
+    "choices": [
+      "gradually",
+      "suddenly",
+      "hardly",
+      "exactly"
+    ],
+    "answerIndex": 0,
+    "translation": "最初は1キロしか走れなかったが、彼は徐々に体力をつけていった。",
+    "explanation": "gradually = 徐々に。At first ~, but ... という時間の流れを示す文と相性がよい。",
+    "distractorNotes": [
+      "gradually = 徐々に。少しずつ変化していく様子を表す",
+      "suddenly = 突然。体力づくりは急には進まないので流れに合わない",
+      "hardly = ほとんど〜ない。否定の意味になり but の後ろと矛盾する",
+      "exactly = 正確に。程度ではなく正確さを表す"
+    ],
+    "vocab": [
+      {
+        "word": "gradually",
+        "meaning": "徐々に"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-054",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adverb"
+    ],
+    "difficulty": 2,
+    "stem": "I ( ) started learning Korean, so I can only say a few words.",
+    "choices": [
+      "recently",
+      "already",
+      "usually",
+      "someday"
+    ],
+    "answerIndex": 0,
+    "translation": "最近、韓国語を習い始めたところなので、少ししか言えません。",
+    "explanation": "recently = 最近。「まだ少ししか言えない」という結果から、始めたばかりだと分かる。",
+    "distractorNotes": [
+      "recently = 最近。始めて間もないことを表す",
+      "already = すでに。「もう始めた」では、話せない理由にならない",
+      "usually = たいてい。習慣を表す語で、開始時期を表さない",
+      "someday = いつか。未来のことなので過去形と合わない"
+    ],
+    "vocab": [
+      {
+        "word": "recently",
+        "meaning": "最近"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-055",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 2,
+    "stem": "About 300 students will take ( ) in the school marathon this year.",
+    "choices": [
+      "part",
+      "place",
+      "care",
+      "time"
+    ],
+    "answerIndex": 0,
+    "translation": "今年は約300人の生徒が校内マラソンに参加する。",
+    "explanation": "take part in ~ = 〜に参加する。participate in ~ と同じ意味。in とセットで覚える。",
+    "distractorNotes": [
+      "take part in ~ = 〜に参加する",
+      "take place = 行われる。主語が行事のときに使い、人が主語にはならない",
+      "take care of ~ は「世話をする」。of が必要",
+      "take time = 時間がかかる。in は続かない"
+    ],
+    "vocab": [
+      {
+        "word": "take part in",
+        "meaning": "〜に参加する"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-056",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 2,
+    "stem": "The school festival will take ( ) on the second weekend of October.",
+    "choices": [
+      "place",
+      "part",
+      "over",
+      "away"
+    ],
+    "answerIndex": 0,
+    "translation": "学園祭は10月の第2週末に行われる。",
+    "explanation": "take place = 行われる、開催される。行事が主語のときに使う。前の問題の take part in と対にして覚えると混同しにくい。",
+    "distractorNotes": [
+      "take place = 行われる。行事が主語のときの定番",
+      "take part in は人が参加するときの形。行事自体は「参加」しない",
+      "take over = 引き継ぐ",
+      "take away = 持ち去る"
+    ],
+    "vocab": [
+      {
+        "word": "take place",
+        "meaning": "行われる、開催される"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-057",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 2,
+    "stem": "I called the station to find ( ) what time the last train leaves.",
+    "choices": [
+      "out",
+      "up",
+      "off",
+      "over"
+    ],
+    "answerIndex": 0,
+    "translation": "終電が何時に出るのか調べるために駅に電話した。",
+    "explanation": "find out = （調べて）分かる、突き止める。知らなかった情報を得るときに使う。",
+    "distractorNotes": [
+      "find out = 調べて知る",
+      "find up という句動詞は存在しない",
+      "find off という句動詞は存在しない",
+      "find over という句動詞は存在しない"
+    ],
+    "vocab": [
+      {
+        "word": "find out",
+        "meaning": "（調べて）分かる"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-058",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "Our team came ( ) with three ideas for reducing plastic waste at school.",
+    "choices": [
+      "up",
+      "out",
+      "along",
+      "across"
+    ],
+    "answerIndex": 0,
+    "translation": "私たちのチームは、学校でのプラスチックごみを減らす案を3つ思いついた。",
+    "explanation": "come up with ~ = （案などを）思いつく。会議やグループ活動の説明で頻出。",
+    "distractorNotes": [
+      "come up with ~ = 思いつく",
+      "come out = 出てくる、発売される。with は続かない",
+      "come along = 一緒に来る、うまく進む",
+      "come across ~ は「偶然出会う」。with は取らない"
+    ],
+    "vocab": [
+      {
+        "word": "come up with",
+        "meaning": "思いつく"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-059",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 2,
+    "stem": "Could you look ( ) my little sister for an hour while I go shopping?",
+    "choices": [
+      "after",
+      "up",
+      "into",
+      "for"
+    ],
+    "answerIndex": 0,
+    "translation": "買い物に行く間、1時間ほど妹の面倒を見てもらえますか。",
+    "explanation": "look after ~ = 〜の世話をする。take care of ~ と同じ意味。似た形の look up / look for との使い分けが問われる。",
+    "distractorNotes": [
+      "look after ~ = 世話をする",
+      "look up ~ は「（辞書などで）調べる」",
+      "look into ~ は「調査する」",
+      "look for ~ は「探す」。妹はここにいるので探す必要はない"
+    ],
+    "vocab": [
+      {
+        "word": "look after",
+        "meaning": "〜の世話をする"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-060",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 2,
+    "stem": "Please make ( ) that all the windows are closed before you leave.",
+    "choices": [
+      "sure",
+      "certain of",
+      "clear",
+      "safe"
+    ],
+    "answerIndex": 0,
+    "translation": "出る前に、窓が全部閉まっているか必ず確認してください。",
+    "explanation": "make sure (that) ... = 〜を確認する、必ず〜する。指示や注意書きで頻出。",
+    "distractorNotes": [
+      "make sure that ... = 〜を確認する",
+      "make certain of ~ は of のあとに名詞が来る。that節は続かない",
+      "make clear は「はっきりさせる」。make it clear that ... の形が普通",
+      "make safe という決まった言い方はない"
+    ],
+    "vocab": [
+      {
+        "word": "make sure",
+        "meaning": "必ず〜する、確認する"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-061",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "You should pay more ( ) to the teacher's instructions before starting the test.",
+    "choices": [
+      "attention",
+      "interest",
+      "care",
+      "notice"
+    ],
+    "answerIndex": 0,
+    "translation": "テストを始める前に、先生の指示にもっと注意を払うべきだ。",
+    "explanation": "pay attention to ~ = 〜に注意を払う。pay とセットになる名詞は attention。",
+    "distractorNotes": [
+      "pay attention to ~ = 注意を払う",
+      "interest は have an interest in ~ / be interested in ~ の形で使う",
+      "care は take care of ~ の形。pay care とは言わない",
+      "notice は take notice of ~ の形。pay notice とは言わない"
+    ],
+    "vocab": [
+      {
+        "word": "pay attention to",
+        "meaning": "〜に注意を払う"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-062",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "We had to stop the game because we ran ( ) of time.",
+    "choices": [
+      "out",
+      "off",
+      "away",
+      "over"
+    ],
+    "answerIndex": 0,
+    "translation": "時間がなくなったので、私たちは試合を止めなければならなかった。",
+    "explanation": "run out of ~ = 〜がなくなる、使い果たす。時間・お金・食料などに使う。",
+    "distractorNotes": [
+      "run out of ~ = 〜を使い果たす",
+      "run off は「走り去る」。of は続かない",
+      "run away は「逃げる」。of は続かない",
+      "run over は「（車で）ひく」"
+    ],
+    "vocab": [
+      {
+        "word": "run out of",
+        "meaning": "〜を使い果たす"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-063",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "The city is trying to ( ) with the problem of too much traffic downtown.",
+    "choices": [
+      "deal",
+      "take",
+      "make",
+      "bring"
+    ],
+    "answerIndex": 0,
+    "translation": "市は中心部の交通量が多すぎるという問題に対処しようとしている。",
+    "explanation": "deal with ~ = （問題などに）対処する。problem / issue とよく結びつく。",
+    "distractorNotes": [
+      "deal with ~ = 対処する",
+      "take with という句動詞はこの意味では使わない",
+      "make with も英語として自然な組み合わせではない",
+      "bring with は「持ってくる」で、目的語が必要"
+    ],
+    "vocab": [
+      {
+        "word": "deal with",
+        "meaning": "〜に対処する"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-064",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 2,
+    "stem": "My mother is ( ) about my grandfather because he lives alone.",
+    "choices": [
+      "worried",
+      "interested",
+      "excited",
+      "surprised"
+    ],
+    "answerIndex": 0,
+    "translation": "祖父が一人暮らしをしているので、母は祖父のことを心配している。",
+    "explanation": "be worried about ~ = 〜を心配している。「一人暮らし」という理由から心配だと分かる。",
+    "distractorNotes": [
+      "be worried about ~ = 心配している",
+      "be interested in ~ が正しい形。about は取らない",
+      "be excited about ~ は「わくわくしている」。一人暮らしを喜ぶのは不自然",
+      "be surprised at / by ~ が普通の形"
+    ],
+    "vocab": [
+      {
+        "word": "be worried about",
+        "meaning": "〜を心配している"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-065",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "Please fill ( ) this form with your name and address before seeing the doctor.",
+    "choices": [
+      "out",
+      "up",
+      "off",
+      "away"
+    ],
+    "answerIndex": 0,
+    "translation": "診察の前に、この用紙に名前と住所を記入してください。",
+    "explanation": "fill out ~ = （用紙に）記入する。fill in ~ も同じ意味で使われる。fill up（満タンにする）と混同しやすい。",
+    "distractorNotes": [
+      "fill out ~ = 用紙に記入する",
+      "fill up は「いっぱいにする」。ガソリンなどに使う",
+      "fill off という句動詞は存在しない",
+      "fill away という句動詞は存在しない"
+    ],
+    "vocab": [
+      {
+        "word": "fill out",
+        "meaning": "（用紙に）記入する"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-066",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 2,
+    "stem": "The museum is far from here, so it takes ( ) least forty minutes by bus.",
+    "choices": [
+      "at",
+      "in",
+      "on",
+      "for"
+    ],
+    "answerIndex": 0,
+    "translation": "美術館はここから遠いので、バスで少なくとも40分かかる。",
+    "explanation": "at least = 少なくとも。数量の前に置いて「最低でも」を表す。",
+    "distractorNotes": [
+      "at least = 少なくとも",
+      "in least という言い方は存在しない",
+      "on least という言い方は存在しない",
+      "for least という言い方は存在しない"
+    ],
+    "vocab": [
+      {
+        "word": "at least",
+        "meaning": "少なくとも"
+      }
+    ]
+  },
+  {
+    "id": "p2-v-067",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:collocation"
+    ],
+    "difficulty": 2,
+    "stem": "I'll call you as ( ) as I get to the hotel.",
+    "choices": [
+      "soon",
+      "long",
+      "far",
+      "well"
+    ],
+    "answerIndex": 0,
+    "translation": "ホテルに着いたらすぐに電話します。",
+    "explanation": "as soon as ... = 〜するとすぐに。時を表す副詞節なので、中の動詞は未来のことでも現在形（get）になる点にも注意。",
+    "distractorNotes": [
+      "as soon as ... = 〜するとすぐに",
+      "as long as ... は「〜する限り」。条件を表し、電話する時期を示さない",
+      "as far as ... は「〜する限りでは」。範囲を表す",
+      "as well as ... は「〜だけでなく」。名詞や句をつなぐ"
+    ],
+    "vocab": [
+      {
+        "word": "as soon as",
+        "meaning": "〜するとすぐに"
+      }
+    ]
   }
 ]

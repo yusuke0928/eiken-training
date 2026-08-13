@@ -4,6 +4,13 @@ import { dueCards } from './srs';
 import { buildReport, difficultyBand, itemWeight, weightedPick, type MasteryReport } from './mastery';
 import { isListening, type MCQItem } from '../types';
 
+/**
+ * いま収録されている問題かどうか。
+ * 問題データを差し替えると、消えた問題の学習記録が端末に残る。
+ * そのままキューに入れると演習が空振りするので、ここで落とす。
+ */
+const known = (id: string) => ITEM_BY_ID.has(id);
+
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -111,7 +118,7 @@ export async function buildSectionQueue(section: string, size: number): Promise<
 /** 復習ボックス（期限が来たものだけ） */
 export async function buildReviewQueue(size: number): Promise<string[]> {
   const due = await dueCards();
-  return groupByPassage(due.slice(0, size).map((c) => c.itemId));
+  return groupByPassage(due.map((c) => c.itemId).filter(known).slice(0, size));
 }
 
 /** 診断テスト。本番の大問構成を縮めた固定セット */

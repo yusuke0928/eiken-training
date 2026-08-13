@@ -383,6 +383,10 @@
       {
         "speaker": "M",
         "text": "Then maybe your brother took it to practice."
+      },
+      {
+        "speaker": "W",
+        "text": "I hope so. I have practice this afternoon, so I really need it today."
       }
     ],
     "question": "Question: What is the girl's problem?",
@@ -393,7 +397,7 @@
       "She was late for tennis practice."
     ],
     "answerIndex": 0,
-    "translation": "W: お父さん、私のテニスラケット見なかった？／M: 昨日ガレージで見たと思うよ。／W: 今朝そこを見たけど、なかったの。／M: じゃあお兄ちゃんが練習に持って行ったのかも。\n問: 女の子の問題は何か。→ ラケットが見つからない。",
+    "translation": "W: お父さん、私のテニスラケット見なかった？／M: 昨日ガレージで見たと思うよ。／W: 今朝そこを見たけど、なかったの。／M: じゃあお兄ちゃんが練習に持って行ったのかも。／W: そうだといいな。今日の午後に練習があるから、本当に今日必要なの。\n問: 女の子の問題は何か。→ ラケットが見つからない。",
     "explanation": "冒頭の have you seen ~?（見なかった？）と、そのあとの it wasn't there から「探している」状況だと分かる。最初の1文で場面をつかむのがコツ。",
     "distractorNotes": [
       "見つからない、が会話全体の状況",
@@ -426,6 +430,10 @@
       {
         "speaker": "W",
         "text": "I'll check with the kitchen right away and bring it as soon as I can."
+      },
+      {
+        "speaker": "M",
+        "text": "Thank you. If it takes much longer, I'm afraid I'll have to leave without it."
       }
     ],
     "question": "Question: What will the woman do next?",
@@ -436,7 +444,7 @@
       "Cook the pasta by herself."
     ],
     "answerIndex": 0,
-    "translation": "M: すみません、20分ほど前にパスタを注文したのですが。／W: 大変申し訳ありません。今夜は厨房が混み合っておりまして。／M: 分かりますが、7時までに出ないといけないんです。／W: すぐ厨房に確認して、できるだけ早くお持ちします。\n問: 女性は次に何をするか。→ 注文を確認する。",
+    "translation": "M: すみません、20分ほど前にパスタを注文したのですが。／W: 大変申し訳ありません。今夜は厨房が混み合っておりまして。／M: 分かりますが、7時までに出ないといけないんです。／W: すぐ厨房に確認して、できるだけ早くお持ちします。／M: ありがとう。あまり長くかかるようなら、食べずに出ないといけないかもしれません。\n問: 女性は次に何をするか。→ 注文を確認する。",
     "explanation": "「次に何をするか」は最後の発言に答えがあることが多い。I'll check with the kitchen right away をそのまま言いかえたものが正解。",
     "distractorNotes": [
       "最後の発言 I'll check with the kitchen と一致",
@@ -470,6 +478,10 @@
       {
         "speaker": "M",
         "text": "Really? Then I'll get there around two."
+      },
+      {
+        "speaker": "W",
+        "text": "Great. I'll be helping at the drama club's stage until four, so come and find me there."
       }
     ],
     "question": "Question: What will the man do on Saturday?",
@@ -480,7 +492,7 @@
       "Perform at the school festival."
     ],
     "answerIndex": 0,
-    "translation": "W: 土曜日の学園祭来る？／M: 行きたいけど、午前中にピアノのレッスンがあるんだ。／W: 5時までやってるから、レッスンのあとに来られるよ。／M: 本当？ じゃあ2時ごろ行くよ。\n問: 男性は土曜日に何をするか。→ 午後に学園祭へ行く。",
+    "translation": "W: 土曜日の学園祭来る？／M: 行きたいけど、午前中にピアノのレッスンがあるんだ。／W: 5時までやってるから、レッスンのあとに来られるよ。／M: 本当？ じゃあ2時ごろ行くよ。／W: よかった。4時までは演劇部のステージを手伝ってるから、そこに来てね。\n問: 男性は土曜日に何をするか。→ 午後に学園祭へ行く。",
     "explanation": "around two（2時ごろ）を「午後」と言いかえている。数字がそのまま選択肢に出ず、言いかえられるパターンは頻出。",
     "distractorNotes": [
       "2時ごろ＝午後。レッスンのあとに行くという流れとも合う",
@@ -513,6 +525,10 @@
       {
         "speaker": "W",
         "text": "Thursday is fine for me. I'll take that one."
+      },
+      {
+        "speaker": "M",
+        "text": "Certainly. I'll write your name down for the Thursday group starting next week."
       }
     ],
     "question": "Question: What did the woman decide to do?",
@@ -523,7 +539,7 @@
       "Come back on Thursday to decide."
     ],
     "answerIndex": 0,
-    "translation": "M: シティ・スポーツセンターへようこそ。ご用件は。／W: 初心者向けの水泳教室に入りたいのですが。／M: あいにく初心者クラスは満員ですが、木曜の夜に別のクラスがあります。／W: 木曜で大丈夫です。それにします。\n問: 女性は何をすることにしたか。→ 木曜夜のクラスを受ける。",
+    "translation": "M: シティ・スポーツセンターへようこそ。ご用件は。／W: 初心者向けの水泳教室に入りたいのですが。／M: あいにく初心者クラスは満員ですが、木曜の夜に別のクラスがあります。／W: 木曜で大丈夫です。それにします。／M: かしこまりました。来週から始まる木曜のグループにお名前を入れておきます。\n問: 女性は何をすることにしたか。→ 木曜夜のクラスを受ける。",
     "explanation": "I'll take that one の that one が何を指すかを押さえる。直前の another one on Thursday evenings のこと。指示語をたどるのがカギ。",
     "distractorNotes": [
       "that one = 木曜夜のクラス",
@@ -556,6 +572,10 @@
       {
         "speaker": "M",
         "text": "A book about Canadian history. I've already started reading it."
+      },
+      {
+        "speaker": "W",
+        "text": "That's a thoughtful present. You should send them a photo of you reading it."
       }
     ],
     "question": "Question: Why is the man happy?",
@@ -566,7 +586,7 @@
       "His host family came to see him."
     ],
     "answerIndex": 0,
-    "translation": "W: 今日うれしそうだね。何かいいことあった？／M: カナダのホストファミリーが誕生日プレゼントを送ってくれたんだ。／W: いいね。何を送ってくれたの？／M: カナダの歴史の本。もう読み始めてるよ。\n問: 男性はなぜうれしいのか。→ カナダからプレゼントが届いたから。",
+    "translation": "W: 今日うれしそうだね。何かいいことあった？／M: カナダのホストファミリーが誕生日プレゼントを送ってくれたんだ。／W: いいね。何を送ってくれたの？／M: カナダの歴史の本。もう読み始めてるよ。／W: 心のこもったプレゼントね。読んでいるところの写真を送るといいよ。\n問: 男性はなぜうれしいのか。→ カナダからプレゼントが届いたから。",
     "explanation": "Why を問われたら理由を述べている部分を探す。2番目の発言がそのまま理由になっている。",
     "distractorNotes": [
       "ホストファミリーからのプレゼントが理由",
@@ -599,6 +619,10 @@
       {
         "speaker": "W",
         "text": "Thank you. Please return it by next Friday."
+      },
+      {
+        "speaker": "M",
+        "text": "I will. Thank you for letting me borrow it even without my card."
       }
     ],
     "question": "Question: What does the boy have to do?",
@@ -609,7 +633,7 @@
       "Pay a fee for the book."
     ],
     "answerIndex": 0,
-    "translation": "M: 田中先生、この本を借りたいのですが、図書カードを忘れました。／W: 大丈夫よ。学籍番号を教えてくれる？／M: 3-B-24です。／W: ありがとう。来週の金曜までに返してね。\n問: 男の子は何をしなければならないか。→ 来週の金曜までに本を返す。",
+    "translation": "M: 田中先生、この本を借りたいのですが、図書カードを忘れました。／W: 大丈夫よ。学籍番号を教えてくれる？／M: 3-B-24です。／W: ありがとう。来週の金曜までに返してね。／M: そうします。カードがなくても借りさせてくれてありがとうございます。\n問: 男の子は何をしなければならないか。→ 来週の金曜までに本を返す。",
     "explanation": "最後の発言 Please return it by next Friday. がそのまま答え。「しなければならないこと」は指示や依頼の文を探す。",
     "distractorNotes": [
       "Please return it by next Friday. と一致",
@@ -642,6 +666,10 @@
       {
         "speaker": "M",
         "text": "No, I only looked online. I'll go there after lunch."
+      },
+      {
+        "speaker": "W",
+        "text": "Good idea. The librarian there can show you which shelf to look at."
       }
     ],
     "question": "Question: What will the boy probably do after lunch?",
@@ -652,7 +680,7 @@
       "Eat lunch with the girl."
     ],
     "answerIndex": 0,
-    "translation": "W: 歴史の宿題終わった？／M: まだ。テーマについて十分な情報が見つからなくて。／W: 学校の図書館は試した？ 棚ひとつぶんあるよ。／M: いや、ネットで調べただけ。昼のあとに行ってみる。\n問: 男の子は昼のあとおそらく何をするか。→ 学校の図書館へ行く。",
+    "translation": "W: 歴史の宿題終わった？／M: まだ。テーマについて十分な情報が見つからなくて。／W: 学校の図書館は試した？ 棚ひとつぶんあるよ。／M: いや、ネットで調べただけ。昼のあとに行ってみる。／W: いい考えね。あそこの司書さんが、どの棚を見ればいいか教えてくれるよ。\n問: 男の子は昼のあとおそらく何をするか。→ 学校の図書館へ行く。",
     "explanation": "I'll go there after lunch の there が何かを押さえる。直前に出た the school library のこと。",
     "distractorNotes": [
       "there = 学校の図書館。after lunch とも一致",
@@ -686,6 +714,10 @@
       {
         "speaker": "W",
         "text": "We have a table at seven or at eight thirty. Which would you prefer?"
+      },
+      {
+        "speaker": "M",
+        "text": "We'll take the earlier one. Some of the children have to be home by nine."
       }
     ],
     "question": "Question: What does the woman ask the man to decide?",
@@ -696,7 +728,7 @@
       "Which day he wants to come."
     ],
     "answerIndex": 0,
-    "translation": "M: もしもし、土曜の夜にテーブルを予約したいのですが。／W: かしこまりました。何名様ですか。／M: 大人6人と子ども2人です。／W: 7時か8時半のお席がございます。どちらがよろしいですか。\n問: 女性は男性に何を決めるよう求めているか。→ 何時にするか。",
+    "translation": "M: もしもし、土曜の夜にテーブルを予約したいのですが。／W: かしこまりました。何名様ですか。／M: 大人6人と子ども2人です。／W: 7時か8時半のお席がございます。どちらがよろしいですか。／M: 早いほうにします。子どもの何人かは9時までに家に帰らないといけないので。\n問: 女性は男性に何を決めるよう求めているか。→ 何時にするか。",
     "explanation": "最後の Which would you prefer? が指すのは、直前の at seven or at eight thirty という2つの時間。",
     "distractorNotes": [
       "7時か8時半か、という時間の選択",
@@ -729,6 +761,10 @@
       {
         "speaker": "M",
         "text": "Never. The longest I've done is five, so I have a lot of training to do."
+      },
+      {
+        "speaker": "W",
+        "text": "Then you shouldn't skip a single morning between now and November."
       }
     ],
     "question": "Question: Why has the man been running every morning?",
@@ -739,7 +775,7 @@
       "His doctor told him to exercise."
     ],
     "answerIndex": 0,
-    "translation": "W: 最近、毎朝走ってるよね。／M: うん。11月の10キロレースに申し込んだんだ。／W: すごい。そんなに長く走ったことある？／M: 一度も。最長で5キロだから、練習がたくさん必要だよ。\n問: 男性はなぜ毎朝走っているのか。→ レースに備えているから。",
+    "translation": "W: 最近、毎朝走ってるよね。／M: うん。11月の10キロレースに申し込んだんだ。／W: すごい。そんなに長く走ったことある？／M: 一度も。最長で5キロだから、練習がたくさん必要だよ。／W: じゃあ、今から11月まで1日も休んじゃだめだね。\n問: 男性はなぜ毎朝走っているのか。→ レースに備えているから。",
     "explanation": "Why を問われたら理由。I signed up for a ten-kilometer race が走っている理由にあたる。",
     "distractorNotes": [
       "レースに申し込んだから練習している",
@@ -772,6 +808,10 @@
       {
         "speaker": "W",
         "text": "Let's take it to the shop on Sunday and ask them."
+      },
+      {
+        "speaker": "M",
+        "text": "All right. I'll ride it carefully until then, or just walk to school."
       }
     ],
     "question": "Question: What will they do on Sunday?",
@@ -782,7 +822,7 @@
       "Return the bike to the store."
     ],
     "answerIndex": 0,
-    "translation": "M: お母さん、自転車の前のタイヤがまたパンクしてる。／W: また？ 先月直さなかった？／M: うん、でも繰り返すんだ。新しいタイヤが必要かも。／W: 日曜に店に持っていって聞いてみましょう。\n問: 二人は日曜に何をするか。→ 自転車を店に持っていく。",
+    "translation": "M: お母さん、自転車の前のタイヤがまたパンクしてる。／W: また？ 先月直さなかった？／M: うん、でも繰り返すんだ。新しいタイヤが必要かも。／W: 日曜に店に持っていって聞いてみましょう。／M: わかった。それまでは気をつけて乗るか、歩いて学校に行くよ。\n問: 二人は日曜に何をするか。→ 自転車を店に持っていく。",
     "explanation": "最後の Let's take it to the shop on Sunday がそのまま答え。it = 自転車。新しいタイヤは息子の推測にすぎない点に注意。",
     "distractorNotes": [
       "Let's take it to the shop と一致",
@@ -803,7 +843,7 @@
     "dialogue": [
       {
         "speaker": "W",
-        "text": "Attention, shoppers. Because of the typhoon, our store will close early today at six o'clock. The bakery on the first floor will stop selling bread at five. We are sorry for the trouble. The store will open at the usual time tomorrow morning."
+        "text": "Attention, shoppers. Because of the typhoon, our store will close early today at six o'clock. The bakery on the first floor will stop selling bread at five. We are sorry for the trouble. The store will open at the usual time tomorrow morning. Staff will begin closing the upper floors at five thirty, so please finish your shopping before then."
       }
     ],
     "question": "Question: What will happen at the store today?",
@@ -814,7 +854,7 @@
       "Bread will be sold at a lower price."
     ],
     "answerIndex": 0,
-    "translation": "お客様にお知らせします。台風のため、当店は本日6時に早く閉店いたします。1階のパン売り場は5時でパンの販売を終了します。ご迷惑をおかけして申し訳ございません。明日は通常どおり開店いたします。\n問: 今日この店で何が起こるか。→ いつもより早く閉まる。",
+    "translation": "お客様にお知らせします。台風のため、当店は本日6時に早く閉店いたします。1階のパン売り場は5時でパンの販売を終了します。ご迷惑をおかけして申し訳ございません。明日は通常どおり開店いたします。5時半には係員が上の階から閉め始めますので、それまでにお買い物をお済ませください。\n問: 今日この店で何が起こるか。→ いつもより早く閉まる。",
     "explanation": "close early today at six がそのまま根拠。earlier than usual と言いかえられている。アナウンスは「いつもと違うこと」が問われる。",
     "distractorNotes": [
       "早く閉店する。close early の言いかえ",
@@ -834,7 +874,7 @@
     "dialogue": [
       {
         "speaker": "M",
-        "text": "Emma joined a cooking club last spring. At first, she could only make simple dishes like salad. Her teacher told her to try one new recipe every week. Now, six months later, Emma can cook dinner for her whole family."
+        "text": "Emma joined a cooking club last spring. At first, she could only make simple dishes like salad. Her teacher told her to try one new recipe every week. Now, six months later, Emma can cook dinner for her whole family. Her family says her curry is now better than anyone else's in the house. Emma hopes to enter a young cooks' contest next spring."
       }
     ],
     "question": "Question: What did Emma's teacher tell her to do?",
@@ -845,7 +885,7 @@
       "Make a salad every day."
     ],
     "answerIndex": 0,
-    "translation": "エマは昨年の春に料理クラブに入った。最初はサラダのような簡単な料理しか作れなかった。先生は毎週1つ新しいレシピに挑戦するように言った。6か月たった今、エマは家族全員の夕食を作ることができる。\n問: 先生はエマに何をするように言ったか。→ 毎週新しいレシピに挑戦すること。",
+    "translation": "エマは昨年の春に料理クラブに入った。最初はサラダのような簡単な料理しか作れなかった。先生は毎週1つ新しいレシピに挑戦するように言った。6か月たった今、エマは家族全員の夕食を作ることができる。家族は、彼女のカレーはいまや家の誰よりもおいしいと言う。エマは来春、若手料理人のコンテストに出たいと思っている。\n問: 先生はエマに何をするように言ったか。→ 毎週新しいレシピに挑戦すること。",
     "explanation": "設問が「誰が何を言ったか」なので、told her to ~ の部分を探す。文の主語（誰の行動か）を取り違えないこと。",
     "distractorNotes": [
       "told her to try one new recipe every week と一致",
@@ -866,7 +906,7 @@
     "dialogue": [
       {
         "speaker": "M",
-        "text": "Kenji wanted to buy a new bicycle, but it cost more than he had saved. He decided to work at his uncle's shop during the summer holiday. He worked there three days a week for two months. In September, he finally bought the bicycle he wanted."
+        "text": "Kenji wanted to buy a new bicycle, but it cost more than he had saved. He decided to work at his uncle's shop during the summer holiday. He worked there three days a week for two months. In September, he finally bought the bicycle he wanted. His job was to carry boxes and check the shelves, and his uncle paid him every Friday. Kenji says the work was harder than he had expected."
       }
     ],
     "question": "Question: How did Kenji get the money for the bicycle?",
@@ -877,7 +917,7 @@
       "He received it as a birthday present."
     ],
     "answerIndex": 0,
-    "translation": "ケンジは新しい自転車を買いたかったが、貯金より高かった。彼は夏休みの間、おじの店で働くことにした。2か月間、週3日そこで働いた。9月に、ついに欲しかった自転車を買った。\n問: ケンジはどうやって自転車のお金を得たか。→ おじの店で働いた。",
+    "translation": "ケンジは新しい自転車を買いたかったが、貯金より高かった。彼は夏休みの間、おじの店で働くことにした。2か月間、週3日そこで働いた。9月に、ついに欲しかった自転車を買った。彼の仕事は箱を運び、棚を確認することで、おじは毎週金曜に給料を払ってくれた。ケンジは、仕事は思っていたより大変だったと言う。\n問: ケンジはどうやって自転車のお金を得たか。→ おじの店で働いた。",
     "explanation": "「お金が足りない → 働くことにした → 買えた」という順序をたどる。How（どうやって）は手段を問う。",
     "distractorNotes": [
       "おじの店で働いて稼いだ",
@@ -897,7 +937,7 @@
     "dialogue": [
       {
         "speaker": "W",
-        "text": "Welcome to the Green Hill Museum. Today, the second floor is closed for cleaning, so the special art show has moved to the first floor. You may take photographs, but please do not use a flash. Also, the museum shop closes thirty minutes before the museum does."
+        "text": "Welcome to the Green Hill Museum. Today, the second floor is closed for cleaning, so the special art show has moved to the first floor. You may take photographs, but please do not use a flash. Also, the museum shop closes thirty minutes before the museum does. There is also a small café on the third floor, and guided tours in English start every hour near the main entrance."
       }
     ],
     "question": "Question: What is one thing visitors are asked not to do?",
@@ -908,7 +948,7 @@
       "Enter the museum shop."
     ],
     "answerIndex": 0,
-    "translation": "グリーンヒル美術館へようこそ。本日は2階が清掃のため閉鎖されており、特別美術展は1階に移動しています。写真撮影は可能ですが、フラッシュはご遠慮ください。また、ミュージアムショップは美術館の30分前に閉まります。\n問: 来館者がしないよう求められていることは何か。→ 写真を撮るときにフラッシュを使うこと。",
+    "translation": "グリーンヒル美術館へようこそ。本日は2階が清掃のため閉鎖されており、特別美術展は1階に移動しています。写真撮影は可能ですが、フラッシュはご遠慮ください。また、ミュージアムショップは美術館の30分前に閉まります。また3階には小さなカフェがあり、英語のガイドツアーが正面入口の近くで毎時始まります。\n問: 来館者がしないよう求められていることは何か。→ 写真を撮るときにフラッシュを使うこと。",
     "explanation": "please do not ~ の部分が「してはいけないこと」。but のあとに注意事項が来る形は頻出なので、but を聞いたら身構える。",
     "distractorNotes": [
       "do not use a flash と一致",
@@ -928,7 +968,7 @@
     "dialogue": [
       {
         "speaker": "M",
-        "text": "Good morning, students. Today's after-school soccer practice has been moved from the field to the gym because of the rain. Practice starts at four as usual. Please bring indoor shoes. If you forget them, you will have to watch instead of playing."
+        "text": "Good morning, students. Today's after-school soccer practice has been moved from the field to the gym because of the rain. Practice starts at four as usual. Please bring indoor shoes. If you forget them, you will have to watch instead of playing. The coach also asks everyone to bring a water bottle, because the drink machine outside the gym is broken this week."
       }
     ],
     "question": "Question: What has changed about today's practice?",
@@ -939,7 +979,7 @@
       "The teacher in charge."
     ],
     "answerIndex": 0,
-    "translation": "おはようございます。本日の放課後のサッカー練習は、雨のためグラウンドから体育館に変更になりました。練習は通常どおり4時開始です。上履きを持ってきてください。忘れた場合は、参加せずに見学することになります。\n問: 今日の練習について何が変わったか。→ 行う場所。",
+    "translation": "おはようございます。本日の放課後のサッカー練習は、雨のためグラウンドから体育館に変更になりました。練習は通常どおり4時開始です。上履きを持ってきてください。忘れた場合は、参加せずに見学することになります。また、今週は体育館の外の自動販売機が壊れているので、コーチは全員に水筒を持ってくるよう言っています。\n問: 今日の練習について何が変わったか。→ 行う場所。",
     "explanation": "moved from the field to the gym が変更点。時間は as usual（通常どおり）と明言されているので変わっていない。",
     "distractorNotes": [
       "グラウンドから体育館へ。場所の変更",
@@ -959,7 +999,7 @@
     "dialogue": [
       {
         "speaker": "W",
-        "text": "Daniel moved to Japan two years ago and could not speak any Japanese. He decided to join a local cooking class, thinking he could learn the language while doing something fun. The other students helped him with new words every week. Now he can hold a simple conversation, and he still goes to the class every Tuesday."
+        "text": "Daniel moved to Japan two years ago and could not speak any Japanese. He decided to join a local cooking class, thinking he could learn the language while doing something fun. The other students helped him with new words every week. Now he can hold a simple conversation, and he still goes to the class every Tuesday. At first he could not understand the teacher's instructions, so he copied what the person next to him was doing. He says the hardest part was learning the names of vegetables."
       }
     ],
     "question": "Question: Why did Daniel join the cooking class?",
@@ -970,7 +1010,7 @@
       "To make Japanese food for his family."
     ],
     "answerIndex": 0,
-    "translation": "ダニエルは2年前に日本へ引っ越してきて、日本語がまったく話せなかった。彼は楽しいことをしながら言葉を学べると考え、地元の料理教室に入ることにした。他の生徒が毎週新しい単語を教えてくれた。今では簡単な会話ができ、今も毎週火曜に教室へ通っている。\n問: ダニエルはなぜ料理教室に入ったか。→ 楽しみながら日本語を学ぶため。",
+    "translation": "ダニエルは2年前に日本へ引っ越してきて、日本語がまったく話せなかった。彼は楽しいことをしながら言葉を学べると考え、地元の料理教室に入ることにした。他の生徒が毎週新しい単語を教えてくれた。今では簡単な会話ができ、今も毎週火曜に教室へ通っている。最初は先生の指示が分からず、隣の人がしていることをまねした。いちばん大変だったのは野菜の名前を覚えることだったと彼は言う。\n問: ダニエルはなぜ料理教室に入ったか。→ 楽しみながら日本語を学ぶため。",
     "explanation": "thinking he could learn the language while doing something fun が理由にあたる。while ~ing（〜しながら）が聞き取りのカギ。",
     "distractorNotes": [
       "楽しみながら言語を学ぶため。本文の理由と一致",
@@ -991,7 +1031,7 @@
     "dialogue": [
       {
         "speaker": "M",
-        "text": "Sakura High School holds a marathon every December. Last year, about two hundred students took part, but this year more than three hundred signed up. The school says this is because students can now choose between a five-kilometer and a ten-kilometer course. The shorter course was added for beginners."
+        "text": "Sakura High School holds a marathon every December. Last year, about two hundred students took part, but this year more than three hundred signed up. The school says this is because students can now choose between a five-kilometer and a ten-kilometer course. The shorter course was added for beginners. Students who finish either course receive a small towel with the school's name on it. Teachers run too, and last year the science teacher finished third."
       }
     ],
     "question": "Question: Why did more students join this year?",
@@ -1002,7 +1042,7 @@
       "The school made it necessary."
     ],
     "answerIndex": 0,
-    "translation": "さくら高校は毎年12月にマラソン大会を開いている。昨年は約200人の生徒が参加したが、今年は300人以上が申し込んだ。学校によると、これは5キロと10キロのコースを選べるようになったためだという。短いコースは初心者のために追加された。",
+    "translation": "さくら高校は毎年12月にマラソン大会を開いている。昨年は約200人の生徒が参加したが、今年は300人以上が申し込んだ。学校によると、これは5キロと10キロのコースを選べるようになったためだという。短いコースは初心者のために追加された。どちらのコースでも完走した生徒は、学校名の入った小さなタオルをもらえる。教師も走り、昨年は理科の先生が3位でゴールした。",
     "explanation": "because 以降が理由。students can now choose between ... と The shorter course was added for beginners が根拠。数字（200→300）は増えたことを示すだけで、理由ではない。",
     "distractorNotes": [
       "初心者向けに5キロのコースが加わったから",
@@ -1022,7 +1062,7 @@
     "dialogue": [
       {
         "speaker": "W",
-        "text": "Thank you for visiting Riverside Park. Please note that the north gate will be closed from tomorrow for repairs, so visitors should use the east or south gate. The work is expected to take about three weeks. During this time, the parking area near the north gate will also be unavailable."
+        "text": "Thank you for visiting Riverside Park. Please note that the north gate will be closed from tomorrow for repairs, so visitors should use the east or south gate. The work is expected to take about three weeks. During this time, the parking area near the north gate will also be unavailable. Maps showing the open entrances are available at the information desk near the east gate."
       }
     ],
     "question": "Question: What should visitors do from tomorrow?",
@@ -1033,7 +1073,7 @@
       "Pay an entrance fee."
     ],
     "answerIndex": 0,
-    "translation": "リバーサイド公園にお越しいただきありがとうございます。北門は明日から修理のため閉鎖されますので、東門または南門をご利用ください。工事はおよそ3週間かかる見込みです。この期間中、北門近くの駐車場もご利用いただけません。\n問: 来園者は明日から何をすべきか。→ 別の門を使う。",
+    "translation": "リバーサイド公園にお越しいただきありがとうございます。北門は明日から修理のため閉鎖されますので、東門または南門をご利用ください。工事はおよそ3週間かかる見込みです。この期間中、北門近くの駐車場もご利用いただけません。開いている入口を示した地図は、東門近くの案内所でもらえます。\n問: 来園者は明日から何をすべきか。→ 別の門を使う。",
     "explanation": "visitors should use the east or south gate が指示。should を含む文が「すべきこと」。",
     "distractorNotes": [
       "東門か南門を使う。指示と一致",
@@ -1053,7 +1093,7 @@
     "dialogue": [
       {
         "speaker": "M",
-        "text": "Naomi wanted to study in Australia, but her parents were worried about the cost. She spent a year researching scholarships and finally found one for high school students. She had to write an essay and take an interview in English. Last month, she learned that she had been accepted, and she will leave in September."
+        "text": "Naomi wanted to study in Australia, but her parents were worried about the cost. She spent a year researching scholarships and finally found one for high school students. She had to write an essay and take an interview in English. Last month, she learned that she had been accepted, and she will leave in September. She will study at a high school near Sydney for ten months and live with a local family. Her school in Japan has agreed to let her return to the same grade."
       }
     ],
     "question": "Question: How did Naomi solve the problem of money?",
@@ -1064,7 +1104,7 @@
       "She chose a cheaper country."
     ],
     "answerIndex": 0,
-    "translation": "ナオミはオーストラリアで学びたかったが、両親は費用を心配していた。彼女は1年かけて奨学金を調べ、ついに高校生向けのものを見つけた。英語で小論文を書き、面接を受けなければならなかった。先月、合格したと知らされ、9月に発ちます。\n問: ナオミはお金の問題をどう解決したか。→ 奨学金を得た。",
+    "translation": "ナオミはオーストラリアで学びたかったが、両親は費用を心配していた。彼女は1年かけて奨学金を調べ、ついに高校生向けのものを見つけた。英語で小論文を書き、面接を受けなければならなかった。先月、合格したと知らされ、9月に発ちます。彼女はシドニー近郊の高校で10か月学び、現地の家庭に滞在する。日本の学校は、帰国後に同じ学年に戻ることを認めてくれた。\n問: ナオミはお金の問題をどう解決したか。→ 奨学金を得た。",
     "explanation": "「費用が心配 → 奨学金を探した → 合格した」という流れをたどる。scholarship（奨学金）が聞き取れるかがカギ。",
     "distractorNotes": [
       "奨学金に合格した",
@@ -1084,7 +1124,7 @@
     "dialogue": [
       {
         "speaker": "W",
-        "text": "The city library started a new service last spring. People can now borrow books online and pick them up at a locker outside the building, even after closing time. The service was made for people who work late and cannot visit during opening hours. In the first six months, more than a thousand people used it."
+        "text": "The city library started a new service last spring. People can now borrow books online and pick them up at a locker outside the building, even after closing time. The service was made for people who work late and cannot visit during opening hours. In the first six months, more than a thousand people used it. Users choose their books on the library's website and receive a code by e-mail. The library is now thinking about adding a second locker at the station."
       }
     ],
     "question": "Question: Who was this new service made for?",
@@ -1095,7 +1135,7 @@
       "People who have lost their library cards."
     ],
     "answerIndex": 0,
-    "translation": "市立図書館は昨春、新しいサービスを始めた。人々はオンラインで本を借り、閉館後でも建物の外のロッカーで受け取れるようになった。このサービスは、遅くまで働いていて開館時間中に来られない人のために作られた。最初の6か月で1000人以上が利用した。\n問: この新しいサービスは誰のために作られたか。→ 開館時間中に来られない人。",
+    "translation": "市立図書館は昨春、新しいサービスを始めた。人々はオンラインで本を借り、閉館後でも建物の外のロッカーで受け取れるようになった。このサービスは、遅くまで働いていて開館時間中に来られない人のために作られた。最初の6か月で1000人以上が利用した。利用者は図書館のウェブサイトで本を選び、メールで暗証番号を受け取る。図書館はいま、駅にもう一つロッカーを置くことを検討している。\n問: この新しいサービスは誰のために作られたか。→ 開館時間中に来られない人。",
     "explanation": "The service was made for ~ の for 以降がそのまま答え。「誰のために」は for を聞き取る。",
     "distractorNotes": [
       "遅くまで働いていて開館時間に来られない人",

@@ -26,6 +26,7 @@ export function HomeScreen({
   onListening,
   onFocus,
   onMock,
+  onHistory,
   onOpenMockResult,
 }: {
   onMini: () => void;
@@ -35,6 +36,7 @@ export function HomeScreen({
   onListening: () => void;
   onFocus: () => void;
   onMock: () => void;
+  onHistory: () => void;
   onOpenMockResult: (id: number) => void;
 }) {
   const today = useLiveQuery(() => todayCount(), [], 0) ?? 0;
@@ -189,8 +191,13 @@ export function HomeScreen({
               {backlog > 0 ? 'そろそろ出しどき' : 'いまは空っぽ'}
             </p>
           </Card>
-          <Card onClick={onFocus}>
+          <Card onClick={onHistory}>
             <p className="mb-1.5 text-ink-sub"><Chart size={22} /></p>
+            <p className="text-[15px] font-bold text-ink">学習の記録</p>
+            <p className="text-[12px] text-ink-sub">カレンダーと推移</p>
+          </Card>
+          <Card onClick={onFocus}>
+            <p className="mb-1.5 text-ink-sub"><Target size={22} /></p>
             <p className="text-[15px] font-bold text-ink">いまの重点</p>
             <p className="text-[12px] text-ink-sub">
               {topFocus.length > 0

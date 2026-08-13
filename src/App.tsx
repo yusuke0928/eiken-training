@@ -7,6 +7,7 @@ import {
   buildTagQueue,
 } from './engine/selector';
 import { FocusScreen } from './features/focus/FocusScreen';
+import { HistoryScreen } from './features/history/HistoryScreen';
 import { clearSession, db, getKv, loadMock, loadSession, setKv, type SavedMock } from './data/db';
 import { ITEM_BY_ID, WRITING_BY_ID } from './content';
 import { applyResult } from './engine/srs';
@@ -50,6 +51,7 @@ type Route =
   | { k: 'writingEditor'; promptId: string }
   | { k: 'writingReview'; promptId: string; text: string }
   | { k: 'focus' }
+  | { k: 'history' }
   | { k: 'mockSetup' }
   | { k: 'mockRun'; paper: MockPaper; restore?: SavedMock }
   | { k: 'mockResult'; mockId: number };
@@ -181,12 +183,16 @@ export default function App() {
           onListening={startListening}
           onFocus={() => push({ k: 'focus' })}
           onMock={() => push({ k: 'mockSetup' })}
+          onHistory={() => push({ k: 'history' })}
           onOpenMockResult={(mockId) => push({ k: 'mockResult', mockId })}
         />
       );
 
     case 'focus':
       return <FocusScreen onBack={back} />;
+
+    case 'history':
+      return <HistoryScreen onBack={back} />;
 
     case 'mockSetup':
       return (

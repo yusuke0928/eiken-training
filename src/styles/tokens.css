@@ -45,6 +45,15 @@
   --again: #e8845a;
   --again-soft: #fdeee7;
   --line: #ede8e2;
+
+  /* 学習カレンダー用の逐次（sequential）配色。
+     1色相・明度が単調に変わるようにしてある。虹色にはしない。 */
+  --heat-0: #ede8e2;
+  --heat-1: #cfc5f8;
+  --heat-2: #ab9bf0;
+  --heat-3: #8977e6;
+  --heat-4: #6a59d4;
+
   color-scheme: light;
 }
 
@@ -66,6 +75,11 @@
     --again: #f0946c;
     --again-soft: #38251d;
     --line: #332e3e;
+    --heat-0: #2b2734;
+    --heat-1: #3f3663;
+    --heat-2: #59499b;
+    --heat-3: #7c68ce;
+    --heat-4: #a99bff;
     color-scheme: dark;
   }
 }

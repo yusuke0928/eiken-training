@@ -4,6 +4,7 @@ import { bumpDayLog, clearDraft, db } from '../../data/db';
 import { countWords, mechanicalGrader, totalScore } from '../../engine/writing';
 import { RUBRIC, WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
+import { Alert, Check } from '../../ui/icons';
 
 export function WritingReviewScreen({
   promptId,
@@ -63,12 +64,12 @@ export function WritingReviewScreen({
                 }`}
               >
                 <span
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[12px] font-bold text-white ${
+                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-white ${
                     c.ok ? 'bg-correct' : 'bg-again'
                   }`}
                   aria-hidden
                 >
-                  {c.ok ? '✓' : '!'}
+                  {c.ok ? <Check size={12} /> : <Alert size={12} />}
                 </span>
                 <span>
                   <span className={`block text-[14px] font-semibold ${c.ok ? 'text-correct' : 'text-again'}`}>

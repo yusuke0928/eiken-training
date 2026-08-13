@@ -4,6 +4,7 @@ import { writingPromptsIn } from '../../content';
 import { db } from '../../data/db';
 import { WRITING_SPEC, type WritingSection } from '../../types';
 import { Screen, TopBar } from '../../ui/primitives';
+import { ChevronRight, Level } from '../../ui/icons';
 
 const SECTIONS: WritingSection[] = ['w-opinion', 'w-email'];
 
@@ -82,10 +83,10 @@ export function WritingListScreen({
                 >
                   <span className="flex-1">
                     <span className="block text-[15px] font-semibold text-ink">{p.topic}</span>
-                    <span className="mt-0.5 block text-[12px] text-ink-faint">
-                      {'★'.repeat(p.difficulty)}
+                    <span className="mt-1 flex items-center gap-2 text-[12px] text-ink-faint">
+                      <Level value={p.difficulty} />
                       {score !== undefined && (
-                        <span className="ml-2 text-ink-sub">
+                        <span className="text-ink-sub">
                           自己採点 {score}/{spec.maxScore}
                         </span>
                       )}
@@ -99,15 +100,9 @@ export function WritingListScreen({
                       aria-hidden
                     />
                   )}
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <path
-                      d="M9 5l7 7-7 7"
-                      stroke="var(--ink-faint)"
-                      strokeWidth="2.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <span className="text-ink-faint">
+                    <ChevronRight size={18} />
+                  </span>
                 </button>
               </li>
             );

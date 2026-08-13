@@ -4,6 +4,7 @@ import { loadDraft, saveDraft } from '../../data/db';
 import { TEMPLATE, countWords, mechanicalGrader } from '../../engine/writing';
 import { WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
+import { Alert, Check } from '../../ui/icons';
 
 export function WritingEditorScreen({
   promptId,
@@ -74,11 +75,12 @@ export function WritingEditorScreen({
             {checks.map((c) => (
               <span
                 key={c.id}
-                className={`rounded-full px-2.5 py-1 text-[12px] font-semibold ${
+                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[12px] font-semibold ${
                   c.ok ? 'bg-correct-soft text-correct' : 'bg-again-soft text-again'
                 }`}
               >
-                {c.ok ? '✓' : '!'} {c.label}
+                {c.ok ? <Check size={13} /> : <Alert size={13} />}
+                {c.label}
               </span>
             ))}
           </div>

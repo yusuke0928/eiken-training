@@ -6,6 +6,7 @@ import { scoreView } from '../../engine/scoring';
 import { EXAM, applyReminder, formatJp, nextMilestone } from '../../lib/exam';
 import { TAG_LABEL } from '../../types';
 import { Button, Card, ProgressRing, Screen } from '../../ui/primitives';
+import { Alarm, Chart, ChevronRight, Headphones, Pen, Repeat, Stopwatch, Target } from '../../ui/icons';
 
 const DAILY_GOAL = 3; // ハードルは極限まで下げる（DESIGN.md §5）
 
@@ -100,8 +101,9 @@ export function HomeScreen({
         </div>
 
         {reminder && (
-          <div className="mb-4 rounded-2xl bg-again-soft px-4 py-3 text-[13px] font-medium text-again">
-            ⏰ {reminder}
+          <div className="mb-4 flex items-center gap-2 rounded-2xl bg-again-soft px-4 py-3 text-[13px] font-medium text-again">
+            <Alarm size={18} />
+            <span>{reminder}</span>
           </div>
         )}
 
@@ -111,24 +113,14 @@ export function HomeScreen({
           onClick={onWriting}
           className="mb-4 flex w-full items-center gap-4 rounded-3xl bg-primary p-5 text-left text-primary-ink transition-transform active:scale-[0.99]"
         >
-          <span className="text-[26px]" aria-hidden>
-            ✍️
-          </span>
+          <Pen size={26} />
           <span className="flex-1">
             <span className="block text-[16px] font-bold">ライティング道場</span>
             <span className="block text-[13px] opacity-80">
               たった2題で600点。型を覚えるだけで伸びる
             </span>
           </span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M9 5l7 7-7 7"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <ChevronRight size={18} />
         </button>
 
         {view && (
@@ -151,17 +143,17 @@ export function HomeScreen({
 
         <div className="mb-4 grid grid-cols-2 gap-3">
           <Card onClick={onListening}>
-            <p className="mb-1 text-[20px]">🎧</p>
+            <p className="mb-1.5 text-ink-sub"><Headphones size={22} /></p>
             <p className="text-[15px] font-bold text-ink">リスニング</p>
             <p className="text-[12px] text-ink-sub">第1部〜第3部</p>
           </Card>
           <Card onClick={onTraining}>
-            <p className="mb-1 text-[20px]">🎯</p>
+            <p className="mb-1.5 text-ink-sub"><Target size={22} /></p>
             <p className="text-[15px] font-bold text-ink">論点別</p>
             <p className="text-[12px] text-ink-sub">苦手だけを集中的に</p>
           </Card>
           <Card onClick={backlog > 0 ? onReview : undefined} tone={backlog > 0 ? 'accent' : 'surface'}>
-            <p className="mb-1 text-[20px]">🔁</p>
+            <p className="mb-1.5 text-ink-sub"><Repeat size={22} /></p>
             <p className="text-[15px] font-bold text-ink">
               復習{backlog > 0 && <span className="ml-1 text-accent">{backlog}</span>}
             </p>
@@ -170,7 +162,7 @@ export function HomeScreen({
             </p>
           </Card>
           <Card onClick={onFocus}>
-            <p className="mb-1 text-[20px]">📊</p>
+            <p className="mb-1.5 text-ink-sub"><Chart size={22} /></p>
             <p className="text-[15px] font-bold text-ink">いまの重点</p>
             <p className="text-[12px] text-ink-sub">
               {topFocus.length > 0
@@ -186,8 +178,8 @@ export function HomeScreen({
           onClick={onMock}
           className="mb-4 flex w-full items-center gap-4 rounded-3xl border border-line bg-surface p-5 text-left transition-transform active:scale-[0.99]"
         >
-          <span className="text-[26px]" aria-hidden>
-            ⏱
+          <span className="text-ink-sub">
+            <Stopwatch size={26} />
           </span>
           <span className="flex-1">
             <span className="block text-[16px] font-bold text-ink">模擬テスト</span>
@@ -195,15 +187,9 @@ export function HomeScreen({
               本番と同じ構成で通す。筆記80分＋リスニング
             </span>
           </span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M9 5l7 7-7 7"
-              stroke="var(--ink-faint)"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <span className="text-ink-faint">
+            <ChevronRight size={18} />
+          </span>
         </button>
 
         <div className="rounded-3xl border border-dashed border-line p-4">

@@ -11,6 +11,7 @@ import {
 import { countWords } from '../../engine/writing';
 import { WRITING_SPEC, choicesAreSpoken, isListening } from '../../types';
 import { Button, ProgressBar, Screen, renderStem } from '../../ui/primitives';
+import { Bookmark } from '../../ui/icons';
 import { ListeningPanel } from '../practice/ListeningPanel';
 import { PassageView } from '../practice/PassageView';
 
@@ -221,11 +222,12 @@ export function MockRunScreen({
           <button
             type="button"
             onClick={() => setFlags(toggle(flags, key))}
-            className={`min-h-[56px] rounded-2xl px-4 text-[13px] font-semibold ${
+            className={`flex min-h-[56px] items-center gap-1.5 rounded-2xl px-4 text-[13px] font-semibold ${
               flagged ? 'bg-accent text-white' : 'bg-surface-2 text-ink-sub'
             }`}
           >
-            {flagged ? '★ 見直す' : '☆ 見直す'}
+            <Bookmark size={16} filled={flagged} />
+            見直す
           </button>
           {cursor > 0 && (
             <button

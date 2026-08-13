@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSpeech, type SpeakLine } from '../../lib/speech';
 import { SECTION_LABEL, choicesAreSpoken, type MCQItem } from '../../types';
+import { Play, Warning } from '../../ui/icons';
 
 /**
  * リスニングの再生パネル。
@@ -86,11 +87,11 @@ export function ListeningPanel({
             再生中… （タップで停止）
           </>
         ) : plays === 0 ? (
-          <>▶ 音声を再生</>
+          <><Play size={20} /> 音声を再生</>
         ) : examLike ? (
           <>再生済み</>
         ) : (
-          <>▶ もう一度聞く</>
+          <><Play size={20} /> もう一度聞く</>
         )}
       </button>
 
@@ -130,9 +131,14 @@ export function ListeningPanel({
       {showScript && <Script item={item} />}
 
       {plays === 0 && (
-        <p className="mt-3 text-[12px] leading-relaxed text-ink-faint">
-          ⚠️ この音声は端末の読み上げ機能によるもので、本番の音源とは声も速さも違います。
-          形式に慣れるための練習用と考えて、直前期は公式音源も使ってください。
+        <p className="mt-3 flex gap-2 text-[12px] leading-relaxed text-ink-faint">
+          <span className="mt-0.5 shrink-0">
+            <Warning size={15} />
+          </span>
+          <span>
+            この音声は端末の読み上げ機能によるもので、本番の音源とは声も速さも違います。
+            形式に慣れるための練習用と考えて、直前期は公式音源も使ってください。
+          </span>
         </p>
       )}
     </section>

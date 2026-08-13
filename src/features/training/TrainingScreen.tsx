@@ -3,13 +3,15 @@ import { availableTags } from '../../content';
 import { loadReport } from '../../engine/selector';
 import { TAG_LABEL } from '../../types';
 import { Screen, TopBar } from '../../ui/primitives';
+import { Blocks, Book, Chat, ChevronRight, Document, Headphones } from '../../ui/icons';
+import type { ComponentType } from 'react';
 
-const GROUPS: { key: string; label: string; emoji: string }[] = [
-  { key: 'vocab', label: '語彙・熟語', emoji: '📕' },
-  { key: 'grammar', label: '文法・語法', emoji: '🧩' },
-  { key: 'conv', label: '会話表現', emoji: '💬' },
-  { key: 'read', label: '長文読解', emoji: '📖' },
-  { key: 'listen', label: 'リスニング', emoji: '🎧' },
+const GROUPS: { key: string; label: string; Icon: ComponentType<{ size?: number }> }[] = [
+  { key: 'vocab', label: '語彙・熟語', Icon: Book },
+  { key: 'grammar', label: '文法・語法', Icon: Blocks },
+  { key: 'conv', label: '会話表現', Icon: Chat },
+  { key: 'read', label: '長文読解', Icon: Document },
+  { key: 'listen', label: 'リスニング', Icon: Headphones },
 ];
 
 export function TrainingScreen({
@@ -42,8 +44,8 @@ export function TrainingScreen({
 
           return (
             <section key={group.key} className="mb-7">
-              <h2 className="mb-3 text-[13px] font-bold text-ink-sub">
-                <span className="mr-1.5">{group.emoji}</span>
+              <h2 className="mb-3 flex items-center gap-2 text-[13px] font-bold text-ink-sub">
+                <group.Icon size={18} />
                 {group.label}
               </h2>
               <ul className="flex flex-col gap-2">
@@ -74,15 +76,9 @@ export function TrainingScreen({
                             aria-hidden
                           />
                         )}
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                          <path
-                            d="M9 5l7 7-7 7"
-                            stroke="var(--ink-faint)"
-                            strokeWidth="2.2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <span className="text-ink-faint">
+                          <ChevronRight size={18} />
+                        </span>
                       </button>
                     </li>
                   );

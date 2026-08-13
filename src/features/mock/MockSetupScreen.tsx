@@ -10,6 +10,7 @@ import {
 } from '../../engine/mock';
 import { PRE2 } from '../../engine/scoring';
 import { Screen, TopBar } from '../../ui/primitives';
+import { ChevronRight } from '../../ui/icons';
 
 const SCOPES: { scope: MockScope; minutes: number; note: string }[] = [
   { scope: 'full', minutes: 105, note: '本番と同じ。筆記80分＋リスニング約25分' },
@@ -145,15 +146,9 @@ export function MockSetupScreen({
                           {m.writtenElapsedMs > 0 && ` ・ 筆記 ${formatClock(m.writtenElapsedMs)}`}
                         </span>
                       </span>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                        <path
-                          d="M9 5l7 7-7 7"
-                          stroke="var(--ink-faint)"
-                          strokeWidth="2.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                      <span className="text-ink-faint">
+                        <ChevronRight size={18} />
+                      </span>
                     </button>
                   </li>
                 );

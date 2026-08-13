@@ -1,6 +1,7 @@
 import { hashString } from '../../lib/shuffle';
 import { TAG_LABEL, type MCQItem } from '../../types';
 import { Button } from '../../ui/primitives';
+import { Check, Rotate } from '../../ui/icons';
 
 /**
  * 解説シート（DESIGN.md §3.2「ここがこのアプリの心臓部」）
@@ -45,12 +46,12 @@ export function ExplanationSheet({
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line" />
           <div className="flex items-center gap-3">
             <span
-              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-xl ${
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
                 correct ? 'bg-correct-soft text-correct' : 'bg-again-soft text-again'
               }`}
               aria-hidden
             >
-              {correct ? '✓' : '↻'}
+              {correct ? <Check size={22} /> : <Rotate size={22} />}
             </span>
             <div>
               {/* 「不正解！」とは書かない（DESIGN.md §4.5） */}

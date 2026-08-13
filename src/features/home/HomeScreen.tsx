@@ -1,9 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { loadStreak, todayCount } from '../../data/db';
-import { estimateAbility } from '../../engine/selector';
+import { loadReport } from '../../engine/selector';
 import { reviewBacklog } from '../../engine/srs';
 import { scoreView } from '../../engine/scoring';
 import { EXAM, applyReminder, formatJp, nextMilestone } from '../../lib/exam';
+import { TAG_LABEL } from '../../types';
 import { Button, Card, ProgressRing, Screen } from '../../ui/primitives';
 
 const DAILY_GOAL = 3; // ハードルは極限まで下げる（DESIGN.md §5）
@@ -21,22 +22,27 @@ export function HomeScreen({
   onTraining,
   onReview,
   onWriting,
+  onListening,
+  onFocus,
 }: {
   onMini: () => void;
   onTraining: () => void;
   onReview: () => void;
   onWriting: () => void;
+  onListening: () => void;
+  onFocus: () => void;
 }) {
   const today = useLiveQuery(() => todayCount(), [], 0) ?? 0;
   const streak = useLiveQuery(() => loadStreak(), [], 0) ?? 0;
   const backlog = useLiveQuery(() => reviewBacklog(), [], 0) ?? 0;
-  const ability = useLiveQuery(() => estimateAbility(), [], undefined);
+  const report = useLiveQuery(() => loadReport(), [], undefined);
 
   const milestone = nextMilestone();
   const reminder = applyReminder();
   const done = Math.min(today, DAILY_GOAL);
   const goalMet = today >= DAILY_GOAL;
-  const view = ability?.accuracy !== undefined ? scoreView(Math.round(ability.accuracy * 100), 100) : null;
+  const view = report && report.answered > 0 ? scoreView(Math.round(report.overall * 100), 100) : null;
+  const topFocus = report?.byTag.filter((s) => s.attempts > 0).slice(0, 2) ?? [];
 
   return (
     <Screen>
@@ -136,12 +142,17 @@ export function HomeScreen({
               />
             </div>
             <p className="mt-2 text-[12px] text-ink-faint">
-              直近{Math.min(ability?.answered ?? 0, 120)}問の正答率から計算した練習用の目安です
+              これまでに解いた{report?.answered ?? 0}問の正答率から計算した練習用の目安です
             </p>
           </div>
         )}
 
         <div className="mb-4 grid grid-cols-2 gap-3">
+          <Card onClick={onListening}>
+            <p className="mb-1 text-[20px]">🎧</p>
+            <p className="text-[15px] font-bold text-ink">リスニング</p>
+            <p className="text-[12px] text-ink-sub">第1部〜第3部</p>
+          </Card>
           <Card onClick={onTraining}>
             <p className="mb-1 text-[20px]">🎯</p>
             <p className="text-[15px] font-bold text-ink">論点別</p>
@@ -156,12 +167,20 @@ export function HomeScreen({
               {backlog > 0 ? 'そろそろ出しどき' : 'いまは空っぽ'}
             </p>
           </Card>
+          <Card onClick={onFocus}>
+            <p className="mb-1 text-[20px]">📊</p>
+            <p className="text-[15px] font-bold text-ink">いまの重点</p>
+            <p className="text-[12px] text-ink-sub">
+              {topFocus.length > 0
+                ? topFocus.map((s) => TAG_LABEL[s.key] ?? s.key).join('・')
+                : '解くほど傾いていく'}
+            </p>
+          </Card>
         </div>
 
         <div className="rounded-3xl border border-dashed border-line p-4">
           <p className="text-[13px] font-semibold text-ink-sub">これから追加されるもの</p>
           <ul className="mt-2 flex flex-col gap-1 text-[13px] text-ink-faint">
-            <li>・リスニング（9月上旬）</li>
             <li>・模擬テスト（9月中旬）</li>
             <li>・面接シミュレーター（一次のあと）</li>
           </ul>

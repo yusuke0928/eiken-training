@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { availableTags, ITEM_BY_ID } from '../../content';
-import { db } from '../../data/db';
+import { availableTags } from '../../content';
+import { loadReport } from '../../engine/selector';
 import { TAG_LABEL } from '../../types';
 import { Screen, TopBar } from '../../ui/primitives';
 
@@ -9,6 +9,7 @@ const GROUPS: { key: string; label: string; emoji: string }[] = [
   { key: 'grammar', label: '文法・語法', emoji: '🧩' },
   { key: 'conv', label: '会話表現', emoji: '💬' },
   { key: 'read', label: '長文読解', emoji: '📖' },
+  { key: 'listen', label: 'リスニング', emoji: '🎧' },
 ];
 
 export function TrainingScreen({
@@ -20,20 +21,9 @@ export function TrainingScreen({
 }) {
   const tags = availableTags();
 
-  // タグごとの正答率（履歴があるものだけ表示する）
-  const accuracy = useLiveQuery(async () => {
-    const attempts = await db.attempts.toArray();
-    const map = new Map<string, { c: number; t: number }>();
-    for (const a of attempts) {
-      for (const tag of ITEM_BY_ID.get(a.itemId)?.tags ?? []) {
-        const cur = map.get(tag) ?? { c: 0, t: 0 };
-        cur.t++;
-        if (a.correct) cur.c++;
-        map.set(tag, cur);
-      }
-    }
-    return map;
-  }, [], new Map<string, { c: number; t: number }>());
+  // 出題エンジンと同じ習熟度を使う（画面と実際の出題がズレないように）
+  const report = useLiveQuery(() => loadReport(), [], undefined);
+  const statOf = (tag: string) => report?.byTag.find((s) => s.key === tag);
 
   return (
     <Screen>
@@ -47,13 +37,7 @@ export function TrainingScreen({
         {GROUPS.map((group) => {
           const inGroup = tags
             .filter((t) => t.tag.startsWith(`${group.key}:`))
-            .sort((a, b) => {
-              const aa = accuracy?.get(a.tag);
-              const ba = accuracy?.get(b.tag);
-              const ar = aa ? aa.c / aa.t : 2; // 未挑戦は後ろ
-              const br = ba ? ba.c / ba.t : 2;
-              return ar - br;
-            });
+            .sort((a, b) => (statOf(b.tag)?.priority ?? 0) - (statOf(a.tag)?.priority ?? 0));
           if (inGroup.length === 0) return null;
 
           return (
@@ -64,8 +48,8 @@ export function TrainingScreen({
               </h2>
               <ul className="flex flex-col gap-2">
                 {inGroup.map(({ tag, count }) => {
-                  const acc = accuracy?.get(tag);
-                  const rate = acc && acc.t > 0 ? acc.c / acc.t : null;
+                  const s = statOf(tag);
+                  const rate = s && s.attempts > 0 ? s.mastery : null;
                   return (
                     <li key={tag}>
                       <button

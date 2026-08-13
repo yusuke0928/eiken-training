@@ -2,9 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ITEM_BY_ID, PASSAGES } from '../../content';
 import { db, bumpDayLog } from '../../data/db';
 import { applyResult } from '../../engine/srs';
-import type { PracticeMode } from '../../types';
+import { choicesAreSpoken, isListening, type PracticeMode } from '../../types';
 import { Button, ProgressBar, Screen, TopBar } from '../../ui/primitives';
 import { ExplanationSheet } from './ExplanationSheet';
+import { ListeningPanel } from './ListeningPanel';
 import { PassageView } from './PassageView';
 
 export interface SessionResult {
@@ -47,6 +48,7 @@ export function QuestionScreen({
   const [sheetOpen, setSheetOpen] = useState(false);
   const [results, setResults] = useState<SessionResult[]>([]);
   const [confirmExit, setConfirmExit] = useState(false);
+  const [audioPlayed, setAudioPlayed] = useState(false);
   const sessionId = useRef(`s-${Date.now()}`).current;
   const startedAt = useRef(Date.now());
 
@@ -55,6 +57,8 @@ export function QuestionScreen({
 
   // 試験モード（診断テスト）では解説を出さない
   const isExamLike = mode === 'diagnostic';
+  const listening = !!item && isListening(item.section);
+  const hideChoices = listening && choicesAreSpoken(item!.section) && !audioPlayed;
 
   const blankNo = useMemo(() => {
     const m = item?.stem.match(/^\(\s*(\d+)\s*\)$/);
@@ -99,6 +103,7 @@ export function QuestionScreen({
   function advance(current: SessionResult[] = results) {
     setSheetOpen(false);
     setSelected(null);
+    setAudioPlayed(false);
     startedAt.current = Date.now();
     if (index + 1 >= queue.length) {
       onFinish(current);
@@ -134,14 +139,44 @@ export function QuestionScreen({
 
       {/* 本文・設問・選択肢はまとめてスクロール。決定ボタンだけを親指の届く位置に固定する */}
       <main className="flex-1 px-4 pt-5 pb-40">
-        {passage && (
-          <PassageView passage={passage} activeBlank={blankNo} showTranslation={!isExamLike} />
+        {listening ? (
+          <ListeningPanel
+            key={item.id}
+            item={item}
+            examLike={isExamLike}
+            onPlayedOnce={() => setAudioPlayed(true)}
+          />
+        ) : (
+          passage && <PassageView passage={passage} activeBlank={blankNo} showTranslation={!isExamLike} />
         )}
 
-        <p className="en mb-6 whitespace-pre-line text-ink">
-          {blankNo !== undefined ? `本文の ( ${blankNo} ) に入るのはどれ？` : renderStem(item.stem)}
+        <p className={`mb-6 whitespace-pre-line ${listening ? 'text-[15px] text-ink-sub' : 'en text-ink'}`}>
+          {listening
+            ? choicesAreSpoken(item.section)
+              ? '会話の最後の発言に対する応答として、いちばん自然なものを選ぼう。'
+              : '音声で流れる質問の答えとして、いちばん合うものを選ぼう。'
+            : blankNo !== undefined
+              ? `本文の ( ${blankNo} ) に入るのはどれ？`
+              : renderStem(item.stem)}
         </p>
 
+        {/* 第1部は選択肢も音声のみ。本番と同じく、聞く前は見せない */}
+        {hideChoices ? (
+          <div className="rounded-2xl border-2 border-dashed border-line p-6 text-center">
+            <p className="text-[15px] font-semibold text-ink-sub">選択肢は音声だけで流れます</p>
+            <p className="mt-1 text-[13px] leading-relaxed text-ink-faint">
+              本番も問題冊子に印刷されません。まず再生してみよう。
+            </p>
+            {/* 端末によっては音声が出ない。行き止まりにしないための逃げ道 */}
+            <button
+              type="button"
+              onClick={() => setAudioPlayed(true)}
+              className="mt-4 min-h-[44px] text-[13px] font-medium text-primary underline underline-offset-4"
+            >
+              音が出ないときは、文字で表示する
+            </button>
+          </div>
+        ) : (
         <ul className="flex flex-col gap-3">
           {item.choices.map((choice, i) => {
             const active = selected === i;
@@ -170,6 +205,7 @@ export function QuestionScreen({
             );
           })}
         </ul>
+        )}
       </main>
 
       {/* 選んだ瞬間には判定しない。電車内での誤タップを事故にしないため（DESIGN.md §3.2） */}

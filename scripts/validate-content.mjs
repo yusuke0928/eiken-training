@@ -63,6 +63,49 @@ for (const [file, section] of [
   console.log(`${file}: ${items.length}問`);
 }
 
+/* ---------- リスニング ---------- */
+const LISTEN_SECTIONS = {
+  // 第1部は選択肢も音声のみで3択。第2部・第3部は4択で、質問が音声で流れる
+  'l-part1': { choices: 3, needsQuestion: false },
+  'l-part2': { choices: 4, needsQuestion: true },
+  'l-part3': { choices: 4, needsQuestion: true },
+};
+const listening = load('content/pre2/listening.json');
+const listenCounts = {};
+for (const item of listening) {
+  const at = `listening.json / ${item.id}`;
+  const spec = LISTEN_SECTIONS[item.section];
+  if (!spec) {
+    errors.push(`${at}: section が l-part1/2/3 ではない`);
+    continue;
+  }
+  listenCounts[item.section] = (listenCounts[item.section] ?? 0) + 1;
+
+  if (!Array.isArray(item.dialogue) || item.dialogue.length === 0) {
+    errors.push(`${at}: dialogue（読み上げる本文）がない`);
+  } else {
+    for (const line of item.dialogue) {
+      if (line.speaker !== 'M' && line.speaker !== 'W') {
+        errors.push(`${at}: speaker は M か W（${line.speaker}）`);
+      }
+      if (!line.text?.trim()) errors.push(`${at}: 空の台詞がある`);
+    }
+  }
+  if (spec.needsQuestion && !item.question?.trim()) {
+    errors.push(`${at}: question（音声で流れる質問）がない`);
+  }
+  if (!spec.needsQuestion && item.question) {
+    errors.push(`${at}: 第1部に question は不要`);
+  }
+  if (item.choices?.length !== spec.choices) {
+    errors.push(`${at}: ${item.section} は${spec.choices}択（いまは${item.choices?.length}）`);
+  }
+  answerPositions.push(checkItem(item, 'listening.json', true));
+}
+console.log(
+  `content/pre2/listening.json: 第1部${listenCounts['l-part1'] ?? 0} / 第2部${listenCounts['l-part2'] ?? 0} / 第3部${listenCounts['l-part3'] ?? 0}問`,
+);
+
 const passages = load('content/pre2/passage.json');
 for (const p of passages) {
   const at = `passage.json / ${p.id}`;

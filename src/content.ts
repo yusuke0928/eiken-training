@@ -3,6 +3,7 @@ import { shuffleChoices } from './lib/shuffle';
 import vocabRaw from '../content/pre2/vocab.json';
 import conversationRaw from '../content/pre2/conversation.json';
 import passageRaw from '../content/pre2/passage.json';
+import listeningRaw from '../content/pre2/listening.json';
 import writingRaw from '../content/pre2/writing.json';
 
 /* content/*.json は「素直な JSON」で書けるようにしてあるので（本人が追加できるように）、
@@ -43,10 +44,15 @@ const passageItems: MCQItem[] = passageSets.flatMap((p) =>
 export const ITEMS: MCQItem[] = [
   ...standalone(vocabRaw as unknown[]),
   ...standalone(conversationRaw as unknown[]),
+  ...standalone(listeningRaw as unknown[]),
   ...passageItems,
 ];
 
 export const ITEM_BY_ID = new Map(ITEMS.map((i) => [i.id, i]));
+
+/** 実際に問題が存在するタグ・セクション（習熟度の集計対象） */
+export const ALL_TAGS: string[] = [...new Set(ITEMS.flatMap((i) => i.tags))];
+export const ALL_SECTIONS: SectionId[] = [...new Set(ITEMS.map((i) => i.section))];
 
 export function itemsInSection(section: SectionId): MCQItem[] {
   return ITEMS.filter((i) => i.section === section);

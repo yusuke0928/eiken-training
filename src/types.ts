@@ -95,6 +95,21 @@ export interface MCQItem {
   vocab?: VocabNote[];
   /** 長文問題のとき、属する Passage の id */
   passageId?: string;
+
+  /* --- リスニング --- */
+  /** 読み上げる会話・モノローグ。M=男性, W=女性 */
+  dialogue?: { speaker: 'M' | 'W'; text: string }[];
+  /** 第2部・第3部で音声のみ流れる質問（問題冊子には印刷されない） */
+  question?: string;
+}
+
+/** 第1部は選択肢も音声のみで、問題冊子に印刷されない */
+export function choicesAreSpoken(section: SectionId): boolean {
+  return section === 'l-part1';
+}
+
+export function isListening(section: SectionId): boolean {
+  return section === 'l-part1' || section === 'l-part2' || section === 'l-part3';
 }
 
 export interface Passage {

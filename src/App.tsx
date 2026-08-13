@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { buildDiagnosticQueue, buildMiniQueue, buildReviewQueue, buildTagQueue } from './engine/selector';
+import {
+  buildDiagnosticQueue,
+  buildListeningQueue,
+  buildMiniQueue,
+  buildReviewQueue,
+  buildTagQueue,
+} from './engine/selector';
+import { FocusScreen } from './features/focus/FocusScreen';
 import { getKv, setKv } from './data/db';
 import { ITEM_BY_ID } from './content';
 import { TAG_LABEL, type DiagnosticResult, type PracticeMode } from './types';
@@ -22,7 +29,8 @@ type Route =
   | { k: 'result'; results: SessionResult[] }
   | { k: 'writingList' }
   | { k: 'writingEditor'; promptId: string }
-  | { k: 'writingReview'; promptId: string; text: string };
+  | { k: 'writingReview'; promptId: string; text: string }
+  | { k: 'focus' };
 
 const MINI_SIZE = 8;
 
@@ -63,6 +71,11 @@ export default function App() {
   const startReview = useCallback(async () => {
     const ids = await buildReviewQueue(20);
     if (ids.length > 0) push({ k: 'practice', ids, mode: 'review', title: '復習' });
+  }, [push]);
+
+  const startListening = useCallback(async () => {
+    const ids = await buildListeningQueue(6);
+    if (ids.length > 0) push({ k: 'practice', ids, mode: 'training', title: 'リスニング' });
   }, [push]);
 
   const startTag = useCallback(
@@ -107,8 +120,13 @@ export default function App() {
           onTraining={() => push({ k: 'training' })}
           onReview={startReview}
           onWriting={() => push({ k: 'writingList' })}
+          onListening={startListening}
+          onFocus={() => push({ k: 'focus' })}
         />
       );
+
+    case 'focus':
+      return <FocusScreen onBack={back} />;
 
     case 'training':
       return <TrainingScreen onPickTag={startTag} onBack={back} />;

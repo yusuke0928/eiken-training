@@ -1,0 +1,407 @@
+[
+  {
+    "id": "p2-l1-001",
+    "section": "l-part1",
+    "tags": ["listen:gist"],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "W", "text": "Hi, Tom. You look really tired today." },
+      { "speaker": "M", "text": "Yeah, I stayed up late finishing my science report." },
+      { "speaker": "W", "text": "Did you get it done?" }
+    ],
+    "choices": [
+      "Yes, but I only slept four hours.",
+      "No, I don't like science very much.",
+      "Sure, I'll help you with yours."
+    ],
+    "answerIndex": 0,
+    "translation": "W: トム、今日すごく疲れて見えるよ。／M: うん、理科のレポートを終わらせるのに夜更かししたんだ。／W: 終わったの？\n→ うん、でも4時間しか寝てないよ。",
+    "explanation": "Did you get it done?（終わったの？）は Yes/No で答える質問。Yes のあとに「4時間しか寝ていない」と続けることで、疲れている理由ともつながる。",
+    "distractorNotes": [
+      "Yes と答えたうえで、疲れている理由も説明できている",
+      "「理科が好きじゃない」は好き嫌いの話。「終わったか」への答えになっていない",
+      "「手伝うよ」は相手が困っているときの申し出。すでに終わったか聞かれている場面と合わない"
+    ]
+  },
+  {
+    "id": "p2-l1-002",
+    "section": "l-part1",
+    "tags": ["listen:detail"],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "M", "text": "Excuse me. Does this bus go to the train station?" },
+      { "speaker": "W", "text": "No, you need to take the number 12." },
+      { "speaker": "M", "text": "Where does it stop?" }
+    ],
+    "choices": ["Just across the street.", "It costs two dollars.", "About twenty minutes."],
+    "answerIndex": 0,
+    "translation": "M: すみません、このバスは駅に行きますか。／W: いいえ、12番に乗る必要がありますよ。／M: それはどこに停まりますか。\n→ すぐ向かい側です。",
+    "explanation": "Where は場所を聞く疑問詞。答えも場所（across the street = 通りの向かい）でなければならない。疑問詞と答えの種類を合わせるのがこの形式の基本。",
+    "distractorNotes": [
+      "場所を答えている。Where と対応する",
+      "料金の答え。How much なら正しい",
+      "所要時間の答え。How long なら正しい"
+    ]
+  },
+  {
+    "id": "p2-l1-003",
+    "section": "l-part1",
+    "tags": ["listen:inference"],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "W", "text": "Dad, can I go to Nana's house after school today?" },
+      { "speaker": "M", "text": "Have you finished your homework?" },
+      { "speaker": "W", "text": "Not yet, but I'll do it tonight." }
+    ],
+    "choices": [
+      "Then finish it first, and you can go.",
+      "I'm glad you enjoyed it so much.",
+      "She called you this morning."
+    ],
+    "answerIndex": 0,
+    "translation": "W: お父さん、今日放課後にナナの家に行ってもいい？／M: 宿題は終わったのか。／W: まだだけど、今夜やるよ。\n→ じゃあ先に終わらせなさい。そうしたら行っていいよ。",
+    "explanation": "父親は宿題を気にしている。「まだ」と答えたので、条件をつける返事が自然。会話の流れから相手が何を気にしているかを追う。",
+    "distractorNotes": [
+      "宿題を先に、という条件つきの許可。父親の関心とつながる",
+      "「楽しめてよかった」は過去の出来事への感想。まだ出かけていない",
+      "「彼女が朝電話してきた」は情報として無関係で、許可の可否に答えていない"
+    ]
+  },
+  {
+    "id": "p2-l1-004",
+    "section": "l-part1",
+    "tags": ["listen:gist"],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "M", "text": "I'm thinking about joining the swimming club." },
+      { "speaker": "W", "text": "That's great. Have you swum much before?" },
+      { "speaker": "M", "text": "Only a little, back in elementary school." }
+    ],
+    "choices": [
+      "Don't worry. They'll teach you from the beginning.",
+      "Then you'll probably be the captain.",
+      "I'd better bring my umbrella today."
+    ],
+    "answerIndex": 0,
+    "translation": "M: 水泳部に入ろうかと思ってるんだ。／W: いいね。今まで泳いだことある？／M: 小学生のとき少しだけ。\n→ 心配しないで。最初から教えてくれるよ。",
+    "explanation": "「少ししか経験がない」という不安に対して、励ます返事が自然。相手の発言が不安なのか自慢なのかを聞き分ける。",
+    "distractorNotes": [
+      "経験が浅いことへの励まし。流れに合う",
+      "経験が少ないのにキャプテンになる、は話が逆",
+      "傘の話は水泳と音が近いだけで、内容は無関係"
+    ]
+  },
+  {
+    "id": "p2-l1-005",
+    "section": "l-part1",
+    "tags": ["listen:detail"],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "W", "text": "Excuse me, I'd like to return this book." },
+      { "speaker": "M", "text": "Certainly. Was it due today?" },
+      { "speaker": "W", "text": "Actually, it was due last Friday." }
+    ],
+    "choices": [
+      "In that case, there's a small late fee.",
+      "You can borrow five more books today.",
+      "The library opens at nine tomorrow."
+    ],
+    "answerIndex": 0,
+    "translation": "W: すみません、この本を返したいのですが。／M: かしこまりました。今日が返却期限でしたか。／W: 実は先週の金曜日が期限でした。\n→ でしたら、少し延滞料がかかります。",
+    "explanation": "期限を過ぎている（last Friday）ことを認めた場面なので、そこから生じる結果を述べる返事になる。due（期限）が聞き取りのカギ。",
+    "distractorNotes": [
+      "延滞という事実から出てくる自然な結果",
+      "貸出の話。いま返却しに来ている場面と噛み合わない",
+      "開館時間の案内。返却が遅れたことへの応答になっていない"
+    ]
+  },
+  {
+    "id": "p2-l1-006",
+    "section": "l-part1",
+    "tags": ["listen:numbers"],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "M", "text": "How was your trip to Okinawa?" },
+      { "speaker": "W", "text": "It was wonderful, but our flight home was delayed." },
+      { "speaker": "M", "text": "How long did you have to wait at the airport?" }
+    ],
+    "choices": ["Almost three hours.", "It was really beautiful there.", "We went by plane, of course."],
+    "answerIndex": 0,
+    "translation": "M: 沖縄旅行はどうだった？／W: すばらしかったけど、帰りの便が遅れたの。／M: 空港でどのくらい待ったの？\n→ 3時間近く。",
+    "explanation": "How long は時間の長さを聞く。答えも時間でなければならない。疑問詞を聞き逃さないことがすべて。",
+    "distractorNotes": [
+      "時間の長さを答えている",
+      "感想を答えている。How was ~? への答えなら正しい",
+      "手段を答えている。How did you go? への答えなら正しい"
+    ]
+  },
+
+  {
+    "id": "p2-l2-001",
+    "section": "l-part2",
+    "tags": ["listen:gist"],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "W", "text": "Dad, have you seen my tennis racket anywhere?" },
+      { "speaker": "M", "text": "I think I saw it in the garage yesterday." },
+      { "speaker": "W", "text": "I looked there this morning, but it wasn't there." },
+      { "speaker": "M", "text": "Then maybe your brother took it to practice." }
+    ],
+    "question": "Question: What is the girl's problem?",
+    "choices": [
+      "She cannot find her tennis racket.",
+      "She broke her tennis racket.",
+      "She has to clean the garage.",
+      "She was late for tennis practice."
+    ],
+    "answerIndex": 0,
+    "translation": "W: お父さん、私のテニスラケット見なかった？／M: 昨日ガレージで見たと思うよ。／W: 今朝そこを見たけど、なかったの。／M: じゃあお兄ちゃんが練習に持って行ったのかも。\n問: 女の子の問題は何か。→ ラケットが見つからない。",
+    "explanation": "冒頭の have you seen ~?（見なかった？）と、そのあとの it wasn't there から「探している」状況だと分かる。最初の1文で場面をつかむのがコツ。",
+    "distractorNotes": [
+      "見つからない、が会話全体の状況",
+      "壊れたとは誰も言っていない",
+      "ガレージは探した場所であって、掃除の話は出ていない",
+      "練習に行くのは兄。遅刻の話もない"
+    ]
+  },
+  {
+    "id": "p2-l2-002",
+    "section": "l-part2",
+    "tags": ["listen:detail"],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "M", "text": "Excuse me. I ordered the pasta about twenty minutes ago." },
+      { "speaker": "W", "text": "I'm very sorry, sir. The kitchen is quite busy tonight." },
+      { "speaker": "M", "text": "I understand, but I have to leave by seven." },
+      { "speaker": "W", "text": "I'll check with the kitchen right away and bring it as soon as I can." }
+    ],
+    "question": "Question: What will the woman do next?",
+    "choices": [
+      "Check on the man's order.",
+      "Bring the man a new menu.",
+      "Ask the man to wait until seven.",
+      "Cook the pasta by herself."
+    ],
+    "answerIndex": 0,
+    "translation": "M: すみません、20分ほど前にパスタを注文したのですが。／W: 大変申し訳ありません。今夜は厨房が混み合っておりまして。／M: 分かりますが、7時までに出ないといけないんです。／W: すぐ厨房に確認して、できるだけ早くお持ちします。\n問: 女性は次に何をするか。→ 注文を確認する。",
+    "explanation": "「次に何をするか」は最後の発言に答えがあることが多い。I'll check with the kitchen right away をそのまま言いかえたものが正解。",
+    "distractorNotes": [
+      "最後の発言 I'll check with the kitchen と一致",
+      "メニューを持ってくるとは言っていない",
+      "7時までに出たいのは客。待たせるとは言っていない",
+      "自分で作るとは言っていない。厨房に確認するだけ"
+    ]
+  },
+  {
+    "id": "p2-l2-003",
+    "section": "l-part2",
+    "tags": ["listen:detail", "listen:numbers"],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "W", "text": "Are you coming to the school festival on Saturday?" },
+      { "speaker": "M", "text": "I'd like to, but I have a piano lesson in the morning." },
+      { "speaker": "W", "text": "The festival goes until five, so you can come after your lesson." },
+      { "speaker": "M", "text": "Really? Then I'll get there around two." }
+    ],
+    "question": "Question: What will the man do on Saturday?",
+    "choices": [
+      "Go to the festival in the afternoon.",
+      "Skip his piano lesson.",
+      "Meet the woman in the morning.",
+      "Perform at the school festival."
+    ],
+    "answerIndex": 0,
+    "translation": "W: 土曜日の学園祭来る？／M: 行きたいけど、午前中にピアノのレッスンがあるんだ。／W: 5時までやってるから、レッスンのあとに来られるよ。／M: 本当？ じゃあ2時ごろ行くよ。\n問: 男性は土曜日に何をするか。→ 午後に学園祭へ行く。",
+    "explanation": "around two（2時ごろ）を「午後」と言いかえている。数字がそのまま選択肢に出ず、言いかえられるパターンは頻出。",
+    "distractorNotes": [
+      "2時ごろ＝午後。レッスンのあとに行くという流れとも合う",
+      "レッスンを休むとは言っていない。終わってから行く",
+      "午前中はレッスン。会うのは午後",
+      "出演するという話は出ていない"
+    ]
+  },
+  {
+    "id": "p2-l2-004",
+    "section": "l-part2",
+    "tags": ["listen:detail"],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "M", "text": "Welcome to City Sports Center. How can I help you?" },
+      { "speaker": "W", "text": "I'd like to join the swimming class for beginners." },
+      { "speaker": "M", "text": "I'm afraid the beginner class is full, but we have another one on Thursday evenings." },
+      { "speaker": "W", "text": "Thursday is fine for me. I'll take that one." }
+    ],
+    "question": "Question: What did the woman decide to do?",
+    "choices": [
+      "Take the Thursday evening class.",
+      "Wait until the beginner class has space.",
+      "Join a different sports center.",
+      "Come back on Thursday to decide."
+    ],
+    "answerIndex": 0,
+    "translation": "M: シティ・スポーツセンターへようこそ。ご用件は。／W: 初心者向けの水泳教室に入りたいのですが。／M: あいにく初心者クラスは満員ですが、木曜の夜に別のクラスがあります。／W: 木曜で大丈夫です。それにします。\n問: 女性は何をすることにしたか。→ 木曜夜のクラスを受ける。",
+    "explanation": "I'll take that one の that one が何を指すかを押さえる。直前の another one on Thursday evenings のこと。指示語をたどるのがカギ。",
+    "distractorNotes": [
+      "that one = 木曜夜のクラス",
+      "空くのを待つとは言っていない。別のクラスに決めた",
+      "別のセンターの話は出ていない",
+      "木曜に決めるのではなく、いま決めている"
+    ]
+  },
+  {
+    "id": "p2-l2-005",
+    "section": "l-part2",
+    "tags": ["listen:gist"],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      { "speaker": "W", "text": "You look happy today. Did something good happen?" },
+      { "speaker": "M", "text": "My host family in Canada sent me a birthday present." },
+      { "speaker": "W", "text": "That's nice. What did they send you?" },
+      { "speaker": "M", "text": "A book about Canadian history. I've already started reading it." }
+    ],
+    "question": "Question: Why is the man happy?",
+    "choices": [
+      "He received a present from Canada.",
+      "He is going to visit Canada soon.",
+      "He finished writing a book.",
+      "His host family came to see him."
+    ],
+    "answerIndex": 0,
+    "translation": "W: 今日うれしそうだね。何かいいことあった？／M: カナダのホストファミリーが誕生日プレゼントを送ってくれたんだ。／W: いいね。何を送ってくれたの？／M: カナダの歴史の本。もう読み始めてるよ。\n問: 男性はなぜうれしいのか。→ カナダからプレゼントが届いたから。",
+    "explanation": "Why を問われたら理由を述べている部分を探す。2番目の発言がそのまま理由になっている。",
+    "distractorNotes": [
+      "ホストファミリーからのプレゼントが理由",
+      "カナダに行く話は出ていない",
+      "本は送られてきたもの。書いたのではない",
+      "会いに来たのではなく、送ってきた"
+    ]
+  },
+
+  {
+    "id": "p2-l3-001",
+    "section": "l-part3",
+    "tags": ["listen:announcement", "listen:detail"],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Attention, shoppers. Because of the typhoon, our store will close early today at six o'clock. The bakery on the first floor will stop selling bread at five. We are sorry for the trouble. The store will open at the usual time tomorrow morning."
+      }
+    ],
+    "question": "Question: What will happen at the store today?",
+    "choices": [
+      "It will close earlier than usual.",
+      "The bakery will stay open until six.",
+      "It will not open at all.",
+      "Bread will be sold at a lower price."
+    ],
+    "answerIndex": 0,
+    "translation": "お客様にお知らせします。台風のため、当店は本日6時に早く閉店いたします。1階のパン売り場は5時でパンの販売を終了します。ご迷惑をおかけして申し訳ございません。明日は通常どおり開店いたします。\n問: 今日この店で何が起こるか。→ いつもより早く閉まる。",
+    "explanation": "close early today at six がそのまま根拠。earlier than usual と言いかえられている。アナウンスは「いつもと違うこと」が問われる。",
+    "distractorNotes": [
+      "早く閉店する。close early の言いかえ",
+      "パン売り場は5時まで。6時ではない",
+      "開いてはいる。早く閉まるだけ",
+      "値下げの話は出ていない"
+    ]
+  },
+  {
+    "id": "p2-l3-002",
+    "section": "l-part3",
+    "tags": ["listen:detail"],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Emma joined a cooking club last spring. At first, she could only make simple dishes like salad. Her teacher told her to try one new recipe every week. Now, six months later, Emma can cook dinner for her whole family."
+      }
+    ],
+    "question": "Question: What did Emma's teacher tell her to do?",
+    "choices": [
+      "Try a new recipe every week.",
+      "Cook dinner for her family.",
+      "Join the cooking club.",
+      "Make a salad every day."
+    ],
+    "answerIndex": 0,
+    "translation": "エマは昨年の春に料理クラブに入った。最初はサラダのような簡単な料理しか作れなかった。先生は毎週1つ新しいレシピに挑戦するように言った。6か月たった今、エマは家族全員の夕食を作ることができる。\n問: 先生はエマに何をするように言ったか。→ 毎週新しいレシピに挑戦すること。",
+    "explanation": "設問が「誰が何を言ったか」なので、told her to ~ の部分を探す。文の主語（誰の行動か）を取り違えないこと。",
+    "distractorNotes": [
+      "told her to try one new recipe every week と一致",
+      "家族の夕食を作れるのは今の結果。先生の指示ではない",
+      "クラブに入ったのは先生に言われる前の話",
+      "サラダは最初に作れた料理。毎日作れとは言われていない"
+    ]
+  },
+  {
+    "id": "p2-l3-003",
+    "section": "l-part3",
+    "tags": ["listen:detail", "listen:inference"],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Kenji wanted to buy a new bicycle, but it cost more than he had saved. He decided to work at his uncle's shop during the summer holiday. He worked there three days a week for two months. In September, he finally bought the bicycle he wanted."
+      }
+    ],
+    "question": "Question: How did Kenji get the money for the bicycle?",
+    "choices": [
+      "He worked at his uncle's shop.",
+      "He borrowed it from his uncle.",
+      "He sold his old bicycle.",
+      "He received it as a birthday present."
+    ],
+    "answerIndex": 0,
+    "translation": "ケンジは新しい自転車を買いたかったが、貯金より高かった。彼は夏休みの間、おじの店で働くことにした。2か月間、週3日そこで働いた。9月に、ついに欲しかった自転車を買った。\n問: ケンジはどうやって自転車のお金を得たか。→ おじの店で働いた。",
+    "explanation": "「お金が足りない → 働くことにした → 買えた」という順序をたどる。How（どうやって）は手段を問う。",
+    "distractorNotes": [
+      "おじの店で働いて稼いだ",
+      "借りたとは書かれていない。働いている",
+      "古い自転車を売った話は出ていない",
+      "誕生日プレゼントではなく、自分で買った"
+    ]
+  },
+  {
+    "id": "p2-l3-004",
+    "section": "l-part3",
+    "tags": ["listen:announcement"],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Welcome to the Green Hill Museum. Today, the second floor is closed for cleaning, so the special art show has moved to the first floor. You may take photographs, but please do not use a flash. Also, the museum shop closes thirty minutes before the museum does."
+      }
+    ],
+    "question": "Question: What is one thing visitors are asked not to do?",
+    "choices": [
+      "Use a flash when taking photos.",
+      "Take any photographs.",
+      "Go to the first floor.",
+      "Enter the museum shop."
+    ],
+    "answerIndex": 0,
+    "translation": "グリーンヒル美術館へようこそ。本日は2階が清掃のため閉鎖されており、特別美術展は1階に移動しています。写真撮影は可能ですが、フラッシュはご遠慮ください。また、ミュージアムショップは美術館の30分前に閉まります。\n問: 来館者がしないよう求められていることは何か。→ 写真を撮るときにフラッシュを使うこと。",
+    "explanation": "please do not ~ の部分が「してはいけないこと」。but のあとに注意事項が来る形は頻出なので、but を聞いたら身構える。",
+    "distractorNotes": [
+      "do not use a flash と一致",
+      "撮影自体は許可されている（You may take photographs）",
+      "1階はむしろ展示が移動した先",
+      "ショップは早く閉まるだけで、入ってはいけないわけではない"
+    ]
+  }
+]

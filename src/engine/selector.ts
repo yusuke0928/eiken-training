@@ -1,7 +1,8 @@
 import { db } from '../data/db';
-import { DIAGNOSTIC_PLAN, ITEMS, ITEM_BY_ID, itemsInSection } from '../content';
+import { ALL_SECTIONS, ALL_TAGS, DIAGNOSTIC_PLAN, ITEMS, ITEM_BY_ID, itemsInSection } from '../content';
 import { dueCards } from './srs';
-import type { MCQItem } from '../types';
+import { buildReport, difficultyBand, itemWeight, weightedPick, type MasteryReport } from './mastery';
+import { isListening, type MCQItem } from '../types';
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -12,49 +13,10 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-/* ---------------- 実力の推定 ---------------- */
-
-export interface Ability {
-  /** 直近の正答率。履歴がなければ undefined */
-  accuracy?: number;
-  /** 正答率の低い順のタグ */
-  weakTags: string[];
-  answered: number;
-}
-
-export async function estimateAbility(): Promise<Ability> {
+/** 解答履歴から、いまの習熟度と重点配分を作る */
+export async function loadReport(): Promise<MasteryReport> {
   const attempts = await db.attempts.toArray();
-  if (attempts.length === 0) return { weakTags: [], answered: 0 };
-
-  // 直近 120 件を見る。昔の失敗を引きずらせない。
-  const recent = attempts.sort((a, b) => b.answeredAt - a.answeredAt).slice(0, 120);
-  const accuracy = recent.filter((a) => a.correct).length / recent.length;
-
-  const byTag = new Map<string, { c: number; t: number }>();
-  for (const at of attempts) {
-    const item = ITEM_BY_ID.get(at.itemId);
-    if (!item) continue;
-    for (const tag of item.tags) {
-      const cur = byTag.get(tag) ?? { c: 0, t: 0 };
-      cur.t++;
-      if (at.correct) cur.c++;
-      byTag.set(tag, cur);
-    }
-  }
-  const weakTags = [...byTag.entries()]
-    .filter(([, v]) => v.t >= 2)
-    .sort((a, b) => a[1].c / a[1].t - b[1].c / b[1].t)
-    .map(([tag]) => tag);
-
-  return { accuracy, weakTags, answered: attempts.length };
-}
-
-/** 正答率に応じて出す難易度の範囲を決める（適応出題） */
-function difficultyBand(accuracy: number | undefined): (1 | 2 | 3)[] {
-  if (accuracy === undefined) return [1, 2, 3];
-  if (accuracy < 0.5) return [1, 2];
-  if (accuracy < 0.75) return [1, 2, 3];
-  return [2, 3];
+  return buildReport(attempts, ALL_TAGS, ALL_SECTIONS);
 }
 
 /* ---------------- キュー生成 ---------------- */
@@ -86,9 +48,7 @@ function spread(items: MCQItem[]): MCQItem[] {
   while (pool.length) {
     const lastTwo = out.slice(-2);
     const idx = pool.findIndex(
-      (cand) =>
-        lastTwo.length < 2 ||
-        !lastTwo.every((p) => p.tags.some((t) => cand.tags.includes(t))),
+      (cand) => lastTwo.length < 2 || !lastTwo.every((p) => p.tags.some((t) => cand.tags.includes(t))),
     );
     out.push(...pool.splice(idx === -1 ? 0 : idx, 1));
   }
@@ -97,38 +57,30 @@ function spread(items: MCQItem[]): MCQItem[] {
 
 /**
  * ミニ演習のキュー。
- * 期限が来た復習 50% / 弱点タグからの新規 30% / 未着手 20%（DESIGN.md §6.3）
+ *
+ * 半分は「期限が来た復習」、残りは習熟度から作った重みで抽選する。
+ * 固定比率で「弱点30%・新規20%」と決め打ちしていたのをやめ、
+ * 弱いところ・放置しているところ・まだ測れていないところに
+ * 自動で寄るようにした（重みは engine/mastery.ts）。
  */
 export async function buildMiniQueue(size: number): Promise<string[]> {
-  const ability = await estimateAbility();
-  const band = difficultyBand(ability.accuracy);
+  const report = await loadReport();
+  const band = difficultyBand(report.overall, report.answered);
   const due = await dueCards();
-  const seen = new Set((await db.srs.toArray()).map((c) => c.itemId));
 
-  const wantReview = Math.min(due.length, Math.round(size * 0.5));
-  const review = due.slice(0, wantReview).map((c) => c.itemId);
+  const wantReview = Math.min(due.length, Math.round(size * 0.45));
+  const picked = due.slice(0, wantReview).map((c) => c.itemId);
 
-  const fresh = ITEMS.filter((i) => !seen.has(i.id) && band.includes(i.difficulty));
-  const weakSet = new Set(ability.weakTags.slice(0, 5));
-  const weakFresh = shuffle(fresh.filter((i) => i.tags.some((t) => weakSet.has(t))));
-  const otherFresh = shuffle(fresh.filter((i) => !i.tags.some((t) => weakSet.has(t))));
+  const chosen = new Set(picked);
+  const pool = ITEMS.filter((i) => !chosen.has(i.id) && band.includes(i.difficulty));
+  // 難易度帯で絞りすぎて足りなくなったら帯を外す
+  const usable = pool.length >= size - picked.length ? pool : ITEMS.filter((i) => !chosen.has(i.id));
 
-  const picked = [...review];
-  const wantWeak = Math.round(size * 0.3);
-  picked.push(...weakFresh.slice(0, wantWeak).map((i) => i.id));
-  for (const i of otherFresh) {
-    if (picked.length >= size) break;
-    picked.push(i.id);
-  }
-  // 新規が尽きたら、期限前の復習で埋める
-  if (picked.length < size) {
-    for (const c of shuffle(await db.srs.toArray())) {
-      if (picked.length >= size) break;
-      if (!picked.includes(c.itemId)) picked.push(c.itemId);
-    }
-  }
+  picked.push(
+    ...weightedPick(usable, (i) => itemWeight(i.id, report), size - picked.length).map((i) => i.id),
+  );
 
-  const items = spread(picked.slice(0, size).map((id) => ITEM_BY_ID.get(id)!).filter(Boolean));
+  const items = spread(picked.map((id) => ITEM_BY_ID.get(id)!).filter(Boolean));
   return groupByPassage(items.map((i) => i.id));
 }
 
@@ -136,6 +88,24 @@ export async function buildMiniQueue(size: number): Promise<string[]> {
 export async function buildTagQueue(tag: string, size: number): Promise<string[]> {
   const pool = shuffle(ITEMS.filter((i) => i.tags.includes(tag)));
   return groupByPassage(pool.slice(0, size).map((i) => i.id));
+}
+
+/** リスニング（第1〜3部を混ぜる）。本番と同じく第1部から並べる */
+export async function buildListeningQueue(size: number): Promise<string[]> {
+  const report = await loadReport();
+  const pool = ITEMS.filter((i) => isListening(i.section));
+  const order: Record<string, number> = { 'l-part1': 0, 'l-part2': 1, 'l-part3': 2 };
+  return weightedPick(pool, (i) => itemWeight(i.id, report), size)
+    .sort((a, b) => order[a.section] - order[b.section])
+    .map((i) => i.id);
+}
+
+/** セクション別（リスニング第1部だけ、など） */
+export async function buildSectionQueue(section: string, size: number): Promise<string[]> {
+  const report = await loadReport();
+  const pool = ITEMS.filter((i) => i.section === section);
+  const picked = weightedPick(pool, (i) => itemWeight(i.id, report), size);
+  return groupByPassage(picked.map((i) => i.id));
 }
 
 /** 復習ボックス（期限が来たものだけ） */
@@ -149,7 +119,6 @@ export function buildDiagnosticQueue(): string[] {
   const ids: string[] = [];
   for (const { section, count } of DIAGNOSTIC_PLAN) {
     const pool = itemsInSection(section);
-    // 診断は難易度を散らしたいので、易→難の順に並べてから均等に抜き取る
     const sorted = [...pool].sort((a, b) => a.difficulty - b.difficulty);
     const step = Math.max(1, Math.floor(sorted.length / count));
     const picked: MCQItem[] = [];

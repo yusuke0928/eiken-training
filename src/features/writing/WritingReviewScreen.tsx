@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { WRITING_BY_ID } from '../../content';
-import { bumpDayLog, db } from '../../data/db';
+import { bumpDayLog, clearDraft, db } from '../../data/db';
 import { countWords, mechanicalGrader, totalScore } from '../../engine/writing';
 import { RUBRIC, WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
@@ -37,6 +37,7 @@ export function WritingReviewScreen({
     });
     // ライティング1題は選択問題1問と同じ重みではない（600点の半分を左右する）
     await bumpDayLog(total >= spec.goal, 3);
+    await clearDraft(promptId);
     setSaved(true);
     onDone();
   }

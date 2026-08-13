@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WRITING_BY_ID } from '../../content';
+import { loadDraft, saveDraft } from '../../data/db';
 import { TEMPLATE, countWords, mechanicalGrader } from '../../engine/writing';
 import { WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
@@ -17,6 +18,26 @@ export function WritingEditorScreen({
   const spec = WRITING_SPEC[prompt.section];
   const [text, setText] = useState('');
   const [showHelp, setShowHelp] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // 書きかけを失うのがいちばん痛いので、入力のたびに端末へ保存する
+  useEffect(() => {
+    let alive = true;
+    loadDraft(promptId).then((d) => {
+      if (!alive) return;
+      if (d) setText(d);
+      setLoaded(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [promptId]);
+
+  useEffect(() => {
+    if (!loaded) return;
+    const t = window.setTimeout(() => void saveDraft(promptId, text), 400);
+    return () => window.clearTimeout(t);
+  }, [text, loaded, promptId]);
 
   const words = countWords(text);
   const [min, max] = spec.wordRange;
@@ -145,6 +166,8 @@ export function WritingEditorScreen({
           className="en w-full resize-y rounded-3xl border-2 border-line bg-surface p-4 text-ink outline-none focus:border-primary"
         />
         <p className="mt-2 text-[12px] leading-relaxed text-ink-faint">
+          書いた内容は自動で保存されます。途中でアプリを閉じても消えません。
+          <br />
           自動修正はオフにしてあります。本番は手書きなので、スペルも自分で書けるようにしておこう。
           上のチェックは語数や疑問符の数など「数えられること」だけを見ていて、内容が合っているかは判定していません。
         </p>

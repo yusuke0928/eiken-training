@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ITEM_BY_ID, PASSAGES } from '../../content';
-import { db, bumpDayLog } from '../../data/db';
+import { db, bumpDayLog, clearSession, saveSession } from '../../data/db';
 import { applyResult } from '../../engine/srs';
 import { choicesAreSpoken, isListening, type PracticeMode } from '../../types';
 import { Button, ProgressBar, Screen, TopBar } from '../../ui/primitives';
@@ -33,20 +33,23 @@ export function QuestionScreen({
   ids,
   mode,
   title,
+  resume,
   onFinish,
   onExit,
 }: {
   ids: string[];
   mode: PracticeMode;
   title: string;
+  /** 途中でページが読み直されたときの復帰位置 */
+  resume?: { index: number; results: SessionResult[] };
   onFinish: (results: SessionResult[]) => void;
   onExit: () => void;
 }) {
   const [queue, setQueue] = useState<string[]>(ids);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(resume?.index ?? 0);
   const [selected, setSelected] = useState<number | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [results, setResults] = useState<SessionResult[]>([]);
+  const [results, setResults] = useState<SessionResult[]>(resume?.results ?? []);
   const [confirmExit, setConfirmExit] = useState(false);
   const [audioPlayed, setAudioPlayed] = useState(false);
   const sessionId = useRef(`s-${Date.now()}`).current;
@@ -71,6 +74,13 @@ export function QuestionScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
+  // 1問でも答えていたら、その時点の状態を常に保存しておく。
+  // 途中でページが読み直されても、次の起動でここから再開できる。
+  useEffect(() => {
+    if (results.length === 0) return;
+    void saveSession({ mode, title, ids: queue, index, results, updatedAt: Date.now() });
+  }, [mode, title, queue, index, results]);
+
   if (!item) return null;
 
   async function confirm() {
@@ -88,7 +98,10 @@ export function QuestionScreen({
       elapsedMs,
     });
     await applyResult(item.id, correct);
-    await bumpDayLog(correct);
+    // 診断テストは「実力を測る」もので、今日のミッション（1日3問）には数えない。
+    // 初日にいきなり「達成。あとはぜんぶおまけ」になると、そこから続かなくなる。
+    // weight 0 でも当日の行は作られるので、連続日数は途切れない。
+    await bumpDayLog(correct, mode === 'diagnostic' ? 0 : 1);
 
     const next = [...results, { itemId: item.id, correct, selected }];
     setResults(next);
@@ -106,6 +119,7 @@ export function QuestionScreen({
     setAudioPlayed(false);
     startedAt.current = Date.now();
     if (index + 1 >= queue.length) {
+      void clearSession();
       onFinish(current);
     } else {
       setIndex(index + 1);
@@ -238,7 +252,14 @@ export function QuestionScreen({
                 つづける
               </Button>
               <div className="flex-1">
-                <Button full variant="soft" onClick={() => onFinish(results)}>
+                <Button
+                  full
+                  variant="soft"
+                  onClick={() => {
+                    void clearSession();
+                    onFinish(results);
+                  }}
+                >
                   やめる
                 </Button>
               </div>

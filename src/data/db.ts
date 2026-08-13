@@ -1,5 +1,5 @@
 import Dexie, { type Table } from 'dexie';
-import type { Attempt, DayLog, SrsCard, WritingSubmission } from '../types';
+import type { Attempt, DayLog, PracticeMode, SrsCard, WritingSubmission } from '../types';
 
 class EikenDB extends Dexie {
   attempts!: Table<Attempt, number>;
@@ -34,6 +34,29 @@ export async function getKv<T>(key: string): Promise<T | undefined> {
 export async function setKv(key: string, value: unknown): Promise<void> {
   await db.kv.put({ key, value });
 }
+
+/* ---------------- 中断からの復帰 ----------------
+   通学中や寝る前に使う前提なので、着信・電波切れ・バックグラウンド解放で
+   ページが読み直されることは日常的に起きる。20問の診断テストや書きかけの
+   答案が消えるのは実害が大きいので、進行中のものは常に保存しておく。      */
+
+export interface SavedSession {
+  mode: PracticeMode;
+  title: string;
+  ids: string[];
+  index: number;
+  results: { itemId: string; correct: boolean; selected: number }[];
+  updatedAt: number;
+}
+
+export const saveSession = (s: SavedSession) => setKv('session', s);
+export const loadSession = () => getKv<SavedSession>('session');
+export const clearSession = () => db.kv.delete('session');
+
+const draftKey = (promptId: string) => `draft:${promptId}`;
+export const saveDraft = (promptId: string, text: string) => setKv(draftKey(promptId), text);
+export const loadDraft = (promptId: string) => getKv<string>(draftKey(promptId));
+export const clearDraft = (promptId: string) => db.kv.delete(draftKey(promptId));
 
 /* ---------------- 日付ユーティリティ ---------------- */
 
@@ -96,9 +119,14 @@ export function computeStreak(activeDates: Set<string>): number {
   return streak;
 }
 
+/**
+ * 連続日数は「その日なにか取り組んだか」で判定する。
+ * 診断テストのように今日のミッションには数えない活動（weight 0）でも、
+ * 行そのものは作られるので記録は途切れない。
+ */
 export async function loadStreak(): Promise<number> {
   const rows = await db.days.toArray();
-  return computeStreak(new Set(rows.filter((r) => r.answered > 0).map((r) => r.date)));
+  return computeStreak(new Set(rows.map((r) => r.date)));
 }
 
 export async function todayCount(): Promise<number> {

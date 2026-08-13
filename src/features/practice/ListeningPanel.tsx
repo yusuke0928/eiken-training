@@ -111,12 +111,18 @@ export function ListeningPanel({
           >
             {slow ? 'ゆっくり ON' : 'ゆっくり OFF'}
           </button>
+          {/* 聞く前に読めてしまうと、リスニングの練習にならない。1回聞いてから開放する */}
           <button
             type="button"
             onClick={() => setShowScript((v) => !v)}
-            className="min-h-[40px] rounded-full bg-surface px-4 text-[13px] font-medium text-ink-sub"
+            disabled={plays === 0}
+            className="min-h-[40px] rounded-full bg-surface px-4 text-[13px] font-medium text-ink-sub disabled:opacity-40"
           >
-            {showScript ? 'スクリプトを隠す' : 'スクリプトを見る'}
+            {plays === 0
+              ? 'スクリプト（1回聞いてから）'
+              : showScript
+                ? 'スクリプトを隠す'
+                : 'スクリプトを見る'}
           </button>
         </div>
       )}

@@ -7,7 +7,7 @@ import {
   buildTagQueue,
 } from './engine/selector';
 import { FocusScreen } from './features/focus/FocusScreen';
-import { getKv, setKv } from './data/db';
+import { clearSession, getKv, loadSession, setKv } from './data/db';
 import { ITEM_BY_ID } from './content';
 import { TAG_LABEL, type DiagnosticResult, type PracticeMode } from './types';
 import { HomeScreen } from './features/home/HomeScreen';
@@ -24,7 +24,13 @@ type Route =
   | { k: 'welcome' }
   | { k: 'home' }
   | { k: 'training' }
-  | { k: 'practice'; ids: string[]; mode: PracticeMode; title: string }
+  | {
+      k: 'practice';
+      ids: string[];
+      mode: PracticeMode;
+      title: string;
+      resume?: { index: number; results: SessionResult[] };
+    }
   | { k: 'diagResult'; results: SessionResult[] }
   | { k: 'result'; results: SessionResult[] }
   | { k: 'writingList' }
@@ -33,6 +39,8 @@ type Route =
   | { k: 'focus' };
 
 const MINI_SIZE = 8;
+/** 中断した演習に自動で戻す時間の上限 */
+const RESUME_WINDOW_MS = 6 * 60 * 60 * 1000;
 
 export default function App() {
   const [stack, setStack] = useState<Route[] | null>(null);
@@ -40,7 +48,33 @@ export default function App() {
   useEffect(() => {
     (async () => {
       const onboarded = await getKv<boolean>('onboarded');
-      setStack([onboarded ? { k: 'home' } : { k: 'welcome' }]);
+      const base: Route = onboarded ? { k: 'home' } : { k: 'welcome' };
+
+      // 中断された演習が残っていれば、そこへ戻す。
+      // 最後まで進めた／自分でやめた場合は消えているので、
+      // ここに残っているのは「意図せず閉じた」ときだけ。
+      //
+      // ただし戻すのは直近 RESUME_WINDOW 以内のものだけ。
+      // 昨日の途中セッションに毎回引き戻されると、別のことをしたいときに邪魔になる。
+      // 解答自体は attempts と復習ボックスに記録済みなので、捨てても失われるものはない。
+      const saved = await loadSession();
+      const fresh = !!saved && Date.now() - saved.updatedAt < RESUME_WINDOW_MS;
+      if (saved && !fresh) await clearSession();
+      if (saved && fresh && saved.results.length > 0 && saved.ids.length > 0) {
+        setStack([
+          { k: 'home' },
+          {
+            k: 'practice',
+            ids: saved.ids,
+            mode: saved.mode,
+            title: saved.title,
+            resume: { index: saved.index, results: saved.results },
+          },
+        ]);
+        window.history.pushState({}, '');
+        return;
+      }
+      setStack([base]);
     })();
   }, []);
 
@@ -157,6 +191,7 @@ export default function App() {
           ids={route.ids}
           mode={route.mode}
           title={route.title}
+          resume={route.resume}
           onExit={back}
           onFinish={async (results) => {
             if (route.mode === 'diagnostic') {

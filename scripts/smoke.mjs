@@ -61,11 +61,18 @@ console.log('ホーム → ミニ演習 → 解説');
 await page.getByRole('button', { name: 'はじめる' }).click();
 await page.getByText('今日のミッション').waitFor();
 await shot('05-home');
-await page.locator('button', { hasText: 'つづきから' }).first().click();
+// 診断テストは今日のミッションに数えないので、直後は「はじめる」表示になる
+await page.locator('button').filter({ hasText: /つづきから|はじめる/ }).first().click();
 await shot('06-question');
 await answer(0);
 await page.getByText('こたえ').waitFor({ timeout: 8000 });
 await shot('07-explanation');
+
+// 途中で抜けると復帰対象として残るので、明示的にセッションを閉じてから次へ
+await page.getByRole('button', { name: 'つぎへ' }).click();
+await page.getByLabel('もどる').click();
+await page.getByRole('button', { name: 'やめる' }).click();
+await page.getByText('おつかれさま').waitFor({ timeout: 8000 });
 
 console.log('論点別トレーニング');
 await page.goto(URL, { waitUntil: 'networkidle' });
@@ -90,6 +97,10 @@ if (await fallback.count()) {
 await answer(0);
 await page.getByText('こたえ').waitFor({ timeout: 8000 });
 await shot('11-listening-explanation');
+await page.getByRole('button', { name: 'つぎへ' }).click();
+await page.getByLabel('もどる').click();
+await page.getByRole('button', { name: 'やめる' }).click();
+await page.getByText('おつかれさま').waitFor({ timeout: 8000 });
 
 console.log('いまの重点');
 await page.goto(URL, { waitUntil: 'networkidle' });
@@ -151,6 +162,64 @@ await page.emulateMedia({ colorScheme: 'dark' });
 await page.goto(URL, { waitUntil: 'networkidle' });
 await page.getByText('今日のミッション').waitFor({ timeout: 8000 });
 await shot('21-home-dark');
+
+/* ---- 回帰テスト：中断からの復帰 ----
+   通学中・寝る前に使うので、着信や電波切れでページが読み直されるのは普通に起きる。
+   20問の診断テストや書きかけの答案が消えないことを、毎回ここで確かめる。 */
+console.log('中断からの復帰（回帰テスト）');
+const fresh = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p2 = await fresh.newPage();
+p2.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
+
+async function answer2() {
+  const c = p2.locator('main ul > li > button');
+  await c.first().waitFor({ timeout: 8000 });
+  await c.nth(0).click();
+  await p2.getByRole('button', { name: '決定' }).click();
+  await p2.waitForTimeout(150);
+}
+
+await p2.goto(URL, { waitUntil: 'networkidle' });
+await p2.getByRole('button', { name: '診断テストをはじめる' }).click();
+for (let i = 0; i < 3; i++) await answer2();
+
+await p2.reload({ waitUntil: 'networkidle' });
+await p2.getByText('診断テスト').waitFor({ timeout: 10000 });
+const header = (await p2.locator('header').innerText()).replace(/\s+/g, ' ');
+if (!header.includes('4 / 20')) throw new Error(`診断テストが復帰していない（ヘッダー: ${header}）`);
+console.log('  ✓ 診断テストが4問目から復帰');
+
+// 診断を途中でやめると、そこまでの結果で診断結果画面へ進む
+await p2.getByLabel('もどる').click();
+await p2.getByRole('button', { name: 'やめる' }).click();
+await p2.getByText('診断テストの結果').waitFor({ timeout: 10000 });
+await p2.getByRole('button', { name: 'はじめる' }).click();
+await p2.getByText('今日のミッション').waitFor({ timeout: 10000 });
+const homeText = await p2.locator('body').innerText();
+if (homeText.includes('今日のぶんは達成')) {
+  throw new Error('診断テストが今日のミッションに数えられている');
+}
+console.log('  ✓ 診断テストは今日のミッションに数えない');
+
+await p2.locator('button', { hasText: 'ライティング道場' }).first().click();
+await p2.locator('button', { hasText: '部活動' }).first().click();
+await p2.locator('textarea').fill('I think students should join a club at school.');
+await p2.waitForTimeout(1000);
+await p2.reload({ waitUntil: 'networkidle' });
+await p2.getByText('今日のミッション').waitFor({ timeout: 10000 });
+await p2.locator('button', { hasText: 'ライティング道場' }).first().click();
+await p2.locator('button', { hasText: '部活動' }).first().click();
+await p2.locator('textarea').waitFor({ timeout: 8000 });
+// 下書きの読み込みは非同期なので、値が入るのを待つ
+await p2
+  .waitForFunction(() => document.querySelector('textarea')?.value.includes('join a club'), null, {
+    timeout: 8000,
+  })
+  .catch(async () => {
+    throw new Error(`下書きが消えている（"${await p2.locator('textarea').inputValue()}"）`);
+  });
+console.log('  ✓ ライティングの下書きが残っている');
+await p2.screenshot({ path: join(OUT, '22-resume.png') });
 
 await browser.close();
 

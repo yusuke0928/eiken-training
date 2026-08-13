@@ -1,3 +1,4 @@
+import { hashString } from '../../lib/shuffle';
 import { TAG_LABEL, type MCQItem } from '../../types';
 import { Button } from '../../ui/primitives';
 
@@ -5,6 +6,19 @@ import { Button } from '../../ui/primitives';
  * 解説シート（DESIGN.md §3.2「ここがこのアプリの心臓部」）
  * ○×ではなく「なぜその答えか」と「他の3つがなぜダメか」まで出す。
  */
+/* 毎回まったく同じ言葉だと、繰り返すうちに白々しくなる。
+   責めない範囲で少しだけ振れ幅を持たせる（DESIGN.md §4.5） */
+const OK_LINES = [
+  { head: 'せいかい', sub: 'この調子' },
+  { head: 'せいかい', sub: 'ちゃんと根拠で選べてる' },
+  { head: 'せいかい', sub: 'ここはもう大丈夫そう' },
+];
+const NG_LINES = [
+  { head: 'おしい。あと1歩', sub: 'あとでもう1回出すね' },
+  { head: 'ここは差がつくところ', sub: '解説を読んだら next' },
+  { head: 'いま知れてよかったやつ', sub: '本番前に出会えたのが大きい' },
+];
+
 export function ExplanationSheet({
   item,
   selected,
@@ -19,6 +33,9 @@ export function ExplanationSheet({
   isLast: boolean;
 }) {
   const correct = selected === item.answerIndex;
+  // 問題 id から決めるので、同じ問題では毎回同じ言葉になる
+  const pool = correct ? OK_LINES : NG_LINES;
+  const line = pool[hashString(item.id) % pool.length];
 
   return (
     <div className="fixed inset-0 z-40 flex flex-col justify-end">
@@ -38,11 +55,9 @@ export function ExplanationSheet({
             <div>
               {/* 「不正解！」とは書かない（DESIGN.md §4.5） */}
               <p className={`text-[17px] font-bold ${correct ? 'text-correct' : 'text-again'}`}>
-                {correct ? 'せいかい' : 'おしい。あと1歩'}
+                {line.head}
               </p>
-              <p className="text-[13px] text-ink-faint">
-                {correct ? 'この調子' : 'あとでもう1回出すね'}
-              </p>
+              <p className="text-[13px] text-ink-faint">{line.sub}</p>
             </div>
           </div>
         </div>

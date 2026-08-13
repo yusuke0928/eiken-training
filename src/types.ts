@@ -70,6 +70,11 @@ export const TAG_LABEL: Record<string, string> = {
   'read:inference': '推論',
   'read:vocab-in-context': '文脈から語を選ぶ',
   'read:structure': '文のつながり',
+  'listen:gist': '話の要点をつかむ',
+  'listen:detail': '細かい内容を聞き取る',
+  'listen:numbers': '数・時刻の聞き取り',
+  'listen:inference': '状況を読みとる',
+  'listen:announcement': 'アナウンス・放送',
 };
 
 export interface VocabNote {

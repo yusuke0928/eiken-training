@@ -55,8 +55,11 @@ export function Card({
   return (
     <Tag
       onClick={onClick}
-      className={`w-full rounded-3xl border p-5 text-left ${tones} ${
-        onClick ? 'active:scale-[0.99] transition-transform' : ''
+      // onClick が無い＝いまはタップできない状態（例：復習ボックスが空）。
+      // 他の押せるカードと見た目が同じだと、押しても無反応で「壊れてる？」に見えるため、
+      // 破線＋薄めにして押せないことが見た目で分かるようにする
+      className={`w-full rounded-3xl border p-5 text-left ${
+        onClick ? `${tones} active:scale-[0.99] transition-transform` : 'border-dashed border-line bg-surface opacity-60'
       }`}
     >
       {children}

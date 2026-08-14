@@ -48,6 +48,10 @@ export function MockRunScreen({
   const [remaining, setRemaining] = useState(restore?.writtenRemainingMs ?? WRITTEN_MS);
   const [navOpen, setNavOpen] = useState(false);
   const [confirmSubmit, setConfirmSubmit] = useState(false);
+  // 演習画面の「やめる」確認と揃える。105分の模試のほうが無警告即ホームでは
+  // 逆に不安になる（ユーザー検証で指摘）。データは自動保存されているので、
+  // ここでの確認は「消えるかも」ではなく「本当に抜けていい？」の一呼吸のため。
+  const [confirmExit, setConfirmExit] = useState(false);
   const [audioDone, setAudioDone] = useState(false);
   const [textFallback, setTextFallback] = useState(false);
   const [answerWindow, setAnswerWindow] = useState<number | null>(null);
@@ -181,10 +185,12 @@ export function MockRunScreen({
           >
             一覧
           </button>
-          {/* 途中で抜けても保存は残るので、ホームからいつでも続きに戻れる */}
+          {/* 途中で抜けても保存は残るので、ホームからいつでも続きに戻れる。
+              ただし演習画面と同じく、うっかりタップで105分の模試から
+              無警告で放り出されないよう、一度確認をはさむ */}
           <button
             type="button"
-            onClick={() => goHome?.()}
+            onClick={() => setConfirmExit(true)}
             aria-label="ホーム"
             className="flex h-11 w-11 items-center justify-center rounded-full text-ink-sub active:bg-surface-2"
           >
@@ -342,6 +348,35 @@ export function MockRunScreen({
             >
               採点せずにやめる（記録は残りません）
             </button>
+          </div>
+        </div>
+      )}
+
+      {confirmExit && (
+        <div className="fixed inset-0 z-50 flex items-end">
+          <div className="absolute inset-0 bg-black/25" onClick={() => setConfirmExit(false)} />
+          <div className="anim-sheet relative w-full rounded-t-[28px] bg-surface p-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
+            <p className="mb-1 text-[17px] font-bold text-ink">ここでやめる？</p>
+            <p className="mb-5 text-[14px] text-ink-sub">
+              ここまでの内容は保存されるよ。あとで「中断した模試を続ける」から再開できる。
+            </p>
+            <div className="flex gap-3">
+              <Button variant="ghost" onClick={() => setConfirmExit(false)}>
+                つづける
+              </Button>
+              <div className="flex-1">
+                <Button
+                  full
+                  variant="soft"
+                  onClick={() => {
+                    setConfirmExit(false);
+                    goHome?.();
+                  }}
+                >
+                  ホームに戻る
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       )}

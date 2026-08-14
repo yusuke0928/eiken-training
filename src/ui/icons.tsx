@@ -251,6 +251,13 @@ export const Bookmark = ({ size, filled }: IconProps & { filled?: boolean }) => 
   </svg>
 );
 
+/** 拡大表示などを閉じるための × */
+export const Close = ({ size }: IconProps) => (
+  <Svg size={size} strokeWidth={2.2}>
+    <path d="M6 6l12 12M18 6L6 18" />
+  </Svg>
+);
+
 /* ---------------- 難易度 ---------------- */
 
 /**

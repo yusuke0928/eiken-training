@@ -284,8 +284,8 @@ export function HomeScreen({
 
         <div className="rounded-3xl border border-dashed border-line p-4">
           <p className="text-[13px] font-semibold text-ink-sub">これから増やすもの</p>
+          {/* 単語カードは目標の2,000語を超えて5,000語超まで増えたので、この欄からは卒業させた（P4） */}
           <ul className="mt-2 flex flex-col gap-1 text-[13px] text-ink-faint">
-            <li>・単語カードの収録語数（2,000語を目標に追加中）</li>
             <li>・面接の問題カード</li>
           </ul>
           <p className="mt-3 text-[12px] text-ink-faint">

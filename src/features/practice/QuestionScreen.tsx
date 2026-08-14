@@ -15,6 +15,38 @@ export interface SessionResult {
   selected: number;
 }
 
+/**
+ * 「やめる／最終問題」で clearSession の完了を待ってから次の画面へ進む理由。
+ *
+ * 観測した事実（smoke.mjs を実際に走らせて再現・記録した生ログより）：
+ *   「やめる」を押した直後に page.goto() でリロードすると、まれに kv.session に
+ *   index:1・results 1件（＝やめた時点の中身）が残ったままで、起動後に
+ *   「ミニ演習 2/8」（＝中断復帰の分岐）へ着地し、ホーム（「今日のミッション」）を
+ *   待つ smoke.mjs の assertion がタイムアウトした。これは実際に取れたダンプであり、推測ではない。
+ *
+ * 推測している機序（未確認・断定しない）：
+ *   それまで clearSession() を void で fire-and-forget していたため、削除の完了より先に
+ *   画面遷移・リロードが起き、削除が反映される前の状態を次の起動が読んでしまったのでは
+ *   ないか、という仮説。ただし「IndexedDB は同一ストアへの readwrite を要求された順に
+ *   直列実行するはずで、await の有無に関係なく順序は保たれるのでは」という反論もあり、
+ *   正確な機序までは追い切れていない。確実なのは「delete の完了を待ってから遷移する」に
+ *   変えたところ、以後この失敗が再現しなくなった、という事実だけ。
+ *
+ * ただし「待つ」こと自体が別の詰まりを生まないよう、次の2点を保証する：
+ *   - 削除が失敗（reject）しても catch して必ず先に進む。無音にはせず console.error に
+ *     残すのは、黙って握りつぶすと「削除が実は失敗し続けている」ことに誰も気づけないため。
+ *     smoke.mjs は console エラーも拾うので、本当に壊れていれば smoke が赤くなる（＝門番として機能する）。
+ *   - 削除が reject も resolve もせず固まった場合に備え、一定時間で諦めるタイムアウトを添える。
+ *     iOS Safari は bfcache 復帰後に IndexedDB のトランザクションが完了しないまま
+ *     固まる壊れ方が知られており、進めなくなるくらいなら古いセッションが残るほうがましなため。
+ */
+async function clearSessionBestEffort(): Promise<void> {
+  await Promise.race([
+    clearSession().catch((e) => console.error('clearSession failed:', e)),
+    new Promise<void>((resolve) => setTimeout(resolve, 1500)),
+  ]);
+}
+
 export function QuestionScreen({
   ids,
   mode,
@@ -42,6 +74,11 @@ export function QuestionScreen({
   const goHome = useGoHome();
   const sessionId = useRef(`s-${Date.now()}`).current;
   const startedAt = useRef(Date.now());
+  // 最終問題を答え終えた瞬間は setResults と advance が同じティックで走り、
+  // 「保存 useEffect の再実行」と「clearSession」が競走状態になる。
+  // 結果、消したはずのセッションが直後に復活し、リロードで最終問題が無限に再出題されていた（P0）。
+  // 終了を決めた時点でこのフラグを立て、以降の保存 effect を黙らせて競走そのものをなくす。
+  const finishedRef = useRef(false);
 
   const item = ITEM_BY_ID.get(queue[index]);
   const passage = item?.passageId ? PASSAGES.get(item.passageId) : undefined;
@@ -64,8 +101,17 @@ export function QuestionScreen({
 
   // 1問でも答えていたら、その時点の状態を常に保存しておく。
   // 途中でページが読み直されても、次の起動でここから再開できる。
+  //
+  // 「0問の時点から保存する（模試と同じ仕組みに揃える）」も一度試したが、
+  // 練習画面をひらいた"瞬間"に fire-and-forget の書き込みが走るようになり、
+  // その直後に別画面へ遷移する自動テストで書き込みと clearSession が
+  // まれに競合し、ホームに戻らず演習画面が残ることがあった（レビューで発覚）。
+  // 中断復帰は「1問以上答えている」時点でこの仕組み自体は機能している
+  // （実地検証済み）ため、0問ぶんの復帰を追う価値より安定性を優先し元に戻した。
+  // 終了が決まった後は finishedRef で止め、消したはずのセッションを
+  // 保存し直してしまわないようにする（P0）。
   useEffect(() => {
-    if (results.length === 0) return;
+    if (results.length === 0 || finishedRef.current) return;
     void saveSession({ mode, title, ids: queue, index, results, updatedAt: Date.now() });
   }, [mode, title, queue, index, results]);
 
@@ -101,14 +147,21 @@ export function QuestionScreen({
     }
   }
 
-  function advance(current: SessionResult[] = results) {
+  /**
+   * queueLength を引数にしているのは requeue() のため。
+   * setQueue で積み直した直後に呼ぶと、この関数のクロージャが持つ queue は
+   * まだ古い（積み直す前の）配列なので、明示的に新しい長さを渡せるようにしてある。
+   */
+  async function advance(current: SessionResult[] = results, queueLength: number = queue.length) {
     setSheetOpen(false);
     setSelected(null);
     setAudioPlayed(false);
     setTextFallback(false);
     startedAt.current = Date.now();
-    if (index + 1 >= queue.length) {
-      void clearSession();
+    if (index + 1 >= queueLength) {
+      finishedRef.current = true;
+      // 削除の完了を待ってから次の画面へ進む理由・保証は clearSessionBestEffort 参照。
+      await clearSessionBestEffort();
       onFinish(current);
     } else {
       setIndex(index + 1);
@@ -119,8 +172,13 @@ export function QuestionScreen({
   /** 「もう1回出して」— セッションの最後に積み直す */
   function requeue() {
     if (!item) return;
-    setQueue([...queue, item.id]);
-    advance();
+    const next = [...queue, item.id];
+    // advance() は同じレンダーの queue（積み直す前の長さ）を見てしまうため、
+    // setQueue 直後にそのまま呼ぶと「最終問題」判定を誤り、最終問題で
+    // 「もう1回出して」を押すと積み直した問題ごとセッションが終了する不具合があった。
+    // 新しい長さを明示的に渡して、古いクロージャを踏まないようにする。
+    setQueue(next);
+    advance(results, next.length);
   }
 
   const answered = results.length;
@@ -249,8 +307,10 @@ export function QuestionScreen({
                 <Button
                   full
                   variant="soft"
-                  onClick={() => {
-                    void clearSession();
+                  onClick={async () => {
+                    finishedRef.current = true;
+                    // 理由・保証は clearSessionBestEffort 参照。
+                    await clearSessionBestEffort();
                     onFinish(results);
                   }}
                 >

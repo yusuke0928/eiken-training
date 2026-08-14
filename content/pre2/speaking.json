@@ -5,7 +5,7 @@
     "passage": "Today, many people buy things on the Internet. They can order products at any time, and the products are brought to their homes. However, some people worry that they cannot check the size or the color before buying. Now, some shops let customers return items for free.",
     "passageJa": "今日、多くの人がインターネットで物を買う。いつでも商品を注文でき、商品は家まで届けられる。しかし、買う前に大きさや色を確認できないことを心配する人もいる。現在、無料で返品できるようにしている店もある。",
     "sceneA": {
-      "note": "駅前のようすを描いた絵。5人の人物がそれぞれ別のことをしている。",
+      "note": "駅前のようすを描いた絵。5つの動作をしている人たちがいる。",
       "actions": [
         { "ja": "女性がバスを待っている", "en": "A woman is waiting for a bus." },
         { "ja": "男性が自転車に乗っている", "en": "A man is riding a bicycle." },
@@ -29,7 +29,7 @@
         "no": 2,
         "prompt": "Now, please look at the people in Picture A. They are doing different things. Tell me as much as you can about what they are doing.",
         "model": "A woman is waiting for a bus. A man is riding a bicycle. A girl is walking a dog. A man is reading a newspaper. Two children are running.",
-        "checks": ["5人ぶん言えた", "現在進行形（is / are ~ing）で言えた", "冠詞（a / the）を落とさなかった"]
+        "checks": ["5つの動作を言えた", "現在進行形（is / are ~ing）で言えた", "冠詞（a / the）を落とさなかった"]
       },
       {
         "no": 3,
@@ -57,7 +57,7 @@
     "passage": "These days, some schools grow vegetables in small gardens. Students plant seeds and take care of them every week. In this way, they learn how much time and work food needs. Some schools use the vegetables for school lunches.",
     "passageJa": "近ごろ、小さな畑で野菜を育てる学校がある。生徒は種を植え、毎週世話をする。こうして、食べ物にどれだけの時間と手間がかかるかを学ぶ。育てた野菜を給食に使う学校もある。",
     "sceneA": {
-      "note": "公園のようすを描いた絵。5人の人物がそれぞれ別のことをしている。",
+      "note": "公園のようすを描いた絵。5つの動作をしている人たちがいる。",
       "actions": [
         { "ja": "男性が花に水をやっている", "en": "A man is watering the flowers." },
         { "ja": "女性がベンチに座っている", "en": "A woman is sitting on a bench." },
@@ -81,7 +81,7 @@
         "no": 2,
         "prompt": "Now, please look at the people in Picture A. They are doing different things. Tell me as much as you can about what they are doing.",
         "model": "A man is watering the flowers. A woman is sitting on a bench. A boy is taking a picture. Two women are talking. A girl is jumping rope.",
-        "checks": ["5人ぶん言えた", "現在進行形で言えた", "同じ動詞ばかりにならなかった"]
+        "checks": ["5つの動作を言えた", "現在進行形で言えた", "同じ動詞ばかりにならなかった"]
       },
       {
         "no": 3,
@@ -109,7 +109,7 @@
     "passage": "Some cities have volunteer guides for foreign visitors. These guides show visitors around and explain the history of the city. They are not paid, but they enjoy meeting people from other countries. Some cities give the guides free English lessons.",
     "passageJa": "外国人観光客のためのボランティアガイドがいる市もある。ガイドは観光客を案内し、その市の歴史を説明する。報酬はもらわないが、他の国の人に会うのを楽しんでいる。ガイドに無料の英語レッスンを提供している市もある。",
     "sceneA": {
-      "note": "図書館のようすを描いた絵。5人の人物がそれぞれ別のことをしている。",
+      "note": "図書館のようすを描いた絵。5つの動作をしている人たちがいる。",
       "actions": [
         { "ja": "女性が本を棚に戻している", "en": "A woman is putting a book on the shelf." },
         { "ja": "男の子が机で勉強している", "en": "A boy is studying at a desk." },
@@ -133,7 +133,7 @@
         "no": 2,
         "prompt": "Now, please look at the people in Picture A. They are doing different things. Tell me as much as you can about what they are doing.",
         "model": "A woman is putting a book on the shelf. A boy is studying at a desk. A man is using a computer. A girl is choosing a book. A staff member is carrying some books.",
-        "checks": ["5人ぶん言えた", "場所を表す語（at / on）を使えた"]
+        "checks": ["5つの動作を言えた", "場所を表す語（at / on）を使えた"]
       },
       {
         "no": 3,

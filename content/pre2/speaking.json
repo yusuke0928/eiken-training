@@ -1,0 +1,158 @@
+[
+  {
+    "id": "p2-s-001",
+    "title": "Online Shopping",
+    "passage": "Today, many people buy things on the Internet. They can order products at any time, and the products are brought to their homes. However, some people worry that they cannot check the size or the color before buying. Now, some shops let customers return items for free.",
+    "passageJa": "今日、多くの人がインターネットで物を買う。いつでも商品を注文でき、商品は家まで届けられる。しかし、買う前に大きさや色を確認できないことを心配する人もいる。現在、無料で返品できるようにしている店もある。",
+    "sceneA": {
+      "note": "駅前のようすを描いた絵。5人の人物がそれぞれ別のことをしている。",
+      "actions": [
+        { "ja": "女性がバスを待っている", "en": "A woman is waiting for a bus." },
+        { "ja": "男性が自転車に乗っている", "en": "A man is riding a bicycle." },
+        { "ja": "女の子が犬を散歩させている", "en": "A girl is walking a dog." },
+        { "ja": "男性が新聞を読んでいる", "en": "A man is reading a newspaper." },
+        { "ja": "2人の子どもが走っている", "en": "Two children are running." }
+      ]
+    },
+    "sceneB": {
+      "ja": "女性が箱を運ぼうとしているが、重くて持ち上げられない。",
+      "en": "The woman can't carry the box because it is too heavy."
+    },
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how do some shops help customers who cannot check the size or the color before buying?",
+        "model": "By letting them return items for free.",
+        "checks": ["パッセージの言葉をそのまま使えた", "By ~ing の形で答えられた", "主語をつけすぎず簡潔に言えた"]
+      },
+      {
+        "no": 2,
+        "prompt": "Now, please look at the people in Picture A. They are doing different things. Tell me as much as you can about what they are doing.",
+        "model": "A woman is waiting for a bus. A man is riding a bicycle. A girl is walking a dog. A man is reading a newspaper. Two children are running.",
+        "checks": ["5人ぶん言えた", "現在進行形（is / are ~ing）で言えた", "冠詞（a / the）を落とさなかった"]
+      },
+      {
+        "no": 3,
+        "prompt": "Now, look at the woman in Picture B. Please describe the situation.",
+        "model": "The woman can't carry the box because it is too heavy.",
+        "checks": ["何が起きているかを1文で説明できた", "理由（because / too ~ to）を入れられた"]
+      },
+      {
+        "no": 4,
+        "prompt": "Do you think more people will buy things on the Internet in the future?",
+        "model": "Yes, I do. It is easy to order things at home. Also, we can find many kinds of products.",
+        "checks": ["Yes / No をはっきり言えた", "理由を2つ言えた", "黙り込まずに続けられた"]
+      },
+      {
+        "no": 5,
+        "prompt": "Today, many people use their smartphones while walking. Do you think this is dangerous?",
+        "model": "Yes, I do. People cannot see cars or other people. It is also bad for their eyes.",
+        "checks": ["自分の意見を最初に言えた", "理由を2つ言えた", "文をつなげて話せた"]
+      }
+    ]
+  },
+  {
+    "id": "p2-s-002",
+    "title": "School Gardens",
+    "passage": "These days, some schools grow vegetables in small gardens. Students plant seeds and take care of them every week. In this way, they learn how much time and work food needs. Some schools use the vegetables for school lunches.",
+    "passageJa": "近ごろ、小さな畑で野菜を育てる学校がある。生徒は種を植え、毎週世話をする。こうして、食べ物にどれだけの時間と手間がかかるかを学ぶ。育てた野菜を給食に使う学校もある。",
+    "sceneA": {
+      "note": "公園のようすを描いた絵。5人の人物がそれぞれ別のことをしている。",
+      "actions": [
+        { "ja": "男性が花に水をやっている", "en": "A man is watering the flowers." },
+        { "ja": "女性がベンチに座っている", "en": "A woman is sitting on a bench." },
+        { "ja": "男の子が写真を撮っている", "en": "A boy is taking a picture." },
+        { "ja": "2人の女性が話している", "en": "Two women are talking." },
+        { "ja": "女の子がなわとびをしている", "en": "A girl is jumping rope." }
+      ]
+    },
+    "sceneB": {
+      "ja": "男性がドアの前に立っているが、両手がふさがっていて開けられない。",
+      "en": "The man can't open the door because his hands are full."
+    },
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how do students learn how much time and work food needs?",
+        "model": "By planting seeds and taking care of them every week.",
+        "checks": ["In this way が指す内容を答えられた", "By ~ing で答えられた"]
+      },
+      {
+        "no": 2,
+        "prompt": "Now, please look at the people in Picture A. They are doing different things. Tell me as much as you can about what they are doing.",
+        "model": "A man is watering the flowers. A woman is sitting on a bench. A boy is taking a picture. Two women are talking. A girl is jumping rope.",
+        "checks": ["5人ぶん言えた", "現在進行形で言えた", "同じ動詞ばかりにならなかった"]
+      },
+      {
+        "no": 3,
+        "prompt": "Now, look at the man in Picture B. Please describe the situation.",
+        "model": "The man can't open the door because his hands are full.",
+        "checks": ["困っている状況を説明できた", "理由を入れられた"]
+      },
+      {
+        "no": 4,
+        "prompt": "Do you think students should help with cooking at home?",
+        "model": "Yes, I do. They can learn useful skills for the future. Also, it helps their parents.",
+        "checks": ["Yes / No を先に言えた", "理由を2つ言えた"]
+      },
+      {
+        "no": 5,
+        "prompt": "Many people enjoy growing plants at home. Do you like taking care of plants?",
+        "model": "Yes, I do. Watching them grow makes me happy. I also like being outside.",
+        "checks": ["自分のことを話せた", "2文以上で続けられた"]
+      }
+    ]
+  },
+  {
+    "id": "p2-s-003",
+    "title": "Volunteer Guides",
+    "passage": "Some cities have volunteer guides for foreign visitors. These guides show visitors around and explain the history of the city. They are not paid, but they enjoy meeting people from other countries. Some cities give the guides free English lessons.",
+    "passageJa": "外国人観光客のためのボランティアガイドがいる市もある。ガイドは観光客を案内し、その市の歴史を説明する。報酬はもらわないが、他の国の人に会うのを楽しんでいる。ガイドに無料の英語レッスンを提供している市もある。",
+    "sceneA": {
+      "note": "図書館のようすを描いた絵。5人の人物がそれぞれ別のことをしている。",
+      "actions": [
+        { "ja": "女性が本を棚に戻している", "en": "A woman is putting a book on the shelf." },
+        { "ja": "男の子が机で勉強している", "en": "A boy is studying at a desk." },
+        { "ja": "男性がコンピューターを使っている", "en": "A man is using a computer." },
+        { "ja": "女の子が本を選んでいる", "en": "A girl is choosing a book." },
+        { "ja": "職員が本を運んでいる", "en": "A staff member is carrying some books." }
+      ]
+    },
+    "sceneB": {
+      "ja": "女の子が棚の一番上の本に手が届かない。",
+      "en": "The girl can't reach the book on the top shelf."
+    },
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, what do some cities give the volunteer guides?",
+        "model": "They give them free English lessons.",
+        "checks": ["主語と動詞をつけて答えられた", "パッセージの表現を使えた"]
+      },
+      {
+        "no": 2,
+        "prompt": "Now, please look at the people in Picture A. They are doing different things. Tell me as much as you can about what they are doing.",
+        "model": "A woman is putting a book on the shelf. A boy is studying at a desk. A man is using a computer. A girl is choosing a book. A staff member is carrying some books.",
+        "checks": ["5人ぶん言えた", "場所を表す語（at / on）を使えた"]
+      },
+      {
+        "no": 3,
+        "prompt": "Now, look at the girl in Picture B. Please describe the situation.",
+        "model": "The girl can't reach the book on the top shelf.",
+        "checks": ["can't を使って説明できた", "どこにあるかを言えた"]
+      },
+      {
+        "no": 4,
+        "prompt": "Do you think it is good for students to do volunteer work?",
+        "model": "Yes, I do. They can meet many kinds of people. Also, they can learn about their own town.",
+        "checks": ["意見をはっきり言えた", "理由を2つ言えた"]
+      },
+      {
+        "no": 5,
+        "prompt": "Today, many people visit foreign countries. Would you like to travel abroad in the future?",
+        "model": "Yes, I would. I want to see famous places with my own eyes. I also want to use my English.",
+        "checks": ["Would you like ~? に Yes, I would. で答えられた", "理由を2つ言えた"]
+      }
+    ]
+  }
+]

@@ -310,6 +310,14 @@ export interface MockRecord {
   writings: MockWriting[];
 }
 
+/** 単語カードの学習状態（問題とは別管理） */
+export interface WordCard {
+  word: string;
+  box: 1 | 2 | 3 | 4 | 5;
+  dueAt: number;
+  lastAt: number;
+}
+
 export interface DayLog {
   /** YYYY-MM-DD（端末のローカル日付） */
   date: string;

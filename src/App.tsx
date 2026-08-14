@@ -8,6 +8,8 @@ import {
 } from './engine/selector';
 import { FocusScreen } from './features/focus/FocusScreen';
 import { HistoryScreen } from './features/history/HistoryScreen';
+import { WordCardScreen } from './features/words/WordCardScreen';
+import { SpeakingScreen } from './features/speaking/SpeakingScreen';
 import { clearSession, db, getKv, loadMock, loadSession, setKv, type SavedMock } from './data/db';
 import { ITEM_BY_ID, WRITING_BY_ID } from './content';
 import { applyResult } from './engine/srs';
@@ -52,6 +54,8 @@ type Route =
   | { k: 'writingReview'; promptId: string; text: string }
   | { k: 'focus' }
   | { k: 'history' }
+  | { k: 'words' }
+  | { k: 'speaking' }
   | { k: 'mockSetup' }
   | { k: 'mockRun'; paper: MockPaper; restore?: SavedMock }
   | { k: 'mockResult'; mockId: number };
@@ -184,6 +188,8 @@ export default function App() {
           onFocus={() => push({ k: 'focus' })}
           onMock={() => push({ k: 'mockSetup' })}
           onHistory={() => push({ k: 'history' })}
+          onWords={() => push({ k: 'words' })}
+          onSpeaking={() => push({ k: 'speaking' })}
           onOpenMockResult={(mockId) => push({ k: 'mockResult', mockId })}
         />
       );
@@ -193,6 +199,12 @@ export default function App() {
 
     case 'history':
       return <HistoryScreen onBack={back} />;
+
+    case 'words':
+      return <WordCardScreen onBack={back} />;
+
+    case 'speaking':
+      return <SpeakingScreen onBack={back} />;
 
     case 'mockSetup':
       return (

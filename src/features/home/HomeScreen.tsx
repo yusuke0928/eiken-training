@@ -6,7 +6,18 @@ import { scoreView } from '../../engine/scoring';
 import { EXAM, applyReminder, formatJp, nextMilestone } from '../../lib/exam';
 import { TAG_LABEL } from '../../types';
 import { Button, Card, ProgressRing, Screen } from '../../ui/primitives';
-import { Alarm, Chart, ChevronRight, Headphones, Pen, Repeat, Stopwatch, Target } from '../../ui/icons';
+import {
+  Alarm,
+  Book,
+  Chart,
+  Chat,
+  ChevronRight,
+  Headphones,
+  Pen,
+  Repeat,
+  Stopwatch,
+  Target,
+} from '../../ui/icons';
 
 const DAILY_GOAL = 3; // ハードルは極限まで下げる（DESIGN.md §5）
 
@@ -27,6 +38,8 @@ export function HomeScreen({
   onFocus,
   onMock,
   onHistory,
+  onWords,
+  onSpeaking,
   onOpenMockResult,
 }: {
   onMini: () => void;
@@ -37,6 +50,8 @@ export function HomeScreen({
   onFocus: () => void;
   onMock: () => void;
   onHistory: () => void;
+  onWords: () => void;
+  onSpeaking: () => void;
   onOpenMockResult: (id: number) => void;
 }) {
   const today = useLiveQuery(() => todayCount(), [], 0) ?? 0;
@@ -207,6 +222,26 @@ export function HomeScreen({
           </Card>
         </div>
 
+        {/* 語彙は英検にも高校入試にも効く。毎日ここから始められるように上に置く */}
+        <button
+          type="button"
+          onClick={onWords}
+          className="mb-4 flex w-full items-center gap-4 rounded-3xl border border-line bg-surface p-5 text-left transition-transform active:scale-[0.99]"
+        >
+          <span className="text-ink-sub">
+            <Book size={26} />
+          </span>
+          <span className="flex-1">
+            <span className="block text-[16px] font-bold text-ink">単語カード</span>
+            <span className="block text-[13px] text-ink-sub">
+              英検と高校入試の両方に効く。すきま時間に
+            </span>
+          </span>
+          <span className="text-ink-faint">
+            <ChevronRight size={18} />
+          </span>
+        </button>
+
         {/* 本番形式の通し。時間配分はここでしか身につかない */}
         <button
           type="button"
@@ -227,10 +262,31 @@ export function HomeScreen({
           </span>
         </button>
 
+        {/* 二次は11月15日。一次のあとで使う */}
+        <button
+          type="button"
+          onClick={onSpeaking}
+          className="mb-4 flex w-full items-center gap-4 rounded-3xl border border-line bg-surface p-5 text-left transition-transform active:scale-[0.99]"
+        >
+          <span className="text-ink-sub">
+            <Chat size={26} />
+          </span>
+          <span className="flex-1">
+            <span className="block text-[16px] font-bold text-ink">面接シミュレーター</span>
+            <span className="block text-[13px] text-ink-sub">
+              二次試験。黙読20秒から本番と同じ順に進む
+            </span>
+          </span>
+          <span className="text-ink-faint">
+            <ChevronRight size={18} />
+          </span>
+        </button>
+
         <div className="rounded-3xl border border-dashed border-line p-4">
-          <p className="text-[13px] font-semibold text-ink-sub">これから追加されるもの</p>
+          <p className="text-[13px] font-semibold text-ink-sub">これから増やすもの</p>
           <ul className="mt-2 flex flex-col gap-1 text-[13px] text-ink-faint">
-            <li>・面接シミュレーター（一次のあと）</li>
+            <li>・単語カードの収録語数（2,000語を目標に追加中）</li>
+            <li>・面接の問題カード</li>
           </ul>
           <p className="mt-3 text-[12px] text-ink-faint">
             二次試験は {formatJp(EXAM.secondStage)}（{EXAM.secondStageNote}）

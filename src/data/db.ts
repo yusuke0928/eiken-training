@@ -1,6 +1,14 @@
 import Dexie, { type Table } from 'dexie';
 import type { MockPaper } from '../engine/mock';
-import type { Attempt, DayLog, MockRecord, PracticeMode, SrsCard, WritingSubmission } from '../types';
+import type {
+  Attempt,
+  DayLog,
+  MockRecord,
+  PracticeMode,
+  SrsCard,
+  WordCard,
+  WritingSubmission,
+} from '../types';
 
 class EikenDB extends Dexie {
   attempts!: Table<Attempt, number>;
@@ -9,6 +17,7 @@ class EikenDB extends Dexie {
   kv!: Table<{ key: string; value: unknown }, string>;
   writings!: Table<WritingSubmission, number>;
   mocks!: Table<MockRecord, number>;
+  words!: Table<WordCard, string>;
 
   constructor() {
     super('eiken-pre2');
@@ -23,6 +32,9 @@ class EikenDB extends Dexie {
     });
     this.version(3).stores({
       mocks: '++id, scope, finishedAt',
+    });
+    this.version(4).stores({
+      words: 'word, dueAt, box',
     });
   }
 }

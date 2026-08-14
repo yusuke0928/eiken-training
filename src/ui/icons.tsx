@@ -200,6 +200,30 @@ export const Play = ({ size }: IconProps) => (
   </Svg>
 );
 
+/** 発音を鳴らす */
+export const Speaker = ({ size }: IconProps) => (
+  <Svg size={size}>
+    <path d="M4 9.4h3.4L12 5.4v13.2l-4.6-4H4z" />
+    <path d="M15.6 9.6a3.4 3.4 0 0 1 0 4.8" />
+    <path d="M18.2 7a7 7 0 0 1 0 10" />
+  </Svg>
+);
+
+/** 連続再生（ドリル） */
+export const PlayCircle = ({ size }: IconProps) => (
+  <Svg size={size}>
+    <circle cx="12" cy="12" r="8.6" />
+    <path d="M10.2 8.8l5.2 3.2-5.2 3.2z" />
+  </Svg>
+);
+
+export const Pause = ({ size }: IconProps) => (
+  <Svg size={size} strokeWidth={2.2}>
+    <path d="M9.5 5.5v13" />
+    <path d="M14.5 5.5v13" />
+  </Svg>
+);
+
 /** 見直しフラグ。付けたときは塗りつぶす */
 export const Bookmark = ({ size, filled }: IconProps & { filled?: boolean }) => (
   <svg

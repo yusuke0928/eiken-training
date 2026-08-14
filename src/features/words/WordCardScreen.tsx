@@ -160,7 +160,7 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
           <button
             type="button"
             onClick={() => (mode === 'drill' ? setRunning((r) => !r) : setRevealed(true))}
-            className="flex min-h-[44vh] w-full flex-col items-center justify-center rounded-[28px] border border-line bg-surface p-6 text-center"
+            className="flex min-h-[44dvh] w-full flex-col items-center justify-center rounded-[28px] border border-line bg-surface p-6 text-center"
           >
             <span className="mb-1 text-[11px] text-ink-faint">{w.pos}</span>
             <span
@@ -342,7 +342,7 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
                 key={s}
                 type="button"
                 onClick={() => setSize(s)}
-                className={`min-h-[36px] rounded-full px-4 text-[13px] font-semibold ${
+                className={`min-h-[44px] min-w-[52px] rounded-full px-4 text-[13px] font-semibold ${
                   size === s ? 'bg-primary text-primary-ink' : 'bg-surface-2 text-ink-sub'
                 }`}
               >

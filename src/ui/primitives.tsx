@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { ChevronLeft } from './icons';
+import { ChevronLeft, Home } from './icons';
+import { useGoHome } from './nav';
 
 /* タップ領域は最小 48px、選択肢は 56px（DESIGN.md §4.4） */
 
@@ -67,13 +68,20 @@ export function TopBar({
   title,
   onBack,
   right,
+  /** 試験中など、ホームに戻る前に確認したい画面はここで差し替える */
+  onHome,
+  hideHome,
 }: {
   title?: string;
   onBack?: () => void;
   right?: ReactNode;
+  onHome?: () => void;
+  hideHome?: boolean;
 }) {
+  const contextHome = useGoHome();
+  const goHome = onHome ?? contextHome;
   return (
-    <header className="sticky top-0 z-20 flex min-h-[56px] items-center gap-2 bg-bg/90 px-4 pt-[env(safe-area-inset-top)] backdrop-blur">
+    <header className="sticky top-0 z-20 flex min-h-[56px] items-center gap-1 bg-bg/90 px-4 pt-[env(safe-area-inset-top)] backdrop-blur">
       {onBack && (
         <button
           type="button"
@@ -84,8 +92,21 @@ export function TopBar({
           <ChevronLeft size={22} />
         </button>
       )}
-      {title && <h1 className="text-[15px] font-semibold text-ink-sub">{title}</h1>}
-      <div className="ml-auto">{right}</div>
+      {/* どの画面からでも1タップでホームに戻れるようにする */}
+      {goHome && !hideHome && (
+        <button
+          type="button"
+          onClick={goHome}
+          aria-label="ホーム"
+          className={`flex h-12 w-12 items-center justify-center rounded-full text-ink-sub active:bg-surface-2 ${
+            onBack ? '' : '-ml-2'
+          }`}
+        >
+          <Home size={21} />
+        </button>
+      )}
+      {title && <h1 className="truncate text-[15px] font-semibold text-ink-sub">{title}</h1>}
+      <div className="ml-auto shrink-0">{right}</div>
     </header>
   );
 }

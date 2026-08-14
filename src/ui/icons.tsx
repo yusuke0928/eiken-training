@@ -200,6 +200,15 @@ export const Play = ({ size }: IconProps) => (
   </Svg>
 );
 
+/** ホーム */
+export const Home = ({ size }: IconProps) => (
+  <Svg size={size}>
+    <path d="M4 10.4L12 4l8 6.4" />
+    <path d="M6 9.6V19a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V9.6" />
+    <path d="M10 20v-5.2h4V20" />
+  </Svg>
+);
+
 /** 発音を鳴らす */
 export const Speaker = ({ size }: IconProps) => (
   <Svg size={size}>

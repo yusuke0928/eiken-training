@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from '../../data/db';
+import { db, loadMock, type SavedMock } from '../../data/db';
 import {
   LISTENING_BLUEPRINT,
   WRITTEN_BLUEPRINT,
@@ -20,13 +20,16 @@ const SCOPES: { scope: MockScope; minutes: number; note: string }[] = [
 
 export function MockSetupScreen({
   onStart,
+  onResume,
   onOpenResult,
   onBack,
 }: {
   onStart: (scope: MockScope) => void;
+  onResume: (saved: SavedMock) => void;
   onOpenResult: (id: number) => void;
   onBack: () => void;
 }) {
+  const saved = useLiveQuery(() => loadMock(), [], undefined);
   const past = useLiveQuery(
     () => db.mocks.orderBy('finishedAt').reverse().limit(5).toArray(),
     [],
@@ -47,6 +50,25 @@ export function MockSetupScreen({
             を残せるかどうかで結果が変わる。選択問題を早く抜けられるか、ここで確かめよう。
           </p>
         </div>
+
+        {saved && (
+          <button
+            type="button"
+            onClick={() => onResume(saved)}
+            className="mb-5 flex w-full items-center gap-3 rounded-3xl bg-accent-soft p-5 text-left"
+          >
+            <span className="flex-1">
+              <span className="block text-[15px] font-bold text-ink">中断した模試を続ける</span>
+              <span className="mt-0.5 block text-[12px] text-ink-sub">
+                {scopeLabel(saved.paper.scope)} ・ {saved.phase === 'written' ? '筆記' : 'リスニング'}
+                {saved.phase === 'written' && ` 残り ${formatClock(saved.writtenRemainingMs)}`}
+              </span>
+            </span>
+            <span className="text-ink-faint">
+              <ChevronRight size={18} />
+            </span>
+          </button>
+        )}
 
         <section className="mb-6">
           <h2 className="mb-2 text-[12px] font-bold tracking-wide text-ink-faint">範囲を選ぶ</h2>

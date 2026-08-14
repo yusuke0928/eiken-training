@@ -32,7 +32,7 @@ export function PassageView({
 
       <div
         className={`relative overflow-y-auto ${
-          expanded ? 'max-h-[70vh]' : compact ? 'max-h-[30vh]' : 'max-h-[38vh]'
+          expanded ? 'max-h-[70dvh]' : compact ? 'max-h-[30dvh]' : 'max-h-[38dvh]'
         }`}
         style={{ scrollbarWidth: 'thin' }}
       >

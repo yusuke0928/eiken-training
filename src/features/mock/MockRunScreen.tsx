@@ -11,7 +11,8 @@ import {
 import { countWords } from '../../engine/writing';
 import { WRITING_SPEC, choicesAreSpoken, isListening } from '../../types';
 import { Button, ProgressBar, Screen, renderStem } from '../../ui/primitives';
-import { Bookmark } from '../../ui/icons';
+import { Bookmark, Home } from '../../ui/icons';
+import { useGoHome } from '../../ui/nav';
 import { ListeningPanel } from '../practice/ListeningPanel';
 import { PassageView } from '../practice/PassageView';
 
@@ -54,6 +55,7 @@ export function MockRunScreen({
     restore?.writingRemainingMs ?? null,
   );
   const startedAt = useRef(restore?.startedAt ?? Date.now());
+  const goHome = useGoHome();
 
   const list = phase === 'written' ? paper.written : paper.listening;
   const q = list[cursor];
@@ -175,9 +177,18 @@ export function MockRunScreen({
           <button
             type="button"
             onClick={() => setNavOpen(true)}
-            className="min-h-[36px] rounded-full bg-surface-2 px-3 text-[12px] font-semibold text-ink-sub"
+            className="min-h-[44px] rounded-full bg-surface-2 px-3.5 text-[12px] font-semibold text-ink-sub"
           >
             一覧
+          </button>
+          {/* 途中で抜けても保存は残るので、ホームからいつでも続きに戻れる */}
+          <button
+            type="button"
+            onClick={() => goHome?.()}
+            aria-label="ホーム"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-ink-sub active:bg-surface-2"
+          >
+            <Home size={19} />
           </button>
           <span className="flex-1 truncate text-[12px] text-ink-faint">{q.block}</span>
           {phase === 'written' ? (
@@ -559,7 +570,7 @@ function Navigator({
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end">
       <div className="absolute inset-0 bg-black/25" onClick={onClose} />
-      <div className="anim-sheet relative max-h-[80vh] overflow-y-auto rounded-t-[28px] bg-surface p-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
+      <div className="anim-sheet relative max-h-[80dvh] overflow-y-auto rounded-t-[28px] bg-surface p-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
         <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line" />
         <div className="mb-4 flex gap-4 text-[12px] text-ink-sub">
           <span className="flex items-center gap-1.5">

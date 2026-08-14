@@ -27,6 +27,7 @@ import {
   type PracticeMode,
 } from './types';
 import { HomeScreen } from './features/home/HomeScreen';
+import { NavProvider } from './ui/nav';
 import { WelcomeScreen } from './features/onboarding/WelcomeScreen';
 import { TrainingScreen } from './features/training/TrainingScreen';
 import { QuestionScreen, type SessionResult } from './features/practice/QuestionScreen';
@@ -158,128 +159,134 @@ export default function App() {
 
   const route = stack[stack.length - 1];
 
-  switch (route.k) {
-    case 'welcome':
-      return (
-        <WelcomeScreen
-          onStart={() =>
-            push({
-              k: 'practice',
-              ids: buildDiagnosticQueue(),
-              mode: 'diagnostic',
-              title: '診断テスト',
-            })
-          }
-          onSkip={async () => {
-            await setKv('onboarded', true);
-            goHome();
-          }}
-        />
-      );
+  // どの画面からでもホームに戻れるよう、ここで一度だけ配る（ui/nav.tsx）
+  return <NavProvider goHome={goHome}>{renderRoute()}</NavProvider>;
 
-    case 'home':
-      return (
-        <HomeScreen
-          onMini={startMini}
-          onTraining={() => push({ k: 'training' })}
-          onReview={startReview}
-          onWriting={() => push({ k: 'writingList' })}
-          onListening={startListening}
-          onFocus={() => push({ k: 'focus' })}
-          onMock={() => push({ k: 'mockSetup' })}
-          onHistory={() => push({ k: 'history' })}
-          onWords={() => push({ k: 'words' })}
-          onSpeaking={() => push({ k: 'speaking' })}
-          onOpenMockResult={(mockId) => push({ k: 'mockResult', mockId })}
-        />
-      );
-
-    case 'focus':
-      return <FocusScreen onBack={back} />;
-
-    case 'history':
-      return <HistoryScreen onBack={back} />;
-
-    case 'words':
-      return <WordCardScreen onBack={back} />;
-
-    case 'speaking':
-      return <SpeakingScreen onBack={back} />;
-
-    case 'mockSetup':
-      return (
-        <MockSetupScreen
-          onBack={back}
-          onStart={(scope: MockScope) => push({ k: 'mockRun', paper: buildPaper(scope) })}
-          onOpenResult={(mockId) => push({ k: 'mockResult', mockId })}
-        />
-      );
-
-    case 'mockRun':
-      return (
-        <MockRunScreen
-          paper={route.paper}
-          restore={route.restore}
-          onExit={goHome}
-          onFinish={async (draft, startedAt) => {
-            const mockId = await recordMock(route.paper, draft, startedAt);
-            setStack([{ k: 'home' }, { k: 'mockResult', mockId }]);
-            window.scrollTo({ top: 0 });
-          }}
-        />
-      );
-
-    case 'mockResult':
-      return <MockResultScreen mockId={route.mockId} onDone={goHome} />;
-
-    case 'training':
-      return <TrainingScreen onPickTag={startTag} onBack={back} />;
-
-    case 'writingList':
-      return (
-        <WritingListScreen onPick={(promptId) => push({ k: 'writingEditor', promptId })} onBack={back} />
-      );
-
-    case 'writingEditor':
-      return (
-        <WritingEditorScreen
-          promptId={route.promptId}
-          onBack={back}
-          onSubmit={(text) => push({ k: 'writingReview', promptId: route.promptId, text })}
-        />
-      );
-
-    case 'writingReview':
-      return (
-        <WritingReviewScreen promptId={route.promptId} text={route.text} onDone={goHome} />
-      );
-
-    case 'practice':
-      return (
-        <QuestionScreen
-          key={route.ids.join(',')}
-          ids={route.ids}
-          mode={route.mode}
-          title={route.title}
-          resume={route.resume}
-          onExit={back}
-          onFinish={async (results) => {
-            if (route.mode === 'diagnostic') {
-              await saveDiagnostic(results);
-              setStack([{ k: 'diagResult', results }]);
-            } else {
-              setStack((s) => [...(s ?? []).slice(0, -1), { k: 'result', results }]);
+  function renderRoute() {
+    switch (route.k) {
+      case 'welcome':
+        return (
+          <WelcomeScreen
+            onStart={() =>
+              push({
+                k: 'practice',
+                ids: buildDiagnosticQueue(),
+                mode: 'diagnostic',
+                title: '診断テスト',
+              })
             }
-            window.scrollTo({ top: 0 });
-          }}
-        />
+            onSkip={async () => {
+              await setKv('onboarded', true);
+              goHome();
+            }}
+          />
       );
 
-    case 'diagResult':
-      return <DiagnosticResultScreen results={route.results} onDone={goHome} />;
+      case 'home':
+        return (
+          <HomeScreen
+            onMini={startMini}
+            onTraining={() => push({ k: 'training' })}
+            onReview={startReview}
+            onWriting={() => push({ k: 'writingList' })}
+            onListening={startListening}
+            onFocus={() => push({ k: 'focus' })}
+            onMock={() => push({ k: 'mockSetup' })}
+            onHistory={() => push({ k: 'history' })}
+            onWords={() => push({ k: 'words' })}
+            onSpeaking={() => push({ k: 'speaking' })}
+            onOpenMockResult={(mockId) => push({ k: 'mockResult', mockId })}
+          />
+      );
 
-    case 'result':
-      return <SessionResultScreen results={route.results} onHome={goHome} onMore={startMini} />;
+      case 'focus':
+        return <FocusScreen onBack={back} />;
+
+      case 'history':
+        return <HistoryScreen onBack={back} />;
+
+      case 'words':
+        return <WordCardScreen onBack={back} />;
+
+      case 'speaking':
+        return <SpeakingScreen onBack={back} />;
+
+      case 'mockSetup':
+        return (
+          <MockSetupScreen
+            onBack={back}
+            onStart={(scope: MockScope) => push({ k: 'mockRun', paper: buildPaper(scope) })}
+          onResume={(saved) => push({ k: 'mockRun', paper: saved.paper, restore: saved })}
+            onOpenResult={(mockId) => push({ k: 'mockResult', mockId })}
+          />
+      );
+
+      case 'mockRun':
+        return (
+          <MockRunScreen
+            paper={route.paper}
+            restore={route.restore}
+            onExit={goHome}
+            onFinish={async (draft, startedAt) => {
+              const mockId = await recordMock(route.paper, draft, startedAt);
+              setStack([{ k: 'home' }, { k: 'mockResult', mockId }]);
+              window.scrollTo({ top: 0 });
+            }}
+          />
+      );
+
+      case 'mockResult':
+        return <MockResultScreen mockId={route.mockId} onDone={goHome} />;
+
+      case 'training':
+        return <TrainingScreen onPickTag={startTag} onBack={back} />;
+
+      case 'writingList':
+        return (
+          <WritingListScreen onPick={(promptId) => push({ k: 'writingEditor', promptId })} onBack={back} />
+      );
+
+      case 'writingEditor':
+        return (
+          <WritingEditorScreen
+            promptId={route.promptId}
+            onBack={back}
+            onSubmit={(text) => push({ k: 'writingReview', promptId: route.promptId, text })}
+          />
+      );
+
+      case 'writingReview':
+        return (
+          <WritingReviewScreen promptId={route.promptId} text={route.text} onDone={goHome} />
+      );
+
+      case 'practice':
+        return (
+          <QuestionScreen
+            key={route.ids.join(',')}
+            ids={route.ids}
+            mode={route.mode}
+            title={route.title}
+            resume={route.resume}
+            onExit={back}
+            onFinish={async (results) => {
+              if (route.mode === 'diagnostic') {
+                await saveDiagnostic(results);
+                setStack([{ k: 'diagResult', results }]);
+              } else {
+                setStack((s) => [...(s ?? []).slice(0, -1), { k: 'result', results }]);
+              }
+              window.scrollTo({ top: 0 });
+            }}
+          />
+      );
+
+      case 'diagResult':
+        return <DiagnosticResultScreen results={route.results} onDone={goHome} />;
+
+      case 'result':
+          return <SessionResultScreen results={route.results} onHome={goHome} onMore={startMini} />;
+    }
   }
 }
 

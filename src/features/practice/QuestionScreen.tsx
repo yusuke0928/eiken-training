@@ -4,6 +4,7 @@ import { db, bumpDayLog, clearSession, saveSession } from '../../data/db';
 import { applyResult } from '../../engine/srs';
 import { choicesAreSpoken, isListening, type PracticeMode } from '../../types';
 import { Button, ProgressBar, Screen, TopBar, renderStem } from '../../ui/primitives';
+import { useGoHome } from '../../ui/nav';
 import { ExplanationSheet } from './ExplanationSheet';
 import { ListeningPanel } from './ListeningPanel';
 import { PassageView } from './PassageView';
@@ -38,6 +39,7 @@ export function QuestionScreen({
   const [confirmExit, setConfirmExit] = useState(false);
   const [audioPlayed, setAudioPlayed] = useState(false);
   const [textFallback, setTextFallback] = useState(false);
+  const goHome = useGoHome();
   const sessionId = useRef(`s-${Date.now()}`).current;
   const startedAt = useRef(Date.now());
 
@@ -128,6 +130,7 @@ export function QuestionScreen({
       <TopBar
         title={title}
         onBack={() => (answered > 0 ? setConfirmExit(true) : onExit())}
+        onHome={() => (answered > 0 ? setConfirmExit(true) : goHome?.())}
         right={
           <span className="text-[13px] font-semibold tabular-nums text-ink-sub">
             {Math.min(index + 1, queue.length)} / {queue.length}

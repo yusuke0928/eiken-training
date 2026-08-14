@@ -3,6 +3,7 @@ import cards from '../../../content/pre2/speaking.json';
 import { useSpeech } from '../../lib/speech';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import { Check, ChevronRight, Play, Warning } from '../../ui/icons';
+import { SCENES } from './scenes';
 
 /**
  * 二次試験（面接）のシミュレーター。DESIGN.md §7.4
@@ -10,9 +11,9 @@ import { Check, ChevronRight, Play, Warning } from '../../ui/icons';
  * 本番の進行をそのままなぞる: 黙読20秒 → 音読 → No.1〜No.5。
  * 答えは端末に録音して聞き返せる。採点はしない（自動採点は誤りが有害なので）。
  *
- * ⚠️ イラストは用意できていないので、描写すべき内容を日本語で出している。
- *    「日本語を見て英語にする」練習にはなるが、本番は絵を見て話す。
- *    直前期は公式の問題カードでも練習すること（画面上でも案内している）。
+ * イラストは SVG で描いている（scenes.tsx）。日本語の文だけを出していたのでは
+ * 「訳す練習」になってしまい、本番の「絵→英語」の回路が鍛えられないため。
+ * 日本語のヒントは折りたたみに置き、まず絵だけで言わせる。
  */
 
 interface SpeakingCard {
@@ -35,6 +36,7 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
   const [step, setStep] = useState<Step>('silent');
   const [left, setLeft] = useState(SILENT_SEC);
   const [showModel, setShowModel] = useState(false);
+  const [showHint, setShowHint] = useState(false);
   const [clips, setClips] = useState<Record<string, string>>({});
   const [recording, setRecording] = useState(false);
   const [micError, setMicError] = useState<string | null>(null);
@@ -145,9 +147,9 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
               <Warning size={15} />
             </span>
             <span>
-              イラストは用意できていないので、描写すべき内容を日本語で出しています。
-              「日本語を見て英語にする」練習にはなりますが、本番は絵を見て話します。
-              直前期は公式の問題カードでも練習してください。
+              イラストは本番の問題カードを模して用意したものです。まず絵だけを見て英語で言ってみて、
+              どうしても出てこないときだけヒントを開いてください。
+              直前期は公式の問題カードでも確かめておくと安心です。
             </span>
           </p>
         </main>
@@ -158,11 +160,13 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
   /* ---------------- 進行 ---------------- */
 
   const q = typeof step === 'number' ? card.questions.find((x) => x.no === step) : null;
+  const Scene = SCENES[card.id];
   const stepKey = String(step);
 
   const goNext = () => {
     stopRec();
     setShowModel(false);
+    setShowHint(false);
     if (step === 'silent') setStep('read');
     else if (step === 'read') setStep(1);
     else if (typeof step === 'number' && step < 5) setStep(step + 1);
@@ -277,22 +281,40 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
 
                 {q.no === 2 && (
                   <div className="mt-4 border-t border-line pt-4">
-                    <p className="mb-2 text-[12px] font-bold text-ink-faint">
-                      イラストA（{card.sceneA.note}）
-                    </p>
-                    <ul className="flex flex-col gap-1.5">
-                      {card.sceneA.actions.map((a) => (
-                        <li key={a.ja} className="text-[14px] text-ink">
-                          ・{a.ja}
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="mb-2 text-[12px] font-bold text-ink-faint">イラストA</p>
+                    {Scene && <Scene.A />}
+                    <button
+                      type="button"
+                      onClick={() => setShowHint((v) => !v)}
+                      className="mt-3 min-h-[44px] w-full rounded-2xl bg-surface-2 text-[13px] font-semibold text-ink-sub"
+                    >
+                      {showHint ? 'ヒントを隠す' : '絵が分かりにくいときはヒントを見る'}
+                    </button>
+                    {showHint && (
+                      <ul className="anim-fade mt-2 flex flex-col gap-1">
+                        {card.sceneA.actions.map((a) => (
+                          <li key={a.ja} className="text-[13px] text-ink-sub">
+                            ・{a.ja}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 )}
                 {q.no === 3 && (
                   <div className="mt-4 border-t border-line pt-4">
                     <p className="mb-2 text-[12px] font-bold text-ink-faint">イラストB</p>
-                    <p className="text-[14px] text-ink">{card.sceneB.ja}</p>
+                    {Scene && <Scene.B />}
+                    <button
+                      type="button"
+                      onClick={() => setShowHint((v) => !v)}
+                      className="mt-3 min-h-[44px] w-full rounded-2xl bg-surface-2 text-[13px] font-semibold text-ink-sub"
+                    >
+                      {showHint ? 'ヒントを隠す' : '絵が分かりにくいときはヒントを見る'}
+                    </button>
+                    {showHint && (
+                      <p className="anim-fade mt-2 text-[13px] text-ink-sub">{card.sceneB.ja}</p>
+                    )}
                   </div>
                 )}
 

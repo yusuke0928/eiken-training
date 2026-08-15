@@ -41,7 +41,11 @@ export function ExplanationSheet({
   return (
     <div className="fixed inset-0 z-40 flex flex-col justify-end">
       <div className="absolute inset-0 bg-black/25" />
-      <div className="anim-sheet relative max-h-[86dvh] overflow-y-auto rounded-t-[28px] bg-surface pb-[calc(20px+env(safe-area-inset-bottom))] shadow-2xl">
+      {/* もとは1枚の overflow-y-auto にボタンまで流し込んでいたため、
+          解説が長いと「つぎへ」が画面外に押し出されていた（P1）。
+          ヘッダーと同じ sticky の考え方をボタン行にも適用し、
+          スクロール位置に関わらず常に画面内に留める */}
+      <div className="anim-sheet relative max-h-[86dvh] overflow-y-auto rounded-t-[28px] bg-surface shadow-2xl">
         <div className="sticky top-0 z-10 bg-surface px-5 pt-3 pb-2">
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line" />
           <div className="flex items-center gap-3">
@@ -63,7 +67,7 @@ export function ExplanationSheet({
           </div>
         </div>
 
-        <div className="px-5">
+        <div className="px-5 pb-4">
           <div className="mb-4 rounded-2xl bg-correct-soft p-4">
             <p className="mb-1 text-[12px] font-semibold text-correct">こたえ</p>
             <p className="en font-semibold text-ink">
@@ -131,7 +135,12 @@ export function ExplanationSheet({
               ))}
             </div>
           )}
+        </div>
 
+        {/* sticky bottom-0：answer 直後にスクロールなしで見えるのがねらい。
+            シートの scroll コンテナ（このすぐ外側の div）の中に置くことで、
+            ヘッダーの sticky top-0 と対になる形にしてある */}
+        <div className="sticky bottom-0 z-10 border-t border-line bg-surface px-5 pt-3 pb-[calc(20px+env(safe-area-inset-bottom))]">
           <div className="flex gap-3">
             <Button variant="ghost" onClick={onAgain}>
               もう1回出して

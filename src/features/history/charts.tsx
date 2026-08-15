@@ -43,11 +43,20 @@ export function StatTile({
 
 export interface DayCell {
   date: string; // YYYY-MM-DD
-  count: number;
+  /** その日に解いた問題数（Attempt の実数） */
+  attempts: number;
+  /** その日に提出した英作文の数（本数そのもの。マスの濃さ計算でだけ3倍する） */
+  writings: number;
 }
 
-/** 解いた数を5段階に落とす。段階の切れ目は1日3問（今日のミッション）を基準にした */
-function level(n: number): 0 | 1 | 2 | 3 | 4 {
+/**
+ * マスの濃さは「attempts + writings*3」で決める（英作文1題を重めに見る従来どおりの考え方）。
+ * ただし表示する数字（〇問）は attempts のそのままの実数にする。P5で「これまでに解いた」と
+ * カレンダーの数字が食い違っていた原因は、この重みづけ済みの値をそのまま「問」として
+ * 出していたこと。濃さの計算にだけ残し、表示用の文言は別に組み立てる（describeDay）
+ */
+function level(attempts: number, writings: number): 0 | 1 | 2 | 3 | 4 {
+  const n = attempts + writings * 3;
   if (n <= 0) return 0;
   if (n < 3) return 1;
   if (n < 8) return 2;
@@ -55,11 +64,18 @@ function level(n: number): 0 | 1 | 2 | 3 | 4 {
   return 4;
 }
 
+/** マス・タップ時の説明で共通して使う文言。英作文だけの日でも「0問」にならず、
+    かつ「◯問」が実数と一致するようにする */
+function describeDay(c: { attempts: number; writings: number }): string {
+  const base = `${c.attempts}問`;
+  return c.writings > 0 ? `${base} ・ 英作文${c.writings}題` : base;
+}
+
 const WD = ['日', '月', '火', '水', '木', '金', '土'];
 
 export function StudyHeatmap({ days, weeks = 10 }: { days: DayCell[]; weeks?: number }) {
   const [picked, setPicked] = useState<DayCell | null>(null);
-  const byDate = new Map(days.map((d) => [d.date, d.count]));
+  const byDate = new Map(days.map((d) => [d.date, d]));
 
   // 右端が今日になるように、週の区切りをそろえて並べる
   const today = new Date();
@@ -75,7 +91,13 @@ export function StudyHeatmap({ days, weeks = 10 }: { days: DayCell[]; weeks?: nu
       const key = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(
         dt.getDate(),
       ).padStart(2, '0')}`;
-      col.push({ date: key, count: dt > today ? -1 : (byDate.get(key) ?? 0) });
+      // 未来日は attempts=-1 を「まだ来ていない」の目印にする（level には渡さず、描画自体をスキップする）
+      const found = byDate.get(key);
+      col.push(
+        dt > today
+          ? { date: key, attempts: -1, writings: 0 }
+          : { date: key, attempts: found?.attempts ?? 0, writings: found?.writings ?? 0 },
+      );
     }
     cols.push(col);
   }
@@ -103,7 +125,7 @@ export function StudyHeatmap({ days, weeks = 10 }: { days: DayCell[]; weeks?: nu
         >
           {cols.map((col, x) =>
             col.map((c, y) =>
-              c.count < 0 ? null : (
+              c.attempts < 0 ? null : (
                 <rect
                   key={c.date}
                   x={x * (CELL + GAP)}
@@ -111,13 +133,13 @@ export function StudyHeatmap({ days, weeks = 10 }: { days: DayCell[]; weeks?: nu
                   width={CELL}
                   height={CELL}
                   rx={4}
-                  fill={`var(--heat-${level(c.count)})`}
+                  fill={`var(--heat-${level(c.attempts, c.writings)})`}
                   stroke={picked?.date === c.date ? 'var(--ink)' : 'none'}
                   strokeWidth={1.5}
                   onClick={() => setPicked(c)}
                   className="cursor-pointer"
                 >
-                  <title>{`${c.date} ${c.count}問`}</title>
+                  <title>{`${c.date} ${describeDay(c)}`}</title>
                 </rect>
               ),
             ),
@@ -128,7 +150,7 @@ export function StudyHeatmap({ days, weeks = 10 }: { days: DayCell[]; weeks?: nu
       <div className="mt-2 flex items-center justify-between">
         <p className="text-[11px] text-ink-sub">
           {picked
-            ? `${picked.date.slice(5).replace('-', '月')}日 ・ ${picked.count}問`
+            ? `${picked.date.slice(5).replace('-', '月')}日 ・ ${describeDay(picked)}`
             : 'タップするとその日の数が出ます'}
         </p>
         <div className="flex items-center gap-1 text-[10px] text-ink-faint">

@@ -133,6 +133,30 @@ const shot = async (name) => {
   console.log(`  ✓ ${name}`);
 };
 
+/**
+ * P1回帰テスト：答え合わせ直後、スクロールなしで「つぎへ」（最終問なら「結果を見る」）が
+ * 画面内に収まっていること。もとはシート下部のボタン行が本文と一緒に流れる作りで、
+ * 管理の実測では最大397px画面外に出ていた（毎問・全モードで再現）。
+ * sticky フッター化の退行をここで自動的に見張る。
+ */
+async function assertNextButtonInView(page, label) {
+  const btn = page.getByRole('button', { name: /^(つぎへ|結果を見る)$/ });
+  await btn.waitFor({ timeout: 5000 });
+  // シートのスライドイン（tokens.css の anim-sheet、0.26s）が終わるまで待つ。
+  // アニメーション途中で bounding box を読むと、まだ画面下からせり上がっている
+  // 途中の位置を読んでしまい、フレークの原因になる
+  await page.waitForTimeout(350);
+  const box = await btn.boundingBox();
+  const viewport = page.viewportSize();
+  if (!box || !viewport) throw new Error(`「つぎへ」の位置が取得できない（${label}）`);
+  if (box.y < 0 || box.y + box.height > viewport.height) {
+    throw new Error(
+      `「つぎへ」が画面外に出ている（${label}）：下端 ${Math.round(box.y + box.height)}px / 画面 ${viewport.height}px（P1の再発）`,
+    );
+  }
+  console.log(`  ✓ 答え合わせ直後、スクロールなしで「つぎへ」が画面内にある（${label}）`);
+}
+
 /** 選択肢を1つ選んで決定する */
 async function answer(nth = 0) {
   // ミニ演習・診断テストのキューには他の演習と同じ抽選でリスニングの問題も混ざりうる。
@@ -185,6 +209,7 @@ await shot('06-question');
 await answer(0);
 await page.getByText('こたえ').waitFor({ timeout: 8000 });
 await shot('07-explanation');
+await assertNextButtonInView(page, 'ミニ演習');
 
 // 途中で抜けると復帰対象として残るので、明示的にセッションを閉じてから次へ
 await page.getByRole('button', { name: 'つぎへ' }).click();
@@ -220,6 +245,7 @@ if (await fallback.count()) {
 await answer(0);
 await page.getByText('こたえ').waitFor({ timeout: 8000 });
 await shot('11-listening-explanation');
+await assertNextButtonInView(page, 'リスニング');
 await page.getByRole('button', { name: 'つぎへ' }).click();
 await page.getByLabel('もどる').click();
 await page.getByRole('button', { name: 'やめる' }).click();

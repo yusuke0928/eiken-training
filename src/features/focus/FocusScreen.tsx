@@ -40,8 +40,11 @@ export function FocusScreen({ onBack }: { onBack: () => void }) {
 
   const started = report.answered > 0;
   const topTags = report.byTag.slice(0, 6);
+  // 「もう出番を減らした」と言うからには、実際にしっかり解けているものだけを出す。
+  // attempts>=2・しきい値なしだと2問中1問正解（50%）でも緑チップに出てしまい、
+  // すぐ上の「いま増やしているところ」と矛盾して見えていた（P2）
   const strongTags = [...report.byTag]
-    .filter((s) => s.attempts >= 2)
+    .filter((s) => s.attempts >= 3 && s.mastery >= 0.75)
     .sort((a, b) => b.mastery - a.mastery)
     .slice(0, 3);
 
@@ -194,20 +197,24 @@ function SkillBar({
   n: number;
   unit: string;
 }) {
+  // mastery は Stat.attempts===0 のとき PRIOR_MEAN(0.5) を返す（engine/mastery.ts）。
+  // これは出題の重みづけのための値であって「50%解けている」の意味ではないので、
+  // 表示ではライティングと同じ「まだデータなし」に揃える（P2、attempts=0を真実の値とする）
+  const noData = value === null || n === 0;
   return (
     <li className="rounded-2xl border border-line bg-surface p-4">
       <div className="mb-2 flex items-baseline justify-between">
         <span className="text-[15px] font-semibold text-ink">{label}</span>
         <span className="text-[12px] tabular-nums text-ink-faint">
-          {value === null ? 'まだデータなし' : `${Math.round(value * 100)}% ・${n}${unit}`}
+          {noData ? 'まだデータなし' : `${Math.round(value! * 100)}% ・${n}${unit}`}
         </span>
       </div>
       <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
         <div
           className={`h-full rounded-full ${
-            value === null ? 'bg-line' : value < 0.5 ? 'bg-again' : value < 0.75 ? 'bg-accent' : 'bg-correct'
+            noData ? 'bg-line' : value! < 0.5 ? 'bg-again' : value! < 0.75 ? 'bg-accent' : 'bg-correct'
           }`}
-          style={{ width: `${(value ?? 0) * 100}%` }}
+          style={{ width: `${noData ? 0 : value! * 100}%` }}
         />
       </div>
     </li>

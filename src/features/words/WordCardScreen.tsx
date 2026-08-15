@@ -2,12 +2,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { bumpDayLog, bumpWordLog, db, localDateKey } from '../../data/db';
 import { BOX_INTERVAL_DAYS } from '../../engine/srs';
+import { EXAM, daysUntil } from '../../lib/exam';
 import { useSpeech } from '../../lib/speech';
 import {
   LEVEL_LABEL,
   LEVEL_ORDER,
   LEVEL_SHORT,
+  WORD_BY_KEY,
   WORDS,
+  orderedWordsIn,
   wordsIn,
   type Word,
   type WordLevel,
@@ -46,6 +49,14 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
   const learned = (cards ?? []).filter((c) => c.box >= 4).length;
   // box2〜3は「まだ4回積んでいないが、1回もやり直していないわけでもない」＝おぼえかけの語
   const halfway = (cards ?? []).filter((c) => c.box >= 2 && c.box <= 3).length;
+
+  // 一次までに準2級の語を一周できるペース（P3）。辞書順のままだと76日かかる語数を
+  // 49日で回そうとしていた、という気づきが出発点。煽らず「このペースなら」の言い方にする
+  const daysToFirstStage = daysUntil(EXAM.firstStage);
+  const p2WordCount = wordsIn('p2').length;
+  const perDayToFinish = daysToFirstStage > 0 ? Math.ceil(p2WordCount / daysToFirstStage) : null;
+  const recommendedSize =
+    perDayToFinish !== null ? SIZES.find((s) => s >= perDayToFinish) : undefined;
 
   const say = useCallback(
     (w: Word) => {
@@ -93,17 +104,26 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
       return (cards ?? [])
         .filter((c) => c.dueAt <= now)
         .sort((a, b) => a.dueAt - b.dueAt)
-        .map((c) => WORDS.find((w) => w.word === c.word))
+        .map((c) => WORD_BY_KEY.get(c.word)) // WORDS.find(...) だと 5,014語で毎回線形探索になり重い
         .filter((w): w is Word => !!w)
         .slice(0, size);
     }
-    const pool = wordsIn(d);
-    const fresh = pool.filter((w) => !state.has(w.word));
-    const due = pool.filter((w) => {
+    // 辞書順のままだと隣接語（advance/advanced）が固まって出るうえ、演習で
+    // 再会する語（PRIORITY_WORDS）を後回しにしてしまう。orderedWordsIn が
+    // 決定的シャッフル＋優先語先出しの順を作る（P3）
+    const pool = orderedWordsIn(d);
+    // fresh/due/rest への振り分けを1回の走査でやる。以前は
+    // `due.includes(w)`（配列の線形探索）を pool 全体に対して回しており、
+    // 5,014語のデッキだと O(n²) になっていた
+    const fresh: Word[] = [];
+    const due: Word[] = [];
+    const rest: Word[] = [];
+    for (const w of pool) {
       const c = state.get(w.word);
-      return c && c.dueAt <= now;
-    });
-    const rest = pool.filter((w) => state.has(w.word) && !due.includes(w));
+      if (!c) fresh.push(w);
+      else if (c.dueAt <= now) due.push(w);
+      else rest.push(w);
+    }
     return [...fresh, ...due, ...rest].slice(0, size);
   }
 
@@ -369,14 +389,28 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
                 key={s}
                 type="button"
                 onClick={() => setSize(s)}
-                className={`min-h-[44px] min-w-[52px] rounded-full px-4 text-[13px] font-semibold ${
+                className={`relative min-h-[44px] min-w-[52px] rounded-full px-4 text-[13px] font-semibold ${
                   size === s ? 'bg-primary text-primary-ink' : 'bg-surface-2 text-ink-sub'
                 }`}
               >
                 {s}
+                {/* 一次までに準2級の語を一周できる、間に合う最小の枚数につける（P3） */}
+                {recommendedSize === s && (
+                  <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent px-1.5 py-0.5 text-[9px] font-bold text-accent-ink">
+                    おすすめ
+                  </span>
+                )}
               </button>
             ))}
           </div>
+          {perDayToFinish !== null && (
+            <p className="mt-3 rounded-2xl bg-primary-soft px-3 py-2.5 text-[12px] leading-relaxed text-ink-sub">
+              一次まであと<span className="font-semibold text-primary">{daysToFirstStage}日</span>。
+              準2級の{p2WordCount}語を一周するには 1日
+              <span className="font-semibold text-primary">{perDayToFinish}枚</span>。
+              {recommendedSize && `${recommendedSize}枚ならこのペースで間に合うよ。`}
+            </p>
+          )}
           {supported && (
             <button
               type="button"

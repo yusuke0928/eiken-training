@@ -43,21 +43,27 @@ export function HistoryScreen({ onBack }: { onBack: () => void }) {
    * カレンダーは「その日に取り組んだ量」を出す。
    * days.answered は今日のミッション用のカウンタで、診断テストを 0 で加算しているため、
    * そのまま使うと診断だけやった日が空欄になってしまう。
-   * ここでは解答履歴そのものから数え直し、ライティング1題は3問ぶんとして足す
-   * （ミッションでの重みづけと合わせている）。
+   * ここでは解答履歴そのものから数え直す。
+   *
+   * attempts と writings は別々に持つ（P5）。以前は writings を「3問ぶん」に
+   * 換算した合計値をそのまま「◯問」として表示しており、「これまでに解いた」
+   * （attempts の実数）と数が食い違って見えていた。3倍の重みは
+   * マスの濃さ（charts.tsx の level()）の計算にだけ残し、表示は実数で行う。
    */
-  const activity = new Map<string, number>();
-  const bump = (ms: number, n: number) => {
+  const activity = new Map<string, { attempts: number; writings: number }>();
+  const bump = (ms: number, field: 'attempts' | 'writings') => {
     const d = new Date(ms);
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
       d.getDate(),
     ).padStart(2, '0')}`;
-    activity.set(key, (activity.get(key) ?? 0) + n);
+    const cur = activity.get(key) ?? { attempts: 0, writings: 0 };
+    cur[field] += 1;
+    activity.set(key, cur);
   };
-  for (const a of attempts) bump(a.answeredAt, 1);
-  for (const w of writings) bump(w.submittedAt, 3);
+  for (const a of attempts) bump(a.answeredAt, 'attempts');
+  for (const w of writings) bump(w.submittedAt, 'writings');
 
-  const cells: DayCell[] = [...activity.entries()].map(([date, count]) => ({ date, count }));
+  const cells: DayCell[] = [...activity.entries()].map(([date, v]) => ({ date, ...v }));
   const studiedDays = activity.size;
 
   // 正答率の推移（20問ごと）

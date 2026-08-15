@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/validate-content.mjs && tsc -b && vite build",
+    "build": "node scripts/gen-words-priority.mjs && node scripts/validate-content.mjs && tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
-    "validate": "node scripts/validate-content.mjs",
+    "validate": "node scripts/gen-words-priority.mjs && node scripts/validate-content.mjs",
     "smoke": "node scripts/smoke.mjs",
     "icons": "node scripts/make-icons.mjs"
   },

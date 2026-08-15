@@ -230,6 +230,38 @@ if (worst > 0.4) {
   warnings.push(`正解の位置が偏っている（最大 ${Math.round(worst * 100)}%）。並び替えの seed を見直すこと`);
 }
 
+/* ---------- 単語カードの優先語リスト（P3） ----------
+   npm run build の中で gen-words-priority.mjs が先に生成している前提。
+   words-core.json とズレていないか（存在しない語・表記ゆれ）だけをここで確認する */
+const wordsCore = load('content/words-core.json');
+const coreWordSet = new Set(wordsCore.words.map((w) => w[0]));
+let priority;
+try {
+  priority = load('content/words-priority.json');
+} catch {
+  errors.push('content/words-priority.json が無い（npm run build で先に gen-words-priority.mjs を走らせること）');
+  priority = null;
+}
+if (priority) {
+  if (!Array.isArray(priority.words)) {
+    errors.push('content/words-priority.json: words が配列でない');
+  } else {
+    const seenPriorityWords = new Set();
+    for (const w of priority.words) {
+      if (!coreWordSet.has(w)) {
+        errors.push(`content/words-priority.json: words-core.json に無い語 "${w}"`);
+      }
+      if (seenPriorityWords.has(w)) {
+        errors.push(`content/words-priority.json: "${w}" が重複している`);
+      }
+      seenPriorityWords.add(w);
+    }
+    console.log(
+      `content/words-priority.json: ${priority.words.length} / ${wordsCore.words.length}語がアプリの本文に出現`,
+    );
+  }
+}
+
 console.log(`\n合計 ${seenIds.size}問`);
 for (const w of warnings) console.log(`⚠️  ${w}`);
 if (errors.length) {

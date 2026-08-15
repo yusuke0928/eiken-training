@@ -172,6 +172,12 @@ export function MockRunScreen({
   const answered = q.kind === 'mcq' ? mcq[key] !== undefined : (writings[key] ?? '').trim().length > 0;
   const flagged = flags.has(key);
   const lowTime = phase === 'written' && remaining <= 10 * 60 * 1000;
+  // 「答えてある」と「語数が範囲内」は別の話（P4）。paper.written から数えるのは、
+  // フル模試だとリスニングを終えた時点で phase が listening に変わっており、
+  // その時点の list（=リスニングの問題）には英作文が含まれないため
+  const unanswered = unansweredCount(list, mcq, writings);
+  const wordIssues = writingWordIssues(paper, writings);
+  const wordIssueKeys = new Set(wordIssues.map((i) => i.key));
 
   return (
     <Screen>
@@ -305,6 +311,7 @@ export function MockRunScreen({
             kind === 'mcq' ? mcq[k] !== undefined : (writings[k] ?? '').trim().length > 0
           }
           flags={flags}
+          wordIssueKeys={wordIssueKeys}
           onJump={(i) => {
             setNavOpen(false);
             goTo(i);
@@ -323,9 +330,7 @@ export function MockRunScreen({
           <div className="anim-sheet relative w-full rounded-t-[28px] bg-surface p-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
             <p className="mb-1 text-[17px] font-bold text-ink">提出していい？</p>
             <p className="mb-5 text-[14px] leading-relaxed text-ink-sub">
-              {unansweredCount(list, mcq, writings) > 0
-                ? `まだ${unansweredCount(list, mcq, writings)}問 答えていないところがあるよ。`
-                : '全部答えてあるよ。'}
+              {submitConfirmMessage(unanswered, wordIssues)}
               提出すると答え合わせに進みます。
             </p>
             <div className="flex gap-3">
@@ -398,6 +403,54 @@ function unansweredCount(
   return list.filter((q) =>
     q.kind === 'mcq' ? mcq[q.itemId] === undefined : (writings[q.promptId] ?? '').trim().length === 0,
   ).length;
+}
+
+/**
+ * 語数が範囲外の英作文（P4）。
+ * unansweredCount とは別に持つ：「答えてある」と「語数が採点対象になる範囲か」は別の話で、
+ * 英検の英作文は語数を外すと減点対象なので、本番前に気づける最後の場所をここにする。
+ * 空欄（未回答）はここではカウントしない。unansweredCount とダブって「2つも指摘された」と
+ * 見えてしまうのを避けるため
+ */
+interface WordIssue {
+  key: string;
+  label: string;
+  words: number;
+  min: number;
+  max: number;
+  over: boolean;
+}
+
+function writingWordIssues(paper: MockPaper, writings: Record<string, string>): WordIssue[] {
+  const issues: WordIssue[] = [];
+  for (const q of paper.written) {
+    if (q.kind !== 'writing') continue;
+    const text = (writings[q.promptId] ?? '').trim();
+    if (!text) continue;
+    const prompt = WRITING_BY_ID.get(q.promptId);
+    if (!prompt) continue;
+    const spec = WRITING_SPEC[prompt.section];
+    const [min, max] = spec.wordRange;
+    const words = countWords(text);
+    if (words < min || words > max) {
+      issues.push({ key: q.promptId, label: spec.label, words, min, max, over: words > max });
+    }
+  }
+  return issues;
+}
+
+/** 提出確認ダイアログの本文。未回答と語数不足は独立に、両方あれば両方伝える */
+function submitConfirmMessage(unanswered: number, issues: WordIssue[]): string {
+  const parts: string[] = [];
+  if (unanswered > 0) parts.push(`まだ${unanswered}問 答えていないところがあるよ。`);
+  if (issues.length > 0) {
+    const detail = issues
+      .map((i) => `${i.label}が${i.words}語（${i.min}〜${i.max}語に${i.over ? '収まっていない' : '足りない'}）`)
+      .join('、');
+    parts.push(`${detail}。`);
+  }
+  if (parts.length === 0) parts.push('全部答えてあるよ。');
+  return parts.join('');
 }
 
 /* ---------------- 選択問題 ---------------- */
@@ -590,6 +643,7 @@ function Navigator({
   cursor,
   isAnswered,
   flags,
+  wordIssueKeys,
   onJump,
   onClose,
   onSubmit,
@@ -598,6 +652,8 @@ function Navigator({
   cursor: number;
   isAnswered: (key: string, kind: 'mcq' | 'writing') => boolean;
   flags: Set<string>;
+  /** 語数が範囲外の英作文の promptId 集合。回答済みと同じ見た目にしない（P4） */
+  wordIssueKeys: Set<string>;
   onJump: (i: number) => void;
   onClose: () => void;
   onSubmit: () => void;
@@ -607,7 +663,7 @@ function Navigator({
       <div className="absolute inset-0 bg-black/25" onClick={onClose} />
       <div className="anim-sheet relative max-h-[80dvh] overflow-y-auto rounded-t-[28px] bg-surface p-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
         <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line" />
-        <div className="mb-4 flex gap-4 text-[12px] text-ink-sub">
+        <div className="mb-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[12px] text-ink-sub">
           <span className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded bg-primary" />答えた
           </span>
@@ -617,6 +673,9 @@ function Navigator({
           <span className="flex items-center gap-1.5">
             <span className="h-3 w-3 rounded bg-accent" />見直す
           </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded bg-again-soft ring-1 ring-again" />語数注意
+          </span>
         </div>
 
         <div className="mb-5 grid grid-cols-6 gap-2">
@@ -624,6 +683,7 @@ function Navigator({
             const key = keyOf(q);
             const done = isAnswered(key, q.kind);
             const flagged = flags.has(key);
+            const wordIssue = wordIssueKeys.has(key);
             return (
               <button
                 key={key}
@@ -632,9 +692,11 @@ function Navigator({
                 className={`flex min-h-[44px] items-center justify-center rounded-xl text-[14px] font-bold ${
                   flagged
                     ? 'bg-accent text-accent-ink'
-                    : done
-                      ? 'bg-primary text-primary-ink'
-                      : 'bg-surface-2 text-ink-sub'
+                    : wordIssue
+                      ? 'bg-again-soft text-again ring-1 ring-again'
+                      : done
+                        ? 'bg-primary text-primary-ink'
+                        : 'bg-surface-2 text-ink-sub'
                 } ${i === cursor ? 'ring-2 ring-ink' : ''}`}
               >
                 {q.no}

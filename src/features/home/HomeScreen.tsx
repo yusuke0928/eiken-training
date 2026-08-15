@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, loadStreak, todayCount } from '../../data/db';
+import { db, loadStreak, todayCount, todayWordCount } from '../../data/db';
 import { loadReport } from '../../engine/selector';
 import { reviewBacklog } from '../../engine/srs';
 import { scoreView } from '../../engine/scoring';
@@ -55,6 +55,9 @@ export function HomeScreen({
   onOpenMockResult: (id: number) => void;
 }) {
   const today = useLiveQuery(() => todayCount(), [], 0) ?? 0;
+  // 単語カードはミッションの重み0で「今日のミッション」には数えない設計（管理判断）。
+  // その代わり、単語だけやった日にリングが0のまま＝空白に見えないよう別枠で出す
+  const todayWords = useLiveQuery(() => todayWordCount(), [], 0) ?? 0;
   const streak = useLiveQuery(() => loadStreak(), [], 0) ?? 0;
   const backlog = useLiveQuery(() => reviewBacklog(), [], 0) ?? 0;
   const report = useLiveQuery(() => loadReport(), [], undefined);
@@ -94,6 +97,11 @@ export function HomeScreen({
               <p className="mt-1 text-[13px] text-ink-sub">
                 {goalMet ? 'ここから先はぜんぶおまけ' : '3問だけでも記録はつながるよ'}
               </p>
+              {todayWords > 0 && (
+                <p className="mt-1 text-[12px] font-semibold text-accent">
+                  今日は単語カードも{todayWords}枚やったよ
+                </p>
+              )}
             </div>
           </div>
           <div className="mt-4">

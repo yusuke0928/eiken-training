@@ -323,4 +323,9 @@ export interface DayLog {
   date: string;
   answered: number;
   correct: number;
+  /**
+   * その日に単語カードを判定した枚数。「今日のミッション」（answered/correct）には
+   * 含めない別枠のカウンタ（単語カードの重みは意図的に0のため。WORK-ORDER-WORDS-01）。
+   */
+  words?: number;
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { bumpDayLog, db } from '../../data/db';
+import { bumpDayLog, bumpWordLog, db, localDateKey } from '../../data/db';
 import { BOX_INTERVAL_DAYS } from '../../engine/srs';
 import { useSpeech } from '../../lib/speech';
 import {
@@ -37,10 +37,15 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
   const { speak, stop, supported } = useSpeech();
   const cards = useLiveQuery(() => db.words.toArray(), [], []);
   const state = useMemo(() => new Map((cards ?? []).map((c) => [c.word, c])), [cards]);
+  // 「今日やった枚数」はミッションの重み（0）とは別枠のカウンタ（db.ts bumpWordLog）。
+  // 0か4かの二値になりがちなリングの手応えを、日々の実行量で補う
+  const todayWords = useLiveQuery(() => db.days.get(localDateKey()).then((r) => r?.words ?? 0), [], 0) ?? 0;
 
   const now = Date.now();
   const dueCount = (cards ?? []).filter((c) => c.dueAt <= now).length;
   const learned = (cards ?? []).filter((c) => c.box >= 4).length;
+  // box2〜3は「まだ4回積んでいないが、1回もやり直していないわけでもない」＝おぼえかけの語
+  const halfway = (cards ?? []).filter((c) => c.box >= 2 && c.box <= 3).length;
 
   const say = useCallback(
     (w: Word) => {
@@ -125,7 +130,8 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
       dueAt: Date.now() + BOX_INTERVAL_DAYS[next] * DAY,
       lastAt: Date.now(),
     });
-    await bumpDayLog(g === 'known', 0);
+    await bumpDayLog(g === 'known', 0); // 今日のミッションへの重みは意図的に0（管理判断・WORK-ORDER-WORDS-01）
+    await bumpWordLog(); // 手応えが見えるよう、ミッションとは別枠でその日の枚数を数える
     if (index + 1 >= queue.length) {
       setDone(queue.length);
       setDeck(null);
@@ -270,21 +276,42 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
           </div>
         )}
 
-        <div className="mb-5 flex items-center gap-5 rounded-3xl border border-line bg-surface p-5">
-          <ProgressRing value={learned} total={WORDS.length} size={92}>
-            <span className="text-[19px] font-bold leading-none tabular-nums text-ink">{learned}</span>
-            <span className="text-[11px] text-ink-faint">/ {WORDS.length}</span>
-          </ProgressRing>
-          <div className="flex-1">
-            <p className="text-[13px] text-ink-sub">おぼえた語</p>
-            <p className="mt-1 text-[13px] leading-relaxed text-ink-sub">
-              「おぼえた」を4回積むとしばらく出なくなります。
-              {dueCount > 0 && (
-                <span className="mt-1 block font-semibold text-accent">
-                  今日ふり返る語が {dueCount} 語
-                </span>
-              )}
-            </p>
+        <div className="mb-5 rounded-3xl border border-line bg-surface p-5">
+          <div className="flex items-center gap-5">
+            <ProgressRing value={learned} total={WORDS.length} size={92}>
+              <span className="text-[19px] font-bold leading-none tabular-nums text-ink">{learned}</span>
+              <span className="text-[11px] text-ink-faint">/ {WORDS.length}</span>
+            </ProgressRing>
+            <div className="flex-1">
+              <p className="text-[13px] text-ink-sub">しっかりおぼえた語（3回積んだ語）</p>
+              <p className="mt-1 text-[13px] leading-relaxed text-ink-sub">
+                「おぼえた」を3回積むとしばらく出なくなります。全{WORDS.length}語のうち、
+                そこまで積んだ語だけを数えています。
+                {dueCount > 0 && (
+                  <span className="mt-1 block font-semibold text-accent">
+                    今日ふり返る語が {dueCount} 語
+                  </span>
+                )}
+              </p>
+            </div>
+          </div>
+          {/* リングは「3回積んだ語」だけを数えるので動きが遅い。積み上がっている途中と
+              今日やった分がここで見えないと「なにも変わっていない」ように見えてしまう */}
+          <div className="mt-4 grid grid-cols-2 gap-3 border-t border-line pt-4">
+            <div>
+              <p className="text-[11px] text-ink-faint">今日やった</p>
+              <p className="mt-0.5 text-[20px] font-bold leading-none tabular-nums text-ink">
+                {todayWords}
+                <span className="ml-1 text-[12px] font-semibold text-ink-sub">枚</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-[11px] text-ink-faint">おぼえかけ（あと1〜2回）</p>
+              <p className="mt-0.5 text-[20px] font-bold leading-none tabular-nums text-accent">
+                {halfway}
+                <span className="ml-1 text-[12px] font-semibold text-ink-sub">語</span>
+              </p>
+            </div>
           </div>
         </div>
 

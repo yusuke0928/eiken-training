@@ -118,12 +118,41 @@ export async function bumpDayLog(correct: boolean, weight = 1): Promise<void> {
   const date = localDateKey();
   await db.transaction('rw', db.days, async () => {
     const cur = await db.days.get(date);
+    // ...cur を先に展開する。展開しないと、同じ日の行にすでに words（単語カードの
+    // 別枠カウンタ）が付いていた場合に put() でまるごと上書きして消してしまう
     await db.days.put({
+      ...cur,
       date,
       answered: (cur?.answered ?? 0) + weight,
       correct: (cur?.correct ?? 0) + (correct ? weight : 0),
     });
   });
+}
+
+/**
+ * 単語カードを1枚判定するたびに呼ぶ、その日の枚数カウンタ。
+ * 「今日のミッション」（answered/correct、weight=0）とは別枠。
+ * 単語カードだけをやった日でも、ホームや単語カード画面に手応えが見えるようにするための記録
+ * （WORK-ORDER-WORDS-01）。
+ */
+export async function bumpWordLog(): Promise<void> {
+  const date = localDateKey();
+  await db.transaction('rw', db.days, async () => {
+    const cur = await db.days.get(date);
+    await db.days.put({
+      ...cur,
+      date,
+      answered: cur?.answered ?? 0,
+      correct: cur?.correct ?? 0,
+      words: (cur?.words ?? 0) + 1,
+    });
+  });
+}
+
+/** 今日、単語カードを何枚判定したか */
+export async function todayWordCount(): Promise<number> {
+  const row = await db.days.get(localDateKey());
+  return row?.words ?? 0;
 }
 
 /**

@@ -42,7 +42,7 @@ export default defineConfig({
       },
       // 通学中に電波が切れても開けるよう、資産は全部先読みしておく
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,svg,woff2}'],
+        globPatterns: ['**/*.{js,css,html,png,svg,woff2,webp}'],
         cleanupOutdatedCaches: true,
         navigateFallback: 'index.html',
       },

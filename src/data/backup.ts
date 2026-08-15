@@ -22,17 +22,24 @@ export interface BackupFile {
     writings: unknown[];
     mocks: unknown[];
     kv: unknown[];
+    /**
+     * 単語カードの進捗。旧バージョン（〜R6まで）が書き出したファイルにはこのキー自体が無い。
+     * 読み込み側は「配列として存在するか」で新旧を判定するので、フィールドを削除したり
+     * 空配列で埋めたりしないこと（空配列だと「単語カードが全部リセットされた」と区別できなくなる）。
+     */
+    words: unknown[];
   };
 }
 
 export async function buildBackup(): Promise<BackupFile> {
-  const [attempts, srs, days, writings, mocks, kv] = await Promise.all([
+  const [attempts, srs, days, writings, mocks, kv, words] = await Promise.all([
     db.attempts.toArray(),
     db.srs.toArray(),
     db.days.toArray(),
     db.writings.toArray(),
     db.mocks.toArray(),
     db.kv.toArray(),
+    db.words.toArray(),
   ]);
   return {
     format: FORMAT,
@@ -43,6 +50,7 @@ export async function buildBackup(): Promise<BackupFile> {
       days: days.length,
       writings: writings.length,
       mocks: mocks.length,
+      words: words.length,
     },
     // 進行中のセッションや下書きは持ち出さない（別端末で復元すると混乱するため）
     data: {
@@ -52,6 +60,7 @@ export async function buildBackup(): Promise<BackupFile> {
       writings,
       mocks,
       kv: kv.filter((r) => !String(r.key).startsWith('draft:') && r.key !== 'session' && r.key !== 'mock'),
+      words,
     },
   };
 }
@@ -93,7 +102,13 @@ export async function restoreBackup(text: string): Promise<RestoreResult> {
   }
 
   const d = parsed.data ?? {};
-  const tables = [db.attempts, db.srs, db.days, db.writings, db.mocks, db.kv];
+  // words キーが無い＝旧バージョンが書き出したファイル。db.words はトランザクションの
+  // スコープには含めておく（Dexie は事前に触るテーブルの宣言が必要）が、hasWords が
+  // false のときは中で clear() も bulkAdd() も一切呼ばない。呼ばなければ Dexie は
+  // そのテーブルに触らないので、いまの端末の単語カードの進捗はそのまま残る
+  const hasWords = Array.isArray(d.words);
+  const tables = [db.attempts, db.srs, db.days, db.writings, db.mocks, db.kv, db.words];
+
   await db.transaction('rw', tables, async () => {
     await Promise.all([
       db.attempts.clear(),
@@ -102,6 +117,7 @@ export async function restoreBackup(text: string): Promise<RestoreResult> {
       db.writings.clear(),
       db.mocks.clear(),
       db.kv.clear(),
+      ...(hasWords ? [db.words.clear()] : []),
     ]);
     await Promise.all([
       db.attempts.bulkAdd((d.attempts ?? []) as never[]),
@@ -110,9 +126,17 @@ export async function restoreBackup(text: string): Promise<RestoreResult> {
       db.writings.bulkAdd((d.writings ?? []) as never[]),
       db.mocks.bulkAdd((d.mocks ?? []) as never[]),
       db.kv.bulkAdd((d.kv ?? []) as never[]),
+      ...(hasWords ? [db.words.bulkAdd(d.words as never[])] : []),
     ]);
   });
 
   const n = parsed.counts?.attempts ?? (d.attempts as unknown[])?.length ?? 0;
-  return { ok: true, message: `${n}問ぶんの記録を読み込みました。` };
+  if (hasWords) {
+    const w = (d.words as unknown[]).length;
+    return { ok: true, message: `${n}問ぶんの記録と、単語カード${w}語ぶんの進捗を読み込みました。` };
+  }
+  return {
+    ok: true,
+    message: `${n}問ぶんの記録を読み込みました。単語カードの進捗はこのファイルに含まれていないため、この端末のものをそのまま残しています。`,
+  };
 }

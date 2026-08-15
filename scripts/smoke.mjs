@@ -8,7 +8,7 @@
  * 出力先: .smoke/
  */
 import { chromium } from 'playwright';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -922,6 +922,227 @@ await p9.getByText('まだ1回に数えていない', { exact: false }).waitFor(
 console.log('  ✓ 途中で止めると「まだ1回に数えていない」旨の案内が出る');
 await p9.screenshot({ path: join(OUT, '41-listening-stopped-early.png') });
 await p9ctx.close();
+
+/**
+ * WordCardScreen のデッキ選択画面から、ラベルに続く数字を読む（例: "今日やった" → 3 / "枚"）。
+ * 数値は useLiveQuery（db.words への非同期クエリ）で決まるので、画面遷移直後は
+ * 一瞬だけ既定値（0）のまま描画されることがある。1回だけスナップショットを読むと
+ * その一瞬を掴んで「まだ0だった」と誤判定しうるため、同じ値が連続2回読めるまで
+ * 短い間隔でポーリングして「useLiveQuery が落ち着いた」ことを確かめてから返す。
+ */
+async function readWordStat(page, label, unit) {
+  const re = new RegExp(`${label}[\\s\\S]{0,30}?(\\d+)\\s*${unit}`);
+  const read = async () => {
+    const text = await page.locator('main').innerText();
+    const m = text.match(re);
+    return m ? Number(m[1]) : null;
+  };
+  let prev = await read();
+  for (let i = 0; i < 20; i++) {
+    await page.waitForTimeout(100);
+    const cur = await read();
+    if (cur === prev) return cur;
+    prev = cur;
+  }
+  return prev;
+}
+
+/* ---- 高2：単語カードをこなすと画面に手応えが出る ----
+   box>=4（3回積んだ語）だけを数えるリングは動きが遅く、「今日やった枚数」と
+   「box2〜3のおぼえかけ語数」を添えるまでは 33枚やっても 0/5014 のまま何も
+   動いて見えなかった（オブザーバー報告）。ミッションの重み（0）は変えていないので、
+   「今日のミッション」側の数字（answered）は単語カードでは動かないことも併せて確かめる。 */
+console.log('単語カードの手応え表示（高2）');
+const p10ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, acceptDownloads: true });
+const p10 = await p10ctx.newPage();
+activePage = p10;
+activePageLabel = 'p10(単語カードの手応え)';
+p10.on('console', (m) => m.type() === 'error' && errors.push(`[単語カード] ${m.text()}`));
+p10.on('pageerror', (e) => errors.push(`[単語カード] pageerror: ${e.message}`));
+
+await p10.goto(URL, { waitUntil: 'networkidle' });
+await p10.getByRole('button', { name: 'あとにする' }).click();
+await p10.getByText('今日のミッション').waitFor({ timeout: 8000 });
+
+await p10.locator('button', { hasText: '単語カード' }).first().click();
+await p10.getByText('どれをやる？').waitFor({ timeout: 8000 });
+await p10.locator('button', { hasText: 'ぜんぶから' }).first().click();
+// 3語ぶん、それぞれ「おぼえた」を1回だけ判定する（1回目なので box は2、まだ「学習済み」の4には届かない）
+for (let i = 0; i < 3; i++) {
+  await p10.getByRole('button', { name: '答えを見る', exact: true }).click();
+  await p10.getByRole('button', { name: 'おぼえた', exact: true }).click();
+}
+await p10.getByLabel('もどる').click();
+await p10.getByText('どれをやる？').waitFor({ timeout: 8000 });
+
+const wordsToday = await readWordStat(p10, '今日やった', '枚');
+if (wordsToday !== 3) {
+  throw new Error(`単語カードを3枚判定したのに「今日やった」が${wordsToday}枚（高2の再発）`);
+}
+console.log('  ✓ 単語カードを判定すると「今日やった」枚数が動く');
+const halfway10 = await readWordStat(p10, 'おぼえかけ', '語');
+if (halfway10 !== 3) {
+  throw new Error(`「おぼえかけ」がbox2〜3の語数（3語のはず）になっていない（実測${halfway10}語）`);
+}
+console.log('  ✓ 「おぼえかけ」がbox2〜3の途中経過を表している（0/4の二値になっていない）');
+await p10.screenshot({ path: join(OUT, '42-words-progress.png') });
+
+// ホームでも「今日のミッション」の数字を変えずに、単語カードの手応えだけが別枠で見える
+await p10.getByLabel('もどる').click();
+await p10.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p10.getByText('あと3問で今日は達成').waitFor({ timeout: 5000 });
+console.log('  ✓ 単語カードをやっても「今日のミッション」の残り問題数（ミッションの重み0）は動かない');
+await p10.getByText(/今日は単語カードも3枚やったよ/).waitFor({ timeout: 5000 });
+console.log('  ✓ ホームに単語カードだけの手応え表示が出る（別枠、空白に見えない）');
+await p10.screenshot({ path: join(OUT, '43-home-word-credit.png') });
+await p10ctx.close();
+
+/* ---- 高1：記録の書き出しに単語カードの進捗が入っていない ----
+   backup.ts が書き出す6テーブルに words が無く、機種変更で単語の積み上げが
+   黙って消えていた（オブザーバー報告：書き出し→読み込みで words 0件、それでも
+   成功メッセージだけが出る）。書き出したファイルの中身に words が入っていること、
+   別プロファイルへの読み込みで実際に復元されることの両方を確かめる。 */
+console.log('記録の書き出し→読み込みで単語カードの進捗が復元される（高1）');
+const p11ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, acceptDownloads: true });
+const p11 = await p11ctx.newPage();
+activePage = p11;
+activePageLabel = 'p11(バックアップ書き出し元)';
+p11.on('console', (m) => m.type() === 'error' && errors.push(`[バックアップ書き出し] ${m.text()}`));
+p11.on('pageerror', (e) => errors.push(`[バックアップ書き出し] pageerror: ${e.message}`));
+
+await p11.goto(URL, { waitUntil: 'networkidle' });
+await p11.getByRole('button', { name: 'あとにする' }).click();
+await p11.getByText('今日のミッション').waitFor({ timeout: 8000 });
+
+await p11.locator('button', { hasText: '単語カード' }).first().click();
+await p11.getByText('どれをやる？').waitFor({ timeout: 8000 });
+await p11.locator('button', { hasText: 'ぜんぶから' }).first().click();
+for (let i = 0; i < 3; i++) {
+  await p11.getByRole('button', { name: '答えを見る', exact: true }).click();
+  await p11.getByRole('button', { name: 'おぼえた', exact: true }).click();
+}
+await p11.getByLabel('もどる').click();
+await p11.getByText('どれをやる？').waitFor({ timeout: 8000 });
+const halfway11 = await readWordStat(p11, 'おぼえかけ', '語');
+if (halfway11 !== 3) throw new Error(`前提が崩れている（書き出し元の「おぼえかけ」が${halfway11}語）`);
+
+await p11.goto(URL, { waitUntil: 'networkidle' });
+await p11.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p11.locator('button', { hasText: '学習の記録' }).first().click();
+await p11.getByText('記録の保管').waitFor({ timeout: 8000 });
+const [download] = await Promise.all([
+  p11.waitForEvent('download'),
+  p11.getByRole('button', { name: '記録をファイルに書き出す' }).click(),
+]);
+const backupPath = join(OUT, 'words-backup.json');
+await download.saveAs(backupPath);
+const backupJson = JSON.parse(readFileSync(backupPath, 'utf-8'));
+if (!Array.isArray(backupJson.data?.words) || backupJson.data.words.length !== 3) {
+  throw new Error(
+    `書き出したファイルに words が入っていない、または件数が合わない（${JSON.stringify(backupJson.counts)}）＝ 高1の再発`,
+  );
+}
+console.log(`  ✓ 書き出しに words が含まれる（${backupJson.data.words.length}語）`);
+await p11ctx.close();
+
+// 別プロファイル（＝機種変更を模したまっさらな IndexedDB）に読み込む
+const p12ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p12 = await p12ctx.newPage();
+activePage = p12;
+activePageLabel = 'p12(バックアップ読み込み先・別プロファイル)';
+p12.on('console', (m) => m.type() === 'error' && errors.push(`[バックアップ読み込み] ${m.text()}`));
+p12.on('pageerror', (e) => errors.push(`[バックアップ読み込み] pageerror: ${e.message}`));
+
+await p12.goto(URL, { waitUntil: 'networkidle' });
+await p12.getByRole('button', { name: 'あとにする' }).click();
+await p12.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p12.locator('button', { hasText: '学習の記録' }).first().click();
+await p12.getByText('記録の保管').waitFor({ timeout: 8000 });
+// 「書き出したファイルから戻す」の裏にある input[type=file] を直接操作する（ネイティブのファイル選択ダイアログは自動化できないため）
+await p12.locator('input[type="file"]').setInputFiles(backupPath);
+await p12.getByText('読み込むと、いまの記録は消えます').waitFor({ timeout: 5000 });
+await p12.getByRole('button', { name: '読み込む' }).click();
+await p12.getByText(/単語カード3語ぶんの進捗を読み込みました/).waitFor({ timeout: 5000 });
+console.log('  ✓ 読み込み後のメッセージが実態（単語カードも戻った）と合っている');
+await p12.screenshot({ path: join(OUT, '44-restore-message.png') });
+
+await p12.getByLabel('もどる').click();
+await p12.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p12.locator('button', { hasText: '単語カード' }).first().click();
+await p12.getByText('どれをやる？').waitFor({ timeout: 8000 });
+const halfway12 = await readWordStat(p12, 'おぼえかけ', '語');
+if (halfway12 !== 3) {
+  throw new Error(
+    `別プロファイルに読み込んだのに「おぼえかけ」が${halfway12}語（3語のはず）＝ words が実際には復元されていない（高1）`,
+  );
+}
+console.log('  ✓ 書き出し→読み込みで、別プロファイルに単語カードの進捗が実際に復元される（高1）');
+await p12.screenshot({ path: join(OUT, '45-words-restored.png') });
+await p12ctx.close();
+
+/* ---- 高1：words を持たない古い形式のファイルを読み込んでも落ちず、いまの単語カードの進捗を消さない ----
+   すでに書き出し済みの古いファイルには words キー自体が無い。読み込み側が
+   「無ければ空配列扱いで全消し」にすると、古いファイルを読み込んだ瞬間に
+   むしろ単語カードの進捗を壊すという逆効果になる。 */
+console.log('wordsの無い旧形式ファイルを読み込んでも落ちない（高1・後方互換）');
+const p13ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p13 = await p13ctx.newPage();
+activePage = p13;
+activePageLabel = 'p13(旧形式バックアップの後方互換)';
+p13.on('console', (m) => m.type() === 'error' && errors.push(`[旧形式復元] ${m.text()}`));
+p13.on('pageerror', (e) => errors.push(`[旧形式復元] pageerror: ${e.message}`));
+
+await p13.goto(URL, { waitUntil: 'networkidle' });
+await p13.getByRole('button', { name: 'あとにする' }).click();
+await p13.getByText('今日のミッション').waitFor({ timeout: 8000 });
+
+// この端末にも単語カードの進捗をひとつ作っておく（旧形式ファイルの読み込みで消えないことを見るため）
+await p13.locator('button', { hasText: '単語カード' }).first().click();
+await p13.getByText('どれをやる？').waitFor({ timeout: 8000 });
+await p13.locator('button', { hasText: 'ぜんぶから' }).first().click();
+await p13.getByRole('button', { name: '答えを見る', exact: true }).click();
+await p13.getByRole('button', { name: 'おぼえた', exact: true }).click();
+await p13.getByLabel('もどる').click();
+await p13.getByText('どれをやる？').waitFor({ timeout: 8000 });
+const halfwayBeforeOld = await readWordStat(p13, 'おぼえかけ', '語');
+if (halfwayBeforeOld !== 1) throw new Error(`前提が崩れている（旧形式テスト側の「おぼえかけ」が${halfwayBeforeOld}語）`);
+
+// words キーを持たない、R6以前相当のバックアップファイルを手作りする
+const oldFormatPath = join(OUT, 'old-format-backup.json');
+writeFileSync(
+  oldFormatPath,
+  JSON.stringify({
+    format: 'eiken-pre2-backup',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    counts: { attempts: 0, days: 0, writings: 0, mocks: 0 },
+    data: { attempts: [], srs: [], days: [], writings: [], mocks: [], kv: [] },
+  }),
+);
+
+await p13.goto(URL, { waitUntil: 'networkidle' });
+await p13.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p13.locator('button', { hasText: '学習の記録' }).first().click();
+await p13.getByText('記録の保管').waitFor({ timeout: 8000 });
+await p13.locator('input[type="file"]').setInputFiles(oldFormatPath);
+await p13.getByText('読み込むと、いまの記録は消えます').waitFor({ timeout: 5000 });
+await p13.getByRole('button', { name: '読み込む' }).click();
+await p13.getByText('単語カードの進捗はこのファイルに含まれていないため', { exact: false }).waitFor({ timeout: 5000 });
+console.log('  ✓ wordsの無い旧形式ファイルでも落ちず、実態に合ったメッセージが出る');
+await p13.screenshot({ path: join(OUT, '46-restore-old-format.png') });
+
+await p13.getByLabel('もどる').click();
+await p13.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p13.locator('button', { hasText: '単語カード' }).first().click();
+await p13.getByText('どれをやる？').waitFor({ timeout: 8000 });
+const halfwayAfterOld = await readWordStat(p13, 'おぼえかけ', '語');
+if (halfwayAfterOld !== 1) {
+  throw new Error(
+    `旧形式ファイルの読み込みで単語カードの進捗が変わった（${halfwayBeforeOld}→${halfwayAfterOld}語）＝ 高1の後方互換が壊れている`,
+  );
+}
+console.log('  ✓ wordsの無い旧形式ファイルを読み込んでも、いまの単語カードの進捗は消えない');
+await p13ctx.close();
 
 await browser.close();
 

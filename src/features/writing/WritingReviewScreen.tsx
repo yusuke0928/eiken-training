@@ -9,10 +9,12 @@ import { Alert, Check } from '../../ui/icons';
 export function WritingReviewScreen({
   promptId,
   text,
+  onBack,
   onDone,
 }: {
   promptId: string;
   text: string;
+  onBack: () => void;
   onDone: () => void;
 }) {
   const prompt = WRITING_BY_ID.get(promptId)!;
@@ -45,7 +47,7 @@ export function WritingReviewScreen({
 
   return (
     <Screen>
-      <TopBar title="モデル解答と見くらべる" />
+      <TopBar title="モデル解答と見くらべる" onBack={onBack} />
       <main className="flex-1 px-5 pt-2 pb-40">
         <Block title="自分の答案">
           <div className="rounded-3xl border border-line bg-surface p-4">
@@ -64,8 +66,8 @@ export function WritingReviewScreen({
                 }`}
               >
                 <span
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-white ${
-                    c.ok ? 'bg-correct' : 'bg-again'
+                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
+                    c.ok ? 'bg-correct text-correct-ink' : 'bg-again text-again-ink'
                   }`}
                   aria-hidden
                 >

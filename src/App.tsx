@@ -349,7 +349,12 @@ export default function App() {
 
       case 'writingReview':
         return (
-          <WritingReviewScreen promptId={route.promptId} text={route.text} onDone={goHome} />
+          <WritingReviewScreen
+            promptId={route.promptId}
+            text={route.text}
+            onBack={back}
+            onDone={goHome}
+          />
       );
 
       case 'practice':

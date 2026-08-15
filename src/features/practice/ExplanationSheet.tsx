@@ -94,7 +94,7 @@ export function ExplanationSheet({
                     <p className="en mb-1 text-[15px] font-semibold text-ink">
                       {String.fromCharCode(65 + i)}. {choice}
                       {chosen && (
-                        <span className="ml-2 rounded-full bg-again px-2 py-0.5 align-middle text-[11px] font-bold text-white">
+                        <span className="ml-2 rounded-full bg-again px-2 py-0.5 align-middle text-[11px] font-bold text-again-ink">
                           選んだ
                         </span>
                       )}

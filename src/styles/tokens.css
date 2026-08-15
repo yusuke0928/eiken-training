@@ -18,10 +18,13 @@
   --color-primary-ink: var(--primary-ink);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
   --color-correct: var(--correct);
   --color-correct-soft: var(--correct-soft);
+  --color-correct-ink: var(--correct-ink);
   --color-again: var(--again);
   --color-again-soft: var(--again-soft);
+  --color-again-ink: var(--again-ink);
   --color-line: var(--line);
 
   --font-ja: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', system-ui, sans-serif;
@@ -34,16 +37,39 @@
   --surface-2: #f4f1ec;
   --ink: #2a2530;
   --ink-sub: #6e6878;
-  --ink-faint: #9c96a6;
-  --primary: #7a6be8;
+  /* 【R6】旧 #9c96a6 は bg 上で 2.73:1 しかなく WCAG AA(4.5:1) 未達だった
+     （オブザーバーが実測）。surface-2（このアプリで ink-faint が乗る最も明るい
+     ＝最もコントラストが厳しい背景）でも 4.5:1 を超えるところまで暗くしている。
+     ink-sub とかなり近づくが、「電車の中や屋外で読めない」ほうが実害が大きいため、
+     階調の差より可読性を優先した。 */
+  --ink-faint: #726b7e;
+  /* 【R6】旧 #7a6be8 は白文字ボタン（primary-ink on primary）で 4.12:1 と
+     AA 未達だった。同じ色相のまま少し暗くして 4.5:1 を確保している。 */
+  --primary: #7363e7;
   --primary-soft: #ece9fd;
   --primary-ink: #ffffff;
-  --accent: #ff9aae;
+  /* 【R7】旧 #ff9aae は accent-soft 上で1.79:1、白背景でも2.00:1、
+     bg-accent+白文字（面接の録音ボタン等）でも2.00:1しかなかった。
+     色相(ピンク〜ラズベリー系)は保ったまま彩度を保ち明度だけ落として、
+     テキストとしても・白文字が乗る背景としても4.5:1を超える濃さにしている。
+     accent-soft自体は変えていない（カードの淡いピンク地は維持）。 */
+  --accent: #c42359;
   --accent-soft: #ffeef2;
-  --correct: #3e9e82;
+  /* 【R7】accentは「文字色」としても「白文字が乗る背景色」としても使われるが、
+     ダーク側は明るいピンクのまま（暗い accent-soft の上で文字として読めることを優先）
+     にするため、白文字の代わりにこの ink を使う。ライトは新accentが十分濃いので白のまま。 */
+  --accent-ink: #ffffff;
+  /* 【R7】旧 #3e9e82 は correct-soft 上で2.88:1しかなかった。同じ緑相のまま明度を落とし、
+     白いチェックアイコン（bg-correct+白丸アイコン）でも4.5:1を超えるようにしている。 */
+  --correct: #22735c;
   --correct-soft: #e4f4ef;
-  --again: #e8845a;
+  --correct-ink: #ffffff;
+  /* 【R7】旧 #e8845a は again-soft 上で2.36:1しかなかった。ホーム「申込は9月7日(月)まで」
+     （いま一番大事な締切表示）が薄いオレンジ地に薄いオレンジ文字で読めなかった問題の本体。
+     同じオレンジ相のまま明度を落として4.5:1超に。 */
+  --again: #b04519;
   --again-soft: #fdeee7;
+  --again-ink: #ffffff;
   --line: #ede8e2;
 
   /* 学習カレンダー用の逐次（sequential）配色。
@@ -64,16 +90,29 @@
     --surface-2: #2b2734;
     --ink: #f0edf5;
     --ink-sub: #a9a2b6;
-    --ink-faint: #776f85;
+    /* 【R6】旧 #776f85 は surface-2 上で 3.05:1 しかなかった。ライト同様、
+       surface-2 基準で 4.5:1 を超えるまで明るくしている。 */
+    --ink-faint: #938c9f;
     --primary: #9c8fff;
     --primary-soft: #2e2842;
     --primary-ink: #17151c;
+    /* 【R7】accent/correct/again 自体はダークのままだと変えない
+       （accent-soft等の暗い背景の上で文字として読める状態を崩さないため。
+       R6時点で実測6〜7:1あり、崩す理由がない）。
+       ただし「白背景の上」向けにライトだけ暗くしたので、白文字が乗るボタン・バッジ
+       （録音ボタン等）では、ダークのこの明るいピンク/オレンジ/緑に白文字を乗せると
+       2:1前後しか出ない。accent-soft上のテキストと、白文字の代わりに使うink、
+       両方を同時に4.5:1以上にできる1色は存在しない（bg側が暗すぎるため両立不可）ので、
+       「ボタン背景として使うときの文字色」を分けた。 */
     --accent: #ff9aae;
     --accent-soft: #3a2831;
+    --accent-ink: #2a2530;
     --correct: #5ec3a4;
     --correct-soft: #1e3129;
+    --correct-ink: #2a2530;
     --again: #f0946c;
     --again-soft: #38251d;
+    --again-ink: #2a2530;
     --line: #332e3e;
     --heat-0: #2b2734;
     --heat-1: #3f3663;
@@ -90,16 +129,19 @@
   --surface-2: #2b2734;
   --ink: #f0edf5;
   --ink-sub: #a9a2b6;
-  --ink-faint: #776f85;
+  --ink-faint: #938c9f;
   --primary: #9c8fff;
   --primary-soft: #2e2842;
   --primary-ink: #17151c;
   --accent: #ff9aae;
   --accent-soft: #3a2831;
+  --accent-ink: #2a2530;
   --correct: #5ec3a4;
   --correct-soft: #1e3129;
+  --correct-ink: #2a2530;
   --again: #f0946c;
   --again-soft: #38251d;
+  --again-ink: #2a2530;
   --line: #332e3e;
   color-scheme: dark;
 }
@@ -125,6 +167,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
+}
+
+/* 【R6】ピンチ拡大の禁止（user-scalable=no）を外した副作用として、ボタンの
+   連打・素早いタップがダブルタップズームと誤認されうる。button/a は
+   「タップの意図がほぼ確実な要素」なので、そこだけダブルタップズームの対象から外し、
+   ピンチ拡大（複数指）自体は引き続き画面全体で使えるようにする。 */
+button,
+a {
+  touch-action: manipulation;
 }
 
 /* 英文は日本語と別フォント・1段大きく（DESIGN.md §4.3）。

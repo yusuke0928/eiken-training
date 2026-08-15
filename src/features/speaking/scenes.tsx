@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Close } from '../../ui/icons';
 import card1a from './art/card1-a.webp';
-import card1b from './art/card1-b.webp';
 import card2a from './art/card2-a.webp';
 import card2b from './art/card2-b.webp';
 import card3a from './art/card3-a.webp';
@@ -17,10 +16,15 @@ import card3b from './art/card3-b.webp';
  *
  * 参照は必ず Vite の import 経由にする。本番は /eiken-training/ 配下に出るので、
  * 文字列でパスを直書きすると壊れる。
+ *
+ * カード1のイラストBは、体の線を強調したタンクトップ姿・汗・胸元という絵柄で、
+ * 中3女子が1人で開く画面に置くものとして不適切と判断し、依頼者確認のうえ外した
+ * （WORK-ORDER-IOS-AUDIO-R5.md）。import ごと削除してビルドに含めていない。
+ * カード1だけ b を持たないので、SCENES の B は無いカードがある前提で組み立てる。
  */
 
-const CARD_IMAGES: Record<string, { a: string; b: string }> = {
-  'p2-s-001': { a: card1a, b: card1b },
+const CARD_IMAGES: Record<string, { a: string; b?: string }> = {
+  'p2-s-001': { a: card1a },
   'p2-s-002': { a: card2a, b: card2b },
   'p2-s-003': { a: card3a, b: card3b },
 };
@@ -40,6 +44,25 @@ const CARD_IMAGES: Record<string, { a: string; b: string }> = {
  */
 function SceneImage({ src, alt, label }: { src: string; alt: string; label: string }) {
   const [open, setOpen] = useState(false);
+  // 拡大時、コンテナ幅より画像の描画幅が大きく、横スクロールが要るか。
+  // 【中1】拡大しても絵の一部しか見えないのに、横に続く手がかりが無い、への対応。
+  // イラストAは3カードとも1200×674、イラストBも1000×1000で、
+  // 高さ基準の拡大だとどちらも画面幅を大きくはみ出す（実測で29%しか一度に見えない）。
+  const [showScrollHint, setShowScrollHint] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // モーダルを開くたび・画像の読み込みが終わるたびに測り直す。
+  // 開いた直後は img がまだ読み込まれておらず幅が確定しないことがあるので、
+  // 効果側（open）と img の onLoad の両方から呼ぶ（どちらか早い方で正しく測れる）
+  const measureOverflow = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setShowScrollHint(el.scrollWidth > el.clientWidth + 4);
+  }, []);
+
+  useEffect(() => {
+    if (open) measureOverflow();
+  }, [open, measureOverflow]);
 
   return (
     <>
@@ -78,21 +101,36 @@ function SceneImage({ src, alt, label }: { src: string; alt: string; label: stri
               （Chromium のオーバーフロー中央寄せの既知の癖）。これも避けたい。
               なので中央寄せは img 側の auto マージンに任せる
               （収まる時だけ中央、はみ出したら自然に左端からスクロールできる）。 */}
-          <div className="flex-1 overflow-auto py-4">
+          <div
+            ref={scrollRef}
+            className="relative flex-1 overflow-auto py-4"
+            onScroll={(e) => {
+              // 少しでも動かしたら「続きがある」ことは伝わったとみなして消す
+              if (e.currentTarget.scrollLeft > 4) setShowScrollHint(false);
+            }}
+          >
             <img
               src={src}
               alt={alt}
+              onLoad={measureOverflow}
               className="mx-auto block h-[calc(100dvh-160px)] w-auto max-w-none rounded-xl bg-white"
               onClick={(e) => e.stopPropagation()}
             />
           </div>
+          {showScrollHint && (
+            <div className="pointer-events-none absolute inset-x-0 bottom-20 flex justify-center">
+              <span className="animate-pulse rounded-full bg-accent px-3.5 py-1.5 text-[12px] font-bold text-accent-ink shadow-lg">
+                → よこにスクロールできます
+              </span>
+            </div>
+          )}
         </div>
       )}
     </>
   );
 }
 
-export const SCENES: Record<string, { A: () => React.ReactElement; B: () => React.ReactElement }> =
+export const SCENES: Record<string, { A: () => React.ReactElement; B?: () => React.ReactElement }> =
   Object.fromEntries(
     Object.entries(CARD_IMAGES).map(([id, { a, b }], i) => {
       const n = i + 1;
@@ -100,7 +138,9 @@ export const SCENES: Record<string, { A: () => React.ReactElement; B: () => Reac
         id,
         {
           A: () => <SceneImage src={a} alt={`面接カード${n}のイラストA`} label="イラストA" />,
-          B: () => <SceneImage src={b} alt={`面接カード${n}のイラストB`} label="イラストB" />,
+          // カード1は b が無い（上の CARD_IMAGES 参照）。ここでキー自体を作らないことで
+          // 「B が無いカードがある」を型でも表現する
+          ...(b ? { B: () => <SceneImage src={b} alt={`面接カード${n}のイラストB`} label="イラストB" /> } : {}),
         },
       ];
     }),

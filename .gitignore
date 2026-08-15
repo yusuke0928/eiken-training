@@ -3,3 +3,4 @@ dist
 dev-dist
 .smoke
 .DS_Store
+tsconfig.tsbuildinfo

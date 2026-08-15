@@ -24,6 +24,10 @@ export function ListeningPanel({
   const [plays, setPlays] = useState(0);
   const [slow, setSlow] = useState(false);
   const [showScript, setShowScript] = useState(false);
+  // 練習モードで自分から途中で止めたときだけ立てる。plays===0 のままだと
+  // 画面が「一度も再生していない状態」と見分けがつかず、押しても何も起きなかった
+  // ように見えてしまう（高3）。次に最後まで聞き終えたら plays が増えるので消す。
+  const [stoppedEarly, setStoppedEarly] = useState(false);
   const notified = useRef(false);
 
   const lines: SpeakLine[] = useMemo(() => {
@@ -42,11 +46,30 @@ export function ListeningPanel({
 
   async function play() {
     if (speaking) {
-      stop();
+      // 本人がタップして止めたのだから「放送は流れた」。本番と同じ扱いにするため
+      // stop('user') を渡す（既定値と同じだが、意図を読み取れるよう明示している）。
+      stop('user');
+      // 練習モードは、この下の分岐で「完走していないので消費しない」まま plays が
+      // 0 に留まる。彼女には「押しても何も起きなかった」ように見えるので、
+      // 案内を出す合図をここで立てる（本文は下の分岐と表示側で扱う）。
+      if (!examLike) setStoppedEarly(true);
       return;
     }
+    // speak() は「完走」「本人が止めた」「visibilitychange による不可抗力の中断」を
+    // 戻り値で区別する。
+    // - 'stopped-hidden'（不可抗力）はモード問わず消費しない＝聞けていないので聞き直せる。
+    // - 'stopped-by-user'（本人がタップして止めた）は、模試のときだけ「放送は流れた」
+    //   ものとして消費する（本番と同じ扱い＝ここで再生済みになり聞き直せなくなる）。
+    //   練習モードは「1回聞いてから」スクリプトや再生回数表示を開放する仕様なので、
+    //   ここで消費すると自分で止めただけでスクリプトが読めてしまう。練習モードの
+    //   挙動は変えない方針のため、完走したときだけ消費する今までどおりの扱いにする。
+    // ここを await の前に setPlays していた頃は、不可抗力の中断でも再生済み扱いになり、
+    // examLike の disabled={plays>=1 && !speaking} でボタンが二度と押せなくなっていた。
+    const result = await speak(lines, slow ? 0.78 : 1);
+    if (result === 'stopped-hidden') return;
+    if (result === 'stopped-by-user' && !examLike) return;
+    setStoppedEarly(false);
     setPlays((n) => n + 1);
-    await speak(lines, slow ? 0.78 : 1);
     if (!notified.current) {
       notified.current = true;
       onPlayedOnce();
@@ -87,7 +110,10 @@ export function ListeningPanel({
               <Bar delay="120ms" />
               <Bar delay="240ms" />
             </span>
-            再生中… （タップで停止）
+            {/* 模試は「放送1回」なので、途中で止めるとその1回を使い切る（本番どおり）。
+                押す前にそれが分かるよう、練習モードとラベルを変えておく。
+                練習モードは何度でも聞き直せる側なので、ここでは確認を出さず今までどおり */}
+            {examLike ? '再生中…（止めると1回使ったことになるよ）' : '再生中… （タップで停止）'}
           </>
         ) : plays === 0 ? (
           <><Play size={20} /> 音声を再生</>
@@ -101,6 +127,15 @@ export function ListeningPanel({
       {plays > 0 && lineIndex >= 0 && (
         <p className="mt-2 text-center text-[12px] text-ink-faint">
           {lineIndex + 1} / {lines.length}
+        </p>
+      )}
+
+      {/* 高3：途中で止めた直後は「一度も再生していない状態」と画面が同じに見えてしまう
+          （0回 再生・ボタンは「音声を再生」・選択肢の枠は「まず再生してみよう」のまま）。
+          押しても何も起きなかったように見せないため、一言だけ出す */}
+      {!speaking && stoppedEarly && plays === 0 && (
+        <p className="mt-3 rounded-xl bg-surface px-3 py-2 text-[13px] leading-relaxed text-ink-sub">
+          止めたので、この再生はまだ1回に数えていないよ。最後まで聞くと選択肢が出るよ。
         </p>
       )}
 

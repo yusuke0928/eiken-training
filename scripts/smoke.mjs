@@ -361,11 +361,123 @@ await page.getByText('まだ採点していないライティングがあるよ'
 console.log('  ✓ 未採点のライティングがホームから戻れる');
 await shot('28-home-pending-writing');
 
+/* ---- 面接シミュレーター ----
+   イラスト6枚は外部制作の画像で、参照は Vite の import 経由（scenes.tsx）。
+   本番は /eiken-training/ 配下に出るため、パスの解決が壊れると絵だけが出なくなる。
+   そのとき画面は「絵が無いまま」進めてしまい、目で見るまで誰も気づけない。
+   img が置かれていることではなく naturalWidth まで見て、実際に描画されたことを確かめる。
+
+   カード1とカード2を通しで踏む（カード3は踏まない）。パス解決が壊れる場合は
+   残る5枚も同時に壊れるし、ファイルが1枚欠ければ import が解決できず build が
+   先に落ちる。3枚とも踏むと黙読20秒×3で smoke がさらに伸びるわりに増える網は薄い。
+   カード2を混ぜているのは、カード1のイラストBだけを外した変更（R5）が
+   カード2・カード3のイラストBまで巻き添えにしていないかを見るため。 */
+console.log('面接シミュレーター');
+await page.goto(URL, { waitUntil: 'networkidle' });
+await page.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await page.locator('button', { hasText: '面接シミュレーター' }).first().click();
+await page.getByText('本番の流れ').waitFor({ timeout: 8000 });
+const speakingCards = page.locator('main ul > li > button');
+if ((await speakingCards.count()) !== 3) errors.push('面接の問題カードが3枚ない');
+await shot('29-speaking-cards');
+
+await speakingCards.first().click();
+// 黙読の20秒。数え終わるまで「音読へ」は押せない（本番の間合いをなぞる作り）
+await page.getByRole('button', { name: /あと\d+秒/ }).waitFor({ timeout: 8000 });
+await shot('30-speaking-silent');
+// 実測で20秒かかることが分かっている待機。30秒だと余裕が薄いので60秒にしてある
+await page.getByRole('button', { name: '音読へ' }).click({ timeout: 60000 });
+
+// 音読 → No.1。読み上げのお手本ボタンは Web Speech API が使える端末でしか出ない
+// （SpeakingScreen の canSpeak）。#check 節が「読み上げは環境依存だから押さない」
+// 判断をしているのと同じ理由で、ここも存在を無条件に前提にはしない
+const canSpeakHere = await page.evaluate(
+  () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window,
+);
+if (canSpeakHere) {
+  await page.getByRole('button', { name: /お手本を聞く/ }).waitFor({ timeout: 8000 });
+} else {
+  console.log('  ・この環境は Web Speech 非対応。お手本を聞くボタンの確認をスキップ');
+}
+await page.getByRole('button', { name: 'No.1へ' }).click();
+
+// No.1 は解答例の開閉まで見る
+await page.getByRole('button', { name: /解答例を見る/ }).click();
+await page.getByRole('button', { name: '解答例を隠す' }).waitFor({ timeout: 5000 });
+await shot('31-speaking-q1');
+
+/** イラストが実際に描画されていること。src があるだけでは通さない */
+async function checkIllust(alt, label) {
+  const img = page.getByAltText(alt).first();
+  await img.waitFor({ timeout: 8000 });
+  const drawn = await img.evaluate((el) => el.complete && el.naturalWidth > 0);
+  if (!drawn) errors.push(`${label}が表示できていない（${alt}）`);
+  else console.log(`  ✓ ${label}が描画されている`);
+}
+
+await page.getByRole('button', { name: 'No.2へ' }).click();
+await checkIllust('面接カード1のイラストA', 'イラストA');
+await shot('32-speaking-illust-a');
+// タップで拡大できること。実寸だと脇役が小さく、拡大は本番の見え方に効く
+await page.getByRole('button', { name: 'イラストAを拡大表示' }).click();
+await page.getByRole('button', { name: '閉じる' }).waitFor({ timeout: 5000 });
+await shot('33-speaking-illust-zoom');
+await page.getByRole('button', { name: '閉じる' }).click();
+
+await page.getByRole('button', { name: 'No.3へ' }).click();
+// 【最優先】カード1のイラストBは中3女子が使う画面として不適切と判断し、
+// 依頼者確認のうえ外した（WORK-ORDER-IOS-AUDIO-R5.md）。import ごと削除してあるので
+// 「出ていないこと」と「代わりに日本語のヒントが最初から見えていること」の両方を見る。
+// 折りたたみの後ろに隠れているだけではダメで、開かなくても見えている必要がある
+if (await page.getByAltText('面接カード1のイラストB').count()) {
+  errors.push('カード1のイラストBが表示されている（依頼者の判断で外したはず）');
+} else {
+  console.log('  ✓ カード1のイラストBは表示されない');
+}
+await page
+  .getByText('女性が箱を運ぼうとしているが、重くて持ち上げられない。')
+  .waitFor({ timeout: 5000 });
+console.log('  ✓ カード1 No.3 は日本語のヒントが最初から見えている');
+await shot('34-speaking-illust-b');
+
+// カード1だけ外した変更で、カード2・カード3のイラストBまで巻き添えにしていないか。
+// No.3 まで進めるだけの最小限のカード2の周回を追加で踏む（黙読20秒は避けられない）
+console.log('面接シミュレーター（カード2のイラストBが従来どおりか）');
+await page.getByRole('button', { name: 'もどる' }).click();
+await page.getByText('この面接をやめる？').waitFor({ timeout: 5000 });
+await page.getByRole('button', { name: 'カード一覧にもどる' }).click();
+await page.getByText('本番の流れ').waitFor({ timeout: 8000 });
+await speakingCards.nth(1).click();
+await page.getByRole('button', { name: /あと\d+秒/ }).waitFor({ timeout: 8000 });
+await page.getByRole('button', { name: '音読へ' }).click({ timeout: 60000 });
+await page.getByRole('button', { name: 'No.1へ' }).click();
+await page.getByRole('button', { name: 'No.2へ' }).click();
+await page.getByRole('button', { name: 'No.3へ' }).click();
+await checkIllust('面接カード2のイラストB', 'カード2のイラストB');
+await shot('34b-speaking-card2-illust-b');
+
+// No.4・No.5 はカードを裏返す想定なので、パッセージが消えていること。
+// click() 直後は React の再描画がまだ終わっていないことがあり、そこで count() を
+// 読むと遷移前の古い DOM を見てしまう（このケースでは「問題カード」がまだ1件
+// 見えて誤って落ちる側に転ぶ。fail-open ではなく描画タイミング依存という別の穴）。
+// 「No.5へ」の出現という肯定的な合図を先に待ってから、否定（問題カードが無いこと）を見る
+await page.getByRole('button', { name: 'No.4へ' }).click();
+await page.getByRole('button', { name: 'No.5へ' }).waitFor({ timeout: 5000 });
+if (await page.getByText('問題カード', { exact: false }).count()) {
+  errors.push('No.4 でパッセージが隠れていない（本番はカードを裏返す）');
+}
+await page.getByRole('button', { name: 'No.5へ' }).click();
+// 録音は端末のマイクが要るので smoke では押さない。導線が出ていることだけ見る
+await page.getByRole('button', { name: '● 録音' }).waitFor({ timeout: 5000 });
+await page.getByRole('button', { name: 'おわる' }).click();
+await page.getByText('おつかれさま').waitFor({ timeout: 8000 });
+await shot('35-speaking-done');
+
 console.log('ダークモード');
 await page.emulateMedia({ colorScheme: 'dark' });
 await page.goto(URL, { waitUntil: 'networkidle' });
 await page.getByText('今日のミッション').waitFor({ timeout: 8000 });
-await shot('29-home-dark');
+await shot('36-home-dark');
 
 // メインフローはここで終わり。開けっぱなしにすると p2/p3/p4 と合わせて
 // 最大4コンテキストが同時に開くことになるので、使い終えたら閉じる。
@@ -535,6 +647,281 @@ await p4.goto(URL, { waitUntil: 'networkidle' });
 await p4.getByText('今日のミッション').waitFor({ timeout: 8000 });
 console.log('  ✓ 演習を正しくやめたあとも、起動し直すとホームに着地する');
 await p4ctx.close();
+
+/* ---- #check ページ ----
+   ホームから辿れない自己診断ページ（src/features/check/CheckScreen.tsx）なので、
+   放っておくと壊れても誰も気づけない。ここでは最小限：ページが開き、想定の見出しが
+   出て、console エラーが出ないことだけを見る。録音・読み上げのボタンは
+   smoke の実行環境にマイクが無い（読み上げは chromium に音声出力ドライバが無いことがある）ので押さない。
+   最初から #check 付きで開く経路と、開いたままのタブでハッシュを行き来する経路の
+   両方を見る（後者が唯一の実際の使い方なので、これを踏まないと緑に意味が無い）。 */
+console.log('#check ページ');
+const p5ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p5 = await p5ctx.newPage();
+activePage = p5;
+activePageLabel = 'p5(#check)';
+p5.on('console', (m) => m.type() === 'error' && errors.push(`[#check] ${m.text()}`));
+p5.on('pageerror', (e) => errors.push(`[#check] pageerror: ${e.message}`));
+
+// SMOKE_URL の末尾にスラッシュが付くと `${URL}/#check` は "//" になる。
+// 末尾のスラッシュを剥がしてから足す（この URL はモジュール冒頭の文字列定数で、
+// グローバルの URL クラスをシャドーイングしているので new URL() は使えない）
+await p5.goto(`${URL.replace(/\/+$/, '')}/#check`, { waitUntil: 'networkidle' });
+await p5.getByText('音のチェック').waitFor({ timeout: 8000 });
+// 【R6】診断結果が実態とずれていた指摘を受け、見出しの文言をやさしく書き直した
+await p5.getByText('読み上げ（リスニングで使う音声）').waitFor({ timeout: 5000 });
+await p5.getByText('録音（面接で使うマイク）').waitFor({ timeout: 5000 });
+await p5.screenshot({ path: join(OUT, '37-check.png') });
+console.log('  ✓ 最初から #check 付きで開いた場合は開ける');
+
+/* #check の唯一の使い方は「動いているタブのアドレスバーに #check を足す」こと。
+   上のようにまっさらな goto に #check を含めるテストだけだと、この経路を
+   一度も踏まないまま緑になる（実際に main.tsx が isCheck を初回描画時にしか
+   判定していなかった退行を素通りしていた）。ここでは goto を挟まず、
+   開いたままのタブに対して location.hash を書き換えて確かめる。
+   このコンテキストはまだ何も答えていないので、まずオンボーディングを抜けて
+   ホーム（今日のミッション）を出す（p4 の起動時ホーム着地テストと同じ理由）。 */
+await p5.goto(URL, { waitUntil: 'networkidle' });
+await p5.getByRole('button', { name: 'あとにする' }).click();
+await p5.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p5.evaluate(() => {
+  window.location.hash = 'check';
+});
+await p5.getByText('音のチェック').waitFor({ timeout: 8000 });
+console.log('  ✓ 開いたままのタブにハッシュを足すだけで #check が開く（リロード無し）');
+
+// 逆方向：#check からアプリへ戻る導線（上部の「もどる」）でも、
+// 開いたままのタブで戻れること。#check → アプリの向きも同じ穴が起きうる
+await p5.getByRole('button', { name: 'もどる' }).click();
+await p5.getByText('今日のミッション').waitFor({ timeout: 8000 });
+console.log('  ✓ #check の「もどる」でアプリへ戻れる（リロード無し）');
+await p5ctx.close();
+
+/* ---- 高1：模試のリスニングは、裏に回っても聞き直せる ----
+   useSpeech は裏に回ると speak() を打ち切る（iOS がキューを止めたまま
+   戻ってくることがあるための保護）。この保護自体は正しいが、以前は
+   speak() が完走と中断を区別できず、ListeningPanel.play() が中断でも
+   plays を1つ消費していた。模試（examLike）は
+   disabled={examLike && plays>=1 && !speaking} で1回再生したらボタンを
+   塞ぐ作りなので、中断＝聞けていないのに二度と押せなくなっていた。
+   コードを読んで直したつもりにしないため、実際に visibilitychange を
+   発火させてボタンの状態を確かめる。 */
+console.log('模試のリスニング：裏に回っても聞き直せる（高1）');
+const p6ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p6 = await p6ctx.newPage();
+activePage = p6;
+activePageLabel = 'p6(模試リスニング中断)';
+p6.on('console', (m) => m.type() === 'error' && errors.push(`[模試リスニング] ${m.text()}`));
+p6.on('pageerror', (e) => errors.push(`[模試リスニング] pageerror: ${e.message}`));
+
+await p6.goto(URL, { waitUntil: 'networkidle' });
+// このコンテキストもまだ何も答えていないので、オンボーディングを抜けてからホームへ
+await p6.getByRole('button', { name: 'あとにする' }).click();
+await p6.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p6.locator('button', { hasText: '模擬テスト' }).first().click();
+await p6.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+// 「リスニングのみ」で始めると、筆記を経由せず即座にリスニング（examLike）に入れる
+await p6.locator('button', { hasText: 'リスニングのみ' }).first().click();
+await p6.getByRole('button', { name: '音声を再生' }).waitFor({ timeout: 10000 });
+// shot() はメインの page（既に ctx.close() 済み）に紐づいているのでここでは使えない
+await p6.screenshot({ path: join(OUT, '38-mock-listening.png') });
+
+// 1回目：再生を始めた直後に裏へ回す
+await p6.getByRole('button', { name: '音声を再生' }).click();
+await p6.getByRole('button', { name: /再生中/ }).waitFor({ timeout: 5000 });
+await p6.evaluate(() => {
+  Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' });
+  document.dispatchEvent(new Event('visibilitychange'));
+});
+
+// 中断は setSpeaking(false) を直接呼ぶので、speak() の Promise 解決を待たずに
+// ボタンはすぐ「再生中」から抜ける。直っていなければ、この時点で examLike の
+// disabled={plays>=1 && !speaking} が真になり、ボタンは「再生済み」のまま
+// 押せなくなる（plays がここで既に1消費されている）
+await p6.getByRole('button', { name: '音声を再生' }).waitFor({ timeout: 5000 });
+console.log('  ✓ 中断後もボタンが「音声を再生」に戻る（plays を消費していない）');
+
+// 実際に押し直せること（disabled のままなら click() がタイムアウトして落ちる＝赤くなる）
+await p6.getByRole('button', { name: '音声を再生' }).click({ timeout: 5000 });
+await p6.getByRole('button', { name: /再生中/ }).waitFor({ timeout: 5000 });
+console.log('  ✓ 中断後にもう一度「音声を再生」を押して再生できる（模試でも聞き直せる）');
+await p6.screenshot({ path: join(OUT, '39-mock-listening-replay.png') });
+
+/* ---- R3：自分でタップして止めた場合は plays を消費する（模試では聞き直せない）----
+   R2 は「中断なら plays を消費しない」だけを直し、"中断" の中身が
+   不可抗力（visibilitychange）なのか本人の意思（タップして停止）なのかを
+   書き分けていなかった。結果、模試で「再生→自分で停止」を繰り返すと
+   何度でも聞き直せてしまっていた（放送1回のルールをすり抜けられる）。
+   上の visibilitychange のテストと対にして置く。片方だけだと同じ取り違えが再発する。
+   直前のテストで始めた2回目の再生がまだ「再生中」のまま進行しているので、
+   それを自分でタップして止める（新たに「音声を再生」を探すと、まだ再生中で
+   そのラベルのボタンは存在せずタイムアウトする＝実際に一度これで落として確認した）。 */
+await p6.getByRole('button', { name: /再生中/ }).click();
+// 自分で止めたのだから「放送は流れた」扱い。examLike では「再生済み」になって押せなくなる
+await p6.getByRole('button', { name: '再生済み' }).waitFor({ timeout: 5000 });
+console.log('  ✓ 自分でタップして止めると「再生済み」になり、聞き直せない（plays を消費する）');
+await p6.screenshot({ path: join(OUT, '40-mock-listening-user-stop.png') });
+
+await p6ctx.close();
+
+/* ---- R4 高1：練習モードで「停止 → すぐ再生」しても、同じ文が二重に読まれない ----
+   useSpeech の cancelled が useSpeech フック単位で共有された1つの ref だったため、
+   新しい speak() が cancelled.current = false に戻した瞬間、まだ生きている
+   古い読み上げの連鎖（次の行までの setTimeout(next, 320) 待ち）が
+   「自分は中断されていない」と誤認して読み上げを続けていた
+   （管理の実測：speak() 6件中2件が2回読まれた）。
+   speak() を呼ぶたびに増える世代番号（generation）で、各呼び出しが
+   「いまも自分の世代が有効か」を独立に判定できる形に直した。
+   speechSynthesis.speak を差し替えて渡された文を記録し、実際に確かめる。
+   実機の onend は環境によって来なかったり数秒かかったりして再現性がぶれるため
+   （speech.ts 自身の budget コメント参照）、擬似エンジンで固定時間（200ms）
+   ごとに「読み終わった」ことにし、タイミングを決定的にしてある。 */
+console.log('練習モードのリスニング：停止してすぐ押し直しても二重に読まれない（高1）');
+const p7ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p7 = await p7ctx.newPage();
+activePage = p7;
+activePageLabel = 'p7(練習リスニング二重再生)';
+p7.on('console', (m) => m.type() === 'error' && errors.push(`[二重再生] ${m.text()}`));
+p7.on('pageerror', (e) => errors.push(`[二重再生] pageerror: ${e.message}`));
+
+await p7.addInitScript(() => {
+  const synth = window.speechSynthesis;
+  let current = null;
+  window.__spoken = [];
+  synth.speak = (u) => {
+    window.__spoken.push({ text: u.text, t: Date.now() });
+    // onstart を返さないと speech.ts の unlockSpeech() が「起こせた」と判定できず、
+    // unlocked が true にならないまま毎回のタップで無音発話（'.'）を再投入し続けてしまう
+    // （__spoken が本題以外のノイズで埋まる）。実機同様、開始は即座に通知する。
+    u.onstart && u.onstart();
+    const timer = window.setTimeout(() => {
+      if (current && current.u === u) {
+        current = null;
+        u.onend && u.onend();
+      }
+    }, 200);
+    current = { u, timer };
+  };
+  synth.cancel = () => {
+    if (current) {
+      window.clearTimeout(current.timer);
+      const u = current.u;
+      current = null;
+      u.onerror && u.onerror();
+    }
+  };
+  synth.resume = () => {};
+  synth.getVoices = () => [];
+});
+
+await p7.goto(URL, { waitUntil: 'networkidle' });
+await p7.getByRole('button', { name: 'あとにする' }).click();
+await p7.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p7.locator('button', { hasText: 'リスニング' }).first().click();
+await p7.getByRole('button', { name: '音声を再生' }).waitFor({ timeout: 8000 });
+
+// unlockSpeech()（最初のタップで鳴らす無音発話）ぶんの記録が紛れているので、
+// 本題の再生を始める直前でリセットしておく
+await p7.evaluate(() => {
+  window.__spoken.length = 0;
+});
+
+await p7.getByRole('button', { name: '音声を再生' }).click();
+await p7.getByRole('button', { name: /再生中/ }).waitFor({ timeout: 5000 });
+// 1行目（擬似エンジンで200ms）が読み終わり、次の行までの320ms待ちがまだ生きているうちに止める
+await p7.waitForTimeout(250);
+await p7.getByRole('button', { name: /再生中/ }).click(); // 自分で停止
+// 「すぐ押し直す」を再現。ボタンが「音声を再生」に戻り次第、間を置かず押す
+await p7.getByRole('button', { name: '音声を再生' }).waitFor({ timeout: 2000 });
+await p7.getByRole('button', { name: '音声を再生' }).click();
+await p7.getByRole('button', { name: /再生中/ }).waitFor({ timeout: 5000 });
+// 旧世代の残り処理（擬似200ms＋320ms≈520ms後）が紛れ込む余地を見つつ、
+// 新しいセッション自身が2行目に到達する（押し直した時点から約520ms後）前で止める
+await p7.waitForTimeout(400);
+
+const spoken = await p7.evaluate(() => window.__spoken.map((s) => s.text));
+// 正しい世代管理なら、ここまでに記録されるのは「止める前に読まれた1行目」と
+// 「押し直したあとの1行目」の2回だけ（どちらも同じ文）。
+// 旧バグが再発していれば、古い連鎖が次の行を勝手に読み進めるため3件以上になり、
+// 3件目は1行目と別の文になる。
+if (spoken.length !== 2 || spoken[0] !== spoken[1]) {
+  throw new Error(
+    `停止してすぐ押し直したときの読み上げが想定と違う（二重再生の再発の疑い）。` +
+      `記録された文: ${JSON.stringify(spoken)}`,
+  );
+}
+console.log(`  ✓ 停止してすぐ押し直しても、余計な文が紛れ込まない（記録: ${JSON.stringify(spoken)}）`);
+await p7ctx.close();
+
+/* ---- R4 高2：模試のリスニングは、停止した直後にはもう「再生済み」になっていて押せない ----
+   止めても、内部の読み上げ連鎖（onend／次の行までの320ms／見積もりタイムアウトの
+   いずれか）が Promise を解決するのを待っていたため、押してから「再生済み」に
+   変わるまで管理の実測で455ms、観測では最大6.7秒かかっていた。
+   その隙にもう一度押せば、最初から全部聞き直せてしまう（放送1回のルールをすり抜ける）。
+   stop() 自身が進行中の speak() を（内部の連鎖を待たず）その場で即座に解決するよう
+   直したので、停止してごく短い時間（150ms）のうちにもう「再生済み」になっている
+   ことを確かめる。実機の TTS は使い、待ち時間そのものが直っているかを見る。 */
+console.log('模試のリスニング：停止した直後にはもう押せない（高2）');
+const p8ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p8 = await p8ctx.newPage();
+activePage = p8;
+activePageLabel = 'p8(模試リスニング即時反映)';
+p8.on('console', (m) => m.type() === 'error' && errors.push(`[模試即時反映] ${m.text()}`));
+p8.on('pageerror', (e) => errors.push(`[模試即時反映] pageerror: ${e.message}`));
+
+await p8.goto(URL, { waitUntil: 'networkidle' });
+await p8.getByRole('button', { name: 'あとにする' }).click();
+await p8.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p8.locator('button', { hasText: '模擬テスト' }).first().click();
+await p8.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+await p8.locator('button', { hasText: 'リスニングのみ' }).first().click();
+await p8.getByRole('button', { name: '音声を再生' }).waitFor({ timeout: 10000 });
+
+await p8.getByRole('button', { name: '音声を再生' }).click();
+await p8.getByRole('button', { name: /再生中/ }).waitFor({ timeout: 5000 });
+await p8.waitForTimeout(800); // 再生の途中で止める
+await p8.getByRole('button', { name: /再生中/ }).click(); // 自分で停止
+
+// 直っていなければ、ここでまだ「音声を再生」のまま数百ms〜数秒残ってしまう
+await p8.waitForTimeout(150);
+const alreadyPlayed = await p8.getByRole('button', { name: '再生済み' }).count();
+if (!alreadyPlayed) {
+  const stillOpen = await p8.getByRole('button', { name: '音声を再生' }).count();
+  throw new Error(
+    `停止から150ms経ってもまだ「再生済み」になっていない（「音声を再生」がまだ有効: ${!!stillOpen}）` +
+      '＝ その隙に押し直せば最初から聞き直せてしまう',
+  );
+}
+console.log('  ✓ 停止した直後（150ms以内）にはもう「再生済み」になっていて押せない');
+await p8ctx.close();
+
+/* ---- R4 高3：練習モードで途中で止めると、画面に案内が出る ----
+   練習モードは完走したときだけ plays を消費するので、途中で止めると
+   plays===0 のまま＝「0回 再生」「音声を再生」「スクリプト無効」「まず再生してみよう」と、
+   一度も再生していない状態と画面が完全に同じに見えていた。押しても何も
+   起きなかったように見えないよう、止めた直後に一言案内を出すようにした。 */
+console.log('練習モードのリスニング：途中で止めると案内が出る（高3）');
+const p9ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p9 = await p9ctx.newPage();
+activePage = p9;
+activePageLabel = 'p9(練習リスニング途中停止案内)';
+p9.on('console', (m) => m.type() === 'error' && errors.push(`[途中停止案内] ${m.text()}`));
+p9.on('pageerror', (e) => errors.push(`[途中停止案内] pageerror: ${e.message}`));
+
+await p9.goto(URL, { waitUntil: 'networkidle' });
+await p9.getByRole('button', { name: 'あとにする' }).click();
+await p9.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p9.locator('button', { hasText: 'リスニング' }).first().click();
+await p9.getByRole('button', { name: '音声を再生' }).waitFor({ timeout: 8000 });
+
+await p9.getByRole('button', { name: '音声を再生' }).click();
+await p9.getByRole('button', { name: /再生中/ }).waitFor({ timeout: 5000 });
+await p9.waitForTimeout(300); // 最後まで聞き終わる前に止める
+await p9.getByRole('button', { name: /再生中/ }).click();
+await p9.getByText('まだ1回に数えていない', { exact: false }).waitFor({ timeout: 5000 });
+console.log('  ✓ 途中で止めると「まだ1回に数えていない」旨の案内が出る');
+await p9.screenshot({ path: join(OUT, '41-listening-stopped-early.png') });
+await p9ctx.close();
 
 await browser.close();
 

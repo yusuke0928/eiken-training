@@ -2,10 +2,11 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"
-    />
+    <!-- 【R6】maximum-scale=1.0 / user-scalable=no は削除。ピンチ拡大を塞ぐこと自体が
+         アクセシビリティ上よくないうえ、面接イラストが画面に収まらない問題とも重なって
+         効いていた。誤タップからのダブルタップズームは、ボタン側の
+         touch-action: manipulation（tokens.css）で個別に防ぐ。 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#FBF9F6" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#17151C" media="(prefers-color-scheme: dark)" />
     <meta name="description" content="英検準2級の一次試験対策アプリ" />

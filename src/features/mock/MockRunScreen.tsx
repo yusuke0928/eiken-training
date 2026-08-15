@@ -268,7 +268,7 @@ export function MockRunScreen({
             type="button"
             onClick={() => setFlags(toggle(flags, key))}
             className={`flex min-h-[56px] items-center gap-1.5 rounded-2xl px-4 text-[13px] font-semibold ${
-              flagged ? 'bg-accent text-white' : 'bg-surface-2 text-ink-sub'
+              flagged ? 'bg-accent text-accent-ink' : 'bg-surface-2 text-ink-sub'
             }`}
           >
             <Bookmark size={16} filled={flagged} />
@@ -631,7 +631,7 @@ function Navigator({
                 onClick={() => onJump(i)}
                 className={`flex min-h-[44px] items-center justify-center rounded-xl text-[14px] font-bold ${
                   flagged
-                    ? 'bg-accent text-white'
+                    ? 'bg-accent text-accent-ink'
                     : done
                       ? 'bg-primary text-primary-ink'
                       : 'bg-surface-2 text-ink-sub'

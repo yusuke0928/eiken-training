@@ -283,12 +283,10 @@ export function HomeScreen({
         </button>
 
         <div className="rounded-3xl border border-dashed border-line p-4">
-          <p className="text-[13px] font-semibold text-ink-sub">これから増やすもの</p>
-          {/* 単語カードは目標の2,000語を超えて5,000語超まで増えたので、この欄からは卒業させた（P4） */}
-          <ul className="mt-2 flex flex-col gap-1 text-[13px] text-ink-faint">
-            <li>・面接の問題カード</li>
-          </ul>
-          <p className="mt-3 text-[12px] text-ink-faint">
+          {/* 単語カードは目標の2,000語を超えて5,000語超まで増えたので、この欄からは卒業させた（P4）。
+              面接シミュレーターも問題カード3枚で使えるようになったので、「これから増やすもの」欄自体を畳んだ。
+              実態と違う「まだ無い」表示を残さないため */}
+          <p className="text-[12px] text-ink-faint">
             二次試験は {formatJp(EXAM.secondStage)}（{EXAM.secondStageNote}）
           </p>
         </div>

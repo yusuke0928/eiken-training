@@ -172,10 +172,14 @@ export function MockRunScreen({
   const answered = q.kind === 'mcq' ? mcq[key] !== undefined : (writings[key] ?? '').trim().length > 0;
   const flagged = flags.has(key);
   const lowTime = phase === 'written' && remaining <= 10 * 60 * 1000;
-  // 「答えてある」と「語数が範囲内」は別の話（P4）。paper.written から数えるのは、
-  // フル模試だとリスニングを終えた時点で phase が listening に変わっており、
-  // その時点の list（=リスニングの問題）には英作文が含まれないため
-  const unanswered = unansweredCount(list, mcq, writings);
+  // 提出確認の未回答数は、いま表示中のフェーズ（list）ではなく模試全体
+  // （paper.written + paper.listening）から数える（R2-2）。list だけで数えると、
+  // フル模試でリスニングに進んだ時点で phase が listening に変わり、list が
+  // paper.listening になるため、筆記の空欄が確認ダイアログから消えてしまっていた。
+  // 筆記のみ／リスニングのみの模試では paper のもう片方が空配列なので、
+  // これまでと同じ結果になる
+  const unanswered = unansweredCount([...paper.written, ...paper.listening], mcq, writings);
+  // 「答えてある」と「語数が範囲内」は別の話（P4）。こちらは元々 paper.written から数えている
   const wordIssues = writingWordIssues(paper, writings);
   const wordIssueKeys = new Set(wordIssues.map((i) => i.key));
 

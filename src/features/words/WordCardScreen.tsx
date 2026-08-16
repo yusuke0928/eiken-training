@@ -50,13 +50,20 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
   // box2〜3は「まだ4回積んでいないが、1回もやり直していないわけでもない」＝おぼえかけの語
   const halfway = (cards ?? []).filter((c) => c.box >= 2 && c.box <= 3).length;
 
-  // 一次までに準2級の語を一周できるペース（P3）。辞書順のままだと76日かかる語数を
-  // 49日で回そうとしていた、という気づきが出発点。煽らず「このペースなら」の言い方にする
+  // 一次までに準2級の語を一周できるペース（P3→R2-1）。
+  // 母数は「まだ box>=4 に達していない語」にする。デッキ全体（1,511語固定）で割ると、
+  // 進めるほど「すでにおぼえた語」まで毎回数え直す前提になり、直前ほど実態から離れた
+  // 大きい数字が出る。試験10日前に見せるべきは「今からやる分」であって全体量ではない
   const daysToFirstStage = daysUntil(EXAM.firstStage);
-  const p2WordCount = wordsIn('p2').length;
-  const perDayToFinish = daysToFirstStage > 0 ? Math.ceil(p2WordCount / daysToFirstStage) : null;
-  const recommendedSize =
-    perDayToFinish !== null ? SIZES.find((s) => s >= perDayToFinish) : undefined;
+  const maxDeckSize = SIZES[SIZES.length - 1];
+  const p2Words = wordsIn('p2');
+  const p2Remaining = p2Words.filter((w) => (state.get(w.word)?.box ?? 0) < 4).length;
+  const perDayToFinish =
+    daysToFirstStage > 0 && p2Remaining > 0 ? Math.ceil(p2Remaining / daysToFirstStage) : null;
+  // 母数を減らしてもなお1日の最大サイズ（100枚）を超えるときは、届かない数字を
+  // 出すのをやめる（R2-1）。数字を正確に出すことより、次の一手を選べることを優先する
+  const paceReachable = perDayToFinish !== null && perDayToFinish <= maxDeckSize;
+  const recommendedSize = paceReachable ? SIZES.find((s) => s >= perDayToFinish!) : undefined;
 
   const say = useCallback(
     (w: Word) => {
@@ -159,6 +166,51 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
       setIndex(index + 1);
       setRevealed(false);
     }
+  }
+
+  /**
+   * ペースの案内（P3→R2-1）。「1日◯枚」が試験直前ほど巨大になり、いちばん不安な
+   * 時期にいちばん届かない数字だけが残る、という問題があった。届く数字のときだけ
+   * 枚数を出し、届かないときは「いま何をやるか」に言い換える。すでに全部おぼえて
+   * いるときは、そもそも枚数の話をしない
+   */
+  function paceHint() {
+    if (daysToFirstStage <= 0) return null;
+    if (p2Remaining === 0) {
+      return (
+        <p className="mt-3 rounded-2xl bg-correct-soft px-3 py-2.5 text-[12px] leading-relaxed text-correct">
+          準2級はもうおぼえきったよ。ここからは「今日のふり返り」で仕上げよう。
+        </p>
+      );
+    }
+    if (perDayToFinish === null) return null;
+    if (paceReachable) {
+      return (
+        <p className="mt-3 rounded-2xl bg-primary-soft px-3 py-2.5 text-[12px] leading-relaxed text-ink-sub">
+          一次まであと<span className="font-semibold text-primary">{daysToFirstStage}日</span>。
+          準2級の残り{p2Remaining}語を一周するには 1日
+          <span className="font-semibold text-primary">{perDayToFinish}枚</span>。
+          {recommendedSize && `${recommendedSize}枚ならこのペースで間に合うよ。`}
+        </p>
+      );
+    }
+    // 母数を減らしても届かないときは、枚数を突きつけず「今やること」に言い換える（R2-1）
+    return (
+      <p className="mt-3 rounded-2xl bg-primary-soft px-3 py-2.5 text-[12px] leading-relaxed text-ink-sub">
+        一次まであと<span className="font-semibold text-primary">{daysToFirstStage}日</span>。
+        ぜんぶ一周するより、
+        {dueCount > 0 ? 'まちがえた語のふり返りを先にやろう。' : '今日出せる分から確実に積み重ねよう。'}
+        {dueCount > 0 && (
+          <button
+            type="button"
+            onClick={() => start('due')}
+            className="mt-2 block text-[13px] font-semibold text-primary underline underline-offset-4"
+          >
+            今日のふり返り（{dueCount}語）を始める →
+          </button>
+        )}
+      </p>
+    );
   }
 
   /* ---------------- カード ---------------- */
@@ -403,14 +455,7 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
               </button>
             ))}
           </div>
-          {perDayToFinish !== null && (
-            <p className="mt-3 rounded-2xl bg-primary-soft px-3 py-2.5 text-[12px] leading-relaxed text-ink-sub">
-              一次まであと<span className="font-semibold text-primary">{daysToFirstStage}日</span>。
-              準2級の{p2WordCount}語を一周するには 1日
-              <span className="font-semibold text-primary">{perDayToFinish}枚</span>。
-              {recommendedSize && `${recommendedSize}枚ならこのペースで間に合うよ。`}
-            </p>
-          )}
+          {paceHint()}
           {supported && (
             <button
               type="button"

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { ITEM_BY_ID } from '../../content';
 import { PRE2, questionsToTarget, scoreView } from '../../engine/scoring';
 import { SECTION_LABEL, TAG_LABEL, type SectionId } from '../../types';
 import { Button, ProgressRing, Screen, TopBar } from '../../ui/primitives';
 import type { SessionResult } from '../practice/QuestionScreen';
+import { AnswerReviewScreen, countReviewable } from './AnswerReviewScreen';
 
 export function DiagnosticResultScreen({
   results,
@@ -11,6 +13,21 @@ export function DiagnosticResultScreen({
   results: SessionResult[];
   onDone: () => void;
 }) {
+  const [reviewOpen, setReviewOpen] = useState(false);
+
+  // 答え合わせを見ている間だけ、結果画面の代わりにこちらを出す。
+  // db には一切触れない＝見ただけで学習の記録は動かさない。
+  if (reviewOpen) {
+    return (
+      <AnswerReviewScreen
+        answers={results}
+        initialShowAll={countReviewable(results).wrong === 0}
+        onClose={() => setReviewOpen(false)}
+      />
+    );
+  }
+
+  const reviewCounts = countReviewable(results);
   const total = results.length;
   const correct = results.filter((r) => r.correct).length;
   const view = scoreView(correct, total);
@@ -57,6 +74,18 @@ export function DiagnosticResultScreen({
             </p>
           </div>
         </div>
+
+        {/* ここが「はじめて英検アプリに触れた人」の最初の答え合わせ導線になるので、
+            ふつうの Section の中に置かず、いちばん目立つ場所に単独で出す */}
+        {reviewCounts.total > 0 && (
+          <div className="mb-6">
+            <Button full onClick={() => setReviewOpen(true)}>
+              {reviewCounts.wrong > 0
+                ? `まちがえた${reviewCounts.wrong}問を見る`
+                : `${reviewCounts.total}問ぜんぶ見返す`}
+            </Button>
+          </div>
+        )}
 
         <Section title="大問ごとの手ごたえ">
           <ul className="flex flex-col gap-2">

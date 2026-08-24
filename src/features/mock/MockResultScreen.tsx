@@ -7,10 +7,12 @@ import { PRE2, estimateSkillCse } from '../../engine/scoring';
 import { totalScore } from '../../engine/writing';
 import { RUBRIC, SECTION_LABEL, WRITING_SPEC, type MockRecord, type SectionId } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
+import { AnswerReviewScreen, countReviewable } from '../result/AnswerReviewScreen';
 
 export function MockResultScreen({ mockId, onDone }: { mockId: number; onDone: () => void }) {
   const record = useLiveQuery(() => db.mocks.get(mockId), [mockId], undefined);
   const [openWriting, setOpenWriting] = useState<string | null>(null);
+  const [reviewOpen, setReviewOpen] = useState(false);
 
   if (!record) {
     return (
@@ -21,6 +23,19 @@ export function MockResultScreen({ mockId, onDone }: { mockId: number; onDone: (
     );
   }
 
+  // 答え合わせを見ている間だけ、結果画面の代わりにこちらを出す。
+  // db には一切触れない＝見ただけで学習の記録（attempts・SRS・DayLog）は動かさない。
+  if (reviewOpen) {
+    return (
+      <AnswerReviewScreen
+        answers={record.answers}
+        initialShowAll={countReviewable(record.answers).wrong === 0}
+        onClose={() => setReviewOpen(false)}
+      />
+    );
+  }
+
+  const reviewCounts = countReviewable(record.answers);
   const reading = split(record, (s) => s.startsWith('r-'));
   const listening = split(record, (s) => s.startsWith('l-'));
   const writingTotal = record.writings.reduce((sum, w) => sum + (w.total ?? 0), 0);
@@ -226,6 +241,15 @@ export function MockResultScreen({ mockId, onDone }: { mockId: number; onDone: (
         )}
 
         <Section title="まちがえた問題">
+          {reviewCounts.total > 0 && (
+            <div className="mb-3">
+              <Button full variant="soft" onClick={() => setReviewOpen(true)}>
+                {reviewCounts.wrong > 0
+                  ? `まちがえた${reviewCounts.wrong}問を見る`
+                  : `${reviewCounts.total}問ぜんぶ見返す`}
+              </Button>
+            </div>
+          )}
           {record.answers.filter((a) => !a.correct).length === 0 ? (
             <p className="rounded-2xl bg-correct-soft p-4 text-[14px] text-correct">全問正解。</p>
           ) : (

@@ -6,12 +6,26 @@ import { PRE2, estimateSkillCse } from '../../engine/scoring';
 import { ITEM_BY_ID, WRITING_BY_ID } from '../../content';
 import { SECTION_SKILL, WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
+import { countReviewable, type ReviewAnswer } from '../result/AnswerReviewScreen';
 import { StatTile, StudyHeatmap, TrendLine, type DayCell, type TrendPoint } from './charts';
 
 /** 20問ごとに区切って正答率を出す。日ごとだと解いた数が少なすぎて上下に暴れる */
 const BLOCK = 20;
 
-export function HistoryScreen({ onBack }: { onBack: () => void }) {
+export function HistoryScreen({
+  onBack,
+  onOpenDiagnosticReview,
+}: {
+  onBack: () => void;
+  /**
+   * 診断テストの答え合わせを開く（A2-2）。診断テストは結果画面を離れると
+   * 二度と開けず、17問ぶんの解説が永久に失われていた。db.attempts には
+   * mode:'diagnostic' の行が selected 付きで最初から残っているので、
+   * ここから作り直せる。診断の結果画面そのものを復活させるのは今回やらない
+   * （集計は kv.diagnostic にあるが、画面を復活させると導線が増えるため）。
+   */
+  onOpenDiagnosticReview: (answers: ReviewAnswer[], initialShowAll: boolean) => void;
+}) {
   const data = useLiveQuery(async () => {
     const [attempts, writings, mocks, streak] = await Promise.all([
       db.attempts.orderBy('answeredAt').toArray(),
@@ -38,6 +52,23 @@ export function HistoryScreen({ onBack }: { onBack: () => void }) {
   const { attempts, writings, mocks, streak } = data;
   const total = attempts.length;
   const correct = attempts.filter((a) => a.correct).length;
+
+  // 診断テストの答え合わせ（A2-2 / A2R-1）。診断テストを途中で閉じて再開すると、
+  // QuestionScreen が作り直されて sessionId が変わり、同じ1回の診断テストの解答が
+  // 2つの sessionId に分かれて記録される（中断復帰の仕組みそのものは触らない）。
+  // sessionId で絞ると中断前のぶんが落ちるので、mode で全件を使い、itemId で重複を
+  // 落とす（同じ問題が複数あれば answeredAt が新しいほうを残す）。診断テストは
+  // 一度終えると入口自体が出なくなるので「1回しか走らない」前提で絞ってよい。
+  // attempts は answeredAt 昇順で取得済みなので、Map に順に詰めれば後勝ちで最新が残る。
+  // db.attempts に触れるのは読むだけで、書き込みは一切足していない（絶対に守ることの1）。
+  const diagnosticByItem = new Map<string, ReviewAnswer>();
+  for (const a of attempts) {
+    if (a.mode === 'diagnostic') {
+      diagnosticByItem.set(a.itemId, { itemId: a.itemId, selected: a.selected, correct: a.correct });
+    }
+  }
+  const diagnosticAnswers: ReviewAnswer[] = [...diagnosticByItem.values()];
+  const diagnosticReviewCounts = countReviewable(diagnosticAnswers);
 
   /*
    * カレンダーは「その日に取り組んだ量」を出す。
@@ -144,6 +175,15 @@ export function HistoryScreen({ onBack }: { onBack: () => void }) {
             note={total === 0 ? undefined : `${correct} / ${total}問`}
           />
         </div>
+
+        {/* 診断テストが1件も無いとき（配布直後・まだ診断をやっていないとき）は出さない（A2-2） */}
+        {diagnosticAnswers.length > 0 && (
+          <Section title="診断テスト">
+            <Button full variant="soft" onClick={() => onOpenDiagnosticReview(diagnosticAnswers, diagnosticReviewCounts.wrong === 0)}>
+              診断テストの答え合わせを見る
+            </Button>
+          </Section>
+        )}
 
         <Section title="学習カレンダー">
           {cells.length === 0 ? (

@@ -193,7 +193,9 @@ export function AnswerReviewScreen({
                   {String.fromCharCode(65 + i)}
                 </span>
                 <span className="en flex-1 text-[15px] text-ink">{choice}</span>
-                {isCorrect && <Pill tone="correct">正解</Pill>}
+                {/* 自分で選んで当てたときも「選んだ」が分かるようにする（A2-5b）。
+                    正解だけだと、答えを見せられているのか自分で当てたのか画面から区別できなかった */}
+                {isCorrect && <Pill tone="correct">{isChosen ? '正解・選んだ' : '正解'}</Pill>}
                 {isChosen && !isCorrect && <Pill tone="again">選んだ</Pill>}
               </li>
             );

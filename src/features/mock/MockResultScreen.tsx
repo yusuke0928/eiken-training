@@ -7,12 +7,20 @@ import { PRE2, estimateSkillCse } from '../../engine/scoring';
 import { totalScore } from '../../engine/writing';
 import { RUBRIC, SECTION_LABEL, WRITING_SPEC, type MockRecord, type SectionId } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
-import { AnswerReviewScreen, countReviewable } from '../result/AnswerReviewScreen';
+import { countReviewable, type ReviewAnswer } from '../result/AnswerReviewScreen';
 
-export function MockResultScreen({ mockId, onDone }: { mockId: number; onDone: () => void }) {
+export function MockResultScreen({
+  mockId,
+  onDone,
+  onOpenReview,
+}: {
+  mockId: number;
+  onDone: () => void;
+  /** 答え合わせを開く。App 側でルートスタックに積む（A2-1：端末の「戻る」で結果画面に戻れるようにするため） */
+  onOpenReview: (answers: ReviewAnswer[], initialShowAll: boolean) => void;
+}) {
   const record = useLiveQuery(() => db.mocks.get(mockId), [mockId], undefined);
   const [openWriting, setOpenWriting] = useState<string | null>(null);
-  const [reviewOpen, setReviewOpen] = useState(false);
 
   if (!record) {
     return (
@@ -20,18 +28,6 @@ export function MockResultScreen({ mockId, onDone }: { mockId: number; onDone: (
         <TopBar title="模試の結果" onBack={onDone} />
         <p className="px-5 text-ink-faint">読み込み中…</p>
       </Screen>
-    );
-  }
-
-  // 答え合わせを見ている間だけ、結果画面の代わりにこちらを出す。
-  // db には一切触れない＝見ただけで学習の記録（attempts・SRS・DayLog）は動かさない。
-  if (reviewOpen) {
-    return (
-      <AnswerReviewScreen
-        answers={record.answers}
-        initialShowAll={countReviewable(record.answers).wrong === 0}
-        onClose={() => setReviewOpen(false)}
-      />
     );
   }
 
@@ -96,6 +92,19 @@ export function MockResultScreen({ mockId, onDone }: { mockId: number; onDone: (
               ? 'ライティングを自己採点すると、一次試験の合計スコアの目安が出ます。'
               : '一部だけを受けたので、合計スコアは出していません。'}
           </p>
+        )}
+
+        {/* 答え合わせの入口はスコアのすぐ下・診断テストと同じ濃さで1つだけ置く（A2-4）。
+            前は「まちがえた問題」セクション（大問バーの上）にしか無く、提出直後に
+            スクロール1画面以上先の薄いボタンでしか辿り着けなかった */}
+        {reviewCounts.total > 0 && (
+          <div className="mb-6">
+            <Button full onClick={() => onOpenReview(record.answers, reviewCounts.wrong === 0)}>
+              {reviewCounts.wrong > 0
+                ? `できなかった${reviewCounts.wrong}問を見る`
+                : `${reviewCounts.total}問ぜんぶ見返す`}
+            </Button>
+          </div>
         )}
 
         <Section title="技能べつ">
@@ -241,21 +250,15 @@ export function MockResultScreen({ mockId, onDone }: { mockId: number; onDone: (
         )}
 
         <Section title="まちがえた問題">
-          {reviewCounts.total > 0 && (
-            <div className="mb-3">
-              <Button full variant="soft" onClick={() => setReviewOpen(true)}>
-                {reviewCounts.wrong > 0
-                  ? `まちがえた${reviewCounts.wrong}問を見る`
-                  : `${reviewCounts.total}問ぜんぶ見返す`}
-              </Button>
-            </div>
-          )}
-          {record.answers.filter((a) => !a.correct).length === 0 ? (
+          {/* 入口はスコア直下の1つだけ（上に移した）。ここはボタンを持たず、内訳の説明だけにする（A2-4） */}
+          {reviewCounts.wrong === 0 ? (
             <p className="rounded-2xl bg-correct-soft p-4 text-[14px] text-correct">全問正解。</p>
           ) : (
             <>
+              {/* 「できなかった」＝まちがえた＋無回答。上のボタンと同じ reviewCounts.wrong を使い、
+                  無回答を「まちがえた」と言い切って数だけ食い違う事故を防ぐ（A2-5a） */}
               <p className="mb-3 rounded-2xl bg-surface-2 p-4 text-[13px] leading-relaxed text-ink-sub">
-                まちがえた{record.answers.filter((a) => !a.correct).length}問は復習ボックスに入れました。
+                できなかった{reviewCounts.wrong}問は復習ボックスに入れました。
                 ホームの「復習」から解き直せます。
               </p>
               <ul className="flex flex-col gap-2">

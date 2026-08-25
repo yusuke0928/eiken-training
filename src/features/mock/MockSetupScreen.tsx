@@ -106,9 +106,9 @@ export function MockSetupScreen({
         <section className="mb-6">
           <h2 className="mb-2 text-[12px] font-bold tracking-wide text-ink-faint">本番のルール</h2>
           <ul className="flex flex-col gap-2 rounded-3xl border border-line bg-surface p-5 text-[14px] leading-relaxed text-ink-sub">
-            <li>・解説は出ません。終わるまで答え合わせもできません</li>
+            <li>・試験中は解説が出ません。終わったら1問ずつ答え合わせができます</li>
             <li>・分からない問題は「あとで見直す」を付けて飛ばせます</li>
-            <li>・リスニングの放送は1回だけ。スクリプトも出ません</li>
+            <li>・リスニングの放送は本番と同じく1回だけ。終わったらスクリプトと訳を見られます</li>
             <li>・途中で閉じても、開き直せば同じところから続けられます</li>
             <li>・ライティングは自動採点しません。終わってから自分で採点します</li>
           </ul>

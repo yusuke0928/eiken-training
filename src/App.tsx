@@ -15,8 +15,8 @@ import { ITEM_BY_ID, WRITING_BY_ID } from './content';
 import { applyResult } from './engine/srs';
 import { bumpDayLog } from './data/db';
 import { countWords } from './engine/writing';
-import { buildPaper, type MockPaper, type MockScope } from './engine/mock';
-import { MockSetupScreen } from './features/mock/MockSetupScreen';
+import { buildPaper, scopeLabel, type MockPaper, type MockQuestion, type MockScope } from './engine/mock';
+import { MockSetupScreen, type MockEntryMode } from './features/mock/MockSetupScreen';
 import { MockRunScreen, type MockDraft } from './features/mock/MockRunScreen';
 import { MockResultScreen } from './features/mock/MockResultScreen';
 import {
@@ -59,9 +59,16 @@ type Route =
       mode: PracticeMode;
       title: string;
       resume?: { index: number; results: SessionResult[] };
+      /**
+       * 模試の「②1問ごとに答え合わせ」経由で始めたときだけ、元の範囲を持たせる（B-2）。
+       * 結果画面でライティング道場への導線（B-3）を出すかどうかの判定にだけ使う。
+       * 中断復帰（起動時の自動着地）はこの目印を持ち回さない
+       * （DESIGN-MOCK-PRACTICE-MODE.md：落ちないことを優先し、復帰後は導線が出なくてよい）。
+       */
+      mockScope?: MockScope;
     }
   | { k: 'diagResult'; results: SessionResult[] }
-  | { k: 'result'; results: SessionResult[] }
+  | { k: 'result'; results: SessionResult[]; mockScope?: MockScope }
   | { k: 'writingList' }
   | { k: 'writingEditor'; promptId: string }
   | { k: 'writingReview'; promptId: string; text: string }
@@ -320,7 +327,25 @@ export default function App() {
         return (
           <MockSetupScreen
             onBack={back}
-            onStart={(scope: MockScope) => push({ k: 'mockRun', paper: buildPaper(scope) })}
+            onStart={(scope: MockScope, entryMode: MockEntryMode) => {
+              // ①本番と同じ：MockRunScreen は1行も変えない（作業指示書 いちばん大事なこと）
+              if (entryMode === 'exam') {
+                push({ k: 'mockRun', paper: buildPaper(scope) });
+                return;
+              }
+              // ②1問ごとに答え合わせ：入口で行き先を変えるだけ。
+              // QuestionScreen に mode: 'training' で流す（App.tsx で 'training' を
+              // 特別扱いしている箇所は他になく、副作用が無いことを確認済み＝B-2）。
+              const ids = mockCheckEachIds(buildPaper(scope));
+              if (ids.length === 0) return;
+              push({
+                k: 'practice',
+                ids,
+                mode: 'training',
+                title: `模試 ${scopeLabel(scope)}（1問ずつ）`,
+                mockScope: scope,
+              });
+            }}
           onResume={(saved) => push({ k: 'mockRun', paper: saved.paper, restore: saved })}
             onOpenResult={(mockId) => push({ k: 'mockResult', mockId })}
           />
@@ -392,7 +417,10 @@ export default function App() {
                 await saveDiagnostic(results);
                 setStack([{ k: 'diagResult', results }]);
               } else {
-                setStack((s) => [...(s ?? []).slice(0, -1), { k: 'result', results }]);
+                setStack((s) => [
+                  ...(s ?? []).slice(0, -1),
+                  { k: 'result', results, mockScope: route.mockScope },
+                ]);
               }
               window.scrollTo({ top: 0 });
             }}
@@ -411,7 +439,21 @@ export default function App() {
       );
 
       case 'result':
-          return <SessionResultScreen results={route.results} onHome={goHome} onMore={startMini} />;
+          return (
+            <SessionResultScreen
+              results={route.results}
+              onHome={goHome}
+              onMore={startMini}
+              // ②（フル／筆記のみ）を終えたときだけライティング道場へ誘導する（B-3）。
+              // 「リスニングのみ」は英作文が構成に無いので出さない。
+              // ミニ演習・復習・リスニングの結果画面は mockScope が無いので今までどおり。
+              onWritingDojo={
+                route.mockScope && route.mockScope !== 'listening'
+                  ? () => push({ k: 'writingList' })
+                  : undefined
+              }
+            />
+          );
 
       case 'answerReview':
         return (
@@ -419,6 +461,18 @@ export default function App() {
       );
     }
   }
+}
+
+/**
+ * 模試②（1問ごとに答え合わせ）向けに、buildPaper(scope) の出題から
+ * 選択問題（mcq）の itemId だけを出題順のまま取り出す。
+ * 英作文（大問5・6）は QuestionScreen が扱えないので、ここで自然に落ちる
+ * （落ちた分の扱いは結果画面のライティング道場導線＝B-3 で補う）。
+ */
+function mockCheckEachIds(paper: MockPaper): string[] {
+  return [...paper.written, ...paper.listening]
+    .filter((q): q is Extract<MockQuestion, { kind: 'mcq' }> => q.kind === 'mcq')
+    .map((q) => q.itemId);
 }
 
 /**

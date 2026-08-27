@@ -81,6 +81,38 @@ async function readKv(target, keys, timeoutMs = 5000) {
   ]);
 }
 
+/**
+ * IndexedDB のテーブルの件数を数える（作業指示書 WORK-ORDER-MOCK-MODE-B の受け入れ条件10：
+ * 「答え合わせを見ても学習の記録の数字が1問も増えない」を実測で確かめるため）。
+ * readKv と同じ理由でタイムアウト保険を必ず添える。
+ */
+async function countRows(target, tableName, timeoutMs = 5000) {
+  const evalPromise = target.evaluate(async (tableName) => {
+    return await new Promise((resolve) => {
+      try {
+        const req = indexedDB.open('eiken-pre2');
+        req.onerror = () => resolve(-1);
+        req.onsuccess = () => {
+          try {
+            const tx = req.result.transaction(tableName, 'readonly');
+            const c = tx.objectStore(tableName).count();
+            c.onsuccess = () => resolve(c.result);
+            c.onerror = () => resolve(-1);
+          } catch (e) {
+            resolve(-1);
+          }
+        };
+      } catch (e) {
+        resolve(-1);
+      }
+    });
+  }, tableName);
+  return await Promise.race([
+    evalPromise,
+    new Promise((resolve) => setTimeout(() => resolve(-1), timeoutMs)),
+  ]);
+}
+
 async function dumpFailure(err) {
   if (failureDumped) return; // uncaughtException と unhandledRejection が二重発火することがある
   failureDumped = true;
@@ -379,6 +411,32 @@ for (let i = 0; i < criteria; i++) await fours.nth(i).click();
 await page.getByRole('button', { name: 'この採点で記録する' }).click();
 await page.waitForTimeout(500);
 await shot('27-mock-scored');
+
+/* ---- 回帰：A（提出後の答え合わせ）が壊れていないこと ----
+   WORK-ORDER-MOCK-MODE-B の受け入れ条件10。A（705586c/f934825）は
+   これまで smoke を1つも通っていなかったので、①のこの完走ぶんに便乗して確かめる。
+   「答え合わせを見ても学習の記録の数字が1問も増えない」は、AnswerReviewScreen が
+   db.attempts に一切触れない設計（コード上のコメントで宣言済み）の実測での裏取り。 */
+console.log('模試①：答え合わせ（A）の回帰');
+const attemptsBeforeReview = await countRows(page, 'attempts');
+await page.getByRole('button', { name: /(を見る|見返す)$/ }).click();
+// AnswerReviewScreen の TopBar 見出しは、まちがいがあれば「まちがえた問題」、
+// 全問正解なら「ぜんぶ見る」（AnswerReviewScreen.tsx）。「答え合わせ」は
+// 見返す問題が0件のときの空状態だけの見出しなので、ここでは使わない。
+await page
+  .getByRole('heading', { name: /^(まちがえた問題|ぜんぶ見る)$/ })
+  .waitFor({ timeout: 8000 });
+await shot('27b-mock-answer-review');
+const attemptsAfterReview = await countRows(page, 'attempts');
+if (attemptsAfterReview !== attemptsBeforeReview) {
+  throw new Error(
+    `答え合わせを見ただけで学習の記録（attempts）が ${attemptsBeforeReview} → ${attemptsAfterReview} に増えた（A の回帰）`,
+  );
+}
+console.log(`  ✓ 答え合わせを見ても attempts は増えない（${attemptsAfterReview}件のまま）`);
+await page.getByLabel('もどる').click();
+await page.getByText('技能べつ').waitFor({ timeout: 8000 });
+console.log('  ✓ 答え合わせから模試の結果画面に戻れる');
 
 // 2題目は未採点のまま。ホームから戻れること
 await page.goto(URL, { waitUntil: 'networkidle' });
@@ -1169,6 +1227,296 @@ if (halfwayAfterOld !== 1) {
 }
 console.log('  ✓ wordsの無い旧形式ファイルを読み込んでも、いまの単語カードの進捗は消えない');
 await p13ctx.close();
+
+/**
+ * ②「1問ごとに答え合わせ」の解説シートは isExamLike=false なので、
+ * 診断テストの answer() と違って毎回シートが開く（QuestionScreen.confirm() 参照）。
+ * 「決定」→ シートの「つぎへ／結果を見る」までをワンセットで押す。
+ */
+async function answerAndAdvanceCheckEach(p, nth = 0) {
+  const choices = p.locator('main ul > li > button');
+  const fallback = p.getByRole('button', { name: /音が出ないときは/ });
+  await choices.first().or(fallback).waitFor({ timeout: 8000 });
+  if (await fallback.count()) {
+    await fallback.click();
+    await choices.first().waitFor({ timeout: 8000 });
+  }
+  await choices.nth(nth % (await choices.count())).click();
+  await p.getByRole('button', { name: '決定' }).click();
+  const next = p.getByRole('button', { name: /^(つぎへ|結果を見る)$/ });
+  await next.waitFor({ timeout: 8000 });
+  await next.click();
+  // 最終問題だと、ここから結果画面に切り替わるまでのあいだ
+  // clearSessionBestEffort() の完了待ち（advance() 参照）が挟まる。
+  // その一瞬は「シートだけ閉じて同じ最終問題が選び直せる状態」で再描画されるため、
+  // 呼び出し側が count() だけで「まだ終わっていない」と判定すると、
+  // 消えかけの要素をクリックしてしまう（実測：element was detached from the DOM）。
+  // 判定の前にひと呼吸置いて、状態が落ち着いてから呼び出し側へ返す。
+  await p.waitForTimeout(400);
+}
+
+/* ==================================================================
+ * WORK-ORDER-MOCK-MODE-B：模試の入口でモードを選べるようにする。
+ * MockRunScreen・ListeningPanel・DBスキーマには一切触れず、入口
+ * （MockSetupScreen・App.tsx）だけで行き先を変える設計なので、
+ * その入口を実際に踏んで確かめる。
+ * ================================================================ */
+
+/* ---- B-1：モードの選択・ルール文言・所要時間表示、B-2：②へ流す、
+   B-3：②（筆記のみ）を終えるとライティング道場への導線が出る ----
+   受け入れ条件 2・4・6・7・8（フル／筆記のみ）・11。
+   リロードは挟まない一続きの流れにする（挟むと mockScope が失われ、
+   導線が出なくなるのが仕様＝下の p16 で別に確かめる）。 */
+console.log('模試②：1問ごとに答え合わせ（筆記のみ）');
+const p14ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p14 = await p14ctx.newPage();
+activePage = p14;
+activePageLabel = 'p14(模試②筆記のみ)';
+p14.on('console', (m) => m.type() === 'error' && errors.push(`[模試②筆記のみ] ${m.text()}`));
+p14.on('pageerror', (e) => errors.push(`[模試②筆記のみ] pageerror: ${e.message}`));
+
+await p14.goto(URL, { waitUntil: 'networkidle' });
+await p14.getByRole('button', { name: 'あとにする' }).click();
+await p14.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p14.locator('button', { hasText: '模擬テスト' }).first().click();
+await p14.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+
+// 既定は①本番と同じ（受け入れ条件2）
+const examModeBtn14 = p14.locator('button', { hasText: '① 本番と同じ' }).first();
+const checkEachBtn14 = p14.locator('button', { hasText: '② 1問ごとに答え合わせ' }).first();
+await examModeBtn14.waitFor({ timeout: 8000 });
+if ((await examModeBtn14.getAttribute('aria-pressed')) !== 'true') {
+  throw new Error('模擬テストの入口で既定のモードが「本番と同じ」になっていない（受け入れ条件2）');
+}
+if ((await checkEachBtn14.getAttribute('aria-pressed')) !== 'false') {
+  throw new Error('起動直後から②が選ばれた状態になっている（既定が①になっていない）');
+}
+console.log('  ✓ 模擬テストの入口でモードが選べ、既定は「本番と同じ」');
+// スクリーンショット直前に一呼吸置く。headless の screenshot() は、直前に
+// getAttribute/count 系の CDP 往復だけを重ねて呼ぶと、CSS transition の
+// 初回ペイント前の古いフレームを撮ってしまうことがある（実際に再現・記録した。
+// アプリ本体の DOM/挙動は正しく、見た目の撮り方だけの問題）。
+await p14.waitForTimeout(200);
+await p14.screenshot({ path: join(OUT, '47-mock-mode-select.png') });
+
+// ②へ切り替えると、ルールの文言と所要時間の表示が実態に合わせて変わること
+// （作業指示書 B-1「忘れやすいところ」1・2。2日前の報告の原因そのもの）
+await checkEachBtn14.click();
+if ((await checkEachBtn14.getAttribute('aria-pressed')) !== 'true') {
+  throw new Error('② 1問ごとに答え合わせ を選んでも aria-pressed が切り替わらない');
+}
+await p14.getByText('答えた瞬間に解説が出ます').waitFor({ timeout: 5000 });
+if (await p14.getByText('試験中は解説が出ません').count()) {
+  throw new Error('②を選んでも①のルール文言（試験中は解説が出ません）が残っている＝また事実と食い違う');
+}
+if (await p14.getByText('放送は本番と同じく1回だけ').count()) {
+  throw new Error('②を選んでも①のリスニングのルール文言（放送は1回だけ）が残っている＝また事実と食い違う');
+}
+await p14.getByText('時間を計らない').first().waitFor({ timeout: 5000 });
+if (await p14.getByText('約105分').count()) {
+  throw new Error('②を選んでも所要時間が「約105分」のまま＝時間を計らないのに嘘の表示が残っている');
+}
+console.log('  ✓ ②を選ぶとルール文言・所要時間の表示が実態に合わせて変わる（受け入れ条件6・7）');
+
+// 作業指示書 B-R-1：②を選んでも①向けの文言（帯・範囲カードの説明）が
+// 残っていないこと。まさにこれが今回の一連の発端だったため、退行させない。
+if (await p14.getByText('本番でいちばん効くのは、時間配分。').count()) {
+  throw new Error('②を選んでも上部の帯が①向け（時間配分）のまま＝「ここで確かめよう」が成立しない（B-R-1 (a)）');
+}
+if (await p14.getByText('本番と同じ。筆記80分＋リスニング約25分').count()) {
+  throw new Error('②を選んでも「フル」の説明が①向け（本番と同じ）のまま＝バッジ「時間を計らない」と食い違う（B-R-1 (b)）');
+}
+if (await p14.getByText('ライティング2題まで含む').count()) {
+  throw new Error('②を選んでも「筆記のみ」の説明が①向け（ライティング2題まで含む）のまま＝②は英作文が出ない（B-R-1 (b)）');
+}
+console.log('  ✓ ②を選ぶと上部の帯・範囲カードの説明も①向けの文言を残さない（B-R-1）');
+// スクリーンショット直前に一呼吸置く。headless の screenshot() は、直前に
+// getAttribute/count 系の CDP 往復だけを重ねて呼ぶと、CSS transition の
+// 初回ペイント前の古いフレームを撮ってしまうことがある（実際に再現・記録した。
+// アプリ本体の DOM/挙動は正しく、見た目の撮り方だけの問題）。
+await p14.waitForTimeout(200);
+await p14.screenshot({ path: join(OUT, '48-mock-mode-checkEach.png') });
+
+// 範囲「筆記のみ」で始める → いまの QuestionScreen（練習と同じ画面）にそのまま入る（B-2）
+await p14.locator('button', { hasText: '筆記のみ' }).first().click();
+const p14Choices = p14.locator('main ul > li > button');
+const p14Fallback = p14.getByRole('button', { name: /音が出ないときは/ });
+await p14Choices.first().or(p14Fallback).waitFor({ timeout: 10000 });
+if (await p14Fallback.count()) {
+  await p14Fallback.click();
+  await p14Choices.first().waitFor({ timeout: 8000 });
+}
+const header14 = await p14.locator('header').innerText();
+if (!header14.includes('1 / 29')) {
+  throw new Error(`模試②筆記のみの出題数が29問になっていない（ヘッダー: ${header14}）`);
+}
+await p14Choices.first().click();
+await p14.getByRole('button', { name: '決定' }).click();
+await p14.getByText('こたえ').waitFor({ timeout: 8000 });
+console.log('  ✓ ②は答えた瞬間に解説が出る（受け入れ条件4）');
+// スクリーンショット直前に一呼吸置く。headless の screenshot() は、直前に
+// getAttribute/count 系の CDP 往復だけを重ねて呼ぶと、CSS transition の
+// 初回ペイント前の古いフレームを撮ってしまうことがある（実際に再現・記録した。
+// アプリ本体の DOM/挙動は正しく、見た目の撮り方だけの問題）。
+await p14.waitForTimeout(200);
+await p14.screenshot({ path: join(OUT, '49-mock-checkEach-explanation.png') });
+await p14.getByRole('button', { name: /^(つぎへ|結果を見る)$/ }).click();
+
+// 残りの28問を最後まで流す（このあいだリロードは挟まない）。
+// 判定に必要な「ひと呼吸」は answerAndAdvanceCheckEach 側に持たせてある。
+for (let i = 1; i < 40; i++) {
+  if (await p14.getByText('おつかれさま').count()) break;
+  await answerAndAdvanceCheckEach(p14, i);
+}
+await p14.getByText('おつかれさま').waitFor({ timeout: 10000 });
+
+// 英作文（大問5・6）は QuestionScreen が扱えないので構成から落ちる。
+// 落としっぱなしにせず、ライティング道場への導線を出す（B-3、受け入れ条件8）
+await p14.getByRole('button', { name: 'ライティング道場へ' }).waitFor({ timeout: 5000 });
+console.log('  ✓ ②（筆記のみ）を終えるとライティング道場への導線が出る（受け入れ条件8）');
+// スクリーンショット直前に一呼吸置く。headless の screenshot() は、直前に
+// getAttribute/count 系の CDP 往復だけを重ねて呼ぶと、CSS transition の
+// 初回ペイント前の古いフレームを撮ってしまうことがある（実際に再現・記録した。
+// アプリ本体の DOM/挙動は正しく、見た目の撮り方だけの問題）。
+await p14.waitForTimeout(200);
+await p14.screenshot({ path: join(OUT, '50-mock-checkEach-result-cta.png') });
+await p14.getByRole('button', { name: 'ライティング道場へ' }).click();
+await p14.getByText('たった2題で600点').first().waitFor({ timeout: 8000 });
+console.log('  ✓ 導線から実際にライティング道場へ移動できる');
+await p14ctx.close();
+
+/* ---- B-1・B-2：②のリスニングは聞き直せる。②（リスニングのみ）には
+   ライティング道場の導線を出さない ----
+   受け入れ条件5・8（リスニングのみ）。①の「放送1回」（examLike）と違い、
+   自分で止めても「まだ1回に数えていない」扱いのまま＝聞き直せることを、
+   ListeningPanel の中身には触れず実際の再生で確かめる。 */
+console.log('模試②：1問ごとに答え合わせ（リスニングのみ）');
+const p15ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p15 = await p15ctx.newPage();
+activePage = p15;
+activePageLabel = 'p15(模試②リスニングのみ)';
+p15.on('console', (m) => m.type() === 'error' && errors.push(`[模試②リスニングのみ] ${m.text()}`));
+p15.on('pageerror', (e) => errors.push(`[模試②リスニングのみ] pageerror: ${e.message}`));
+
+await p15.goto(URL, { waitUntil: 'networkidle' });
+await p15.getByRole('button', { name: 'あとにする' }).click();
+await p15.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p15.locator('button', { hasText: '模擬テスト' }).first().click();
+await p15.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+await p15.locator('button', { hasText: '② 1問ごとに答え合わせ' }).first().click();
+await p15.locator('button', { hasText: 'リスニングのみ' }).first().click();
+await p15.getByRole('button', { name: '音声を再生' }).waitFor({ timeout: 10000 });
+// スクリーンショット直前に一呼吸置く。headless の screenshot() は、直前に
+// getAttribute/count 系の CDP 往復だけを重ねて呼ぶと、CSS transition の
+// 初回ペイント前の古いフレームを撮ってしまうことがある（実際に再現・記録した。
+// アプリ本体の DOM/挙動は正しく、見た目の撮り方だけの問題）。
+await p15.waitForTimeout(200);
+await p15.screenshot({ path: join(OUT, '51-mock-checkEach-listening.png') });
+
+await p15.getByRole('button', { name: '音声を再生' }).click();
+await p15.getByRole('button', { name: /再生中/ }).waitFor({ timeout: 5000 });
+await p15.waitForTimeout(300); // 最後まで聞き終わる前に自分で止める
+await p15.getByRole('button', { name: /再生中/ }).click();
+// examLike なら「再生済み」で押せなくなるところ、②は「まだ1回に数えていない」＝聞き直せる
+await p15.getByText('まだ1回に数えていない', { exact: false }).waitFor({ timeout: 5000 });
+await p15.getByRole('button', { name: '音声を再生' }).waitFor({ timeout: 5000 });
+console.log('  ✓ ②のリスニングは自分で止めても「再生済み」にならず、聞き直せる（受け入れ条件5）');
+// スクリーンショット直前に一呼吸置く。headless の screenshot() は、直前に
+// getAttribute/count 系の CDP 往復だけを重ねて呼ぶと、CSS transition の
+// 初回ペイント前の古いフレームを撮ってしまうことがある（実際に再現・記録した。
+// アプリ本体の DOM/挙動は正しく、見た目の撮り方だけの問題）。
+await p15.waitForTimeout(200);
+await p15.screenshot({ path: join(OUT, '52-mock-checkEach-listening-replayable.png') });
+
+// 音が出ない環境向けのフォールバックで文字に切り替え、1問だけ答えて解説を確認する
+await p15.getByRole('button', { name: /音が出ないときは/ }).click();
+const p15Choices = p15.locator('main ul > li > button');
+await p15Choices.first().waitFor({ timeout: 8000 });
+await p15Choices.first().click();
+await p15.getByRole('button', { name: '決定' }).click();
+await p15.getByText('こたえ').waitFor({ timeout: 8000 });
+console.log('  ✓ リスニングのみでも①と違い答えた瞬間に解説が出る（受け入れ条件4）');
+
+// 解説シートは画面全体を覆う overlay（z-40）なので、開いたままだと
+// ヘッダーの「もどる」がクリックを受け取れない。まず閉じてから「もどる」を押す
+// （既存のミニ演習・リスニングの中断フローと同じ手順）。
+await p15.getByRole('button', { name: /^(つぎへ|結果を見る)$/ }).click();
+
+// ここでやめる → 英作文が構成に無いので、ライティング道場の導線は出ない（受け入れ条件8）
+await p15.getByLabel('もどる').click();
+await p15.getByRole('button', { name: 'やめる' }).click();
+await p15.getByText('おつかれさま').waitFor({ timeout: 8000 });
+if (await p15.getByText('ライティング道場へ').count()) {
+  throw new Error('②（リスニングのみ）なのにライティング道場への導線が出ている（英作文が構成に無いのに出すのは誤り）');
+}
+console.log('  ✓ ②（リスニングのみ）にはライティング道場の導線が出ない（受け入れ条件8）');
+// スクリーンショット直前に一呼吸置く。headless の screenshot() は、直前に
+// getAttribute/count 系の CDP 往復だけを重ねて呼ぶと、CSS transition の
+// 初回ペイント前の古いフレームを撮ってしまうことがある（実際に再現・記録した。
+// アプリ本体の DOM/挙動は正しく、見た目の撮り方だけの問題）。
+await p15.waitForTimeout(200);
+await p15.screenshot({ path: join(OUT, '53-mock-checkEach-listening-result-no-cta.png') });
+await p15ctx.close();
+
+/* ---- 回帰：模試②の途中でアプリを開き直しても普通に復帰する ----
+   受け入れ条件9。mockScope はルートスタック上だけの目印で SavedSession
+   （kv の session、data/db.ts）の形には足していないので、途中でリロード
+   すると次の起動はこの目印を持たない普通の 'practice' セッションとして
+   復帰する。目印を持たない古い SavedSession でも落ちないこと（＝この
+   マーカーが無い前提のコード）を、実際にリロードして確かめる。
+   このとき導線が出なくなるのは設計で許容された仕様
+   （DESIGN-MOCK-PRACTICE-MODE.md：「落ちないことのほうが大事」）であって
+   バグではないので、ここでは「出ない」ことをそのまま確認する。 */
+console.log('模試②：途中でリロードしても復帰する（回帰・受け入れ条件9）');
+const p16ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const p16 = await p16ctx.newPage();
+activePage = p16;
+activePageLabel = 'p16(模試②中断復帰)';
+p16.on('console', (m) => m.type() === 'error' && errors.push(`[模試②中断復帰] ${m.text()}`));
+p16.on('pageerror', (e) => errors.push(`[模試②中断復帰] pageerror: ${e.message}`));
+
+await p16.goto(URL, { waitUntil: 'networkidle' });
+await p16.getByRole('button', { name: 'あとにする' }).click();
+await p16.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await p16.locator('button', { hasText: '模擬テスト' }).first().click();
+await p16.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+await p16.locator('button', { hasText: '② 1問ごとに答え合わせ' }).first().click();
+await p16.locator('button', { hasText: '筆記のみ' }).first().click();
+const p16Choices = p16.locator('main ul > li > button');
+await p16Choices.first().waitFor({ timeout: 10000 });
+await p16Choices.first().click();
+await p16.getByRole('button', { name: '決定' }).click();
+await p16.getByText('こたえ').waitFor({ timeout: 8000 });
+await p16.getByRole('button', { name: /^(つぎへ|結果を見る)$/ }).click();
+
+// セッションの保存（QuestionScreen の useEffect）は fire-and-forget で、
+// クリックの直後にリロードすると index が進む前の古い状態のまま IndexedDB に
+// 書き込まれる／書き込みがまだ終わっていないことがある（模試のライティング
+// 下書き復帰テストと同じ理由。上の「模試が途中から復帰」参照）。
+await p16.waitForTimeout(400);
+await p16.reload({ waitUntil: 'networkidle' });
+const header16 = await p16.locator('header').innerText();
+if (!header16.includes('2 / 29')) {
+  throw new Error(`模試②の中断復帰で2問目に戻っていない（ヘッダー: ${header16}）＝受け入れ条件9の再発`);
+}
+console.log('  ✓ 模試②の途中でリロードしても2問目から普通に復帰する（目印を持たないSavedSessionでも落ちない）');
+// スクリーンショット直前に一呼吸置く。headless の screenshot() は、直前に
+// getAttribute/count 系の CDP 往復だけを重ねて呼ぶと、CSS transition の
+// 初回ペイント前の古いフレームを撮ってしまうことがある（実際に再現・記録した。
+// アプリ本体の DOM/挙動は正しく、見た目の撮り方だけの問題）。
+await p16.waitForTimeout(200);
+await p16.screenshot({ path: join(OUT, '54-mock-checkEach-resumed.png') });
+
+await p16.getByLabel('もどる').click();
+await p16.getByRole('button', { name: 'やめる' }).click();
+await p16.getByText('おつかれさま').waitFor({ timeout: 8000 });
+if (await p16.getByText('ライティング道場へ').count()) {
+  throw new Error(
+    '復帰後のセッションなのにライティング道場への導線が出ている（mockScopeが復帰後も残っているなら要再検討）',
+  );
+}
+console.log('  ✓ 復帰後は導線が出ない（mockScopeを持ち回さない設計どおり。落ちないことを優先）');
+await p16ctx.close();
 
 await browser.close();
 

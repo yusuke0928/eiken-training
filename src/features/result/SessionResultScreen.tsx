@@ -1,16 +1,24 @@
 import { ITEM_BY_ID } from '../../content';
 import { TAG_LABEL } from '../../types';
 import { Button, ProgressRing, Screen, TopBar } from '../../ui/primitives';
+import { ChevronRight } from '../../ui/icons';
 import type { SessionResult } from '../practice/QuestionScreen';
 
 export function SessionResultScreen({
   results,
   onHome,
   onMore,
+  onWritingDojo,
 }: {
   results: SessionResult[];
   onHome: () => void;
   onMore: () => void;
+  /**
+   * 模試「②1問ごとに答え合わせ」を終えたときだけ渡される（App.tsx から）。
+   * このスクリーンはミニ演習・復習・リスニングの結果とも共用なので、
+   * 渡されたときだけ出す任意 props にする（作業指示書 B-3 の「渡し方の注意」）。
+   */
+  onWritingDojo?: () => void;
 }) {
   const total = results.length;
   const correct = results.filter((r) => r.correct).length;
@@ -57,6 +65,25 @@ export function SessionResultScreen({
                   </span>
                 ))}
             </div>
+          </section>
+        )}
+
+        {onWritingDojo && (
+          <section className="rounded-3xl bg-primary-soft p-5">
+            <p className="text-[14px] font-bold leading-relaxed text-ink">
+              本番ならこのあと英作文2題（Eメール・意見論述）。
+            </p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-ink-sub">
+              このモードでは選択問題だけ。書く力もライティング道場で確かめておこう。
+            </p>
+            <button
+              type="button"
+              onClick={onWritingDojo}
+              className="mt-3 flex min-h-[44px] items-center gap-1 text-[14px] font-bold text-primary"
+            >
+              ライティング道場へ
+              <ChevronRight size={16} />
+            </button>
           </section>
         )}
       </main>

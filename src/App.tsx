@@ -32,7 +32,12 @@ import { WelcomeScreen } from './features/onboarding/WelcomeScreen';
 import { TrainingScreen } from './features/training/TrainingScreen';
 import { QuestionScreen, type SessionResult } from './features/practice/QuestionScreen';
 import { DiagnosticResultScreen } from './features/result/DiagnosticResultScreen';
-import { AnswerReviewScreen, type ReviewAnswer } from './features/result/AnswerReviewScreen';
+import {
+  AnswerReviewScreen,
+  DIAGNOSTIC_REVIEW_ID,
+  mockReviewId,
+  type ReviewAnswer,
+} from './features/result/AnswerReviewScreen';
 import { SessionResultScreen } from './features/result/SessionResultScreen';
 import { WritingListScreen } from './features/writing/WritingListScreen';
 import { WritingEditorScreen } from './features/writing/WritingEditorScreen';
@@ -83,7 +88,14 @@ type Route =
   // 以前は各結果画面の中の reviewOpen というローカル state で出し入れしていたが、
   // スタックに乗っていないため popstate（端末の「戻る」）がこれを知らず、
   // 結果画面ごと吹き飛ばしてしまっていた（docs/WORK-ORDER-REVIEW-A2.md A2-1）。
-  | { k: 'answerReview'; title: string; answers: ReviewAnswer[]; initialShowAll?: boolean };
+  | {
+      k: 'answerReview';
+      title: string;
+      answers: ReviewAnswer[];
+      initialShowAll?: boolean;
+      /** 「どこまで見たか」を kv に持つときの単位。模試の回・診断テストで別に持つ（C-1） */
+      reviewId: string;
+    };
 
 const MINI_SIZE = 8;
 /** 中断した演習に自動で戻す時間の上限 */
@@ -312,7 +324,13 @@ export default function App() {
           <HistoryScreen
             onBack={back}
             onOpenDiagnosticReview={(answers, initialShowAll) =>
-              push({ k: 'answerReview', title: '診断テストの答え合わせ', answers, initialShowAll })
+              push({
+                k: 'answerReview',
+                title: '診断テストの答え合わせ',
+                answers,
+                initialShowAll,
+                reviewId: DIAGNOSTIC_REVIEW_ID,
+              })
             }
           />
       );
@@ -371,7 +389,13 @@ export default function App() {
             mockId={route.mockId}
             onDone={goHome}
             onOpenReview={(answers, initialShowAll) =>
-              push({ k: 'answerReview', title: '模試の答え合わせ', answers, initialShowAll })
+              push({
+                k: 'answerReview',
+                title: '模試の答え合わせ',
+                answers,
+                initialShowAll,
+                reviewId: mockReviewId(route.mockId),
+              })
             }
           />
       );
@@ -433,7 +457,13 @@ export default function App() {
             results={route.results}
             onDone={goHome}
             onOpenReview={(answers, initialShowAll) =>
-              push({ k: 'answerReview', title: '診断テストの答え合わせ', answers, initialShowAll })
+              push({
+                k: 'answerReview',
+                title: '診断テストの答え合わせ',
+                answers,
+                initialShowAll,
+                reviewId: DIAGNOSTIC_REVIEW_ID,
+              })
             }
           />
       );
@@ -457,7 +487,19 @@ export default function App() {
 
       case 'answerReview':
         return (
-          <AnswerReviewScreen answers={route.answers} initialShowAll={route.initialShowAll} onClose={back} />
+          <AnswerReviewScreen
+            answers={route.answers}
+            initialShowAll={route.initialShowAll}
+            reviewId={route.reviewId}
+            onClose={back}
+            // 見終わったあとの「復習する」（C-2）。復習ボックスの中身は普段の「復習」と同じ
+            // buildReviewQueue で作る＝「この模試の間違いだけ」に絞ってはいない
+            // （指示書：「この模試の間違いをもう一度」とは書かないこと、と同じ理由）。
+            onReview={async () => {
+              const ids = await buildReviewQueue(20);
+              if (ids.length > 0) push({ k: 'practice', ids, mode: 'review', title: '復習' });
+            }}
+          />
       );
     }
   }

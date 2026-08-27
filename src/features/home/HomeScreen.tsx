@@ -262,8 +262,11 @@ export function HomeScreen({
           </span>
           <span className="flex-1">
             <span className="block text-[16px] font-bold text-ink">模擬テスト</span>
+            {/* ①本番と同じ通しだけでなく②1問ごとの答え合わせも選べることを、
+                カードの高さを増やさず1行で伝える（C-3）。①/②の記号は
+                MockSetupScreen の表記と揃え、そちらを見たときに繋がるようにする */}
             <span className="block text-[13px] text-ink-sub">
-              本番と同じ構成で通す。筆記80分＋リスニング
+              ①本番と同じ通しも、②1問ごとの答え合わせも
             </span>
           </span>
           <span className="text-ink-faint">

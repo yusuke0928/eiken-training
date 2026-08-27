@@ -1,12 +1,17 @@
 import { useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, loadStreak } from '../../data/db';
+import { db, loadReviewPos, loadStreak } from '../../data/db';
 import { downloadBackup, restoreBackup } from '../../data/backup';
 import { PRE2, estimateSkillCse } from '../../engine/scoring';
 import { ITEM_BY_ID, WRITING_BY_ID } from '../../content';
 import { SECTION_SKILL, WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
-import { countReviewable, type ReviewAnswer } from '../result/AnswerReviewScreen';
+import {
+  countReviewable,
+  DIAGNOSTIC_REVIEW_ID,
+  reviewResumeNote,
+  type ReviewAnswer,
+} from '../result/AnswerReviewScreen';
 import { StatTile, StudyHeatmap, TrendLine, type DayCell, type TrendPoint } from './charts';
 
 /** 20問ごとに区切って正答率を出す。日ごとだと解いた数が少なすぎて上下に暴れる */
@@ -36,6 +41,9 @@ export function HistoryScreen({
     return { attempts, writings, mocks, streak };
   }, [], undefined);
 
+  // 続きがあれば「何問目から」を添える（C-1）。data の読み込みより前に呼ぶ
+  // （Hooks のルール：早期 return の後ろに条件つきで置けないため）
+  const savedPos = useLiveQuery(() => loadReviewPos(DIAGNOSTIC_REVIEW_ID), [], undefined);
   const [msg, setMsg] = useState<string | null>(null);
   const [confirmRestore, setConfirmRestore] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -69,6 +77,7 @@ export function HistoryScreen({
   }
   const diagnosticAnswers: ReviewAnswer[] = [...diagnosticByItem.values()];
   const diagnosticReviewCounts = countReviewable(diagnosticAnswers);
+  const resumeNote = reviewResumeNote(savedPos);
 
   /*
    * カレンダーは「その日に取り組んだ量」を出す。
@@ -179,6 +188,10 @@ export function HistoryScreen({
         {/* 診断テストが1件も無いとき（配布直後・まだ診断をやっていないとき）は出さない（A2-2） */}
         {diagnosticAnswers.length > 0 && (
           <Section title="診断テスト">
+            {/* ボタンの文言自体は変えない。「続きがある」は別行のキャプションで伝える（C-1） */}
+            {resumeNote && (
+              <p className="mb-1.5 text-[12px] font-medium text-ink-faint">つづきから：{resumeNote}</p>
+            )}
             <Button full variant="soft" onClick={() => onOpenDiagnosticReview(diagnosticAnswers, diagnosticReviewCounts.wrong === 0)}>
               診断テストの答え合わせを見る
             </Button>

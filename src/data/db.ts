@@ -93,6 +93,23 @@ export const saveDraft = (promptId: string, text: string) => setKv(draftKey(prom
 export const loadDraft = (promptId: string) => getKv<string>(draftKey(promptId));
 export const clearDraft = (promptId: string) => db.kv.delete(draftKey(promptId));
 
+/* ---------------- 答え合わせ：どこまで見たか ----------------
+   模試・診断テストの答え合わせは28問51画面ぶんあり、途中でやめると次に開いたとき
+   1問目に戻っていた（WORK-ORDER-REVIEW-C C-1）。「どこまで見たか」は学習の記録
+   ではないので、attempts/srs/days には一切触れず kv だけに持つ。
+   reviewId は答え合わせ1回ぶんの単位（模試なら `mock-${mockId}`、診断テストは
+   固定文字列）で、回をまたいで混ざらないようにする。索引は要らないので
+   version() は増やさない。 */
+export interface ReviewPos {
+  pos: number;
+  /** 「ぜんぶ見る」でいたか「まちがえたものだけ」でいたか。並びが違うので一緒に覚える */
+  showAll: boolean;
+}
+const reviewPosKey = (reviewId: string) => `reviewPos:${reviewId}`;
+export const saveReviewPos = (reviewId: string, v: ReviewPos) => setKv(reviewPosKey(reviewId), v);
+export const loadReviewPos = (reviewId: string) => getKv<ReviewPos>(reviewPosKey(reviewId));
+export const clearReviewPos = (reviewId: string) => db.kv.delete(reviewPosKey(reviewId));
+
 /* ---------------- 日付ユーティリティ ---------------- */
 
 /** 端末のローカル日付を YYYY-MM-DD で返す（UTC にすると日本時間の夜が前日扱いになる） */

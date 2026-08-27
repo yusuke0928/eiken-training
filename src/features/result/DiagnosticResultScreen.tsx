@@ -1,9 +1,11 @@
+import { useLiveQuery } from 'dexie-react-hooks';
 import { ITEM_BY_ID } from '../../content';
+import { loadReviewPos } from '../../data/db';
 import { PRE2, questionsToTarget, scoreView } from '../../engine/scoring';
 import { SECTION_LABEL, TAG_LABEL, type SectionId } from '../../types';
 import { Button, ProgressRing, Screen, TopBar } from '../../ui/primitives';
 import type { SessionResult } from '../practice/QuestionScreen';
-import { countReviewable, type ReviewAnswer } from './AnswerReviewScreen';
+import { countReviewable, DIAGNOSTIC_REVIEW_ID, reviewResumeNote, type ReviewAnswer } from './AnswerReviewScreen';
 
 export function DiagnosticResultScreen({
   results,
@@ -16,6 +18,9 @@ export function DiagnosticResultScreen({
   onOpenReview: (answers: ReviewAnswer[], initialShowAll: boolean) => void;
 }) {
   const reviewCounts = countReviewable(results);
+  // 続きがあれば「何問目から」を添える（C-1）。診断テストは1人1回なので固定の reviewId でよい
+  const savedPos = useLiveQuery(() => loadReviewPos(DIAGNOSTIC_REVIEW_ID), [], undefined);
+  const resumeNote = reviewResumeNote(savedPos);
   const total = results.length;
   const correct = results.filter((r) => r.correct).length;
   const view = scoreView(correct, total);
@@ -67,6 +72,10 @@ export function DiagnosticResultScreen({
             ふつうの Section の中に置かず、いちばん目立つ場所に単独で出す */}
         {reviewCounts.total > 0 && (
           <div className="mb-6">
+            {/* ボタンの文言自体は変えない。「続きがある」は別行のキャプションで伝える（C-1） */}
+            {resumeNote && (
+              <p className="mb-1.5 text-[12px] font-medium text-ink-faint">つづきから：{resumeNote}</p>
+            )}
             <Button full onClick={() => onOpenReview(results, reviewCounts.wrong === 0)}>
               {reviewCounts.wrong > 0
                 ? `まちがえた${reviewCounts.wrong}問を見る`

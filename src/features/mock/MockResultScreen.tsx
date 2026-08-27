@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ITEM_BY_ID, WRITING_BY_ID } from '../../content';
-import { db } from '../../data/db';
+import { db, loadReviewPos } from '../../data/db';
 import { formatClock, WRITING_TARGET_MS, WRITTEN_MS } from '../../engine/mock';
 import { PRE2, estimateSkillCse } from '../../engine/scoring';
 import { totalScore } from '../../engine/writing';
 import { RUBRIC, SECTION_LABEL, WRITING_SPEC, type MockRecord, type SectionId } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
-import { countReviewable, type ReviewAnswer } from '../result/AnswerReviewScreen';
+import { countReviewable, mockReviewId, reviewResumeNote, type ReviewAnswer } from '../result/AnswerReviewScreen';
 
 export function MockResultScreen({
   mockId,
@@ -21,6 +21,10 @@ export function MockResultScreen({
 }) {
   const record = useLiveQuery(() => db.mocks.get(mockId), [mockId], undefined);
   const [openWriting, setOpenWriting] = useState<string | null>(null);
+  // 「できなかった28問を見る」だけだと、また最初からだと思われる。
+  // 続きがあれば「何問目から」を添える（C-1）
+  const savedPos = useLiveQuery(() => loadReviewPos(mockReviewId(mockId)), [mockId], undefined);
+  const resumeNote = reviewResumeNote(savedPos);
 
   if (!record) {
     return (
@@ -99,6 +103,11 @@ export function MockResultScreen({
             スクロール1画面以上先の薄いボタンでしか辿り着けなかった */}
         {reviewCounts.total > 0 && (
           <div className="mb-6">
+            {/* ボタンの文言自体は変えない（末尾一致で探す既存のテストがある）。
+                「続きがある」はボタンに添えた別行のキャプションで伝える（C-1） */}
+            {resumeNote && (
+              <p className="mb-1.5 text-[12px] font-medium text-ink-faint">つづきから：{resumeNote}</p>
+            )}
             <Button full onClick={() => onOpenReview(record.answers, reviewCounts.wrong === 0)}>
               {reviewCounts.wrong > 0
                 ? `できなかった${reviewCounts.wrong}問を見る`

@@ -238,6 +238,48 @@ await page.getByText('今日のミッション').waitFor();
 // 埋め込み漏れ（文字列がそのまま出る等）を拾えるよう正規表現で確かめる
 await page.getByText(/Ver\.\d+\.\d+（\d{4}-\d{2}-\d{2}）/).waitFor({ timeout: 5000 });
 await shot('05-home');
+
+/* ---- WORK-ORDER-REVIEW-C 受け入れ条件5：診断テストの答え合わせも続きから見られる ----
+   診断結果画面ではなく、学習の記録（History）から開く経路（HistoryScreen.onOpenDiagnosticReview）
+   で確かめる。指示書の言う「診断テストの答え合わせでも続きから見られる（学習の記録から開くもの）」
+   がまさにこの経路。reviewId は模試とは別の固定文字列（DIAGNOSTIC_REVIEW_ID）で持つので、
+   模試側の位置と混ざらないことも、あとの模試の答え合わせテストと合わせて裏取りできる。 */
+console.log('答え合わせ：診断テストも続きから見られる（C-1・受け入れ条件5）');
+await page.locator('button', { hasText: '学習の記録' }).first().click();
+const diagReviewBtn = page.getByRole('button', { name: '診断テストの答え合わせを見る' });
+await diagReviewBtn.waitFor({ timeout: 8000 });
+await diagReviewBtn.click();
+await page.getByRole('heading', { name: /^(まちがえた問題|ぜんぶ見る)$/ }).waitFor({ timeout: 8000 });
+for (let i = 0; i < 3; i++) {
+  await page.getByRole('button', { name: '次へ' }).click();
+  await page.waitForTimeout(80);
+}
+const diagPos1 = (await page.locator('header').getByText(/^\d+ \/ \d+$/).textContent()).trim();
+console.log(`  診断テストの答え合わせ：${diagPos1} まで見て離れる`);
+await page.getByLabel('もどる').click(); // answerReview → history
+await page.getByRole('heading', { name: '学習の記録' }).waitFor({ timeout: 5000 });
+await page.getByLabel('もどる').click(); // history → home
+await page.getByText('今日のミッション').waitFor({ timeout: 5000 });
+
+// 「開き直す」を実機に近い形で確かめるため、実際にページごとリロードする
+await page.goto(URL, { waitUntil: 'networkidle' });
+await page.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await page.locator('button', { hasText: '学習の記録' }).first().click();
+// 入口ボタンの文言自体は変えず、続きがあることは別行のキャプションで伝える（C-1）
+await page.getByText(`つづきから：${diagPos1.split(' / ')[0]}問目から`).waitFor({ timeout: 5000 });
+await page.getByRole('button', { name: '診断テストの答え合わせを見る' }).click();
+await page.getByRole('heading', { name: /^(まちがえた問題|ぜんぶ見る)$/ }).waitFor({ timeout: 8000 });
+const diagPos2 = (await page.locator('header').getByText(/^\d+ \/ \d+$/).textContent()).trim();
+if (diagPos2 !== diagPos1) {
+  throw new Error(`診断テストの答え合わせが続きから始まらない（${diagPos1} で離れたのに、開き直すと ${diagPos2}）`);
+}
+console.log(`  ✓ 診断テストの答え合わせも続きから見られる（${diagPos2}）`);
+await shot('04b-diagnostic-review-resumed');
+await page.getByLabel('もどる').click(); // answerReview → history
+await page.getByRole('heading', { name: '学習の記録' }).waitFor({ timeout: 5000 });
+await page.getByLabel('もどる').click(); // history → home
+await page.getByText('今日のミッション').waitFor({ timeout: 5000 });
+
 // 診断テストは今日のミッションに数えないので、直後は「はじめる」表示になる
 await page.locator('button').filter({ hasText: /つづきから|はじめる/ }).first().click();
 await shot('06-question');
@@ -440,6 +482,97 @@ console.log(`  ✓ 答え合わせを見ても attempts は増えない（${atte
 await page.getByLabel('もどる').click();
 await page.getByText('技能べつ').waitFor({ timeout: 8000 });
 console.log('  ✓ 答え合わせから模試の結果画面に戻れる');
+
+/* ---- WORK-ORDER-REVIEW-C：答え合わせは続きから見られる／見終わると終わりが分かる ----
+   受け入れ条件2（6問目まで見て離れ、開き直すと6問目から）・3（はじめから見直す手段）・
+   7（見終わると終わりが分かり、復習を始められる）・8（とじるで結果画面に戻る道）・
+   10（attempts/srs/days が1つも増えない）を、この①の完走ぶんに便乗して確かめる。
+   受け入れ条件4（回をまたいで混ざらない）は独立の検証（下記コメント参照）で
+   実測済みなので、smoke では「同じ回で正しく続きから見られる」ところまでを見る。 */
+console.log('模試①：答え合わせは続きから見られる／見終わると終わりが分かる（C-1・C-2）');
+const srsBeforeReview = await countRows(page, 'srs');
+const daysBeforeReview = await countRows(page, 'days');
+
+// もう一度開く（この時点の保存位置は0のまま。前段の27bで開いただけでは進んでいない）
+await page.getByRole('button', { name: /(を見る|見返す)$/ }).click();
+await page.getByRole('heading', { name: /^(まちがえた問題|ぜんぶ見る)$/ }).waitFor({ timeout: 8000 });
+for (let i = 0; i < 5; i++) {
+  await page.getByRole('button', { name: '次へ' }).click();
+  await page.waitForTimeout(80);
+}
+const mockPos1 = (await page.locator('header').getByText(/^\d+ \/ \d+$/).textContent()).trim();
+console.log(`  ${mockPos1} まで見て離れる`);
+await page.getByLabel('もどる').click();
+await page.getByText('技能べつ').waitFor({ timeout: 8000 });
+
+// 「開き直す」を実機に近い形で確かめるため、実際にページごとリロードする。
+// ホームの「まだ採点していないライティングがあるよ」から、同じ模試の結果画面に戻れる
+await page.goto(URL, { waitUntil: 'networkidle' });
+await page.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await page.getByText('まだ採点していないライティングがあるよ').waitFor({ timeout: 8000 });
+await page.getByText('まだ採点していないライティングがあるよ').click();
+await page.getByText('技能べつ').waitFor({ timeout: 8000 });
+// 入口ボタンの文言自体は変えず、続きがあることは別行のキャプションで伝える（C-1）
+await page.getByText(`つづきから：${mockPos1.split(' / ')[0]}問目から`).waitFor({ timeout: 5000 });
+await page.getByRole('button', { name: /(を見る|見返す)$/ }).click();
+await page.getByRole('heading', { name: /^(まちがえた問題|ぜんぶ見る)$/ }).waitFor({ timeout: 8000 });
+const mockPos2 = (await page.locator('header').getByText(/^\d+ \/ \d+$/).textContent()).trim();
+if (mockPos2 !== mockPos1) {
+  throw new Error(`模試の答え合わせが続きから始まらない（${mockPos1} で離れたのに、開き直すと ${mockPos2}）`);
+}
+console.log(`  ✓ 開き直すと ${mockPos2} から始まる（受け入れ条件2）`);
+await shot('27c-mock-answer-review-resumed');
+
+// はじめから見直す手段がある（受け入れ条件3）
+await page.getByRole('button', { name: 'はじめから見る' }).click();
+const mockPosRestart = (await page.locator('header').getByText(/^\d+ \/ \d+$/).textContent()).trim();
+if (!mockPosRestart.startsWith('1 / ')) {
+  throw new Error(`「はじめから見る」を押しても1問目に戻らない（${mockPosRestart}）`);
+}
+console.log('  ✓ 「はじめから見る」で1問目に戻れる（受け入れ条件3）');
+
+// 最後まで見終わる（残りの問題数は答えた数によって変わるので上限を決め打ちしない）
+for (let i = 0; i < 40; i++) {
+  if (await page.getByRole('button', { name: '見終える' }).count()) break;
+  await page.getByRole('button', { name: '次へ' }).click();
+  await page.waitForTimeout(30);
+}
+await page.getByRole('button', { name: '見終える' }).click();
+await page.getByText('見終わったよ').waitFor({ timeout: 5000 });
+// reviewBacklog() の読み込み（非同期・attempts/srs は変えない読み取り専用）を待つ
+await page.waitForTimeout(400);
+await page.getByRole('button', { name: '復習する' }).waitFor({ timeout: 5000 });
+console.log('  ✓ 見終わると「復習する」が出る（受け入れ条件7。この回はすべて誤答／無回答なので必ず出る）');
+await shot('27d-mock-answer-review-done');
+await page.getByRole('button', { name: 'とじる' }).click();
+await page.getByText('技能べつ').waitFor({ timeout: 8000 });
+console.log('  ✓ 「とじる」で結果画面に戻れる（受け入れ条件8）');
+
+// 見終わったあとに開き直すと、続きではなく最初から（もう続きの位置ではないため）
+await page.getByRole('button', { name: /(を見る|見返す)$/ }).click();
+await page.getByRole('heading', { name: /^(まちがえた問題|ぜんぶ見る)$/ }).waitFor({ timeout: 8000 });
+const mockPosAfterDone = (await page.locator('header').getByText(/^\d+ \/ \d+$/).textContent()).trim();
+if (!mockPosAfterDone.startsWith('1 / ')) {
+  throw new Error(`見終わったあとに開き直しても1問目から始まらない（${mockPosAfterDone}）`);
+}
+console.log('  ✓ 見終わったあとに開き直すと1問目から（続きの対象ではなくなる）');
+await page.getByLabel('もどる').click();
+await page.getByText('技能べつ').waitFor({ timeout: 8000 });
+
+// 受け入れ条件10：ここまでの一連の操作（開く・進める・はじめから・見終わる・復習するボタンの表示確認）で
+// 学習の記録（attempts・srs・days）が1件も増えていないこと
+const attemptsAfterAll = await countRows(page, 'attempts');
+const srsAfterAll = await countRows(page, 'srs');
+const daysAfterAll = await countRows(page, 'days');
+if (attemptsAfterAll !== attemptsAfterReview || srsAfterAll !== srsBeforeReview || daysAfterAll !== daysBeforeReview) {
+  throw new Error(
+    `答え合わせの一連の操作で学習の記録が動いた（受け入れ条件10の再発）：` +
+      `attempts ${attemptsAfterReview}→${attemptsAfterAll} / srs ${srsBeforeReview}→${srsAfterAll} / days ${daysBeforeReview}→${daysAfterAll}`,
+  );
+}
+console.log(
+  `  ✓ 答え合わせの一連の操作でも attempts/srs/days は動かない（${attemptsAfterAll}/${srsAfterAll}/${daysAfterAll}件のまま。受け入れ条件10）`,
+);
 
 // 2題目は未採点のまま。ホームから戻れること
 await page.goto(URL, { waitUntil: 'networkidle' });

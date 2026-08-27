@@ -234,6 +234,9 @@ await shot('04-diagnostic-result');
 console.log('ホーム → ミニ演習 → 解説');
 await page.getByRole('button', { name: 'はじめる' }).click();
 await page.getByText('今日のミッション').waitFor();
+// ホーム最下部のバージョン表記（Ver.X.Y（YYYY-MM-DD））。番号だけの退行や
+// 埋め込み漏れ（文字列がそのまま出る等）を拾えるよう正規表現で確かめる
+await page.getByText(/Ver\.\d+\.\d+（\d{4}-\d{2}-\d{2}）/).waitFor({ timeout: 5000 });
 await shot('05-home');
 // 診断テストは今日のミッションに数えないので、直後は「はじめる」表示になる
 await page.locator('button').filter({ hasText: /つづきから|はじめる/ }).first().click();
@@ -755,6 +758,9 @@ await p5.getByText('音のチェック').waitFor({ timeout: 8000 });
 // 【R6】診断結果が実態とずれていた指摘を受け、見出しの文言をやさしく書き直した
 await p5.getByText('読み上げ（リスニングで使う音声）').waitFor({ timeout: 5000 });
 await p5.getByText('録音（面接で使うマイク）').waitFor({ timeout: 5000 });
+// #check にもバージョン表記と、古いときにどうするか（開き直す）の1行があること
+await p5.getByText(/Ver\.\d+\.\d+（\d{4}-\d{2}-\d{2}）/).waitFor({ timeout: 5000 });
+await p5.getByText('開き直してください').waitFor({ timeout: 5000 });
 await p5.screenshot({ path: join(OUT, '37-check.png') });
 console.log('  ✓ 最初から #check 付きで開いた場合は開ける');
 

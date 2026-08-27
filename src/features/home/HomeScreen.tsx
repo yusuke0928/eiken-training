@@ -3,6 +3,7 @@ import { db, loadStreak, todayCount, todayWordCount } from '../../data/db';
 import { loadReport } from '../../engine/selector';
 import { reviewBacklog } from '../../engine/srs';
 import { scoreView } from '../../engine/scoring';
+import { APP_VERSION_LABEL } from '../../lib/appVersion';
 import { EXAM, applyReminder, formatJp, nextMilestone } from '../../lib/exam';
 import { TAG_LABEL } from '../../types';
 import { Button, Card, ProgressRing, Screen } from '../../ui/primitives';
@@ -298,6 +299,9 @@ export function HomeScreen({
             二次試験は {formatJp(EXAM.secondStage)}（{EXAM.secondStageNote}）
           </p>
         </div>
+
+        {/* 本人が自分で最新版か確かめられる場所。囲みや色は付けず、控えめに1行だけ */}
+        <p className="mt-3 text-[11px] text-ink-faint">{APP_VERSION_LABEL}</p>
       </main>
     </Screen>
   );

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { APP_VERSION_LABEL } from '../../lib/appVersion';
 import {
   englishVoices,
   onSpeechUnlockChange,
@@ -299,6 +300,14 @@ export function CheckScreen() {
     <Screen>
       <TopBar title="音のチェック（開発用）" onBack={backToApp} hideHome />
       <main className="flex-1 px-5 pb-16 pt-2">
+        {/* 不具合報告のスクショに必ず写る位置に出す。古そうに見えたときの対処も添える
+            （サービスワーカーが自動更新するので、実際にやることは開き直すだけ） */}
+        <div className="mb-4 rounded-2xl bg-surface-2 px-4 py-3">
+          <p className="text-[13px] font-semibold text-ink">{APP_VERSION_LABEL}</p>
+          <p className="mt-1 text-[12px] text-ink-sub">
+            古そうに見えたら、アプリをいったん閉じてから開き直してください。自動で最新になります。
+          </p>
+        </div>
         <p className="mb-5 rounded-2xl bg-surface-2 p-4 text-[13px] leading-relaxed text-ink">
           下の2つのボタンを押して、画面のスクリーンショットを撮ってください。
           <br />

@@ -1,1 +1,437 @@
-[]
+[
+  {
+    "id": "g2-v-001",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "The company plans to ( ) its new smartphone in Asia next spring.",
+    "choices": [
+      "launch",
+      "inspect",
+      "combine",
+      "rescue"
+    ],
+    "answerIndex": 0,
+    "translation": "その会社は来年の春、アジアで新しいスマートフォンを発売する予定だ。",
+    "explanation": "launch a product = 製品を発売する。新製品をはじめて市場に出すときの定番の動詞。",
+    "distractorNotes": [
+      "launch = 発売する、打ち上げる",
+      "inspect = 検査する。発売の意味にはならない",
+      "combine = 組み合わせる",
+      "rescue = 救出する"
+    ]
+  },
+  {
+    "id": "g2-v-002",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "Because of the heavy rain, the school festival was ( ) until the following week.",
+    "choices": [
+      "postponed",
+      "dismissed",
+      "invented",
+      "observed"
+    ],
+    "answerIndex": 0,
+    "translation": "大雨のため、学園祭は翌週まで延期された。",
+    "explanation": "postpone = 延期する。until the following week（翌週まで）と合う。受け身 was postponed の形で覚える。",
+    "distractorNotes": [
+      "postpone = 延期する",
+      "dismiss = 解散させる、解雇する",
+      "invent = 発明する",
+      "observe = 観察する、守る"
+    ]
+  },
+  {
+    "id": "g2-v-003",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 2,
+    "stem": "Ken is a very ( ) boy. He always notices when his friends are feeling sad.",
+    "choices": [
+      "considerate",
+      "stubborn",
+      "ordinary",
+      "ambitious"
+    ],
+    "answerIndex": 0,
+    "translation": "ケンはとても思いやりのある少年だ。友達が悲しんでいるといつも気づく。",
+    "explanation": "文の後半「友達が悲しんでいるのに気づく」が根拠。considerate = 思いやりのある。",
+    "distractorNotes": [
+      "considerate = 思いやりのある",
+      "stubborn = 頑固な。気づかいとは逆の性格",
+      "ordinary = ふつうの",
+      "ambitious = 野心のある"
+    ]
+  },
+  {
+    "id": "g2-v-004",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb",
+      "vocab:collocation"
+    ],
+    "difficulty": 3,
+    "stem": "The sign asks visitors to ( ) from taking photos inside the museum.",
+    "choices": [
+      "refrain",
+      "escape",
+      "separate",
+      "distinguish"
+    ],
+    "answerIndex": 0,
+    "translation": "その掲示は、来館者に館内での写真撮影を控えるよう求めている。",
+    "explanation": "refrain from ~ing = ~するのを控える。from とセットで覚える。",
+    "distractorNotes": [
+      "refrain from ~ing = ~を控える",
+      "escape from は「~から逃げる」で、後ろに動名詞は続かない",
+      "separate from は「~から分ける」",
+      "distinguish A from B は「AとBを区別する」"
+    ]
+  },
+  {
+    "id": "g2-v-005",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "The city is trying to ( ) the number of cars downtown by building new bus lines.",
+    "choices": [
+      "reduce",
+      "acquire",
+      "measure",
+      "exchange"
+    ],
+    "answerIndex": 0,
+    "translation": "市は新しいバス路線を作って、中心部の車の数を減らそうとしている。",
+    "explanation": "バス路線を作る目的は車を減らすこと。reduce = 減らす。",
+    "distractorNotes": [
+      "reduce = 減らす",
+      "acquire = 手に入れる",
+      "measure = 測る",
+      "exchange = 交換する"
+    ]
+  },
+  {
+    "id": "g2-v-006",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 2,
+    "stem": "I was so ( ) at the news that I couldn't say a word.",
+    "choices": [
+      "astonished",
+      "accurate",
+      "ordinary",
+      "familiar"
+    ],
+    "answerIndex": 0,
+    "translation": "その知らせにとても驚いて、私は一言も言えなかった。",
+    "explanation": "so ~ that I couldn't say a word（言葉が出ないほど~）から、強い感情だと分かる。astonished at ~ = ~に驚いて。",
+    "distractorNotes": [
+      "astonished = 驚いた",
+      "accurate = 正確な",
+      "ordinary = ふつうの",
+      "familiar = 見慣れた、よく知っている"
+    ]
+  },
+  {
+    "id": "g2-v-007",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb",
+      "grammar:perfect"
+    ],
+    "difficulty": 2,
+    "stem": "Mary's English has ( ) a lot since she started studying abroad.",
+    "choices": [
+      "improved",
+      "divided",
+      "expressed",
+      "replaced"
+    ],
+    "answerIndex": 0,
+    "translation": "留学を始めてから、メアリーの英語はとても上達した。",
+    "explanation": "has + 過去分詞 の現在完了。主語が English なので improve（上達する）が自然。",
+    "distractorNotes": [
+      "improve = 上達する、よくなる",
+      "divide = 分ける",
+      "express = 表現する",
+      "replace = 取りかえる"
+    ]
+  },
+  {
+    "id": "g2-v-008",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "The scientist gave a ( ) explanation of how the new machine works, and everyone understood it.",
+    "choices": [
+      "thorough",
+      "temporary",
+      "fragile",
+      "jealous"
+    ],
+    "answerIndex": 0,
+    "translation": "その科学者は新しい機械のしくみを徹底的に説明し、全員が理解した。",
+    "explanation": "全員が理解できた説明、という流れ。thorough = 徹底した、くわしい。",
+    "distractorNotes": [
+      "thorough = 徹底した",
+      "temporary = 一時的な",
+      "fragile = こわれやすい",
+      "jealous = うらやむ、嫉妬した"
+    ]
+  },
+  {
+    "id": "g2-v-009",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb",
+      "grammar:infinitive"
+    ],
+    "difficulty": 3,
+    "stem": "Tom ( ) his teacher to give him more time to finish the report.",
+    "choices": [
+      "persuaded",
+      "insisted",
+      "suggested",
+      "hoped"
+    ],
+    "answerIndex": 0,
+    "translation": "トムは先生を説得して、レポートを仕上げる時間をもう少しもらった。",
+    "explanation": "〈動詞 + 人 + to ~〉の形がとれるのは persuade だけ。insist / suggest / hope は目的語のあとに to ~ を直接置けない。",
+    "distractorNotes": [
+      "persuade 人 to ~ = 人を説得して~させる",
+      "insist は insist that ~ の形をとる",
+      "suggest も suggest that ~ / ~ing の形をとる",
+      "hope は hope to ~ / hope that ~ の形。人を目的語にとらない"
+    ]
+  },
+  {
+    "id": "g2-v-010",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 2,
+    "stem": "Many tourists visit this old town to see its beautiful ( ) buildings.",
+    "choices": [
+      "historic",
+      "medical",
+      "equal",
+      "guilty"
+    ],
+    "answerIndex": 0,
+    "translation": "多くの観光客が、美しい歴史的建造物を見にこの古い町を訪れる。",
+    "explanation": "old town の buildings を修飾する語。historic = 歴史的に重要な。",
+    "distractorNotes": [
+      "historic = 歴史的な",
+      "medical = 医療の",
+      "equal = 等しい",
+      "guilty = 有罪の"
+    ]
+  },
+  {
+    "id": "g2-v-011",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 2,
+    "stem": "The movie was so ( ) that many people in the theater began to cry.",
+    "choices": [
+      "touching",
+      "rapid",
+      "similar",
+      "fortunate"
+    ],
+    "answerIndex": 0,
+    "translation": "その映画はとても感動的で、劇場の多くの人が泣き出した。",
+    "explanation": "観客が泣いた、が根拠。touching = 感動的な。",
+    "distractorNotes": [
+      "touching = 感動させる",
+      "rapid = 速い",
+      "similar = 似ている",
+      "fortunate = 幸運な"
+    ]
+  },
+  {
+    "id": "g2-v-012",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "If you ( ) any problems with the computer, please call this number.",
+    "choices": [
+      "encounter",
+      "ignore",
+      "satisfy",
+      "contribute"
+    ],
+    "answerIndex": 0,
+    "translation": "コンピューターで何か問題が起きたら、この番号に電話してください。",
+    "explanation": "encounter a problem = 問題に出くわす。後ろに目的語を直接とる他動詞。contribute は contribute to ~ の形で目的語を直接とらない。",
+    "distractorNotes": [
+      "encounter = (困難などに)出くわす",
+      "ignore = 無視する。問題が起きたら電話、の流れに合わない",
+      "satisfy = 満足させる",
+      "contribute は contribute to ~ の形"
+    ]
+  },
+  {
+    "id": "g2-v-013",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "She was ( ) to find her lost passport in the pocket of her coat.",
+    "choices": [
+      "relieved",
+      "annoyed",
+      "ashamed",
+      "hesitant"
+    ],
+    "answerIndex": 0,
+    "translation": "彼女はなくしたパスポートがコートのポケットから出てきて、ほっとした。",
+    "explanation": "なくした大事な物が見つかったときの気持ち。relieved = ほっとした。",
+    "distractorNotes": [
+      "relieved = ほっとした",
+      "annoyed = いらいらした",
+      "ashamed = 恥ずかしい",
+      "hesitant = ためらっている"
+    ]
+  },
+  {
+    "id": "g2-v-014",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 2,
+    "stem": "The tennis match was called ( ) because the court was too wet to play on.",
+    "choices": [
+      "off",
+      "on",
+      "up",
+      "out"
+    ],
+    "answerIndex": 0,
+    "translation": "コートがぬれすぎて使えなかったので、テニスの試合は中止になった。",
+    "explanation": "call off = 中止する。cancel とほぼ同じ意味の句動詞で、受け身 was called off の形でよく出る。",
+    "distractorNotes": [
+      "call off = 中止する",
+      "call on は「訪ねる、頼む」",
+      "call up は「電話をかける」",
+      "call out は「大声で呼ぶ」"
+    ]
+  },
+  {
+    "id": "g2-v-015",
+    "section": "r-vocab",
+    "tags": [
+      "grammar:conjunction"
+    ],
+    "difficulty": 2,
+    "stem": "( ) the heavy traffic, we arrived at the airport on time.",
+    "choices": [
+      "Despite",
+      "Although",
+      "While",
+      "Unless"
+    ],
+    "answerIndex": 0,
+    "translation": "ひどい渋滞にもかかわらず、私たちは空港に時間どおり着いた。",
+    "explanation": "後ろが名詞句 the heavy traffic なので、前置詞の despite（~にもかかわらず）が入る。Although / While / Unless は後ろに〈主語＋動詞〉が必要。",
+    "distractorNotes": [
+      "despite + 名詞 = ~にもかかわらず",
+      "although は接続詞。後ろに文が来る",
+      "while も接続詞。後ろに文が来る",
+      "unless は「~でない限り」。意味も合わない"
+    ]
+  },
+  {
+    "id": "g2-v-016",
+    "section": "r-vocab",
+    "tags": [
+      "grammar:relative"
+    ],
+    "difficulty": 2,
+    "stem": "Paul is the only member of the team ( ) can speak Spanish.",
+    "choices": [
+      "who",
+      "whom",
+      "whose",
+      "which"
+    ],
+    "answerIndex": 0,
+    "translation": "ポールは、チームでスペイン語を話せる唯一のメンバーだ。",
+    "explanation": "空所の後ろに主語がなく動詞 can speak が続くので、人を表す主格の関係代名詞 who を使う。",
+    "distractorNotes": [
+      "who = 人・主格",
+      "whom は目的格。後ろに主語が必要",
+      "whose は所有格。後ろに名詞が来る",
+      "which は人には使わない"
+    ]
+  },
+  {
+    "id": "g2-v-017",
+    "section": "r-vocab",
+    "tags": [
+      "grammar:tense"
+    ],
+    "difficulty": 3,
+    "stem": "I wish I ( ) more time to spend with my family.",
+    "choices": [
+      "had",
+      "have",
+      "having",
+      "would have"
+    ],
+    "answerIndex": 0,
+    "translation": "家族と過ごす時間がもっとあればいいのに。",
+    "explanation": "I wish + 過去形 = 現在の事実と反対の願望（仮定法）。時間がないのが事実なので had を使う。",
+    "distractorNotes": [
+      "I wish + 過去形 = ~ならいいのに",
+      "have は現在形。仮定法にならない",
+      "having は動詞の形として成り立たない",
+      "would have は I wish のあとでは使わない"
+    ]
+  },
+  {
+    "id": "g2-v-018",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "Our teacher asked us to ( ) a good idea for the school festival.",
+    "choices": [
+      "come up with",
+      "put up with",
+      "catch up with",
+      "run out of"
+    ],
+    "answerIndex": 0,
+    "translation": "先生は私たちに、学園祭のよいアイデアを思いつくよう求めた。",
+    "explanation": "come up with ~ = ~を思いつく。アイデアや案が目的語のときの定番。",
+    "distractorNotes": [
+      "come up with = 思いつく",
+      "put up with = ~をがまんする",
+      "catch up with = ~に追いつく",
+      "run out of = ~を使い果たす"
+    ]
+  }
+]

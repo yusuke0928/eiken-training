@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { bumpDayLog, bumpWordLog, db, localDateKey } from '../../data/db';
 import { BOX_INTERVAL_DAYS } from '../../engine/srs';
 import { GRADE, GRADE_META } from '../../grade';
-import { EXAM, daysUntil } from '../../lib/exam';
+import { daysUntil, examDateOf, examWordOf } from '../../lib/exam';
 import { useSpeech } from '../../lib/speech';
 import {
   LEVEL_LABEL,
@@ -53,11 +53,11 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
 
   // 一次までに、いまの級の語を一周できるペース（P3→R2-1）。
   // 母数は級に合わせる（準2級=p2 1,511語／2級=g2 1,486語）。
-  // 日付はまだ準2級の一次のまま（2級の日程は G2-02 で級ごとの表になるまで正しくない）。
+  // 日付は級の本番の日（準2級は一次、2級は S-CBT の試験日。lib/exam.ts の examDateOf）。
   // 母数は「まだ box>=4 に達していない語」にする。デッキ全体（1,511語固定）で割ると、
   // 進めるほど「すでにおぼえた語」まで毎回数え直す前提になり、直前ほど実態から離れた
   // 大きい数字が出る。試験10日前に見せるべきは「今からやる分」であって全体量ではない
-  const daysToFirstStage = daysUntil(EXAM.firstStage);
+  const daysToFirstStage = daysUntil(examDateOf(GRADE));
   const maxDeckSize = SIZES[SIZES.length - 1];
   const gradeWords = wordsIn(GRADE_META[GRADE].wordLevel);
   const gradeRemaining = gradeWords.filter((w) => (state.get(w.word)?.box ?? 0) < 4).length;
@@ -190,7 +190,7 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
     if (paceReachable) {
       return (
         <p className="mt-3 rounded-2xl bg-primary-soft px-3 py-2.5 text-[12px] leading-relaxed text-ink-sub">
-          一次まであと<span className="font-semibold text-primary">{daysToFirstStage}日</span>。
+          {examWordOf(GRADE)}まであと<span className="font-semibold text-primary">{daysToFirstStage}日</span>。
           {GRADE_META[GRADE].short}の残り{gradeRemaining}語を一周するには 1日
           <span className="font-semibold text-primary">{perDayToFinish}枚</span>。
           {recommendedSize && `${recommendedSize}枚ならこのペースで間に合うよ。`}
@@ -200,7 +200,7 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
     // 母数を減らしても届かないときは、枚数を突きつけず「今やること」に言い換える（R2-1）
     return (
       <p className="mt-3 rounded-2xl bg-primary-soft px-3 py-2.5 text-[12px] leading-relaxed text-ink-sub">
-        一次まであと<span className="font-semibold text-primary">{daysToFirstStage}日</span>。
+        {examWordOf(GRADE)}まであと<span className="font-semibold text-primary">{daysToFirstStage}日</span>。
         ぜんぶ一周するより、
         {dueCount > 0 ? 'まちがえた語のふり返りを先にやろう。' : '今日出せる分から確実に積み重ねよう。'}
         {dueCount > 0 && (

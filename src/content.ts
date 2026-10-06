@@ -101,12 +101,26 @@ export function availableTags(): { tag: string; count: number }[] {
  * 本番の大問構成を縮めた 20 問。ここで測った正答率が
  * 以降の出題ミックスと難易度の初期値になる。
  */
-export const DIAGNOSTIC_PLAN: { section: SectionId; count: number }[] = [
+const PRE2_DIAGNOSTIC_PLAN: { section: SectionId; count: number }[] = [
   { section: 'r-vocab', count: 10 },
   { section: 'r-conversation', count: 3 },
   { section: 'r-cloze', count: 2 },
   { section: 'r-passage', count: 5 },
 ];
+
+/**
+ * 2級には会話文の空所補充（r-conversation）が無いので、そのぶん3問を長文に回して20問を保つ
+ * （長文の語句空所 2→4、長文の内容一致 5→6。scripts/validate-content.mjs の plan と揃えること）。
+ */
+const G2_DIAGNOSTIC_PLAN: { section: SectionId; count: number }[] = [
+  { section: 'r-vocab', count: 10 },
+  { section: 'r-cloze', count: 4 },
+  { section: 'r-passage', count: 6 },
+];
+
+export const DIAGNOSTIC_PLAN: { section: SectionId; count: number }[] = isG2
+  ? G2_DIAGNOSTIC_PLAN
+  : PRE2_DIAGNOSTIC_PLAN;
 
 export const DIAGNOSTIC_TOTAL = DIAGNOSTIC_PLAN.reduce((n, p) => n + p.count, 0);
 

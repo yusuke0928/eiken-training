@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
-import { inGrade } from '../../grade';
+import { GRADE, GRADE_META, inGrade } from '../../grade';
 import { loadReport } from '../../engine/selector';
 import type { Stat } from '../../engine/mastery';
 import { SECTION_LABEL, TAG_LABEL, WRITING_SPEC, type SectionId } from '../../types';
@@ -81,7 +81,7 @@ export function FocusScreen({ onBack }: { onBack: () => void }) {
             />
           </ul>
           <p className="mt-3 text-[12px] leading-relaxed text-ink-faint">
-            準2級は3技能とも600点ずつ。1つでも大きく凹むと合計で届かなくなるので、
+            {GRADE_META[GRADE].short}は3技能とも{GRADE_META[GRADE].perSkillMax}点ずつ。1つでも大きく凹むと合計で届かなくなるので、
             低いものから埋めるのがいちばん速い。
           </p>
         </Section>

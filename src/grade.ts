@@ -47,15 +47,36 @@ export interface GradeMeta {
   idPrefix: string;
   /** 単語カードのレベル名（words.ts の WordLevel と同じ綴り） */
   wordLevel: 'p2' | 'g2';
-  /** 技能別の満点（G2-02 で使う） */
+  /** 技能別の満点 */
   perSkillMax: number;
-  /** 一次の合格基準スコア（G2-02 で使う） */
+  /** 一次の合格基準スコア */
   firstStagePass: number;
+  /** 筆記の試験時間（分） */
+  writtenMin: number;
+  /**
+   * ライティング1題あたりに残しておきたい時間（分）。模試の題数（engine/mock.ts のブループリント）を掛けて目標を出す。
+   * 準2級は2題で30分（15分×2）。2級は要約45〜55語＋意見80〜100語で130〜155語、しかも要約は本文を読む時間も要るので
+   * 2題で35分（17.5分×2）にした。1題あたりで持つのは、要約が入る前（G2-03 まで）の2級の模試は1題だけで、
+   * 35分を基準にすると「35分残せていない」と嘘の赤が出るため。要約が入れば自然に35分に戻る
+   */
+  writingMinPerItem: number;
+  /** ライティング1題あたりの点（技能満点を本番の2題で割る）。「1題300点」のような文言に使う */
+  perWritingPoints: number;
+  /** 選択問題1問あたりの点の目安（技能満点÷選択問題数。どちらの級も約21点） */
+  perMcqPoints: number;
   /**
    * 診断テストの答え合わせの「どこまで見たか」の保存キー。
    * 準2級は配布済みの既存キー 'diagnostic' のまま（実ユーザーの保存位置を捨てない）
    */
   diagnosticReviewId: string;
+  /**
+   * 「ようこそ・診断テスト」を済ませたかの kv キー。準2級は配布済みの既存キーのまま。
+   * 級共通にすると、準2級で済ませた子が2級に切り替えても診断が勧められず、2級の出題の初期値が測れない。
+   * 級を切り替えた最初の起動で、その級のようこそ画面が出る
+   */
+  onboardedKey: string;
+  /** 診断テストの結果の kv キー。準2級は既存キーのまま、2級は別キーにして上書きし合わない */
+  diagnosticKey: string;
 }
 
 export const GRADE_META: Record<Grade, GradeMeta> = {
@@ -67,7 +88,13 @@ export const GRADE_META: Record<Grade, GradeMeta> = {
     wordLevel: 'p2',
     perSkillMax: 600,
     firstStagePass: 1322,
+    writtenMin: 80,
+    writingMinPerItem: 15,
+    perWritingPoints: 300,
+    perMcqPoints: 21,
     diagnosticReviewId: 'diagnostic',
+    onboardedKey: 'onboarded',
+    diagnosticKey: 'diagnostic',
   },
   g2: {
     label: '英検2級',
@@ -77,7 +104,13 @@ export const GRADE_META: Record<Grade, GradeMeta> = {
     wordLevel: 'g2',
     perSkillMax: 650,
     firstStagePass: 1520,
+    writtenMin: 85,
+    writingMinPerItem: 17.5,
+    perWritingPoints: 325,
+    perMcqPoints: 21,
     diagnosticReviewId: 'diagnostic-g2',
+    onboardedKey: 'onboarded-g2',
+    diagnosticKey: 'diagnostic-g2',
   },
 };
 
@@ -107,3 +140,11 @@ export function gradeOfMock(m: {
 }
 
 export const mockInGrade = (m: Parameters<typeof gradeOfMock>[0]): boolean => gradeOfMock(m) === GRADE;
+
+/**
+ * 2級を公開してよいか。false のあいだは、準2級のホームに「2級にきりかえる？」のカードを出さない。
+ * content/g2 にいま入っているのは動作確認用の種データで、親戚に見せる品質ではないため
+ * （種を見せないための二重の鍵。#grade からは入れるので検証はできる）。
+ * ★ Phase 3 の監査が終わったら、管理がこの1行を true にする。
+ */
+export const G2_RELEASED = false;

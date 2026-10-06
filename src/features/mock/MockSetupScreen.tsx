@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { db, loadMock, type SavedMock } from '../../data/db';
 import {
   LISTENING_BLUEPRINT,
+  WRITING_COUNT,
+  WRITING_TARGET_MIN,
   WRITTEN_BLUEPRINT,
   formatClock,
   paperIsKnown,
@@ -10,8 +12,8 @@ import {
   scopeLabel,
   type MockScope,
 } from '../../engine/mock';
-import { mockInGrade } from '../../grade';
-import { PRE2 } from '../../engine/scoring';
+import { GRADE, GRADE_META, mockInGrade } from '../../grade';
+import { scoringOf } from '../../engine/scoring';
 import { Screen, TopBar } from '../../ui/primitives';
 import { ChevronRight } from '../../ui/icons';
 
@@ -20,18 +22,23 @@ import { ChevronRight } from '../../ui/icons';
 // 「本番と同じ」「ライティング2題まで含む」がそのまま出ると嘘になる。
 // ②のときだけ noteCheckEach に差し替える（作業指示書 B-R-1 (b)）。
 // listening は元々時間・ライティングに触れていないため両モード共通でよい。
+const META = GRADE_META[GRADE];
+// 英作文の大問番号は級で違う（準2級は5・6、2級は5。要約の4は G2-03 で入る）
+const WRITING_BLOCKS = GRADE === 'g2' ? '大問5' : '大問5・6';
+
 const SCOPES: { scope: MockScope; minutes: number; note: string; noteCheckEach?: string }[] = [
   {
     scope: 'full',
-    minutes: 105,
-    note: '本番と同じ。筆記80分＋リスニング約25分',
+    minutes: META.writtenMin + 25,
+    note: `本番と同じ。筆記${META.writtenMin}分＋リスニング約25分`,
     noteCheckEach: '筆記とリスニングの選択問題を1問ずつ。英作文は含みません',
   },
   {
     scope: 'written',
-    minutes: 80,
-    note: '筆記だけ。ライティング2題まで含む',
-    noteCheckEach: '筆記の選択問題だけ。英作文（大問5・6）は含みません',
+    minutes: META.writtenMin,
+    // 題数はブループリントから（2級は要約が入るまで1題）。準2級は2題で、文言は従来と同じ
+    note: `筆記だけ。ライティング${WRITING_COUNT}題まで含む`,
+    noteCheckEach: `筆記の選択問題だけ。英作文（${WRITING_BLOCKS}）は含みません`,
   },
   { scope: 'listening', minutes: 25, note: 'リスニング30問だけ' },
 ];
@@ -81,8 +88,10 @@ export function MockSetupScreen({
               本番でいちばん効くのは、時間配分。
             </p>
             <p className="mt-1.5 text-[13px] leading-relaxed text-ink-sub">
-              筆記80分のうち、ライティング2題に
-              <span className="font-semibold text-primary">30〜35分</span>
+              筆記{META.writtenMin}分のうち、ライティング{WRITING_COUNT}題に
+              <span className="font-semibold text-primary">
+                {Math.round(WRITING_TARGET_MIN)}〜{Math.round(WRITING_TARGET_MIN) + 5}分
+              </span>
               を残せるかどうかで結果が変わる。選択問題を早く抜けられるか、ここで確かめよう。
             </p>
           </div>
@@ -201,7 +210,7 @@ export function MockSetupScreen({
                 <li>・答えた瞬間に解説が出ます。時間は計りません</li>
                 <li>・リスニングは何度でも聞き直せます。スクリプトと訳もいつでも見られます</li>
                 <li>・途中で閉じても、開き直せば同じところから続けられます</li>
-                <li>・英作文（大問5・6）はここには出ません。終わったらライティング道場でどうぞ</li>
+                <li>・英作文（{WRITING_BLOCKS}）はここには出ません。終わったらライティング道場でどうぞ</li>
               </>
             )}
           </ul>
@@ -215,7 +224,7 @@ export function MockSetupScreen({
             {entryMode === 'exam' ? '出題の構成' : '本番の構成'}
           </h2>
           <div className="rounded-3xl border border-line bg-surface p-5">
-            <p className="mb-2 text-[13px] font-semibold text-ink">筆記 80分</p>
+            <p className="mb-2 text-[13px] font-semibold text-ink">筆記 {META.writtenMin}分</p>
             <ul className="mb-4 flex flex-col gap-1 text-[13px] text-ink-sub">
               {WRITTEN_BLUEPRINT.map((b) => (
                 <li key={b.label} className="flex justify-between gap-3">
@@ -237,7 +246,7 @@ export function MockSetupScreen({
               ))}
             </ul>
             <p className="mt-3 border-t border-line pt-3 text-[12px] leading-relaxed text-ink-faint">
-              合格ラインの目安は一次1800点中 {PRE2.firstStagePass}点。
+              合格ラインの目安は一次{scoringOf(GRADE).firstStageMax}点中 {scoringOf(GRADE).firstStagePass}点。
               問題は受けるたびに選び直されます（長文も毎回ちがう本文から出ます）。
             </p>
           </div>

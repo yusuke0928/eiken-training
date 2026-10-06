@@ -1,1 +1,354 @@
-[]
+[
+  {
+    "id": "g2-p-cloze-001",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Farms in the Sky",
+    "body": "In many large cities, it is becoming more and more difficult to find enough land to grow food. As a result, some companies have started to build vertical farms. These are tall buildings in which vegetables grow in layers under artificial lights. Because the plants are protected from bad weather, a vertical farm can produce fresh vegetables all year round, ( 1 ) of the season outside. Some of these farms are even built in old offices and empty warehouses, so they do not take land away from other uses.\n\nVertical farms also use far less water than ordinary farms. Some of them ( 2 ) the water that the plants do not use, so they need only about five percent of the water that is used in traditional farming. In addition, because the vegetables are grown close to the people who eat them, they do not have to be carried over long distances. This means that they reach shoppers fresher than vegetables that have traveled for several days.\n\n( 3 ), vertical farms are not perfect. The lights and machines use a great deal of electricity, which makes the vegetables more expensive than those from ordinary farms. Researchers are now looking for ways to power vertical farms with solar energy. If they succeed, the price may drop, and fresh local vegetables could become available to many more people in the future.",
+    "translation": "多くの大都市では、食べ物を育てるのに十分な土地を見つけることがますます難しくなっている。その結果、垂直農場を作り始める会社も出てきた。これは、人工の光の下で野菜が何段にも重なって育つ高いビルのことだ。植物は悪天候から守られているので、垂直農場は外の季節に関係なく、一年じゅう新鮮な野菜を作れる。こうした農場の中には古いオフィスや空の倉庫の中に作られているものさえあり、ほかの用途の土地を奪うことはない。\n\n垂直農場は、ふつうの農場よりもはるかに少ない水しか使わない。植物が使わなかった水を再利用する農場もあり、従来の農業で使われる水のわずか5パーセントほどしか必要としない。さらに、野菜は食べる人の近くで育てられるので、長い距離を運ぶ必要がない。そのため、何日もかけて運ばれてきた野菜よりも新鮮な状態で買い物客に届く。\n\nしかし、垂直農場は完璧ではない。照明や機械が大量の電気を使うため、野菜はふつうの農場のものより高くなる。研究者たちは今、垂直農場を太陽エネルギーで動かす方法を探している。それがうまくいけば値段が下がり、新鮮な地元の野菜が将来もっと多くの人の手に届くようになるかもしれない。",
+    "wordCount": 232,
+    "items": [
+      {
+        "id": "g2-p-cloze-001-q1",
+        "tags": [
+          "read:vocab-in-context"
+        ],
+        "difficulty": 2,
+        "stem": "( 1 )",
+        "choices": [
+          "regardless",
+          "capable",
+          "aware",
+          "afraid"
+        ],
+        "answerIndex": 0,
+        "explanation": "regardless of ~ = ~に関係なく。「悪天候から守られている」ので、外の季節に関係なく一年じゅう作れる、とつながる。",
+        "distractorNotes": [
+          "regardless of = ~に関係なく",
+          "capable of は「~できる」。季節には使わない",
+          "aware of は「~に気づいて」",
+          "afraid of は「~をこわがって」"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-001-q2",
+        "tags": [
+          "read:vocab-in-context"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "recycle",
+          "waste",
+          "borrow",
+          "spill"
+        ],
+        "answerIndex": 0,
+        "explanation": "「使わなかった水を ( ) ので、水が5パーセントですむ」という流れ。recycle = 再利用する。",
+        "distractorNotes": [
+          "recycle = 再利用する",
+          "waste = 無駄にする。水が少なくてすむ理由にならない",
+          "borrow = 借りる",
+          "spill = こぼす"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-001-q3",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 2,
+        "stem": "( 3 )",
+        "choices": [
+          "However",
+          "For example",
+          "As a result",
+          "Similarly"
+        ],
+        "answerIndex": 0,
+        "explanation": "前の段落は長所、この段落は「完璧ではない」と短所を述べる。逆の内容をつなぐ However が入る。",
+        "distractorNotes": [
+          "However = しかし（逆接）",
+          "For example = たとえば。例は続かない",
+          "As a result = その結果。長所の結果が欠点にはならない",
+          "Similarly = 同様に。同じ向きの内容をつなぐ"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-cloze-002",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Sharing Bicycles",
+    "body": "Bike-sharing systems have become popular in cities around the world. With a smartphone or a card, people can ( 1 ) a bicycle at one station, ride it to their destination, and leave it at another station. For short trips, this is often faster than waiting for a bus, and it costs very little. Some cities have more than ten thousand bicycles, and many workers now use them to get to the office.\n\nCities that have introduced bike sharing report several benefits. There are fewer cars on the road, so the air is cleaner. Many users also say that they feel healthier because they get more exercise ( 2 ) their daily routine. However, there is one problem. Some riders leave bicycles in front of shops or on sidewalks, which makes it hard for people to walk and for shop owners to do business.\n\nTo solve this problem, some cities now require riders to park bicycles only in special areas. Riders who do not follow the rule must pay an extra fee. Officials hope that these rules will ( 3 ) both the convenience of bike sharing and the safety of people walking on the street.",
+    "translation": "自転車シェアリングは世界中の都市で人気になっている。スマートフォンやカードを使えば、ある駅で自転車のロックを外し、目的地まで乗って、別の駅に置いていける。短い移動なら、バスを待つより速いことが多く、費用もごくわずかだ。1万台以上の自転車を持つ都市もあり、いまでは多くの会社員が通勤に使っている。\n\n自転車シェアリングを導入した都市は、いくつかの利点を報告している。道路を走る車が減るので、空気がきれいになる。また、毎日の生活の一部として運動量が増えるので、健康になったと感じる利用者も多い。しかし、問題が1つある。店の前や歩道に自転車を置きっぱなしにする人がいて、歩く人や店の経営者の迷惑になっているのだ。\n\nこの問題を解決するため、自転車を決められた場所にだけ駐輪するよう求める都市も出てきた。ルールを守らない利用者は追加料金を払わなければならない。当局は、こうしたルールが、自転車シェアリングの便利さと、通りを歩く人の安全の両方を守ることを期待している。",
+    "wordCount": 196,
+    "items": [
+      {
+        "id": "g2-p-cloze-002-q1",
+        "tags": [
+          "read:vocab-in-context"
+        ],
+        "difficulty": 2,
+        "stem": "( 1 )",
+        "choices": [
+          "unlock",
+          "install",
+          "publish",
+          "inherit"
+        ],
+        "answerIndex": 0,
+        "explanation": "駅にある自転車を使い始める動作。スマホやカードでロックを外す、の意味の unlock が合う。",
+        "distractorNotes": [
+          "unlock = 鍵(ロック)を外す",
+          "install = 設置する。利用者の動作ではない",
+          "publish = 出版する",
+          "inherit = 受け継ぐ"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-002-q2",
+        "tags": [
+          "read:vocab-in-context"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "as part of",
+          "in need of",
+          "in spite of",
+          "on behalf of"
+        ],
+        "answerIndex": 0,
+        "explanation": "as part of ~ = ~の一部として。「毎日の習慣の一部として運動量が増える」という意味になる。",
+        "distractorNotes": [
+          "as part of = ~の一部として",
+          "in need of = ~を必要として",
+          "in spite of = ~にもかかわらず。意味が通らない",
+          "on behalf of = ~の代わりに"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-002-q3",
+        "tags": [
+          "read:vocab-in-context"
+        ],
+        "difficulty": 3,
+        "stem": "( 3 )",
+        "choices": [
+          "protect",
+          "ruin",
+          "delay",
+          "ignore"
+        ],
+        "answerIndex": 0,
+        "explanation": "ルールの目的は、便利さと安全の両方を守ること。protect = 守る。",
+        "distractorNotes": [
+          "protect = 守る",
+          "ruin = だめにする。目的と逆",
+          "delay = 遅らせる",
+          "ignore = 無視する"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-email-001",
+    "section": "r-passage",
+    "format": "email",
+    "title": "River Clean-up Day",
+    "body": "From: Rachel Moore\nTo: Daniel Kim\nDate: November 2\nSubject: River Clean-up Day\n\nDear Daniel,\n\nThank you for signing up for this year's River Clean-up Day. We now have more than eighty volunteers, which is twice as many as last year!\n\nI need to tell you about one change. The event was going to be held at Maple Park, but the heavy storm last month left a lot of trash along the Hirose River, so we have decided to clean the riverside instead. We will meet at the Greenhill Community Center at nine o'clock on Saturday, November 20, and then take a bus to the river together. The bus will bring us back by two o'clock.\n\nPlease wear clothes that you do not mind getting dirty and bring your own water bottle. We will give you gloves and bags. Lunch will be provided by the Sunrise Bakery, and we would like to make sure that nobody gets food that they cannot eat. So please let me know by November 15 if you have any food allergies.\n\nThank you again for your help. I am looking forward to seeing you on the 20th.\n\nSincerely,\nRachel Moore\nGreenhill Community Center",
+    "translation": "差出人：レイチェル・ムーア／宛先：ダニエル・キム／日付：11月2日／件名：川の清掃デー\n\nダニエルさん\n\n今年の川の清掃デーに申し込んでくださり、ありがとうございます。ボランティアは80人以上になり、昨年の2倍です！\n\n1つ変更をお伝えしなければなりません。行事はメイプル公園で行う予定でしたが、先月の大嵐でヒロセ川沿いに多くのごみが残ったため、代わりに川辺を掃除することにしました。11月20日（土）の9時にグリーンヒル・コミュニティセンターに集まり、みんなでバスに乗って川へ向かいます。バスは2時までに戻ってきます。\n\n汚れてもよい服装で、水筒を持ってきてください。手袋とごみ袋はこちらで用意します。昼食はサンライズ・ベーカリーが提供してくれます。食べられない物が出ないようにしたいので、食物アレルギーがある場合は11月15日までに知らせてください。\n\nあらためて、ご協力ありがとうございます。20日にお会いするのを楽しみにしています。\n\nグリーンヒル・コミュニティセンター　レイチェル・ムーア",
+    "wordCount": 198,
+    "items": [
+      {
+        "id": "g2-p-email-001-q1",
+        "tags": [
+          "read:main-idea"
+        ],
+        "difficulty": 1,
+        "stem": "Why did Rachel Moore write to Daniel?",
+        "choices": [
+          "To give him information about an event he has joined.",
+          "To ask him to lead a group of volunteers.",
+          "To thank him for cleaning the river last year.",
+          "To invite him to a party at the bakery."
+        ],
+        "answerIndex": 0,
+        "explanation": "冒頭の Thank you for signing up と、そのあとの変更・集合場所・持ち物の連絡から、参加するダニエルに行事の情報を伝えるメールだと分かる。",
+        "distractorNotes": [
+          "参加者への連絡という目的に合う",
+          "リーダーを頼む内容は書かれていない",
+          "去年の話は出てこない。80人の話は昨年との人数の比較だけ",
+          "パン屋は昼食を出すだけで、パーティーへの招待ではない"
+        ]
+      },
+      {
+        "id": "g2-p-email-001-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What has changed about the event?",
+        "choices": [
+          "The place where the volunteers will work.",
+          "The day on which the event will be held.",
+          "The time when the bus will come back.",
+          "The number of volunteers who can join."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落に The event was going to be held at Maple Park ... decided to clean the riverside instead とある。変わったのは作業する場所。",
+        "distractorNotes": [
+          "公園から川辺へ。これが変更点",
+          "日付は11月20日のまま。変更とは書かれていない",
+          "戻りの時刻は2時までと書かれているだけで、変更とは書かれていない",
+          "ボランティアが増えたのは事実だが、「参加できる人数」の変更ではない"
+        ]
+      },
+      {
+        "id": "g2-p-email-001-q3",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What does Rachel ask Daniel to do by November 15?",
+        "choices": [
+          "Tell her about any food he cannot eat.",
+          "Bring gloves and bags to the river.",
+          "Buy a ticket for the bus.",
+          "Find more volunteers for the event."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落の最後に please let me know by November 15 if you have any food allergies とある。",
+        "distractorNotes": [
+          "アレルギーなど食べられない物を知らせる",
+          "手袋とごみ袋はレイチェルの側が用意する",
+          "バスのチケットの話は出てこない",
+          "ボランティア集めの依頼は書かれていない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-article-001",
+    "section": "r-passage",
+    "format": "article",
+    "title": "Bees on the Roof",
+    "body": "In recent years, more and more people in big cities have started keeping bees on the roofs of tall buildings. At first, many people thought that this was a strange idea, because bees need flowers, and cities seem to have very few of them. However, beekeepers have found that bees living in cities often do better than those living in the countryside.\n\nOne reason is that the countryside is changing. In many farming areas, large fields grow only one kind of crop, so bees can find food only during a short period of the year. Farmers also use chemicals to protect their crops, and these chemicals can harm bees. In contrast, cities have parks, gardens, and trees along the streets, and different kinds of flowers bloom from early spring to late autumn. City gardeners also tend to use fewer of these chemicals.\n\nRooftop honey is becoming popular, too. A hotel in one large city sells honey made by bees living on its roof, and the small jars often sell out within a few days. Some restaurants keep their own bees and use the honey in their dishes, which attracts customers who want to eat food produced close to where they live.\n\nStill, experts say that the number of hives should not grow too quickly. If too many bees live in one area, they may not find enough flowers, and wild bees, which are also important for nature, may lose their food. Because of this, some cities now ask beekeepers to register their hives, and they are also planting more flowers to support all kinds of bees.",
+    "translation": "近年、大都市では、高いビルの屋上でミツバチを飼い始める人がどんどん増えている。最初は、ミツバチには花が必要なのに都会には花がほとんどなさそうだと思われ、多くの人が奇妙な考えだと感じた。しかし養蜂家たちは、都会で暮らすミツバチのほうが、田舎で暮らすものよりうまくいくことが多いと気づいた。\n\n理由の1つは、田舎が変わりつつあることだ。多くの農業地域では、広い畑で1種類の作物だけが育てられるので、ミツバチが食べ物を見つけられるのは1年のうちの短い期間だけになる。農家は作物を守るために化学薬品も使い、それがミツバチに害を与えることがある。対照的に、都会には公園や庭、街路樹があり、早春から晩秋までさまざまな花が咲く。都会の庭師はこうした薬品をあまり使わない傾向もある。\n\n屋上のはちみつも人気になりつつある。ある大都市のホテルは屋上のミツバチが作ったはちみつを売っていて、小さなびんは数日で売り切れることが多い。自分たちでミツバチを飼い、はちみつを料理に使うレストランもあり、近くで作られた物を食べたい客を引きつけている。\n\nそれでも専門家は、巣箱の数をあまり急に増やすべきではないと言う。1つの地域にミツバチが多すぎると、十分な花が見つからず、自然にとって大切な野生のハチが食べ物を失うかもしれないからだ。このため、養蜂家に巣箱の登録を求める都市もあり、あらゆる種類のハチを支えるために花をもっと植えている。",
+    "wordCount": 266,
+    "items": [
+      {
+        "id": "g2-p-article-001-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 1,
+        "stem": "Why did many people think that keeping bees in cities was strange at first?",
+        "choices": [
+          "They believed that cities do not have enough flowers.",
+          "They thought that bees could not live in tall buildings.",
+          "They were afraid that bees would sting people.",
+          "They knew that honey from cities does not taste good."
+        ],
+        "answerIndex": 0,
+        "explanation": "第1段落に bees need flowers, and cities seem to have very few of them とある。花が少なそうだから奇妙に思われた。",
+        "distractorNotes": [
+          "花が少ないと思われていた",
+          "高いビルに住めないとは書かれていない",
+          "刺される心配は出てこない",
+          "味の話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-001-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What is one problem for bees in farming areas?",
+        "choices": [
+          "Chemicals used to protect crops can harm them.",
+          "Too many kinds of flowers bloom at the same time.",
+          "Farmers keep too many hives in their fields.",
+          "There are no trees to give them shade."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落に、農家が使う chemicals can harm bees とある。",
+        "distractorNotes": [
+          "薬品が害になる",
+          "畑は1種類の作物が中心で、花の種類は少ない",
+          "巣箱が多すぎるのは都会の話で、農業地域の問題としては書かれていない",
+          "日陰の話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-001-q3",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What is true about the honey made on rooftops?",
+        "choices": [
+          "Small jars of it can sell out in a few days.",
+          "It is cheaper than honey from the countryside.",
+          "It is sold only to restaurants.",
+          "It is made from only one kind of flower."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落に the small jars often sell out within a few days とある。",
+        "distractorNotes": [
+          "数日で売り切れることが多い",
+          "値段の比較は書かれていない",
+          "ホテルが売る例があり、レストラン限定ではない",
+          "さまざまな花が咲くと書かれていて、1種類とは書かれていない"
+        ]
+      },
+      {
+        "id": "g2-p-article-001-q4",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What do some cities ask beekeepers to do?",
+        "choices": [
+          "Register their hives.",
+          "Plant trees on their roofs.",
+          "Sell their honey at lower prices.",
+          "Stop keeping bees in tall buildings."
+        ],
+        "answerIndex": 0,
+        "explanation": "最後の段落に some cities now ask beekeepers to register their hives とある。",
+        "distractorNotes": [
+          "巣箱を登録する",
+          "花を植えるのは都市のほうで、養蜂家への依頼ではない",
+          "値段の話は出てこない",
+          "禁止しているとは書かれていない"
+        ]
+      },
+      {
+        "id": "g2-p-article-001-q5",
+        "tags": [
+          "read:main-idea"
+        ],
+        "difficulty": 3,
+        "stem": "Which of the following statements would the writer most likely agree with?",
+        "choices": [
+          "Keeping bees in cities can be good, but the number of hives needs care.",
+          "Bees should be kept only in the countryside.",
+          "City beekeepers should keep as many bees as they can.",
+          "Wild bees are not important for nature."
+        ],
+        "answerIndex": 0,
+        "explanation": "都会のよさを述べつつ、最後に巣箱の数を急に増やすべきでないと注意している。この両面に合うのが正解。",
+        "distractorNotes": [
+          "よい面と、数への注意の両方を述べている",
+          "都会のほうがうまくいくという本文と逆",
+          "最後の段落で「増やしすぎない」と警告している",
+          "wild bees も important for nature と書かれている"
+        ]
+      }
+    ]
+  }
+]

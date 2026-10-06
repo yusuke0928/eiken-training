@@ -6,7 +6,7 @@ import { reviewBacklog } from '../../engine/srs';
 import { scoreView } from '../../engine/scoring';
 import { APP_VERSION_LABEL } from '../../lib/appVersion';
 import { G2_HAS_CONTENT, GRADE_READY } from '../../content';
-import { GRADE, GRADE_META, mockInGrade } from '../../grade';
+import { G2_RELEASED, GRADE, GRADE_META, mockInGrade } from '../../grade';
 import { GradeOfferCard, GradeSwitchSheet } from '../grade/GradeSwitch';
 import { EXAM, applyReminder, daysUntil, formatJp, nextMilestone } from '../../lib/exam';
 import { TAG_LABEL } from '../../types';
@@ -75,15 +75,18 @@ export function HomeScreen({
   const [switchTo, setSwitchTo] = useState<'pre2' | 'g2' | null>(null);
   // 2級への導線は二次試験が終わってから。二次の直前に「2級にきりかえる？」を出すと、
   // 二次の練習（面接も2級のものになる）から気を逸らす。
-  // ここで読む EXAM は準2級のもの（G2-02 で級ごとの表になるまで、2級側では使わない）
+  // この判定の EXAM は準2級のもの。GRADE === 'pre2' のときしか読まれない
   // 2級の中身がまだ空なら出さない（「準備中」しか無い級へ誘導しないため）
-  const showGradeOffer = GRADE === 'pre2' && G2_HAS_CONTENT && daysUntil(EXAM.secondStage) < 0;
+  // G2_RELEASED は公開フラグ（grade.ts）。種データしか無い2級へ全員を誘導しないため、両方そろって出す
+  const showGradeOffer =
+    GRADE === 'pre2' && G2_RELEASED && G2_HAS_CONTENT && daysUntil(EXAM.secondStage) < 0;
 
-  const milestone = nextMilestone();
-  const reminder = applyReminder();
+  const milestone = nextMilestone(GRADE);
+  const reminder = applyReminder(GRADE);
+  const meta = GRADE_META[GRADE];
   const done = Math.min(today, DAILY_GOAL);
   const goalMet = today >= DAILY_GOAL;
-  const view = report && report.answered > 0 ? scoreView(Math.round(report.overall * 100), 100) : null;
+  const view = report && report.answered > 0 ? scoreView(GRADE, Math.round(report.overall * 100), 100) : null;
   const topFocus = report?.byTag.filter((s) => s.attempts > 0).slice(0, 2) ?? [];
 
   return (
@@ -154,10 +157,16 @@ export function HomeScreen({
             }`}
           >
             <p className="text-[12px] text-ink-sub">{milestone.label}</p>
-            <p className="mt-1 text-[26px] font-bold leading-none tabular-nums text-ink">
-              {milestone.days}
-              <span className="ml-1 text-[14px] font-semibold text-ink-sub">日</span>
-            </p>
+            {milestone.days !== null ? (
+              <p className="mt-1 text-[26px] font-bold leading-none tabular-nums text-ink">
+                {milestone.days}
+                <span className="ml-1 text-[14px] font-semibold text-ink-sub">日</span>
+              </p>
+            ) : (
+              // 過ぎたあとに「-1日」「0日」を並べ続けない。数字の代わりにひとこと出す
+              <p className="mt-1 text-[16px] font-bold leading-snug text-ink">{milestone.text}</p>
+            )}
+            {milestone.note && <p className="mt-1 text-[11px] text-ink-faint">{milestone.note}</p>}
           </div>
         </div>
 
@@ -189,7 +198,7 @@ export function HomeScreen({
           </div>
         )}
 
-        {/* 2題で600点。いちばん伸びるところなので、いちばん押しやすい位置に置く */}
+        {/* 2題で技能の満点（準2級600点／2級650点）。いちばん伸びるところなので、いちばん押しやすい位置に置く */}
         <button
           type="button"
           onClick={onWriting}
@@ -199,7 +208,7 @@ export function HomeScreen({
           <span className="flex-1">
             <span className="block text-[16px] font-bold">ライティング道場</span>
             <span className="block text-[13px] opacity-80">
-              たった2題で600点。型を覚えるだけで伸びる
+              たった2題で{meta.perSkillMax}点。型を覚えるだけで伸びる
             </span>
           </span>
           <ChevronRight size={18} />
@@ -227,7 +236,7 @@ export function HomeScreen({
           <Card onClick={onListening}>
             <p className="mb-1.5 text-ink-sub"><Headphones size={22} /></p>
             <p className="text-[15px] font-bold text-ink">リスニング</p>
-            <p className="text-[12px] text-ink-sub">第1部〜第3部</p>
+            <p className="text-[12px] text-ink-sub">{GRADE === 'g2' ? '第1部・第2部' : '第1部〜第3部'}</p>
           </Card>
           <Card onClick={onTraining}>
             <p className="mb-1.5 text-ink-sub"><Target size={22} /></p>
@@ -314,7 +323,7 @@ export function HomeScreen({
           <span className="flex-1">
             <span className="block text-[16px] font-bold text-ink">面接シミュレーター</span>
             <span className="block text-[13px] text-ink-sub">
-              二次試験。黙読20秒から本番と同じ順に進む
+              {GRADE === 'g2' ? '面接の練習。本番と同じ順に進む' : '二次試験。黙読20秒から本番と同じ順に進む'}
             </span>
           </span>
           <span className="text-ink-faint">
@@ -322,6 +331,8 @@ export function HomeScreen({
           </span>
         </button>
 
+        {/* 2級（S-CBT）は一次と二次が同じ日で、二次だけの日付は無い。準2級の二次が終わったあとも出さない */}
+        {GRADE === 'pre2' && daysUntil(EXAM.secondStage) >= 0 && (
         <div className="rounded-3xl border border-dashed border-line p-4">
           {/* 単語カードは目標の2,000語を超えて5,000語超まで増えたので、この欄からは卒業させた（P4）。
               面接シミュレーターも問題カード3枚で使えるようになったので、「これから増やすもの」欄自体を畳んだ。
@@ -330,6 +341,18 @@ export function HomeScreen({
             二次試験は {formatJp(EXAM.secondStage)}（{EXAM.secondStageNote}）
           </p>
         </div>
+        )}
+
+        {/* 2級に入った子が自分で準2級へ戻れる道。準2級のホームには何も足さない（見た目を変えない） */}
+        {GRADE === 'g2' && (
+          <button
+            type="button"
+            onClick={() => setSwitchTo('pre2')}
+            className="mt-4 min-h-[44px] text-[13px] font-semibold text-primary"
+          >
+            準2級にもどす
+          </button>
+        )}
 
         {/* 本人が自分で最新版か確かめられる場所。囲みや色は付けず、控えめに1行だけ */}
         <p className="mt-3 text-[11px] text-ink-faint">{APP_VERSION_LABEL}</p>

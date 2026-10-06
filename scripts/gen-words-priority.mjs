@@ -18,83 +18,93 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const load = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
 
-/** 英語のテキストだけを集める。日本語訳・checks の日本語コメントは対象外
-    （英単語を拾いたいので、混ざっていても実害はないが無駄なので削っておく） */
-const texts = [];
-const push = (...ss) => {
-  for (const s of ss) if (s) texts.push(s);
-};
+/* 優先語は級ごとに別に持つ。
+   以前は両級を混ぜた1本にしていたが、2級の種データが入ると、準2級の単語カードの並びが
+   （2級の本文に出てくる語のぶんだけ）黙って変わってしまう。配布済みの準2級の並びを動かさないため、
+   `words` は準2級の本文だけ、`g2Words` は2級の本文だけから作る。
+   2級に会話文の空所補充の大問は無いので conversation.json は準2級だけ。
 
-function pushMcqItems(items) {
-  for (const it of items ?? []) {
-    push(it.stem, it.explanation, ...(it.choices ?? []), ...(it.distractorNotes ?? []));
-    for (const v of it.vocab ?? []) push(v.word, v.example);
-  }
-}
-
-/* 準2級と2級の両方を読む。優先語は級で分けない：どちらの級でも「アプリの本文に出てくる語」で、
-   分けると単語カードの並びが級で変わって混乱する。
-   2級に会話文の空所補充の大問は無いので conversation.json は無くても落ちない */
-const loadBoth = (name) => {
-  const rows = load(`content/pre2/${name}.json`);
+   【判断の記録】準2級の利用者が開く「英検2級」デッキは、2級の本文に出る語が先頭に来るよう並びが変わる。
+   変わるのは「まだ見ていない語」の出る順だけで、進捗（box）は消えない。2級を目指して2級デッキを開く子には
+   むしろ正しい並びなので、直さない。Phase 3 で2級の本文を総取り替えするときに、並びがもう一度動くことも承知のうえ */
+const loadGrade = (dir, name) => {
   try {
-    return [...rows, ...load(`content/g2/${name}.json`)];
+    return load(`content/${dir}/${name}.json`);
   } catch (e) {
-    if (e.code === 'ENOENT') return rows;
+    // 無くてよいのは2級の conversation.json だけ。準2級のファイルが消えたら、
+    // 黙って空にして準2級の優先語が薄くなるのを防ぐため例外にする
+    if (e.code === 'ENOENT' && dir === 'g2' && name === 'conversation') return [];
     throw e;
   }
 };
-const vocab = loadBoth('vocab');
-const conversation = loadBoth('conversation');
-const listening = loadBoth('listening');
-const passages = loadBoth('passage');
-const writing = loadBoth('writing');
-const speaking = loadBoth('speaking');
-
-pushMcqItems(vocab);
-pushMcqItems(conversation);
-pushMcqItems(listening);
-for (const item of listening) {
-  for (const line of item.dialogue ?? []) push(line.text);
-  push(item.question);
-}
-for (const p of passages) {
-  push(p.title, p.body);
-  pushMcqItems(p.items);
-}
-for (const w of writing) {
-  push(w.topic, w.question, w.sourceText, w.underline, w.modelAnswer, w.modelNote);
-  push(...(w.usefulPhrases ?? []), ...(w.commonMistakes ?? []));
-}
-for (const s of speaking) {
-  push(s.passage);
-  for (const a of s.sceneA?.actions ?? []) push(a.en);
-  push(s.sceneB?.en);
-  for (const q of s.questions ?? []) push(q.prompt, q.model);
-}
-
-const corpusLower = texts.join(' \n ').toLowerCase();
-// 1語トークンの集合。don't のようなアポストロフィ入りの語も1語として残す
-const tokenSet = new Set(corpusLower.match(/[a-z][a-z']*/g) ?? []);
-
-const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const core = load('content/words-core.json');
-const appearing = new Set();
-for (const [word] of core.words) {
-  const w = word.toLowerCase();
-  if (w.includes(' ')) {
-    // 熟語は語順どおりのフレーズとして本文に出てくるかを見る（単語境界つき）
-    const re = new RegExp(`\\b${escapeRe(w)}\\b`);
-    if (re.test(corpusLower)) appearing.add(word);
-  } else if (tokenSet.has(w)) {
-    appearing.add(word);
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/** ある級の本文に出てくる語を返す */
+function appearingIn(dir) {
+  const texts = [];
+  const push = (...ss) => {
+    for (const s of ss) if (s) texts.push(s);
+  };
+  function pushMcqItems(items) {
+    for (const it of items ?? []) {
+      push(it.stem, it.explanation, ...(it.choices ?? []), ...(it.distractorNotes ?? []));
+      for (const v of it.vocab ?? []) push(v.word, v.example);
+    }
   }
+  const vocab = loadGrade(dir, 'vocab');
+  const conversation = loadGrade(dir, 'conversation');
+  const listening = loadGrade(dir, 'listening');
+  const passages = loadGrade(dir, 'passage');
+  const writing = loadGrade(dir, 'writing');
+  const speaking = loadGrade(dir, 'speaking');
+
+  pushMcqItems(vocab);
+  pushMcqItems(conversation);
+  pushMcqItems(listening);
+  for (const item of listening) {
+    for (const line of item.dialogue ?? []) push(line.text);
+    push(item.question);
+  }
+  for (const p of passages) {
+    push(p.title, p.body);
+    pushMcqItems(p.items);
+  }
+  for (const w of writing) {
+    push(w.topic, w.question, w.sourceText, w.underline, w.modelAnswer, w.modelNote);
+    push(...(w.usefulPhrases ?? []), ...(w.commonMistakes ?? []));
+  }
+  for (const s of speaking) {
+    push(s.passage);
+    for (const a of s.sceneA?.actions ?? []) push(a.en);
+    push(s.sceneB?.en);
+    for (const q of s.questions ?? []) push(q.prompt, q.model);
+  }
+
+  const corpusLower = texts.join(' \n ').toLowerCase();
+  // 1語トークンの集合。don't のようなアポストロフィ入りの語も1語として残す
+  const tokenSet = new Set(corpusLower.match(/[a-z][a-z']*/g) ?? []);
+  const appearing = new Set();
+  for (const [word] of core.words) {
+    const w = word.toLowerCase();
+    if (w.includes(' ')) {
+      // 熟語は語順どおりのフレーズとして本文に出てくるかを見る（単語境界つき）
+      const re = new RegExp(`\\b${escapeRe(w)}\\b`);
+      if (re.test(corpusLower)) appearing.add(word);
+    } else if (tokenSet.has(w)) {
+      appearing.add(word);
+    }
+  }
+  return [...appearing].sort();
 }
 
-const out = { words: [...appearing].sort() };
+const pre2Words = appearingIn('pre2');
+const g2Words = appearingIn('g2');
+
+const out = { words: pre2Words, g2Words };
 writeFileSync(join(root, 'content/words-priority.json'), JSON.stringify(out, null, 0) + '\n');
 
 console.log(
-  `content/words-priority.json: ${appearing.size} / ${core.words.length} 語がアプリの本文に出現`,
+  `content/words-priority.json: 準2級 ${pre2Words.length} / 2級 ${g2Words.length} / ${core.words.length} 語がアプリの本文に出現`,
 );

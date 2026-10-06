@@ -218,17 +218,19 @@ for (const [section, need] of Object.entries(plan)) {
   }
 }
 
-// 並び替えたあとの正解位置が偏っていないか（偏ると「迷ったらA」を覚えてしまう）
-const dist = [0, 0, 0, 0];
-for (const a of answerPositions) if (typeof a === 'number') dist[a]++;
-const totalAnswers = dist.reduce((a, b) => a + b, 0);
-console.log(
-  `\n並び替え後の正解位置: A=${dist[0]} B=${dist[1]} C=${dist[2]} D=${dist[3]} (計${totalAnswers}問)`,
-);
-const worst = Math.max(...dist) / totalAnswers;
-if (worst > 0.4) {
-  warnings.push(`正解の位置が偏っている（最大 ${Math.round(worst * 100)}%）。並び替えの seed を見直すこと`);
+// 並び替えたあとの正解位置が偏っていないか（偏ると「迷ったらA」を覚えてしまう）。級ごとに出す
+function reportAnswerDistribution(label, positions) {
+  const dist = [0, 0, 0, 0];
+  for (const a of positions) if (typeof a === 'number') dist[a]++;
+  const total = dist.reduce((a, b) => a + b, 0);
+  console.log(`\n${label}並び替え後の正解位置: A=${dist[0]} B=${dist[1]} C=${dist[2]} D=${dist[3]} (計${total}問)`);
+  if (total === 0) return;
+  const worst = Math.max(...dist) / total;
+  if (worst > 0.4) {
+    warnings.push(`${label}正解の位置が偏っている（最大 ${Math.round(worst * 100)}%）。並び替えの seed を見直すこと`);
+  }
 }
+reportAnswerDistribution('準2級 ', answerPositions);
 
 /* ---------- 単語カードの優先語リスト（P3） ----------
    npm run build の中で gen-words-priority.mjs が先に生成している前提。
@@ -246,6 +248,9 @@ if (priority) {
   if (!Array.isArray(priority.words)) {
     errors.push('content/words-priority.json: words が配列でない');
   } else {
+    for (const w of priority.g2Words ?? []) {
+      if (!coreWordSet.has(w)) errors.push(`content/words-priority.json: g2Words に words-core.json に無い語 "${w}"`);
+    }
     const seenPriorityWords = new Set();
     for (const w of priority.words) {
       if (!coreWordSet.has(w)) {
@@ -262,26 +267,143 @@ if (priority) {
   }
 }
 
-/* ---------- 2級（器だけ。中身の検査は G2-02 / G2-03 で足す） ----------
-   2級は Phase 3 で中身が入るまで空配列。空でもエラーにしない（「まだ0問」と出して通す）。
-   中身が入ったら、id の接頭辞（g2-）と重複だけは今から効かせる：
-   級は問題 id の接頭辞で分けているので、ここが崩れると attempts / srs が級をまたいで混ざる。
-   conversation.json は2級に会話文の空所補充の大問が無いので、置かない。 */
+/* ---------- 2級 ----------
+   2級は Phase 3 までは「模試が1本組める最小限の種」。形式の正しさだけを見る。
+   id の接頭辞（g2-）と重複は種でも効かせる：級は問題 id の接頭辞で分けているので、
+   ここが崩れると attempts / srs が級をまたいで混ざる。
+   conversation.json は2級に会話文の空所補充の大問が無いので、置かない・見ない。 */
 console.log('\n2級:');
+const g2Positions = [];
+const g2Rows = {};
 for (const f of ['vocab', 'passage', 'listening', 'writing', 'speaking']) {
   const file = `content/g2/${f}.json`;
   const rows = load(file);
   if (!Array.isArray(rows)) {
     errors.push(`${file}: 配列でない`);
+    g2Rows[f] = [];
     continue;
   }
+  g2Rows[f] = rows;
   console.log(`  ${file}: ${rows.length === 0 ? 'まだ0問' : `${rows.length}件`}`);
-  for (const r of rows) {
-    if (!r.id?.startsWith('g2-')) errors.push(`${file} / ${r.id ?? '(id なし)'}: id は g2- で始めること`);
-    else if (seenIds.has(r.id)) errors.push(`${file} / ${r.id}: id が重複している`);
-    else seenIds.add(r.id);
+}
+
+// 短文の語句空所補充
+for (const item of g2Rows.vocab) {
+  if (item.section !== 'r-vocab') errors.push(`g2/vocab.json / ${item.id}: section が r-vocab ではない`);
+  if (item.choices?.length !== 4) errors.push(`g2/vocab.json / ${item.id}: 2級の大問1は4択`);
+  g2Positions.push(checkItem(item, 'g2/vocab.json', true));
+}
+
+// リスニング：2級は第1部（応答文選択）が無い。l-part2=第1部（会話）、l-part3=第2部（文）。IDは準2級と同じ
+const g2ListenCounts = {};
+for (const item of g2Rows.listening) {
+  const at = `g2/listening.json / ${item.id}`;
+  if (item.section === 'l-part1') {
+    errors.push(`${at}: 2級に l-part1（応答文選択）は無い`);
+    continue;
+  }
+  if (item.section !== 'l-part2' && item.section !== 'l-part3') {
+    errors.push(`${at}: section が l-part2/3 ではない`);
+    continue;
+  }
+  g2ListenCounts[item.section] = (g2ListenCounts[item.section] ?? 0) + 1;
+  if (!Array.isArray(item.dialogue) || item.dialogue.length === 0) errors.push(`${at}: dialogue がない`);
+  else {
+    for (const line of item.dialogue) {
+      if (line.speaker !== 'M' && line.speaker !== 'W') errors.push(`${at}: speaker は M か W（${line.speaker}）`);
+      if (!line.text?.trim()) errors.push(`${at}: 空の台詞がある`);
+    }
+  }
+  if (!item.question?.trim()) errors.push(`${at}: question（音声で流れる質問）がない`);
+  if (item.choices?.length !== 4) errors.push(`${at}: ${item.section} は4択（いまは${item.choices?.length}）`);
+  g2Positions.push(checkItem(item, 'g2/listening.json', true));
+}
+
+// 長文
+const g2Passages = g2Rows.passage;
+const seenPassageIds = new Set();
+for (const p of g2Passages) {
+  const at = `g2/passage.json / ${p.id}`;
+  // body が無いと下の split で例外になり、検査結果が出ないまま落ちる。先に見る
+  if (!p.body?.trim()) {
+    errors.push(`${at}: body がない`);
+    continue;
+  }
+  if (seenPassageIds.has(p.id)) errors.push(`${at}: 長文の id が重複している`);
+  else seenPassageIds.add(p.id);
+  if (!p.translation?.trim()) errors.push(`${at}: translation がない`);
+  if (!Array.isArray(p.items) || p.items.length === 0) errors.push(`${at}: items がない`);
+  if (p.section !== 'r-cloze' && p.section !== 'r-passage') errors.push(`${at}: section が r-cloze / r-passage ではない`);
+  const actualWords = p.body.split(/\s+/).filter(Boolean).length;
+  if (Math.abs(actualWords - p.wordCount) > actualWords * 0.15) {
+    warnings.push(`${at}: wordCount=${p.wordCount} だが実際は約${actualWords}語`);
+  }
+  for (const item of p.items ?? []) {
+    if (item.choices?.length !== 4) errors.push(`${at} / ${item.id}: 2級の長文は4択`);
+    g2Positions.push(checkItem(item, at, false));
+    const m = item.stem?.match(/^\(\s*(\d+)\s*\)$/);
+    if (p.section === 'r-cloze') {
+      if (!m) errors.push(`${at} / ${item.id}: 長文の語句空所補充の設問は「( n )」の形`);
+      else if (!p.body.includes(`( ${m[1]} )`)) errors.push(`${at} / ${item.id}: 本文に ( ${m[1]} ) が見つからない`);
+    }
   }
 }
+
+// ライティング：2級の意見論述は 80〜100 語。要約（w-summary）は G2-03
+for (const w of g2Rows.writing) {
+  const at = `g2/writing.json / ${w.id}`;
+  if (seenIds.has(w.id)) errors.push(`${at}: id が重複している`);
+  else seenIds.add(w.id);
+  if (w.section !== 'w-opinion') {
+    errors.push(`${at}: section は w-opinion（要約は G2-03 で足す）`);
+    continue;
+  }
+  if (!w.question?.trim()) errors.push(`${at}: question がない`);
+  if (!w.modelNote?.trim()) errors.push(`${at}: modelNote がない`);
+  if (!Array.isArray(w.usefulPhrases) || w.usefulPhrases.length < 3) errors.push(`${at}: usefulPhrases は3つ以上`);
+  if (!Array.isArray(w.commonMistakes) || w.commonMistakes.length < 2) errors.push(`${at}: commonMistakes は2つ以上`);
+  const n = countWords(w.modelAnswer ?? '');
+  if (n < 80 || n > 100) errors.push(`${at}: modelAnswer が${n}語。80〜100語に収める必要がある`);
+  for (const marker of ['First', 'Second']) {
+    if (!w.modelAnswer?.includes(marker)) errors.push(`${at}: modelAnswer に ${marker} がない（構成点の目印）`);
+  }
+}
+
+// 面接（G2-04 で中身を検査する）。ここでは id の重複だけ見る
+for (const r of g2Rows.speaking) {
+  if (r.id && seenIds.has(r.id)) errors.push(`g2/speaking.json / ${r.id}: id が重複している`);
+  else if (r.id) seenIds.add(r.id);
+}
+
+// 模試・診断が成り立つか。数字は WORK-ORDER-G2-02 の表（src/engine/mock.ts の G2 ブループリントと揃えること）
+{
+  const clozeSets = g2Passages.filter((p) => p.section === 'r-cloze' && (p.items?.length ?? 0) >= 3);
+  const emailSets = g2Passages.filter((p) => p.section === 'r-passage' && p.format === 'email' && (p.items?.length ?? 0) >= 3);
+  const articleSets = g2Passages.filter((p) => p.section === 'r-passage' && p.format === 'article' && (p.items?.length ?? 0) >= 5);
+  console.log(
+    `  模擬テスト: 大問1 ${g2Rows.vocab.length}/17問, 大問2 ${clozeSets.length}/2セット, 大問3A ${emailSets.length}/1セット, 大問3B ${articleSets.length}/1セット, ` +
+      `第1部 ${g2ListenCounts['l-part2'] ?? 0}/15, 第2部 ${g2ListenCounts['l-part3'] ?? 0}/15, 意見論述 ${g2Rows.writing.length}/1題`,
+  );
+  if (g2Rows.vocab.length > 0 || g2Passages.length > 0 || g2Rows.listening.length > 0) {
+    if (g2Rows.vocab.length < 17) errors.push(`2級模試: 大問1は17問必要（いま${g2Rows.vocab.length}問）`);
+    if (clozeSets.length < 2) errors.push(`2級模試: 大問2は3問×2セット必要（A と B は別の本文。いま${clozeSets.length}セット）`);
+    if (emailSets.length < 1) errors.push('2級模試: 大問3A（Eメール・3問）のセットがない');
+    if (articleSets.length < 1) errors.push('2級模試: 大問3B（説明文・5問）のセットがない');
+    if ((g2ListenCounts['l-part2'] ?? 0) < 15) errors.push(`2級模試: リスニング第1部（l-part2）は15問必要（いま${g2ListenCounts['l-part2'] ?? 0}問）`);
+    if ((g2ListenCounts['l-part3'] ?? 0) < 15) errors.push(`2級模試: リスニング第2部（l-part3）は15問必要（いま${g2ListenCounts['l-part3'] ?? 0}問）`);
+    if (g2Rows.writing.length < 1) errors.push('2級模試: 意見論述が1題必要');
+
+    // 診断：会話文が無いので 10 / 4 / 6（src/content.ts の G2_DIAGNOSTIC_PLAN と揃えること）
+    const g2plan = { 'r-vocab': 10, 'r-cloze': 4, 'r-passage': 6 };
+    const g2counts = { 'r-vocab': g2Rows.vocab.length, 'r-cloze': 0, 'r-passage': 0 };
+    for (const p of g2Passages) if (g2counts[p.section] !== undefined) g2counts[p.section] += p.items.length;
+    for (const [section, need] of Object.entries(g2plan)) {
+      if (g2counts[section] < need) errors.push(`2級の診断テスト: ${section} は${need}問必要だが${g2counts[section]}問しかない`);
+    }
+  }
+}
+
+reportAnswerDistribution('2級 ', g2Positions);
 
 /* ---------- id の接頭辞（級の絞り込みの前提） ----------
    アプリの級の絞り込み（src/grade.ts の inGrade）は id の接頭辞だけに頼っている。

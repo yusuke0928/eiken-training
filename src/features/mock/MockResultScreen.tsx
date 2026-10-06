@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ITEM_BY_ID, WRITING_BY_ID } from '../../content';
 import { db, loadReviewPos } from '../../data/db';
-import { formatClock, WRITING_TARGET_MS, WRITTEN_MS } from '../../engine/mock';
-import { PRE2, estimateSkillCse } from '../../engine/scoring';
-import { gradeOfMock, mockInGrade } from '../../grade';
+import { formatClock, WRITING_TARGET_MS, WRITTEN_MCQ_COUNT, WRITTEN_MS } from '../../engine/mock';
+import { estimateSkillCse, scoringOf } from '../../engine/scoring';
+import { GRADE, GRADE_META, gradeOfMock, mockInGrade } from '../../grade';
 import { OtherGradeNotice } from '../grade/GradeSwitch';
 import { totalScore } from '../../engine/writing';
 import { RUBRIC, SECTION_LABEL, WRITING_SPEC, type MockRecord, type SectionId } from '../../types';
@@ -56,12 +56,13 @@ export function MockResultScreen({
   const allScored = record.writings.every((w) => w.total !== undefined);
 
   const cse = {
-    reading: reading.total > 0 ? estimateSkillCse(reading.correct / reading.total) : null,
-    listening: listening.total > 0 ? estimateSkillCse(listening.correct / listening.total) : null,
-    writing: allScored && writingMax > 0 ? estimateSkillCse(writingTotal / writingMax) : null,
+    reading: reading.total > 0 ? estimateSkillCse(GRADE, reading.correct / reading.total) : null,
+    listening: listening.total > 0 ? estimateSkillCse(GRADE, listening.correct / listening.total) : null,
+    writing: allScored && writingMax > 0 ? estimateSkillCse(GRADE, writingTotal / writingMax) : null,
   };
   const known = Object.values(cse).filter((v): v is number => v !== null);
   const sum = known.reduce((a, b) => a + b, 0);
+  const SC = scoringOf(GRADE);
   const complete = record.scope === 'full' && known.length === 3;
 
   const unanswered = record.answers.filter((a) => a.selected === null).length;
@@ -77,27 +78,27 @@ export function MockResultScreen({
         {complete ? (
           <div
             className={`mb-6 rounded-3xl p-5 ${
-              sum >= PRE2.firstStagePass ? 'bg-correct-soft' : 'bg-again-soft'
+              sum >= SC.firstStagePass ? 'bg-correct-soft' : 'bg-again-soft'
             }`}
           >
             <p className="text-[13px] text-ink-sub">一次試験 CSE の目安</p>
             <p className="mt-1">
               <span
                 className={`text-[40px] font-bold leading-none tabular-nums ${
-                  sum >= PRE2.firstStagePass ? 'text-correct' : 'text-again'
+                  sum >= SC.firstStagePass ? 'text-correct' : 'text-again'
                 }`}
               >
                 {sum}
               </span>
               <span className="ml-2 text-[15px] font-semibold text-ink-sub">
-                / {PRE2.firstStageMax}
+                / {SC.firstStageMax}
               </span>
             </p>
             <p className="mt-2 text-[14px] leading-relaxed text-ink-sub">
-              合格ラインの目安は {PRE2.firstStagePass}点。
-              {sum >= PRE2.firstStagePass
-                ? ` いまのところ ${sum - PRE2.firstStagePass}点うわまわっている。`
-                : ` あと ${PRE2.firstStagePass - sum}点。`}
+              合格ラインの目安は {SC.firstStagePass}点。
+              {sum >= SC.firstStagePass
+                ? ` いまのところ ${sum - SC.firstStagePass}点うわまわっている。`
+                : ` あと ${SC.firstStagePass - sum}点。`}
             </p>
           </div>
         ) : (
@@ -151,7 +152,7 @@ export function MockResultScreen({
                 <>
                   <div className="mb-3 flex items-end justify-between gap-3">
                     <div>
-                      <p className="text-[12px] text-ink-sub">選択問題29問に使った</p>
+                      <p className="text-[12px] text-ink-sub">選択問題{WRITTEN_MCQ_COUNT}問に使った</p>
                       <p className="text-[24px] font-bold leading-tight tabular-nums text-ink">
                         {formatClock(mcqMs)}
                       </p>
@@ -185,14 +186,14 @@ export function MockResultScreen({
                           left >= WRITING_TARGET_MS ? 'bg-correct' : 'bg-again'
                         }`}
                       />
-                      ライティング（目標30分以上）
+                      ライティング（目標{Math.round(WRITING_TARGET_MS / 60000)}分以上）
                     </span>
                   </div>
 
                   <p className="text-[13px] leading-relaxed text-ink-sub">
                     {left >= WRITING_TARGET_MS
                       ? `ライティングに${Math.round(left / 60000)}分残せている。この配分を覚えておこう。`
-                      : `ライティングに残せたのは${Math.round(left / 60000)}分。1題300点あるので、
+                      : `ライティングに残せたのは${Math.round(left / 60000)}分。1題${GRADE_META[GRADE].perWritingPoints}点あるので、
                          ここが足りないと大きく落とす。選択問題を あと${Math.ceil(
                            (WRITING_TARGET_MS - left) / 60000,
                          )}分 短くするのが目標。`}
@@ -202,7 +203,7 @@ export function MockResultScreen({
               ) : (
                 <>
                   <p className="text-[15px] font-semibold text-ink">
-                    筆記 {formatClock(record.writtenElapsedMs)} / 80:00
+                    筆記 {formatClock(record.writtenElapsedMs)} / {formatClock(WRITTEN_MS)}
                   </p>
                   <div className="my-3 h-2.5 overflow-hidden rounded-full bg-surface-2">
                     <div

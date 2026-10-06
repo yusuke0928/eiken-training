@@ -1,10 +1,32 @@
 import { DIAGNOSTIC_TOTAL } from '../../content';
 import { GRADE, GRADE_META } from '../../grade';
-import { EXAM, daysUntil, formatJp } from '../../lib/exam';
+import { EXAM, EXAM_G2, daysUntil, formatJp, nextMilestone } from '../../lib/exam';
 import { Button, Screen } from '../../ui/primitives';
 
 export function WelcomeScreen({ onStart, onSkip }: { onStart: () => void; onSkip: () => void }) {
-  const days = daysUntil(EXAM.firstStage);
+  const isG2 = GRADE === 'g2';
+  // ホームと同じ nextMilestone を使う。試験日を過ぎたあとに「-2日」を出さないため
+  // （一次の翌日以降に初めて開いた人は実際にそうなっていた）
+  const m = nextMilestone(GRADE);
+  const days = m.days;
+  // 試験の前（当日を除く）だけは、従来の言い回しのまま
+  const before = days !== null && days > 0 && m.label === (isG2 ? '2級の試験まで' : '一次試験まで');
+  const label = before
+    ? isG2
+      ? `2級の試験（${formatJp(EXAM_G2.examDate)}の予定）まで`
+      : `一次試験（${formatJp(EXAM.firstStage)}）まで`
+    : `${m.label}${m.note ? `（${m.note}）` : ''}`;
+  // 申込の締切や二次の日は、過ぎたものを出さない
+  const sub = isG2
+    ? days !== null && days > 0 && before
+      ? '2級は一次と二次を同じ日に受けます（S-CBT）。日は申し込んで決まります'
+      : null
+    : [
+        daysUntil(EXAM.applyDeadline) >= 0 ? `申込は ${formatJp(EXAM.applyDeadline)} まで` : null,
+        daysUntil(EXAM.secondStage) >= 0 ? `二次は ${formatJp(EXAM.secondStage)}（${EXAM.secondStageNote}）` : null,
+      ]
+        .filter(Boolean)
+        .join('／') || null;
 
   return (
     <Screen>
@@ -26,16 +48,17 @@ export function WelcomeScreen({ onStart, onSkip }: { onStart: () => void; onSkip
 
         <div className="mb-8 rounded-3xl border border-line bg-surface p-5">
           <div className="flex items-baseline gap-2">
-            <span className="text-[13px] text-ink-sub">一次試験（{formatJp(EXAM.firstStage)}）まで</span>
+            <span className="text-[13px] text-ink-sub">{label}</span>
           </div>
-          <p className="mt-1">
-            <span className="text-[40px] font-bold leading-none tabular-nums text-primary">{days}</span>
-            <span className="ml-1 text-[15px] font-semibold text-ink-sub">日</span>
-          </p>
-          <p className="mt-2 text-[13px] text-ink-faint">
-            申込は {formatJp(EXAM.applyDeadline)} まで／二次は {formatJp(EXAM.secondStage)}（
-            {EXAM.secondStageNote}）
-          </p>
+          {days !== null ? (
+            <p className="mt-1">
+              <span className="text-[40px] font-bold leading-none tabular-nums text-primary">{days}</span>
+              <span className="ml-1 text-[15px] font-semibold text-ink-sub">日</span>
+            </p>
+          ) : (
+            <p className="mt-1 text-[22px] font-bold leading-snug text-primary">{m.text}</p>
+          )}
+          {sub && <p className="mt-2 text-[13px] text-ink-faint">{sub}</p>}
         </div>
 
         <Button full onClick={onStart}>

@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": "g2-w-opinion-001",
+    "section": "w-opinion",
+    "topic": "学校でのスマートフォン",
+    "difficulty": 1,
+    "question": "Some people say that students should be allowed to use smartphones at school. Do you agree with this opinion?",
+    "usefulPhrases": [
+      "I think that ~. / I do not think that ~.",
+      "I have two reasons.",
+      "First, ~. For example, ~.",
+      "Second, ~. In addition, ~.",
+      "For these reasons, I believe that ~."
+    ],
+    "modelAnswer": "I think that students should be allowed to use smartphones at school. I have two reasons. First, smartphones are useful for learning. Students can look up new words in a dictionary application, check information for their projects, and take pictures of what the teacher writes on the board. Second, smartphones help students stay safe. If there is an accident or a natural disaster, they can contact their parents quickly. For these reasons, I believe that schools should let students use smartphones.",
+    "modelNote": "型どおりに書けば80語台になる。2級は80〜100語なので、各理由に具体例を1文ずつ足すのが語数を満たす最短ルート。最後に理由をまとめ直して終わる。",
+    "commonMistakes": [
+      "理由が1つしかない、または2つの理由が同じ内容（内容点が下がる）",
+      "First / Second を使わず、理由の境目が分からない（構成点が下がる）",
+      "語数が80語に届かない、または100語を大きく超える（語数が範囲外だと減点の対象）"
+    ]
+  }
+]

@@ -2,11 +2,15 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { writingPromptsIn } from '../../content';
 import { db } from '../../data/db';
+import { GRADE, GRADE_META } from '../../grade';
 import { WRITING_SPEC, type WritingSection } from '../../types';
 import { Screen, TopBar } from '../../ui/primitives';
 import { ChevronRight, Level } from '../../ui/icons';
 
-const SECTIONS: WritingSection[] = ['w-opinion', 'w-email'];
+// 課題が1つも無い種類はタブに出さない（2級に Eメール返信は無い）
+const SECTIONS: WritingSection[] = (['w-opinion', 'w-email'] as WritingSection[]).filter(
+  (s) => writingPromptsIn(s).length > 0,
+);
 
 export function WritingListScreen({
   onPick,
@@ -32,15 +36,16 @@ export function WritingListScreen({
       <main className="flex-1 px-5 pt-2 pb-10">
         <div className="mb-5 rounded-3xl bg-primary-soft p-5">
           <p className="text-[15px] font-bold leading-relaxed text-ink">
-            ライティングはたった2題で600点。
+            ライティングはたった2題で{GRADE_META[GRADE].perSkillMax}点。
           </p>
           <p className="mt-1.5 text-[13px] leading-relaxed text-ink-sub">
-            語彙問題1問が約21点なのに対して、ライティングは1題300点。
+            語彙問題1問が約{GRADE_META[GRADE].perMcqPoints}点なのに対して、ライティングは1題{GRADE_META[GRADE].perWritingPoints}点。
             ここは覚える量ではなく<span className="font-semibold text-primary">型</span>で決まるから、
             残りの日数でいちばん伸びる。
           </p>
         </div>
 
+        {SECTIONS.length > 1 && (
         <div className="mb-5 flex gap-2 rounded-2xl bg-surface-2 p-1">
           {SECTIONS.map((s) => (
             <button
@@ -55,6 +60,7 @@ export function WritingListScreen({
             </button>
           ))}
         </div>
+        )}
 
         <div className="mb-5 rounded-2xl border border-line bg-surface p-4">
           <p className="mb-2 text-[13px] font-semibold text-ink">{spec.task}</p>

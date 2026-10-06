@@ -1,4 +1,5 @@
 import { ITEM_BY_ID } from '../../content';
+import { GRADE } from '../../grade';
 import { TAG_LABEL } from '../../types';
 import { Button, ProgressRing, Screen, TopBar } from '../../ui/primitives';
 import { ChevronRight } from '../../ui/icons';
@@ -71,7 +72,7 @@ export function SessionResultScreen({
         {onWritingDojo && (
           <section className="rounded-3xl bg-primary-soft p-5">
             <p className="text-[14px] font-bold leading-relaxed text-ink">
-              本番ならこのあと英作文2題（Eメール・意見論述）。
+              {GRADE === 'g2' ? '本番ならこのあと英作文2題（英文要約・意見論述）。' : '本番ならこのあと英作文2題（Eメール・意見論述）。'}
             </p>
             <p className="mt-1.5 text-[13px] leading-relaxed text-ink-sub">
               このモードでは選択問題だけ。書く力もライティング道場で確かめておこう。

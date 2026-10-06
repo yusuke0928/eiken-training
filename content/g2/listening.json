@@ -1,1 +1,1112 @@
-[]
+[
+  {
+    "id": "g2-l2-001",
+    "section": "l-part2",
+    "tags": [
+      "listen:gist"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Hi, Kevin. You look worried. What's wrong?"
+      },
+      {
+        "speaker": "M",
+        "text": "I just got an e-mail from my professor. I have to hand in my report by tomorrow, not by Friday."
+      },
+      {
+        "speaker": "W",
+        "text": "Oh no. Have you finished it?"
+      },
+      {
+        "speaker": "M",
+        "text": "Only the first half. I'll have to stay up all night."
+      }
+    ],
+    "question": "Question: What is Kevin's problem?",
+    "choices": [
+      "His report is due earlier than he expected.",
+      "He lost the e-mail from his professor.",
+      "He does not understand the report's topic.",
+      "He wrote only the second half of the report."
+    ],
+    "answerIndex": 0,
+    "translation": "W: こんにちは、ケビン。心配そうだね。どうしたの？／M: 教授からメールが来たんだ。レポートを金曜ではなく明日までに出さなきゃいけない。／W: えっ、終わってるの？／M: 前半だけ。徹夜しなきゃ。\n問: ケビンの問題は何か。→ レポートの締め切りが思っていたより早い。",
+    "explanation": "by tomorrow, not by Friday から、提出日が予想より早まったことが分かる。後半の Only the first half は進み具合の話。",
+    "distractorNotes": [
+      "締め切りが早まった、が問題",
+      "メールをなくしたとは言っていない",
+      "内容が分からないとは言っていない",
+      "終わっているのは前半（first half）"
+    ]
+  },
+  {
+    "id": "g2-l2-002",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Thank you for calling Bella Italia."
+      },
+      {
+        "speaker": "W",
+        "text": "Hello. I'd like to book a table for six on Saturday at seven."
+      },
+      {
+        "speaker": "M",
+        "text": "I'm sorry, we're full at seven. We have a table at eight thirty, or we could seat you at six."
+      },
+      {
+        "speaker": "W",
+        "text": "Six is too early for my guests. I'll take eight thirty."
+      }
+    ],
+    "question": "Question: What will the woman do?",
+    "choices": [
+      "Reserve a table for eight thirty.",
+      "Reserve a table for six o'clock.",
+      "Call a different restaurant.",
+      "Change the number of her guests."
+    ],
+    "answerIndex": 0,
+    "translation": "M: お電話ありがとうございます、ベラ・イタリアです。／W: こんにちは。土曜の7時に6人で予約したいのですが。／M: あいにく7時は満席です。8時半か、6時でしたらご案内できます。／W: 6時はゲストには早すぎます。8時半にします。\n問: 女性は何をするか。→ 8時半に席を予約する。",
+    "explanation": "最後の I'll take eight thirty が決定。six o'clock は早すぎると断っている。",
+    "distractorNotes": [
+      "8時半を選んだ",
+      "6時は断った",
+      "ほかの店に電話するとは言っていない",
+      "人数の変更は話に出ていない"
+    ]
+  },
+  {
+    "id": "g2-l2-003",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Excuse me. I'd like to borrow this book, but the computer says it's checked out."
+      },
+      {
+        "speaker": "M",
+        "text": "Yes, someone borrowed it last week. It should be returned by Friday. Would you like me to reserve it for you?"
+      },
+      {
+        "speaker": "W",
+        "text": "Yes, please. Can you call me when it comes back?"
+      },
+      {
+        "speaker": "M",
+        "text": "We'll send you a text message, actually. Just give me your phone number."
+      }
+    ],
+    "question": "Question: How will the woman learn that the book is available?",
+    "choices": [
+      "She will get a text message.",
+      "She will receive a phone call.",
+      "She will check the library computer.",
+      "She will come back on Friday."
+    ],
+    "answerIndex": 0,
+    "translation": "W: すみません。この本を借りたいのですが、コンピューターでは貸し出し中と出ます。／M: はい、先週どなたかが借りました。金曜日までに返却されるはずです。取り置きしましょうか。／W: お願いします。戻ったら電話をもらえますか。／M: 実はテキストメッセージを送ります。電話番号を教えてください。\n問: 女性はどうやって本が借りられるようになったと知るか。→ テキストメッセージが届く。",
+    "explanation": "女性は電話を頼んだが、男性が We'll send you a text message, actually と言い直している。答えは言い直したほう。",
+    "distractorNotes": [
+      "テキストメッセージで知らせる",
+      "電話を頼んだが、男性はメッセージだと訂正した",
+      "自分でコンピューターを見るとは言っていない",
+      "金曜日は返却予定の日であって、女性が来る日ではない"
+    ]
+  },
+  {
+    "id": "g2-l2-004",
+    "section": "l-part2",
+    "tags": [
+      "listen:inference"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Are you going to the school's basketball game this Saturday, Emily?"
+      },
+      {
+        "speaker": "W",
+        "text": "I'd love to, but I have a piano lesson until three. When does the game start?"
+      },
+      {
+        "speaker": "M",
+        "text": "At four, so you could make it if you take the bus right after your lesson."
+      },
+      {
+        "speaker": "W",
+        "text": "Great. The gym is far from my teacher's house, but I think I can be there by four."
+      }
+    ],
+    "question": "Question: What does Emily say about Saturday?",
+    "choices": [
+      "She can probably get to the game on time.",
+      "She will skip the piano lesson.",
+      "She cannot go because of her lesson.",
+      "She plans to go to the game by bicycle."
+    ],
+    "answerIndex": 0,
+    "translation": "M: 今度の土曜の学校のバスケの試合に行く、エミリー？／W: 行きたいけど、3時までピアノのレッスンがあるの。試合は何時から？／M: 4時だから、レッスンのあとすぐバスに乗れば間に合うよ。／W: よかった。体育館は先生の家から遠いけど、4時までには着けると思う。\n問: エミリーは土曜日について何と言っているか。→ たぶん試合に間に合う。",
+    "explanation": "最後の I think I can be there by four が根拠。バスで行く案に賛成している。",
+    "distractorNotes": [
+      "たぶん間に合う",
+      "レッスンを休むとは言っていない",
+      "行けない、とは言っていない",
+      "移動手段はバス"
+    ]
+  },
+  {
+    "id": "g2-l2-005",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "How was your first week at the bookstore, Yuki?"
+      },
+      {
+        "speaker": "W",
+        "text": "Tiring, but fun. I'm still learning where all the books are."
+      },
+      {
+        "speaker": "M",
+        "text": "Do you work every day?"
+      },
+      {
+        "speaker": "W",
+        "text": "No, just three evenings a week, because I have exams coming up. After the exams, I'm going to work on weekends, too."
+      }
+    ],
+    "question": "Question: Why does Yuki work only three evenings a week now?",
+    "choices": [
+      "She has exams soon.",
+      "The bookstore is closed on weekends.",
+      "She is tired of the job.",
+      "She is learning where the books are."
+    ],
+    "answerIndex": 0,
+    "translation": "M: 本屋での最初の1週間はどうだった、ユキ？／W: 疲れたけど楽しいよ。まだ本がどこにあるか覚えているところ。／M: 毎日働くの？／W: ううん、試験が近いから週に3回、夕方だけ。試験が終わったら、週末も働く予定。\n問: なぜユキはいま週3回の夕方だけ働くのか。→ 試験が近いから。",
+    "explanation": "because I have exams coming up が理由。tiring, but fun と言っているので、仕事に飽きたわけではない。",
+    "distractorNotes": [
+      "試験が近い",
+      "週末も働く予定と言っている",
+      "疲れたが楽しいと言っている",
+      "本の場所を覚えている最中だが、これは理由ではない"
+    ]
+  },
+  {
+    "id": "g2-l2-006",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Hello, I'm calling about my flight to Sydney on March 3. I'd like to change it to the fifth."
+      },
+      {
+        "speaker": "M",
+        "text": "Let me check. There's a seat on the fifth, but there's a change fee of fifty dollars."
+      },
+      {
+        "speaker": "W",
+        "text": "I see. Is there any way to avoid the fee?"
+      },
+      {
+        "speaker": "M",
+        "text": "Only if you change it more than two weeks before departure, I'm afraid."
+      }
+    ],
+    "question": "Question: What does the man tell the woman?",
+    "choices": [
+      "She has to pay a fee to change her flight.",
+      "There are no seats on the fifth.",
+      "She can change her flight for free.",
+      "She must call again in two weeks."
+    ],
+    "answerIndex": 0,
+    "translation": "W: シドニー行きの3月3日の便について電話しています。5日に変更したいのですが。／M: 確認します。5日には席がありますが、50ドルの変更手数料がかかります。／W: そうですか。手数料を避ける方法はありますか。／M: 出発の2週間より前に変更する場合だけです、残念ながら。\n問: 男性は女性に何と言っているか。→ 変更には手数料を払う必要がある。",
+    "explanation": "there's a change fee of fifty dollars と、手数料を避けられるのは2週間より前だけ、と伝えている。",
+    "distractorNotes": [
+      "手数料が必要",
+      "5日には席があると言っている",
+      "無料なのは2週間より前の場合だけ",
+      "電話をかけ直す話は出ていない"
+    ]
+  },
+  {
+    "id": "g2-l2-007",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Mom, can I make dinner tonight? I want to try the curry recipe from my cooking class."
+      },
+      {
+        "speaker": "W",
+        "text": "Sure, but we're out of onions."
+      },
+      {
+        "speaker": "M",
+        "text": "Then I'll go to the supermarket. Do we need anything else?"
+      },
+      {
+        "speaker": "W",
+        "text": "Some milk would be nice. And take an umbrella. It looks like rain."
+      }
+    ],
+    "question": "Question: What will the boy do first?",
+    "choices": [
+      "Go to the supermarket.",
+      "Look for the recipe.",
+      "Start cooking the curry.",
+      "Call his cooking teacher."
+    ],
+    "answerIndex": 0,
+    "translation": "M: お母さん、今夜ぼくが夕食を作っていい？料理教室で習ったカレーを試したいんだ。／W: いいけど、玉ねぎがないわよ。／M: じゃあスーパーに行ってくる。ほかに必要な物はある？／W: 牛乳があるといいわね。それと傘を持っていって。雨が降りそうよ。\n問: 男の子は最初に何をするか。→ スーパーに行く。",
+    "explanation": "玉ねぎが無いので Then I'll go to the supermarket と言っている。料理を始める前の行動を聞かれている。",
+    "distractorNotes": [
+      "まず買い物に行く",
+      "レシピは料理教室で習った。探す話は出ない",
+      "料理は買い物のあと",
+      "先生に電話する話は出ない"
+    ]
+  },
+  {
+    "id": "g2-l2-008",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "I'm thinking of quitting the drama club. It takes too much time."
+      },
+      {
+        "speaker": "M",
+        "text": "But you're so good at acting. What about your grades?"
+      },
+      {
+        "speaker": "W",
+        "text": "That's the problem. My math scores dropped last term."
+      },
+      {
+        "speaker": "M",
+        "text": "Why don't you talk to Mr. Hill, the club adviser? Maybe you can take a short break instead of quitting."
+      }
+    ],
+    "question": "Question: What does the man suggest the woman do?",
+    "choices": [
+      "Ask the club adviser about taking a break.",
+      "Quit the drama club right away.",
+      "Ask her math teacher for extra lessons.",
+      "Practice acting at home every day."
+    ],
+    "answerIndex": 0,
+    "translation": "W: 演劇部をやめようと思ってるの。時間がかかりすぎて。／M: でも君は演技がうまいじゃないか。成績はどう？／W: それが問題なの。前の学期に数学の点が下がって。／M: 顧問のヒル先生に話してみたら？やめる代わりに、少し休めるかもしれないよ。\n問: 男性は女性に何を勧めているか。→ 顧問に、休むことについて相談する。",
+    "explanation": "Why don't you talk to Mr. Hill, the club adviser? が提案の表現。Why don't you ~? は「~してみたら？」。",
+    "distractorNotes": [
+      "顧問に相談して休みを取る",
+      "やめるのではなく休む案を出している",
+      "数学の先生に頼む話は出ない",
+      "家での練習の話は出ない"
+    ]
+  },
+  {
+    "id": "g2-l2-009",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "My laptop keeps shutting down, and I have a presentation tomorrow."
+      },
+      {
+        "speaker": "W",
+        "text": "Maybe the battery is old. How long have you had it?"
+      },
+      {
+        "speaker": "M",
+        "text": "About five years."
+      },
+      {
+        "speaker": "W",
+        "text": "Then you should buy a new battery. I can lend you my laptop for tomorrow, though."
+      }
+    ],
+    "question": "Question: What does the woman offer to do?",
+    "choices": [
+      "Lend the man her laptop.",
+      "Buy a new battery for the man.",
+      "Help the man with his presentation.",
+      "Fix the man's laptop herself."
+    ],
+    "answerIndex": 0,
+    "translation": "M: ノートパソコンがすぐ落ちるんだ、明日はプレゼンなのに。／W: バッテリーが古いのかも。どのくらい使ってるの？／M: 5年くらい。／W: じゃあ新しいバッテリーを買ったほうがいいわ。明日のために私のノートパソコンを貸すこともできるけど。\n問: 女性は何を申し出ているか。→ 自分のノートパソコンを貸す。",
+    "explanation": "I can lend you my laptop が申し出（offer）。買うよう勧めているのは本人にであって、女性が買うわけではない。",
+    "distractorNotes": [
+      "パソコンを貸す",
+      "バッテリーは男性が買うよう勧めている",
+      "プレゼンを手伝うとは言っていない",
+      "自分で直すとは言っていない"
+    ]
+  },
+  {
+    "id": "g2-l2-010",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Two tickets for the dinosaur exhibition, please."
+      },
+      {
+        "speaker": "M",
+        "text": "That'll be thirty dollars. Students get a ten percent discount with an ID card."
+      },
+      {
+        "speaker": "W",
+        "text": "We're both students. Here are our cards."
+      },
+      {
+        "speaker": "M",
+        "text": "Thank you. The guided tour starts at two, in the main hall."
+      }
+    ],
+    "question": "Question: Why will the woman pay less than thirty dollars?",
+    "choices": [
+      "She and her friend are students.",
+      "She bought the tickets early.",
+      "She is joining the guided tour.",
+      "She has a coupon for the exhibition."
+    ],
+    "answerIndex": 0,
+    "translation": "W: 恐竜展のチケットを2枚お願いします。／M: 30ドルです。学生証があれば学生は10パーセント割引です。／W: 2人とも学生です。これが学生証です。／M: ありがとうございます。ガイドツアーは2時から大ホールで始まります。\n問: なぜ女性は30ドルより少なく払うのか。→ 彼女と友達が学生だから。",
+    "explanation": "Students get a ten percent discount と We're both students から、学生割引が理由。ガイドツアーは別の案内。",
+    "distractorNotes": [
+      "学生割引",
+      "早期購入の話は出ない",
+      "ガイドツアーは割引の理由ではない",
+      "クーポンの話は出ない"
+    ]
+  },
+  {
+    "id": "g2-l2-011",
+    "section": "l-part2",
+    "tags": [
+      "listen:inference"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "The weather forecast says it'll rain all weekend, so I guess our hiking trip is off."
+      },
+      {
+        "speaker": "W",
+        "text": "That's a shame. I bought new boots for it."
+      },
+      {
+        "speaker": "M",
+        "text": "How about going to the climbing gym in the city instead? We can still go on Saturday."
+      },
+      {
+        "speaker": "W",
+        "text": "Good idea. Let's invite Mike and Nancy, too."
+      }
+    ],
+    "question": "Question: What will the speakers probably do on Saturday?",
+    "choices": [
+      "Go climbing at an indoor gym.",
+      "Go hiking in the rain.",
+      "Buy new boots in the city.",
+      "Stay home with Mike and Nancy."
+    ],
+    "answerIndex": 0,
+    "translation": "M: 天気予報だと週末ずっと雨だから、ハイキングは中止かな。／W: 残念。そのために新しいブーツを買ったのに。／M: 代わりに街のクライミングジムに行くのはどう？土曜日にはまだ行けるよ。／W: いい考えね。マイクとナンシーも誘いましょう。\n問: 2人は土曜日におそらく何をするか。→ 屋内のジムでクライミングをする。",
+    "explanation": "ハイキングは中止で、代案の climbing gym に Good idea と賛成している。",
+    "distractorNotes": [
+      "室内のクライミングジム",
+      "ハイキングは中止になった",
+      "ブーツはすでに買ってある",
+      "家にいる話は出ない"
+    ]
+  },
+  {
+    "id": "g2-l2-012",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Excuse me, I live in the apartment below you. Your music was quite loud last night."
+      },
+      {
+        "speaker": "M",
+        "text": "Oh, I'm so sorry. I didn't realize you could hear it. I was practicing for a concert."
+      },
+      {
+        "speaker": "W",
+        "text": "I understand, but I was trying to sleep after work."
+      },
+      {
+        "speaker": "M",
+        "text": "I'll use headphones from now on, and I'll stop by ten at the latest."
+      }
+    ],
+    "question": "Question: What does the man promise to do?",
+    "choices": [
+      "Use headphones and stop playing by ten.",
+      "Move to a different apartment.",
+      "Cancel his concert.",
+      "Play music only in the morning."
+    ],
+    "answerIndex": 0,
+    "translation": "W: すみません、あなたの下の部屋に住んでいます。昨夜は音楽がかなりうるさかったです。／M: ああ、申し訳ありません。聞こえているとは気づきませんでした。コンサートの練習をしていたんです。／W: 事情は分かりますが、仕事のあとで寝ようとしていたので。／M: これからはヘッドホンを使います。それに遅くとも10時にはやめます。\n問: 男性は何を約束しているか。→ ヘッドホンを使い、10時までにやめる。",
+    "explanation": "I'll use headphones ... and I'll stop by ten が約束。コンサートは練習の理由であって、中止するとは言っていない。",
+    "distractorNotes": [
+      "ヘッドホンと10時まで",
+      "引っ越しの話は出ない",
+      "コンサートは中止しない。練習をするだけ",
+      "朝だけ弾く、とは言っていない"
+    ]
+  },
+  {
+    "id": "g2-l2-013",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Have you decided which language to study next year, Sarah?"
+      },
+      {
+        "speaker": "W",
+        "text": "I'm choosing between Spanish and Chinese. Chinese is more useful for my father's business, but I hear it's harder."
+      },
+      {
+        "speaker": "M",
+        "text": "My sister took Spanish, and she says the teacher is great."
+      },
+      {
+        "speaker": "W",
+        "text": "I'll visit both classes next week before deciding."
+      }
+    ],
+    "question": "Question: What is Sarah going to do next week?",
+    "choices": [
+      "Visit both language classes.",
+      "Ask her father about his business.",
+      "Start studying Chinese.",
+      "Talk with the man's sister."
+    ],
+    "answerIndex": 0,
+    "translation": "M: 来年どの言語を勉強するか決めた、サラ？／W: スペイン語と中国語で迷ってるの。中国語は父の仕事に役立つけど、むずかしいって聞くわ。／M: ぼくの姉がスペイン語をとって、先生がすごくいいって言ってたよ。／W: 決める前に、来週両方のクラスを見学するつもり。\n問: サラは来週何をするか。→ 両方の語学クラスを見学する。",
+    "explanation": "最後の I'll visit both classes next week が答え。決めるのはそのあと。",
+    "distractorNotes": [
+      "両方の授業を見に行く",
+      "父親に聞くとは言っていない",
+      "まだ決めていないので始めない",
+      "姉と話すとは言っていない"
+    ]
+  },
+  {
+    "id": "g2-l2-014",
+    "section": "l-part2",
+    "tags": [
+      "listen:inference"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "I'd like to buy a gift for my grandmother's eightieth birthday. Any ideas?"
+      },
+      {
+        "speaker": "M",
+        "text": "How about a photo album? We can print your family photos and put them in a book."
+      },
+      {
+        "speaker": "W",
+        "text": "That sounds nice. How long does it take?"
+      },
+      {
+        "speaker": "M",
+        "text": "Usually three days, but it can take a week in busy seasons. Her party's on Sunday? Then you should order today."
+      }
+    ],
+    "question": "Question: Why does the man tell the woman to order today?",
+    "choices": [
+      "Making the album may take several days.",
+      "The shop will close tomorrow.",
+      "The photos need to be printed first.",
+      "The price will go up on Sunday."
+    ],
+    "answerIndex": 0,
+    "translation": "W: 祖母の80歳の誕生日の贈り物を買いたいのですが、何かアイデアはありますか。／M: フォトアルバムはどうでしょう。ご家族の写真を印刷して本にできます。／W: いいですね。どのくらいかかりますか。／M: ふつうは3日ですが、混む時期は1週間かかることもあります。パーティーは日曜でしたね？それなら今日注文したほうがいいですよ。\n問: なぜ男性は今日注文するよう言うのか。→ アルバムを作るのに数日かかるから。",
+    "explanation": "Usually three days, but it can take a week が根拠。パーティーが日曜なので、早めの注文を勧めている。",
+    "distractorNotes": [
+      "作るのに日数がかかる",
+      "店が閉まる話は出ない",
+      "写真の印刷は作業の一部で、理由の核心ではない",
+      "値上げの話は出ない"
+    ]
+  },
+  {
+    "id": "g2-l2-015",
+    "section": "l-part2",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Hello, lost and found."
+      },
+      {
+        "speaker": "W",
+        "text": "Hi. I think I left my umbrella on the eight fifteen train this morning. It's blue with white dots."
+      },
+      {
+        "speaker": "M",
+        "text": "We have a blue one, but it has no dots. Let me check again... No, I'm afraid we don't have it. Try again tomorrow. Items are sometimes brought in later."
+      },
+      {
+        "speaker": "W",
+        "text": "I'll call back then. Thank you."
+      }
+    ],
+    "question": "Question: What will the woman do tomorrow?",
+    "choices": [
+      "Call the lost and found office again.",
+      "Go to the train station.",
+      "Buy a new umbrella.",
+      "Describe her umbrella to the man."
+    ],
+    "answerIndex": 0,
+    "translation": "M: はい、遺失物取扱所です。／W: こんにちは。今朝の8時15分の電車に傘を忘れたと思うのですが。青で白い水玉です。／M: 青い傘はありますが、水玉はありません。もう一度確認します……いえ、残念ながらありません。明日もう一度お電話ください。あとから届くこともあります。／W: では明日かけ直します。ありがとうございます。\n問: 女性は明日何をするか。→ 遺失物取扱所にもう一度電話する。",
+    "explanation": "I'll call back then の then は「明日」。男性が Try again tomorrow と勧めたのに応じている。",
+    "distractorNotes": [
+      "明日、電話をかけ直す",
+      "駅に行くとは言っていない",
+      "新しい傘を買う話は出ない",
+      "特徴はすでに説明した"
+    ]
+  },
+  {
+    "id": "g2-l3-001",
+    "section": "l-part3",
+    "tags": [
+      "listen:announcement"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Attention, shoppers. Thank you for visiting Green Mart. Today only, all fruits and vegetables are twenty percent off until six o'clock. In addition, customers who spend more than fifty dollars will receive a free reusable shopping bag at the information desk on the first floor. Please remember that our bakery will close at five thirty today. Thank you for shopping with us."
+      }
+    ],
+    "question": "Question: What can customers get for free if they spend more than fifty dollars?",
+    "choices": [
+      "A reusable shopping bag.",
+      "Twenty percent off fruit.",
+      "Bread from the bakery.",
+      "A gift card for the next visit."
+    ],
+    "answerIndex": 0,
+    "translation": "お客様にお知らせします。グリーンマートにご来店ありがとうございます。本日限り、果物と野菜がすべて6時まで2割引です。さらに、50ドルを超えてお買い上げのお客様には、1階の案内所で繰り返し使える買い物袋を無料で差し上げます。パン売り場は本日5時半に閉まりますのでご注意ください。\n問: 50ドルを超えて買うと、無料でもらえる物は何か。→ 繰り返し使える買い物袋。",
+    "explanation": "customers who spend more than fifty dollars will receive a free reusable shopping bag が答え。20パーセント引きは果物と野菜の割引で別の話。",
+    "distractorNotes": [
+      "買い物袋がもらえる",
+      "2割引は割引であって景品ではない",
+      "パン売り場は閉まる話だけ",
+      "ギフトカードの話は出ない"
+    ]
+  },
+  {
+    "id": "g2-l3-002",
+    "section": "l-part3",
+    "tags": [
+      "listen:announcement"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Good afternoon, passengers. This is an announcement for Flight 305 to Singapore. Because of strong winds, the departure has been delayed by about forty minutes. The flight will now leave from Gate 18 instead of Gate 12. Passengers who are waiting at Gate 12 are asked to move to the new gate. We are sorry for the trouble."
+      }
+    ],
+    "question": "Question: What are passengers on Flight 305 asked to do?",
+    "choices": [
+      "Move to a different gate.",
+      "Wait for another announcement at Gate 12.",
+      "Go to the ticket counter for new tickets.",
+      "Board the airplane immediately."
+    ],
+    "answerIndex": 0,
+    "translation": "ご搭乗のお客様にお知らせします。シンガポール行き305便についてです。強風のため、出発が約40分遅れています。この便は12番ゲートではなく18番ゲートから出発します。12番ゲートでお待ちのお客様は、新しいゲートへ移動してください。ご迷惑をおかけして申し訳ありません。\n問: 305便の乗客は何をするよう求められているか。→ 別のゲートへ移動する。",
+    "explanation": "Passengers who are waiting at Gate 12 are asked to move to the new gate が答え。出発は遅れているので、すぐ搭乗するのではない。",
+    "distractorNotes": [
+      "18番ゲートへ移動",
+      "12番ゲートで待つのではなく移動を求められている",
+      "チケットの話は出ない",
+      "出発は40分遅れ。すぐには乗れない"
+    ]
+  },
+  {
+    "id": "g2-l3-003",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Welcome to the City Science Museum. Before we begin the tour, I'd like to explain a few rules. You can take pictures of the exhibits, but please do not use a flash, because it can damage some of the old equipment. The tour will take about one hour, and then you will have thirty minutes of free time. The gift shop is on the second floor, and it closes at four o'clock."
+      }
+    ],
+    "question": "Question: What does the guide say about taking pictures?",
+    "choices": [
+      "Visitors may take pictures, but not with a flash.",
+      "Visitors may not take any pictures.",
+      "Visitors may use a flash only in the gift shop.",
+      "Visitors must ask the guide first."
+    ],
+    "answerIndex": 0,
+    "translation": "シティ科学博物館へようこそ。ツアーを始める前に、いくつかルールを説明します。展示物の写真は撮れますが、古い機器を傷めることがあるのでフラッシュは使わないでください。ツアーは約1時間で、そのあと30分の自由時間があります。ギフトショップは2階にあり、4時に閉まります。\n問: ガイドは写真撮影についてどう言っているか。→ 撮ってよいが、フラッシュは使えない。",
+    "explanation": "You can take pictures ... but please do not use a flash が答え。can ~, but ... の but のあとが条件。",
+    "distractorNotes": [
+      "写真はOK、フラッシュはNG",
+      "撮影そのものは禁止されていない",
+      "ギフトショップの話は別",
+      "事前に聞く必要があるとは言っていない"
+    ]
+  },
+  {
+    "id": "g2-l3-004",
+    "section": "l-part3",
+    "tags": [
+      "listen:announcement"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Attention, all second-year students. This is a reminder about next week's school trip to Kyoto. We will leave school at seven thirty on Tuesday morning, so please arrive by seven fifteen. Students must wear their school uniforms. You can bring a lunch box, but you cannot bring snacks to eat on the bus. If you have any questions, please see your homeroom teacher before Friday."
+      }
+    ],
+    "question": "Question: What are students told about the school trip?",
+    "choices": [
+      "They should arrive at school by seven fifteen.",
+      "They can eat snacks on the bus.",
+      "They should wear their own clothes.",
+      "They must see their homeroom teacher on Friday."
+    ],
+    "answerIndex": 0,
+    "translation": "2年生の皆さんに連絡します。来週の京都への遠足についてのお知らせです。火曜日の朝7時半に学校を出発しますので、7時15分までに集合してください。制服を着用すること。お弁当は持ってきてよいですが、バスの中で食べるお菓子は持ってこられません。質問があれば、金曜日までに担任の先生に聞いてください。\n問: 生徒は遠足について何と言われているか。→ 7時15分までに学校に来る。",
+    "explanation": "please arrive by seven fifteen が答え。制服着用、お菓子は不可、質問は金曜日までに、と細部が選択肢で入れ替えられている。",
+    "distractorNotes": [
+      "7時15分までに集合",
+      "お菓子はバスで食べられない",
+      "制服を着る",
+      "金曜日までに質問する。金曜に会う必要はない"
+    ]
+  },
+  {
+    "id": "g2-l3-005",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "This is the morning traffic report. Because of an accident on the Harbor Bridge, there is a long line of cars heading into the city. Drivers should expect to spend about an hour on the bridge. Police are recommending that people use the Mountain Road instead. If you must use the bridge, you may want to leave home earlier than usual. The train line, however, is running on time."
+      }
+    ],
+    "question": "Question: What is one thing the police are recommending?",
+    "choices": [
+      "Using the Mountain Road.",
+      "Taking the train to the bridge.",
+      "Staying home today.",
+      "Leaving the city before the morning."
+    ],
+    "answerIndex": 0,
+    "translation": "朝の交通情報です。ハーバー橋での事故のため、市内へ向かう車が長い列を作っています。橋を渡るのに1時間ほどかかる見込みです。警察は代わりにマウンテン・ロードを使うよう勧めています。どうしても橋を使うなら、いつもより早く家を出たほうがよいでしょう。ただし、電車は時刻どおり走っています。\n問: 警察が勧めていることの1つは何か。→ マウンテン・ロードを使うこと。",
+    "explanation": "Police are recommending that people use the Mountain Road instead が答え。電車が正常に走っているのは別の情報で、警察の勧めではない。",
+    "distractorNotes": [
+      "マウンテン・ロードを使う",
+      "電車は走っているが、橋へ行く手段ではない",
+      "家にいる話は出ない",
+      "市外へ出る話は出ない"
+    ]
+  },
+  {
+    "id": "g2-l3-006",
+    "section": "l-part3",
+    "tags": [
+      "listen:gist"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "My name is Linda, and I started playing the violin when I was six. At first, I did not enjoy practicing because I wanted to play outside with my friends. But when I was twelve, my teacher took me to a concert, and I was moved by the music. After that, I began to practice every day. Now I play in the school orchestra, and next month, I will play a solo in front of the whole school."
+      }
+    ],
+    "question": "Question: Why did Linda begin to practice the violin every day?",
+    "choices": [
+      "A concert made her interested in music.",
+      "Her friends started to play with her.",
+      "Her teacher gave her a new violin.",
+      "She wanted to join the school orchestra."
+    ],
+    "answerIndex": 0,
+    "translation": "私の名前はリンダで、6歳のときにバイオリンを始めました。最初は友達と外で遊びたかったので、練習が楽しくありませんでした。でも12歳のとき、先生がコンサートに連れて行ってくれて、音楽に心を動かされました。それ以来、毎日練習するようになりました。いま私は学校のオーケストラで演奏していて、来月は全校生徒の前でソロを弾きます。\n問: なぜリンダは毎日バイオリンの練習を始めたのか。→ コンサートで音楽に興味を持ったから。",
+    "explanation": "when I was twelve, ... moved by the music. After that, I began to practice every day が理由。オーケストラは練習の結果であって理由ではない。",
+    "distractorNotes": [
+      "コンサートに感動した",
+      "友達と遊びたかったのは最初の気持ち",
+      "新しいバイオリンの話は出ない",
+      "オーケストラは練習を始めたあとの話"
+    ]
+  },
+  {
+    "id": "g2-l3-007",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Today I'm going to show you how to make a simple tomato soup. First, cut four tomatoes and one onion into small pieces. Then, cook the onion in a pan with a little oil for about five minutes. Add the tomatoes and a cup of water, and cook for another fifteen minutes. If you like a smooth soup, put it in a blender before serving. Finally, add salt and pepper to taste."
+      }
+    ],
+    "question": "Question: What should the listeners do after they cook the onion?",
+    "choices": [
+      "Add the tomatoes and water to the pan.",
+      "Put the onion in a blender.",
+      "Add salt and pepper.",
+      "Cut the tomatoes into small pieces."
+    ],
+    "answerIndex": 0,
+    "translation": "今日は、かんたんなトマトスープの作り方をお見せします。まず、トマト4個とたまねぎ1個を小さく切ります。次に、たまねぎを少しの油で5分ほど炒めます。トマトと水1カップを加えて、さらに15分煮ます。なめらかなスープが好みなら、出す前にブレンダーにかけます。最後に、塩とこしょうで味を整えます。\n問: たまねぎを炒めたあと、何をするか。→ トマトと水をなべに加える。",
+    "explanation": "順番を表す First / Then / Finally に注意。たまねぎを炒める (Then) のあとは Add the tomatoes and a cup of water。",
+    "distractorNotes": [
+      "トマトと水を加える",
+      "ブレンダーは煮たあと",
+      "塩こしょうは最後",
+      "切るのは最初の作業"
+    ]
+  },
+  {
+    "id": "g2-l3-008",
+    "section": "l-part3",
+    "tags": [
+      "listen:announcement"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Welcome to Riverside Zoo. Today at eleven o'clock, you can watch the penguins being fed near the main entrance. At one thirty, our new baby elephant will be shown to the public for the first time at the Africa House. Because many visitors are expected, tickets for the elephant show are required. You can get them for free at the information center until noon."
+      }
+    ],
+    "question": "Question: What do visitors need to do to see the baby elephant?",
+    "choices": [
+      "Get a ticket at the information center.",
+      "Arrive at the main entrance by eleven.",
+      "Pay an extra fee at the Africa House.",
+      "Join the penguin show first."
+    ],
+    "answerIndex": 0,
+    "translation": "リバーサイド動物園へようこそ。本日11時には、正面入口の近くでペンギンの餌やりが見られます。1時30分には、アフリカハウスで新しく生まれたゾウの赤ちゃんが初めて一般公開されます。多くのお客様が見込まれるため、ゾウのショーにはチケットが必要です。正午まで案内所で無料で受け取れます。\n問: ゾウの赤ちゃんを見るには、何をする必要があるか。→ 案内所でチケットをもらう。",
+    "explanation": "tickets for the elephant show are required と、You can get them for free at the information center until noon が答え。",
+    "distractorNotes": [
+      "案内所でチケットを受け取る",
+      "11時はペンギンの餌やり",
+      "チケットは無料。追加料金ではない",
+      "ペンギンを見る必要はない"
+    ]
+  },
+  {
+    "id": "g2-l3-009",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Good evening. This is the Westfield Station announcement. Due to track repairs, trains on the Blue Line will not stop at Westfield Station from tomorrow until the end of next week. Passengers who usually get on or off here should use Eastfield Station, which is two stops away. A free bus service will connect the two stations from six in the morning to eleven at night."
+      }
+    ],
+    "question": "Question: What should passengers who usually use Westfield Station do?",
+    "choices": [
+      "Use Eastfield Station and the free bus.",
+      "Wait for the repairs to finish.",
+      "Take the Blue Line to a different city.",
+      "Pay extra for a special bus service."
+    ],
+    "answerIndex": 0,
+    "translation": "こんばんは。ウェストフィールド駅のお知らせです。線路の修理のため、明日から来週末まで、ブルーラインの電車はウェストフィールド駅に止まりません。ふだんここで乗り降りするお客様は、2駅先のイーストフィールド駅をご利用ください。2つの駅の間は、朝6時から夜11時まで無料バスが結びます。\n問: ふだんウェストフィールド駅を使う乗客は何をすべきか。→ イーストフィールド駅と無料バスを使う。",
+    "explanation": "Passengers who usually get on or off here should use Eastfield Station が指示。free bus service が2駅をつなぐ。",
+    "distractorNotes": [
+      "イーストフィールド駅と無料バス",
+      "修理は1週間以上続く。待つ指示ではない",
+      "別の都市へ行く話は出ない",
+      "バスは無料"
+    ]
+  },
+  {
+    "id": "g2-l3-010",
+    "section": "l-part3",
+    "tags": [
+      "listen:announcement"
+    ],
+    "difficulty": 1,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Hello, everyone. This is an announcement from the city library. Starting next month, the library will open one hour earlier on weekends, at eight o'clock in the morning. We are also starting a new service. You will be able to borrow e-books on your smartphone with your library card. For more information, please visit our Web site or ask the staff at the front desk."
+      }
+    ],
+    "question": "Question: What is new at the library starting next month?",
+    "choices": [
+      "It will open earlier on weekends.",
+      "It will be closed on weekends.",
+      "It will give free smartphones to members.",
+      "It will stop lending paper books."
+    ],
+    "answerIndex": 0,
+    "translation": "皆さん、こんにちは。市立図書館からのお知らせです。来月から、週末は1時間早く、朝8時に開館します。また、新しいサービスも始めます。図書館カードがあれば、スマートフォンで電子書籍を借りられるようになります。詳しくはウェブサイトをご覧になるか、受付のスタッフにお尋ねください。\n問: 来月から図書館で新しくなることは何か。→ 週末に早く開館する。",
+    "explanation": "Starting next month, the library will open one hour earlier on weekends が答え。電子書籍も新サービスだが、選択肢にあるのは開館時間のほう。",
+    "distractorNotes": [
+      "週末は早く開館",
+      "閉まるのではなく早く開く",
+      "スマホは配られない。電子書籍が借りられる",
+      "紙の本の貸し出しをやめる話は出ない"
+    ]
+  },
+  {
+    "id": "g2-l3-011",
+    "section": "l-part3",
+    "tags": [
+      "listen:gist"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Hello, members of the soccer club. As you know, our match against Hillside High School was planned for this Saturday. However, their team has several players who are sick, so they asked us to change the date. The new date is Sunday, October 20, at two o'clock. The place will stay the same. Please tell your parents about the change, and let Coach Ito know by Wednesday if you cannot come."
+      }
+    ],
+    "question": "Question: Why was the date of the match changed?",
+    "choices": [
+      "Some players on the other team are sick.",
+      "The weather will be bad on Saturday.",
+      "The field is not ready for the match.",
+      "Coach Ito cannot come on Saturday."
+    ],
+    "answerIndex": 0,
+    "translation": "サッカー部の皆さん、こんにちは。ご存じのとおり、ヒルサイド高校との試合は今週土曜日に予定されていました。しかし、相手チームには病気の選手が何人かいて、日にちの変更を求めてきました。新しい日程は10月20日の日曜日、2時です。場所は同じです。保護者の方に変更を伝え、来られない人は水曜日までにイトウコーチに知らせてください。\n問: なぜ試合の日が変更されたのか。→ 相手チームの選手が何人か病気だから。",
+    "explanation": "their team has several players who are sick が理由。weather や field の話は出ていない。",
+    "distractorNotes": [
+      "相手チームの病気",
+      "天気の話は出ない",
+      "場所は変わらない",
+      "コーチが来られないとは言っていない"
+    ]
+  },
+  {
+    "id": "g2-l3-012",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "I'd like to tell you about my favorite hobby, which is growing herbs on my balcony. I started with only one pot of basil two years ago. Now I have mint, parsley, and rosemary, too. I use them in my cooking almost every day. My mother says that fresh herbs make the food taste better. Next, I want to try growing small tomatoes, but I'm not sure that my balcony gets enough sun."
+      }
+    ],
+    "question": "Question: What is the speaker worried about?",
+    "choices": [
+      "Her balcony may not get enough sun for tomatoes.",
+      "Her herbs have stopped growing.",
+      "She does not have enough pots.",
+      "Her mother does not like fresh herbs."
+    ],
+    "answerIndex": 0,
+    "translation": "私の好きな趣味についてお話しします。それはベランダでハーブを育てることです。2年前にバジルを1鉢育て始めたのがきっかけでした。いまはミント、パセリ、ローズマリーもあります。ほとんど毎日料理に使っています。母は、新鮮なハーブを使うと料理がおいしくなると言います。次はミニトマトを育ててみたいのですが、ベランダに十分な日が当たるか自信がありません。\n問: 話し手は何を心配しているか。→ ベランダにトマトに十分な日が当たらないかもしれない。",
+    "explanation": "最後の文 I'm not sure that my balcony gets enough sun が心配事。ハーブは順調に育っている。",
+    "distractorNotes": [
+      "トマトに必要な日光",
+      "ハーブは増えていて、育たなくなっていない",
+      "鉢の数の話は出ない",
+      "母は新鮮なハーブを評価している"
+    ]
+  },
+  {
+    "id": "g2-l3-013",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 2,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "Good morning. Here is today's weather forecast. It will be cloudy this morning, and rain will begin around noon. The rain is expected to be heavy in the afternoon, with strong winds near the coast. Tonight, the rain will stop, and tomorrow will be sunny and warmer, with a high of twenty-two degrees. If you are planning to go out this afternoon, don't forget to take an umbrella."
+      }
+    ],
+    "question": "Question: What will the weather be like tomorrow?",
+    "choices": [
+      "Sunny and warmer.",
+      "Cloudy with light rain.",
+      "Windy near the coast.",
+      "Rainy all day."
+    ],
+    "answerIndex": 0,
+    "translation": "おはようございます。今日の天気予報です。午前中はくもりで、昼ごろから雨が降り始めます。午後は雨が強くなり、海岸の近くでは強い風が吹く見込みです。今夜、雨は止み、明日は晴れて気温が上がり、最高気温は22度になるでしょう。今日の午後に出かける予定の方は、傘を忘れずにお持ちください。\n問: 明日の天気はどうなるか。→ 晴れて、いまより暖かい。",
+    "explanation": "tomorrow will be sunny and warmer が答え。強い風は今日の午後の海岸の予報で、明日の話ではない。",
+    "distractorNotes": [
+      "晴れて暖かい",
+      "くもりは今日の午前",
+      "強い風は今日の午後",
+      "雨は今夜止む"
+    ]
+  },
+  {
+    "id": "g2-l3-014",
+    "section": "l-part3",
+    "tags": [
+      "listen:detail"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "W",
+        "text": "Thank you for joining the volunteer meeting. This year, we will hold the school's bake sale on December 12. Each class will make one kind of cake or cookie. We will sell them in the gym from ten in the morning, and all the money will be used to buy books for the school library. Please remember that some students are allergic to nuts, so please do not use nuts in your recipes."
+      }
+    ],
+    "question": "Question: What are students told to do when they prepare food for the bake sale?",
+    "choices": [
+      "Not to use nuts in their recipes.",
+      "To make three kinds of cookies.",
+      "To sell the food outside the gym.",
+      "To bring books to the school library."
+    ],
+    "answerIndex": 0,
+    "translation": "ボランティア会議にご参加ありがとうございます。今年の学校のベイクセールは12月12日に行います。各クラスがケーキかクッキーを1種類ずつ作ります。体育館で朝10時から販売し、売り上げはすべて学校図書館の本を買うために使います。ナッツアレルギーの生徒がいるので、レシピにナッツを使わないでください。\n問: ベイクセールのために食べ物を用意するとき、生徒は何をするよう言われているか。→ レシピにナッツを使わない。",
+    "explanation": "最後の please do not use nuts in your recipes が指示。1種類ずつ作る、体育館で売る、などの細部が選択肢で変えられている。",
+    "distractorNotes": [
+      "ナッツを使わない",
+      "各クラス1種類ずつ",
+      "売る場所は体育館の中",
+      "本を買うのは売り上げの使い道"
+    ]
+  },
+  {
+    "id": "g2-l3-015",
+    "section": "l-part3",
+    "tags": [
+      "listen:inference"
+    ],
+    "difficulty": 3,
+    "stem": "",
+    "dialogue": [
+      {
+        "speaker": "M",
+        "text": "When I was a child, my family lived near the sea. Every summer, my grandfather took me fishing on his small boat. I never caught many fish, but I loved listening to his stories about the sea. Last month, I found his old fishing box in my parents' garage. I was so happy that I decided to start fishing again this weekend. I hope I can finally catch something big this time."
+      }
+    ],
+    "question": "Question: Why did the speaker decide to start fishing again?",
+    "choices": [
+      "He found his grandfather's old fishing box.",
+      "His grandfather invited him to go fishing.",
+      "His parents moved near the sea.",
+      "He wanted to catch a large fish for dinner."
+    ],
+    "answerIndex": 0,
+    "translation": "子どものころ、私の家族は海の近くに住んでいました。毎年夏、祖父が小さなボートで釣りに連れて行ってくれました。魚はあまり釣れませんでしたが、祖父の海の話を聞くのが大好きでした。先月、両親のガレージで祖父の古い釣り道具箱を見つけました。とてもうれしくて、今週末にまた釣りを始めることにしました。今度こそ大物が釣れるといいのですが。\n問: なぜ話し手は釣りを再開することにしたのか。→ 祖父の古い釣り道具箱を見つけたから。",
+    "explanation": "found his old fishing box ... I was so happy that I decided to start fishing again が理由。祖父に誘われたわけではない。",
+    "distractorNotes": [
+      "道具箱を見つけた",
+      "祖父は思い出の人で、いま誘ったわけではない",
+      "引っ越しの話は出ない",
+      "夕食のためとは言っていない"
+    ]
+  }
+]

@@ -1759,7 +1759,9 @@ await g1.getByText('面接の練習も2級のものになるよ').waitFor({ time
 await g1.getByText('準2級の記録は消えない').waitFor({ timeout: 5000 });
 await g1.screenshot({ path: join(OUT, 'g2-01-switch-sheet.png') });
 await g1.getByRole('button', { name: '2級にきりかえる' }).last().click();
-await g1.getByText('2級の問題はまだ準備中だよ').first().waitFor({ timeout: 10000 });
+// G2-02：2級の問題が入ったので「準備中」は出ない。準2級で診断を済ませた子には、2級の診断を勧める
+//（onboarded は級ごとのキー。準2級の onboarded は触られない）
+await g1.getByRole('button', { name: '診断テストをはじめる' }).waitFor({ timeout: 10000 });
 if ((await g1.evaluate(() => localStorage.getItem('eiken.grade'))) !== 'g2') throw new Error('2級に切り替わっていない');
 const afterSwitch = await readKv(g1, ['session', 'mock', 'reviewPos:diagnostic', 'reviewPos:diagnostic-g2']);
 if (afterSwitch.__error || afterSwitch.__timeout) throw new Error(`kv が読めない: ${JSON.stringify(afterSwitch)}`);
@@ -1767,20 +1769,23 @@ if (afterSwitch.session) throw new Error(`切り替えで session が捨てら�
 // 診断の保存位置は級別のキー。準2級のキーは残り、2級のキーは触られていない
 if (JSON.stringify(afterSwitch['reviewPos:diagnostic']) !== JSON.stringify(posBefore)) throw new Error('切り替えで準2級の診断の保存位置が変わった');
 if (afterSwitch['reviewPos:diagnostic-g2'] !== undefined) throw new Error('2級の診断の保存位置に準2級の位置が流れ込んだ');
+await g1.screenshot({ path: join(OUT, 'g2-02-welcome-g2.png') });
+await g1.getByRole('button', { name: 'あとにする' }).click();
+await g1.getByText('今日のミッション').waitFor({ timeout: 8000 });
 if (!(await g1.locator('body').innerText()).includes('英検2級')) throw new Error('2級のホームに「英検2級」が出ていない');
 if ((await g1.title()) !== '英検2級トレーニング') throw new Error(`タブ名が2級になっていない: ${await g1.title()}`);
 await g1.screenshot({ path: join(OUT, 'g2-02-home-g2.png') });
-console.log('  ✓ 2級に切り替わる（やりかけの演習は終わり・準備中が出る・白画面にならない）');
+console.log('  ✓ 2級に切り替わる（やりかけの演習は終わり・2級の診断を勧める・白画面にならない）');
 
-// 問題が要る画面は「準備中」で戻り道がある
+// 2級の問題が入ったので、問題が要る画面も「準備中」にならず開く
 for (const name of ['模擬テスト', 'ライティング道場', '論点別']) {
   await g1.locator('button', { hasText: name }).first().click();
-  await g1.getByText('2級の問題はまだ準備中だよ').waitFor({ timeout: 5000 });
-  await g1.getByRole('button', { name: '準2級にもどす' }).waitFor({ timeout: 5000 });
+  await g1.waitForTimeout(500);
+  if (await g1.getByText('2級の問題はまだ準備中だよ').count()) throw new Error(`2級の${name}が準備中のまま`);
   await g1.getByLabel('もどる').click();
   await g1.getByText('今日のミッション').waitFor({ timeout: 5000 });
 }
-console.log('  ✓ 2級の模試・ライティング・論点別は「準備中」と戻り道を出す');
+console.log('  ✓ 2級の模試・ライティング・論点別が「準備中」にならず開く');
 
 // 本丸：2級にして「学習の記録」を開いても落ちない。他の級の数字が混ざらない
 await g1.locator('button', { hasText: '学習の記録' }).first().click();
@@ -1795,8 +1800,9 @@ console.log('  ✓ 2級で「学習の記録」を開いても落ちず、準2�
 // 準2級に戻す → 記録がそのまま見える
 await g1.getByLabel('ホーム').click();
 await g1.getByText('今日のミッション').waitFor({ timeout: 8000 });
-await g1.getByRole('button', { name: '準2級にもどす' }).click();
+await g1.goto(URL + '#grade', { waitUntil: 'networkidle' });
 await g1.getByRole('button', { name: '準2級にきりかえる' }).click();
+await g1.getByRole('button', { name: '準2級にきりかえる' }).last().click();
 await g1.getByText('まだ採点していないライティングがあるよ').waitFor({ timeout: 10000 });
 if ((await g1.evaluate(() => localStorage.getItem('eiken.grade'))) !== 'pre2') throw new Error('準2級に戻っていない');
 if ((await countRows(g1, 'mocks')) !== preMocks || (await countRows(g1, 'attempts')) < preAttempts) {
@@ -1845,7 +1851,7 @@ async function startMidMock(ctxOpts, label, initScript) {
   await pg.goto(URL + '#grade', { waitUntil: 'networkidle' });
   await pg.getByRole('button', { name: '2級にきりかえる' }).click();
   await pg.getByRole('button', { name: '2級にきりかえる' }).last().click();
-  await pg.getByText('2級の問題はまだ準備中だよ').first().waitFor({ timeout: 10000 });
+  await pg.getByRole('button', { name: '診断テストをはじめる' }).waitFor({ timeout: 10000 });
   const kv = await readKv(pg, ['mock', 'session']);
   if (kv.__error || kv.__timeout) throw new Error(`kv が読めない: ${JSON.stringify(kv)}`);
   if (kv.mock || kv.session) throw new Error(`模試の途中で切り替えたのに mock/session が残っている: ${JSON.stringify(kv).slice(0, 100)}`);
@@ -1880,7 +1886,8 @@ async function startMidMock(ctxOpts, label, initScript) {
   await c.close();
 }
 
-// R-5：2級（問題0問）でようこそ画面から診断を始めても、完了扱いにならない
+// R-5（G2-02で読み替え）：2級でようこそ画面から診断を始めると、2級の20問が出る。
+// 診断が終わるまで onboarded（準2級・2級とも）は書かれない
 {
   const c = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const pg = await c.newPage();
@@ -1891,24 +1898,27 @@ async function startMidMock(ctxOpts, label, initScript) {
   await pg.addInitScript(() => localStorage.setItem('eiken.grade', 'g2'));
   await pg.goto(URL, { waitUntil: 'networkidle' });
   await pg.getByRole('button', { name: '診断テストをはじめる' }).click();
-  await pg.getByText('2級の問題はまだ準備中だよ').waitFor({ timeout: 5000 });
-  const kv = await readKv(pg, ['onboarded', 'diagnostic']);
-  if (kv.onboarded || kv.diagnostic) throw new Error(`2級で診断を始めただけで完了扱いになった: ${JSON.stringify(kv)}`);
-  await pg.screenshot({ path: join(OUT, 'g2r-02-welcome-g2-coming-soon.png') });
-  console.log('  ✓ 2級（0問）でようこそ画面から診断を始めても、完了扱いにならず「準備中」が出る');
+  await pg.locator('main ul > li > button').first().waitFor({ timeout: 8000 });
+  if (await pg.getByText('2級の問題はまだ準備中だよ').count()) throw new Error('2級に問題があるのに準備中が出ている');
+  const kv = await readKv(pg, ['onboarded', 'onboarded-g2', 'diagnostic', 'diagnostic-g2']);
+  if (kv.onboarded || kv['onboarded-g2'] || kv.diagnostic || kv['diagnostic-g2']) throw new Error(`診断の途中で完了扱いになった: ${JSON.stringify(kv)}`);
+  console.log('  ✓ 2級のようこそ画面から診断が始まり、終わるまで完了扱いにならない');
   await c.close();
 }
 
 /* 切り替え導線の出る日付：二次（2026-11-15）が終わるまでは隠し、翌日から出す */
-// 2級の中身が空のあいだは、11/16 でも「準備中」しか無い級へ誘導しないので出さない。
-// 中身が入ったら（content/g2 に1問でも入ったら）出る、に自動で切り替わる
-const g2HasContent = ['vocab', 'passage', 'listening'].some(
-  (f) => JSON.parse(readFileSync(join(root, `content/g2/${f}.json`), 'utf8')).length > 0,
-);
+// 出る条件は「2級に1問以上ある」かつ「公開フラグ G2_RELEASED が true」。
+// 種データしか無い2級へ全員を誘導しないため、フラグが false のあいだは 11/16 以降も出ない（M-1）。
+// 管理が Phase 3 のあとにフラグを true にすると、期待値が自動で「出る」に切り替わる
+const g2HasContent =
+  ['vocab', 'passage', 'listening'].some(
+    (f) => JSON.parse(readFileSync(join(root, `content/g2/${f}.json`), 'utf8')).length > 0,
+  ) && /export const G2_RELEASED = true;/.test(readFileSync(join(root, 'src/grade.ts'), 'utf8'));
 for (const [date, shown] of [
   ['2026-10-06', false],
   ['2026-11-15', false],
   ['2026-11-16', g2HasContent],
+  ['2026-12-31', g2HasContent],
 ]) {
   const dctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const dp = await dctx.newPage();
@@ -1925,7 +1935,422 @@ for (const [date, shown] of [
   await dp.screenshot({ path: join(OUT, `g2-04-home-${date}.png`) });
   await dctx.close();
 }
-console.log(`  ✓ 切り替え導線は 2026-10-06 / 11-15 は隠れ、11-16 は ${g2HasContent ? '出る' : '2級が空なので出ない'}`);
+console.log(`  ✓ 切り替え導線は 2026-10-06 / 11-15 は隠れ、11-16・12-31 は ${g2HasContent ? '出る' : '公開前（G2_RELEASED=false）なので出ない'}`);
+
+/* ---- G2-02：一次の形式差（リスニング2部・模試・診断・CSE・日程）----
+   既存ステップは1行も触らず、末尾に足す。
+   見るもの：2級のフル模試を最後まで通す（85分・大問1/2A/2B/3A/3B/5・リスニング第1部/第2部が各15問・
+   2Aと2Bは別の本文・CSEは650点満点/合格1520）、準2級のフル模試が変わっていないこと、
+   二次の前後の日付のホーム、2級のホームに準2級の文言が残っていないこと、2級の診断。 */
+console.log('G2-02：一次の形式差');
+
+const ESSAY_G2 =
+  'I think that students should be allowed to use smartphones at school. I have two reasons. First, smartphones are useful for learning. ' +
+  'Students can look up new words in a dictionary application and check information for their projects. Second, smartphones help students stay safe. ' +
+  'If there is an accident, they can contact their parents quickly. For these reasons, I believe that schools should let students use smartphones.';
+const ESSAY_PRE2 =
+  'I think students should join a club. I have two reasons. First, they can make many friends there. For example, I met my best friend in the tennis club. ' +
+  'Second, club activities teach them how to work with other people. For these reasons, I think students should join a club.';
+
+/** IndexedDB のテーブルを全部読む（模試の記録の itemId を見るため） */
+async function readAllRows(target, table) {
+  return await target.evaluate(
+    (table) =>
+      new Promise((resolve, reject) => {
+        const req = indexedDB.open('eiken-pre2');
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => {
+          const g = req.result.transaction(table, 'readonly').objectStore(table).getAll();
+          g.onsuccess = () => resolve(g.result);
+          g.onerror = () => reject(g.error);
+        };
+      }),
+    table,
+  );
+}
+
+/** 級を指定して、ようこそ画面を「あとにする」で抜けたホームまで進む */
+async function g2Open(label, { grade = 'pre2', date = null, skipWelcome = true } = {}) {
+  const c = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const pg = await c.newPage();
+  activePage = pg;
+  activePageLabel = label;
+  pg.on('console', (m) => m.type() === 'error' && errors.push(`[${label}] ${m.text()}`));
+  pg.on('pageerror', (e) => errors.push(`[${label}] pageerror: ${e.message}`));
+  // 未設定のときだけ書く。毎回書くと、再読み込みで級を切り替えた結果を上書きしてしまう
+  if (grade === 'g2') await pg.addInitScript(() => { if (!localStorage.getItem('eiken.grade')) localStorage.setItem('eiken.grade', 'g2'); });
+  if (date) await pg.clock.setFixedTime(new Date(`${date}T12:00:00+09:00`));
+  await pg.goto(URL, { waitUntil: 'networkidle' });
+  if (skipWelcome) {
+    await pg.getByRole('button', { name: 'あとにする' }).click();
+    await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  }
+  return { c, pg };
+}
+
+/** 模試（フル）を最後まで通す。大問見出しの並びと、各大問の最初の問題の本文を返す */
+async function walkFullMock(pg, { writtenN, listenN, essay }) {
+  const seq = [];
+  const firstMain = {};
+  const choices = pg.locator('main ul > li > button');
+  const fallback = pg.getByRole('button', { name: /音が出ないときは/ });
+  for (let i = 0; i < writtenN + listenN; i++) {
+    await pg.locator('header span.truncate').first().waitFor({ timeout: 8000 });
+    const label = (await pg.locator('header span.truncate').first().textContent()).trim();
+    seq.push(label);
+    if (!(label in firstMain)) firstMain[label] = await pg.locator('main').innerText();
+    if (await pg.locator('textarea').count()) {
+      await pg.locator('textarea').fill(essay);
+    } else {
+      await choices.first().or(fallback).waitFor({ timeout: 8000 });
+      if (await fallback.count()) {
+        await fallback.click();
+        await choices.first().waitFor({ timeout: 8000 });
+      }
+      await choices.nth(i % 3).click();
+    }
+    if (i === writtenN - 1) {
+      await pg.getByRole('button', { name: 'リスニングへ' }).click();
+      await pg.waitForTimeout(150);
+    } else if (i === writtenN + listenN - 1) {
+      await pg.getByRole('button', { name: '提出する' }).click();
+      await pg.getByText('提出していい？').waitFor({ timeout: 5000 });
+      await pg.getByRole('button', { name: '提出する' }).last().click();
+    } else {
+      await pg.getByRole('button', { name: /^(次へ|答えずに次へ)$/ }).click();
+      await pg.waitForTimeout(60);
+    }
+  }
+  await pg.getByText('技能べつ').waitFor({ timeout: 15000 });
+  return { seq, firstMain };
+}
+
+/** 並びの中で、同じ見出しが何問続いたかを順に数える */
+function runs(seq) {
+  const out = [];
+  for (const l of seq) {
+    if (out.length && out[out.length - 1][0] === l) out[out.length - 1][1]++;
+    else out.push([l, 1]);
+  }
+  return out;
+}
+
+/** 結果画面のライティングの自己採点を、すべて満点で記録する */
+async function scoreAllWritings(pg) {
+  for (let guard = 0; guard < 4; guard++) {
+    const btn = pg.getByRole('button', { name: /モデル解答を見て採点する/ });
+    if (!(await btn.count())) break;
+    await btn.first().click();
+    await pg.getByText('モデル解答').first().waitFor({ timeout: 8000 });
+    const fours = pg.getByRole('button', { name: '4', exact: true });
+    const n = await fours.count();
+    for (let i = 0; i < n; i++) await fours.nth(i).click();
+    await pg.getByRole('button', { name: 'この採点で記録する' }).click();
+    await pg.waitForTimeout(500);
+  }
+}
+
+// ---------- 1. 2級：ホームに準2級の文言が残っていない ----------
+{
+  const { c, pg } = await g2Open('g2-02a(2級のホーム)', { grade: 'g2', date: '2026-10-06' });
+  // 「準2級にもどす」は2級から戻る唯一の道（M-2）なので、それだけは除いて見る
+  const t = (await pg.locator('body').innerText()).replace('準2級にもどす', '');
+  for (const bad of ['準2級', '600', '第3部', '二次試験', '一次試験', '申込は', '第1部〜第3部', '80分', '11月15日']) {
+    if (t.includes(bad)) throw new Error(`2級のホームに「${bad}」が残っている: ${t.slice(0, 200)}`);
+  }
+  for (const good of ['2級の試験まで', '67', '12月12日(土)', '650点', '第1部・第2部']) {
+    if (!t.includes(good)) throw new Error(`2級のホームに「${good}」が出ていない`);
+  }
+  await pg.screenshot({ path: join(OUT, 'g2-02-home-g2-1006.png') });
+  await pg.screenshot({ path: join(OUT, 'g2-02-home-g2-full.png'), fullPage: true });
+  console.log('  ✓ 2級のホームに準2級の文言（600点・第3部・二次・一次・申込）が残っていない／「2級の試験まで 67日」');
+
+  // ライティング道場・論点別・集中トレーニング・単語カードにも準2級の数字が残っていない
+  await pg.locator('button', { hasText: 'ライティング道場' }).first().click();
+  await pg.getByText('ライティングはたった2題で650点。').waitFor({ timeout: 5000 });
+  const wt = await pg.locator('body').innerText();
+  if (!wt.includes('80〜100語')) throw new Error(`2級の意見論述が80〜100語と出ていない: ${wt.slice(0, 200)}`);
+  if (!wt.includes('1題325点')) throw new Error('ライティング道場が「1題325点」になっていない');
+  if (wt.includes('Eメール返信') || wt.includes('600') || wt.includes('50〜60語')) throw new Error('2級のライティング道場に準2級の要素が残っている');
+  await pg.screenshot({ path: join(OUT, 'g2-02-writing-list-g2.png') });
+  await pg.getByLabel('もどる').click();
+  await pg.getByText('今日のミッション').waitFor({ timeout: 5000 });
+
+  await pg.locator('button', { hasText: '単語カード' }).first().click();
+  await pg.waitForTimeout(800);
+  const wc = await pg.locator('body').innerText();
+  if (/一次まで/.test(wc)) throw new Error('2級の単語カードに「一次まで」が出ている');
+  await pg.screenshot({ path: join(OUT, 'g2-02-words-g2.png') });
+  console.log('  ✓ 2級のライティング道場は650点・80〜100語・1題325点、単語カードに「一次まで」は出ない');
+  await c.close();
+}
+
+// ---------- 2. 2級：フル模試を最後まで ----------
+let g2MockBlocks;
+{
+  const { c, pg } = await g2Open('g2-02b(2級のフル模試)', { grade: 'g2', date: '2026-10-06' });
+  await pg.locator('button', { hasText: '模擬テスト' }).first().click();
+  await pg.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+  const st = await pg.locator('body').innerText();
+  for (const need of ['筆記 85分', '大問1 短文の語句空所補充', '大問2A 長文の語句空所補充', '大問2B 長文の語句空所補充', '大問3A', '大問3B', '大問5 英作文（意見論述）', '第1部 会話の内容一致選択', '第2部 文の内容一致選択', '合格ラインの目安は一次1950点中 1520点']) {
+    if (!st.includes(need)) throw new Error(`2級の模試の入口に「${need}」が出ていない: ${st.slice(0, 300)}`);
+  }
+  for (const bad of ['大問6', '第3部', '応答文選択', '筆記 80分', '1800', '1322', '大問4']) {
+    if (st.includes(bad)) throw new Error(`2級の模試の入口に「${bad}」が出ている`);
+  }
+  // ライティングは今は1題（要約は G2-03）。題数からの組み立てなので「2題」「35〜40分」は出ない（M-5・R-5）
+  if (!st.includes('ライティング1題に') || !st.includes('18〜23分')) throw new Error('2級の入口のライティング文言が題数（1題）・18〜23分になっていない');
+  if (!st.includes('筆記だけ。ライティング1題まで含む')) throw new Error('2級の筆記の説明が「ライティング1題まで含む」になっていない');
+  if (/ライティング2題|35〜40分/.test(st)) throw new Error('2級の入口に、いまの構成と合わない「ライティング2題」「35〜40分」が出ている');
+  await pg.screenshot({ path: join(OUT, 'g2-02-mock-setup-g2.png'), fullPage: true });
+  await pg.locator('button', { hasText: 'フル' }).first().click();
+  await pg.locator('main ul > li > button').first().waitFor({ timeout: 10000 });
+  // 筆記の残り時間が 85:00 から始まる
+  const clock0 = (await pg.locator('header').innerText());
+  if (!/85:00|84:5\d/.test(clock0)) throw new Error(`筆記の残り時間が85:00から始まっていない: ${clock0}`);
+  await pg.screenshot({ path: join(OUT, 'g2-02-mock-run-g2-q1.png') });
+
+  const { seq, firstMain } = await walkFullMock(pg, { writtenN: 32, listenN: 30, essay: ESSAY_G2 });
+  const r = runs(seq);
+  g2MockBlocks = r;
+  const expect = [
+    ['大問1 短文の語句空所補充', 17], ['大問2A 長文の語句空所補充', 3], ['大問2B 長文の語句空所補充', 3],
+    ['大問3A 長文の内容一致選択（Eメール）', 3], ['大問3B 長文の内容一致選択（説明文）', 5], ['大問5 英作文（意見論述）', 1],
+    ['第1部 会話の内容一致選択', 15], ['第2部 文の内容一致選択', 15],
+  ];
+  if (JSON.stringify(r) !== JSON.stringify(expect)) throw new Error(`2級の模試の構成が違う:\n実際 ${JSON.stringify(r)}\n期待 ${JSON.stringify(expect)}`);
+  // 画面の innerText は「問 18 / 32」「問 21 / 32」が先頭に入るので、同じ本文でも必ず「違う」になる（R-1）。
+  // 保存された模試の itemId から長文 id を引いて比べる
+  const mocks = await readAllRows(pg, 'mocks');
+  const last = mocks[mocks.length - 1];
+  const passageOf = (id) => id.replace(/-q\d+$/, '');
+  const clozeIds = last.answers.map((x) => x.itemId).filter((id) => id.startsWith('g2-p-cloze-'));
+  const byBlock = [clozeIds.slice(0, 3), clozeIds.slice(3, 6)];
+  if (clozeIds.length !== 6 || byBlock.some((ids) => new Set(ids.map(passageOf)).size !== 1)) {
+    throw new Error(`大問2の itemId が 3問×2 の形でない: ${JSON.stringify(clozeIds)}`);
+  }
+  const pa = passageOf(byBlock[0][0]);
+  const pb = passageOf(byBlock[1][0]);
+  if (pa === pb) throw new Error(`大問2AとBが同じ長文（${pa}）`);
+  console.log('  ✓ 2級のフル模試：85:00開始／大問1(17)・2A(3)・2B(3)・3A(3)・3B(5)・5(1)／リスニング第1部15・第2部15／「大問6」「第3部」なし');
+  console.log('  ✓ 大問2Aと2Bは別の本文');
+
+  await pg.screenshot({ path: join(OUT, 'g2-02-mock-result-g2-unscored.png') });
+  await scoreAllWritings(pg);
+  const rt = await pg.locator('main').innerText();
+  if (!/\/ 1950/.test(rt)) throw new Error(`2級の模試の結果が1950点満点になっていない: ${rt.slice(0, 300)}`);
+  if (!rt.includes('合格ラインの目安は 1520点')) throw new Error('合格ラインが1520点になっていない');
+  if (!rt.includes('選択問題31問に使った')) throw new Error('「選択問題31問」になっていない（17+6+8）');
+  if (!rt.includes('目標18分以上')) throw new Error('ライティングの目標が1題ぶん（17.5分→18分）になっていない');
+  if (rt.includes('目標35分')) throw new Error('2級の結果が、1題しか無いのに35分を基準にしている');
+  if (/第3部|1322|1800|1題300点/.test(rt)) throw new Error('2級の模試の結果に準2級の数字・見出しが残っている');
+  await pg.screenshot({ path: join(OUT, 'g2-02-mock-result-g2.png') });
+  await pg.screenshot({ path: join(OUT, 'g2-02-mock-result-g2-full.png'), fullPage: true });
+  console.log('  ✓ 2級の模試の結果：CSE目安は1950点満点・合格ライン1520、選択問題31問、ライティング目標35分');
+
+  // 学習の記録のスコア推移も2級の満点で出る
+  await pg.getByRole('button', { name: 'ホームへ' }).click();
+  await pg.locator('button', { hasText: '学習の記録' }).first().click();
+  await pg.getByText('これまでに解いた').waitFor({ timeout: 8000 });
+  const ht = await pg.locator('main').innerText();
+  if (!/CSE目安 \d+ \/ 1950/.test(ht)) throw new Error(`学習の記録のCSE推移が1950点満点でない: ${ht.slice(0, 300)}`);
+  await pg.screenshot({ path: join(OUT, 'g2-02-history-g2.png') });
+  console.log('  ✓ 2級の学習の記録は模試のCSE目安を1950点満点で出す');
+
+  await c.close();
+}
+
+// ---------- 3. 準2級：フル模試が変わっていない ----------
+{
+  const { c, pg } = await g2Open('g2-02c(準2級のフル模試)', { grade: 'pre2', date: '2026-10-06' });
+  await pg.locator('button', { hasText: '模擬テスト' }).first().click();
+  await pg.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+  const st = await pg.locator('body').innerText();
+  for (const need of ['筆記 80分', '大問1 短文の語句空所補充', '大問2 会話文の空所補充', '大問3 長文の語句空所補充', '大問4A', '大問4B', '大問5 Eメール', '大問6 英作文（意見論述）', '第1部 会話の応答文選択', '第2部 会話の内容一致選択', '第3部 文の内容一致選択', '合格ラインの目安は一次1800点中 1322点', '30〜35分']) {
+    if (!st.includes(need)) throw new Error(`準2級の模試の入口に「${need}」が無い（8月18日と変わった）`);
+  }
+  if (/大問2A|大問3A|1950|1520|85分/.test(st)) throw new Error('準2級の模試の入口に2級の要素が漏れている');
+  await pg.screenshot({ path: join(OUT, 'g2-02-mock-setup-pre2.png'), fullPage: true });
+  await pg.locator('button', { hasText: 'フル' }).first().click();
+  await pg.locator('main ul > li > button').first().waitFor({ timeout: 10000 });
+  const clock0 = await pg.locator('header').innerText();
+  if (!/80:00|79:5\d/.test(clock0)) throw new Error(`準2級の残り時間が80:00から始まっていない: ${clock0}`);
+  await pg.screenshot({ path: join(OUT, 'g2-02-mock-run-pre2-q1.png') });
+  const { seq } = await walkFullMock(pg, { writtenN: 31, listenN: 30, essay: ESSAY_PRE2 });
+  const r = runs(seq);
+  const expect = [
+    ['大問1 短文の語句空所補充', 15], ['大問2 会話文の空所補充', 5], ['大問3 長文の語句空所補充', 2],
+    ['大問4A 長文の内容一致選択（Eメール・掲示）', 3], ['大問4B 長文の内容一致選択（説明文）', 4],
+    ['大問5 Eメール', 1], ['大問6 英作文（意見論述）', 1],
+    ['第1部 会話の応答文選択', 10], ['第2部 会話の内容一致選択', 10], ['第3部 文の内容一致選択', 10],
+  ];
+  if (JSON.stringify(r) !== JSON.stringify(expect)) throw new Error(`準2級の模試の構成が変わった:\n実際 ${JSON.stringify(r)}`);
+  await scoreAllWritings(pg);
+  const rt = await pg.locator('main').innerText();
+  if (!/\/ 1800/.test(rt) || !rt.includes('合格ラインの目安は 1322点')) throw new Error(`準2級の結果がCSE 1800/1322でない: ${rt.slice(0, 300)}`);
+  if (!rt.includes('選択問題29問に使った') || !rt.includes('目標30分以上')) throw new Error('準2級の結果の文言が変わった');
+  await pg.screenshot({ path: join(OUT, 'g2-02-mock-result-pre2.png') });
+  console.log('  ✓ 準2級のフル模試：80:00開始／大問1〜6（15・5・2・3・4・1・1）／リスニング第1〜3部が各10問／CSE 1800・1322');
+  await c.close();
+}
+
+// ---------- 4. 日付で変わるホームの表示（準2級の二次の前後・2級の試験の前後） ----------
+for (const [date, grade, expectIn, expectNot] of [
+  ['2026-11-15', 'pre2', ['二次試験', '今日が本番', '二次試験は 11月15日(日)'], ['二次の結果まで']],
+  ['2026-11-16', 'pre2', ['二次の結果まで', '11月24日(火)'], ['二次試験まで', '二次試験は 11月15日']],
+  ['2026-11-24', 'pre2', ['二次の結果', '今日が結果の日'], ['二次試験まで']],
+  ['2026-11-25', 'pre2', ['おつかれさま'], ['二次試験まで', '二次の結果まで', '二次試験は 11月15日']],
+  ['2026-12-31', 'pre2', ['おつかれさま'], ['二次試験まで', '二次の結果まで']],
+  ['2026-11-16', 'g2', ['2級の試験まで', '12月12日(土)'], ['二次', '一次', '準2級']],
+  ['2026-12-12', 'g2', ['2級の試験', '今日が本番'], ['二次', '一次', '準2級']],
+  ['2026-12-13', 'g2', ['結果は1月25日(月)'], ['二次', '一次', '準2級']],
+  ['2026-12-31', 'g2', ['結果は1月25日(月)'], ['二次', '一次', '準2級']],
+  ['2027-01-26', 'g2', ['おつかれさま'], ['二次', '一次', '準2級']],
+]) {
+  const { c, pg } = await g2Open(`g2-02d(${grade} ${date})`, { grade, date });
+  // 2級のホーム下の「準2級にもどす」（M-2）は除いて見る
+  const t = (await pg.locator('main').innerText()).replace('準2級にもどす', '');
+  for (const s of expectIn) if (!t.includes(s)) throw new Error(`${grade} ${date}: ホームに「${s}」が無い: ${t.slice(0, 400)}`);
+  for (const s of expectNot) if (t.includes(s)) throw new Error(`${grade} ${date}: ホームに「${s}」が出ている: ${t.slice(0, 400)}`);
+  if (/-\d+\s*日/.test(t)) throw new Error(`${grade} ${date}: 負の日数が出ている`);
+  await pg.screenshot({ path: join(OUT, `g2-02-home-${grade}-${date}.png`) });
+  await c.close();
+}
+console.log('  ✓ 準2級：11/15は二次まで・11/16〜24は二次の結果まで・11/25以降と12/31は数字なし。-1日は出ない');
+console.log('  ✓ 2級：12/12まで日数・12/13以降は「結果は1月25日(月)」・2027-01-26以降は「おつかれさま」。二次・一次・準2級は出ない');
+
+// ---------- 5. 2級の診断：20問・保存先が級ごと・答え合わせの位置 ----------
+{
+  const { c, pg } = await g2Open('g2-02e(2級の診断)', { grade: 'g2', date: '2026-10-06', skipWelcome: false });
+  await pg.getByText('2級の試験（12月12日(土)の予定）まで').waitFor({ timeout: 8000 });
+  const wt = await pg.locator('body').innerText();
+  if (wt.includes('一次試験') || wt.includes('二次は')) throw new Error('2級のようこそ画面に準2級の日程が出ている');
+  await pg.screenshot({ path: join(OUT, 'g2-02-welcome-g2.png') });
+  await pg.getByRole('button', { name: '診断テストをはじめる' }).click();
+  let n = 0;
+  for (let i = 0; i < 40; i++) {
+    if (await pg.getByText('診断テストの結果').count()) break;
+    const ch = pg.locator('main ul > li > button');
+    await ch.first().waitFor({ timeout: 8000 });
+    await ch.nth(i % 2).click();
+    await pg.getByRole('button', { name: '決定' }).click();
+    n++;
+    await pg.waitForTimeout(100);
+  }
+  await pg.getByText('診断テストの結果').waitFor({ timeout: 10000 });
+  if (n !== 20) throw new Error(`2級の診断が${n}問（20問のはず）`);
+  const kv = await readKv(pg, ['onboarded', 'onboarded-g2', 'diagnostic', 'diagnostic-g2']);
+  const d = kv['diagnostic-g2'];
+  if (!d || d.total !== 20) throw new Error(`diagnostic-g2 が保存されていない: ${JSON.stringify(kv).slice(0, 200)}`);
+  if (kv.diagnostic || kv.onboarded) throw new Error('2級の診断が準2級のキー（diagnostic / onboarded）に書かれた');
+  if (!kv['onboarded-g2']) throw new Error('onboarded-g2 が書かれていない');
+  const sec = Object.fromEntries(Object.entries(d.bySection).map(([k, v]) => [k, v.total]));
+  if (JSON.stringify(sec) !== JSON.stringify({ 'r-vocab': 10, 'r-cloze': 4, 'r-passage': 6 })) throw new Error(`2級の診断の構成が 10/4/6 でない: ${JSON.stringify(sec)}`);
+  const rt = await pg.locator('main').innerText();
+  if (!rt.includes('目安 507 点')) throw new Error(`診断結果の目安が507点（1520÷3）でない: ${rt.slice(-300)}`);
+  await pg.screenshot({ path: join(OUT, 'g2-02-diagnostic-result-g2.png'), fullPage: true });
+  console.log('  ✓ 2級の診断は20問（語彙10・長文空所4・長文内容一致6）で、diagnostic-g2 / onboarded-g2 に保存される（準2級のキーは触らない）');
+
+  // 答え合わせ：保存位置は diagnostic-g2 側にだけできる
+  await pg.getByRole('button', { name: 'はじめる' }).click();
+  await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  await pg.locator('button', { hasText: '学習の記録' }).first().click();
+  await pg.getByRole('button', { name: '診断テストの答え合わせを見る' }).click();
+  await pg.getByRole('heading', { name: /^(まちがえた問題|ぜんぶ見る)$/ }).waitFor({ timeout: 8000 });
+  for (let i = 0; i < 2; i++) {
+    await pg.getByRole('button', { name: '次へ' }).click();
+    await pg.waitForTimeout(80);
+  }
+  await pg.waitForTimeout(400);
+  await pg.getByLabel('もどる').click();
+  await pg.getByRole('heading', { name: '学習の記録' }).waitFor({ timeout: 5000 });
+  const pos = await readKv(pg, ['reviewPos:diagnostic-g2', 'reviewPos:diagnostic']);
+  if (!pos['reviewPos:diagnostic-g2'] || pos['reviewPos:diagnostic-g2'].pos < 1) throw new Error(`2級の診断の保存位置が diagnostic-g2 に無い: ${JSON.stringify(pos)}`);
+  if (pos['reviewPos:diagnostic']) throw new Error('2級の診断の答え合わせの位置が準2級のキーに書かれた');
+  console.log('  ✓ 2級の診断の答え合わせは reviewPos:diagnostic-g2 に位置を残し、準2級のキーに触らない');
+  await c.close();
+}
+
+// ---------- 6. 持ち越し：準2級の期限切れ復習カードがあっても、2級のミニ演習は8問組める ----------
+{
+  const { c, pg } = await g2Open('g2-02f(2級のミニ演習)', { grade: 'pre2', date: '2026-10-06' });
+  // 準2級の復習カード（期限切れ）を直接入れる
+  await pg.evaluate(async () => {
+    await new Promise((resolve, reject) => {
+      const req = indexedDB.open('eiken-pre2');
+      req.onerror = () => reject(req.error);
+      req.onsuccess = () => {
+        const tx = req.result.transaction('srs', 'readwrite');
+        const st = tx.objectStore('srs');
+        for (const id of ['p2-v-001', 'p2-v-002', 'p2-v-003', 'p2-v-004', 'p2-v-005', 'p2-v-006']) {
+          st.put({ itemId: id, box: 1, dueAt: 1000, lapses: 1, lastAt: 1000 });
+        }
+        tx.oncomplete = () => resolve(null);
+        tx.onerror = () => reject(tx.error);
+      };
+    });
+    localStorage.setItem('eiken.grade', 'g2');
+  });
+  await pg.reload({ waitUntil: 'networkidle' });
+  await pg.getByRole('button', { name: 'あとにする' }).click();
+  await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  await pg.getByRole('button', { name: 'はじめる' }).click();
+  await pg.getByText(/^1 \/ 8$/).waitFor({ timeout: 8000 });
+  await pg.screenshot({ path: join(OUT, 'g2-02-mini-g2.png') });
+  console.log('  ✓ 準2級の期限切れ復習カードがあっても、2級のミニ演習は8問組める（1 / 8）');
+  await c.close();
+}
+
+/* ---- G2-02-R：本番に出す前の手直し ---- */
+console.log('G2-02-R：本番前の手直し');
+
+// ---------- M-3・R-3：ようこそ画面は試験日を過ぎても負の日数を出さない ----------
+for (const [date, grade, expectIn, expectNot] of [
+  ['2026-10-03', 'pre2', ['一次試験（10月4日(日)）まで', '二次は 11月15日(日)'], ['申込は']],
+  ['2026-10-06', 'pre2', ['二次試験まで', '二次は 11月15日(日)'], ['一次試験', '申込は']],
+  ['2026-11-16', 'pre2', ['二次の結果まで', '11月24日(火)'], ['二次は', '申込は', '一次試験']],
+  ['2026-11-25', 'pre2', ['おつかれさま'], ['二次は', '申込は', '一次試験', '二次の結果まで']],
+  ['2026-11-16', 'g2', ['2級の試験（12月12日(土)の予定）まで', '同じ日に受けます'], ['一次試験', '二次は']],
+  ['2026-12-12', 'g2', ['今日が本番'], ['同じ日に受けます', '一次試験', '二次は']],
+  ['2026-12-13', 'g2', ['結果は1月25日(月)'], ['同じ日に受けます', '一次試験', '二次は']],
+  ['2027-01-26', 'g2', ['おつかれさま'], ['同じ日に受けます', '一次試験', '二次は']],
+]) {
+  const { c, pg } = await g2Open(`g2-02r-welcome(${grade} ${date})`, { grade, date, skipWelcome: false });
+  await pg.getByRole('button', { name: '診断テストをはじめる' }).waitFor({ timeout: 8000 });
+  const t = await pg.locator('main').innerText();
+  for (const s of expectIn) if (!t.includes(s)) throw new Error(`ようこそ ${grade} ${date}: 「${s}」が無い: ${t.slice(-300)}`);
+  for (const s of expectNot) if (t.includes(s)) throw new Error(`ようこそ ${grade} ${date}: 「${s}」が出ている: ${t.slice(-300)}`);
+  if (/-\d+\s*日/.test(t)) throw new Error(`ようこそ ${grade} ${date}: 負の日数が出ている`);
+  await pg.screenshot({ path: join(OUT, `g2-02r-welcome-${grade}-${date}.png`) });
+  await c.close();
+}
+console.log('  ✓ ようこそ画面：準2級 10/03・10/06・11/16・11/25、2級 11/16・12/12・12/13・2027-01-26 で負の日数が出ない');
+
+// ---------- M-2・M-4：2級のホームに「準2級にもどす」／版は 1.3 ----------
+{
+  const { c, pg } = await g2Open('g2-02r-back(2級のホーム)', { grade: 'g2', date: '2026-10-06' });
+  const ht = await pg.locator('main').innerText();
+  if (!ht.includes('Ver.1.3')) throw new Error(`ホームの版表記が Ver.1.3 でない: ${ht.slice(-120)}`);
+  const back = pg.getByRole('button', { name: '準2級にもどす' });
+  await back.scrollIntoViewIfNeeded();
+  await pg.screenshot({ path: join(OUT, 'g2-02r-home-g2-bottom.png') });
+  await back.click();
+  await pg.getByText('準2級にきりかえる？').waitFor({ timeout: 5000 });
+  await pg.screenshot({ path: join(OUT, 'g2-02r-back-sheet.png') });
+  await pg.getByRole('button', { name: '準2級にきりかえる' }).click();
+  await pg.waitForFunction(() => localStorage.getItem('eiken.grade') === 'pre2', null, { timeout: 8000 });
+  await pg.getByText('英検準2級').first().waitFor({ timeout: 8000 });
+  console.log('  ✓ 2級のホームの一番下から「準2級にもどす」→ 確認シート → 準2級に戻れる。版は Ver.1.3');
+  await c.close();
+}
+{
+  const { c, pg } = await g2Open('g2-02r-pre2home(準2級のホーム)', { grade: 'pre2', date: '2026-10-06' });
+  const ht = await pg.locator('main').innerText();
+  if (ht.includes('準2級にもどす')) throw new Error('準2級のホームに「準2級にもどす」が出ている');
+  if (!ht.includes('Ver.1.3')) throw new Error('準2級のホームの版表記が Ver.1.3 でない');
+  console.log('  ✓ 準2級のホームに「準2級にもどす」は出ない');
+  await c.close();
+}
 
 await browser.close();
 

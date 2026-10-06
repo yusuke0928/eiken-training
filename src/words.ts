@@ -57,6 +57,8 @@ export function levelCounts(): Record<WordLevel, number> {
  * あくまで「この子が演習で必ず再会する語」を先に回すための目印
  */
 export const PRIORITY_WORDS: Set<string> = new Set(priorityRaw.words as string[]);
+/** 2級の本文に出てくる語。級を混ぜると準2級の並びが黙って変わるので別に持つ（gen-words-priority.mjs） */
+const PRIORITY_WORDS_G2: Set<string> = new Set(priorityRaw.g2Words as string[]);
 
 /**
  * レベルごとに、辞書順を崩した決定的な並びをキャッシュする（P3）。
@@ -84,7 +86,8 @@ function shuffledPool(level: WordLevel | 'all'): Word[] {
  */
 export function orderedWordsIn(level: WordLevel | 'all'): Word[] {
   const pool = shuffledPool(level);
-  const priority = pool.filter((w) => PRIORITY_WORDS.has(w.word));
-  const rest = pool.filter((w) => !PRIORITY_WORDS.has(w.word));
+  const set = level === 'g2' ? PRIORITY_WORDS_G2 : PRIORITY_WORDS;
+  const priority = pool.filter((w) => set.has(w.word));
+  const rest = pool.filter((w) => !set.has(w.word));
   return [...priority, ...rest];
 }

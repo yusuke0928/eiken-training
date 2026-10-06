@@ -1,3 +1,5 @@
+import { GRADE } from './grade';
+
 export type Grade = 'pre2' | 'g2';
 
 export type SectionId =
@@ -14,18 +16,42 @@ export type SectionId =
 
 export type Skill = 'reading' | 'writing' | 'listening' | 'speaking';
 
-export const SECTION_LABEL: Record<SectionId, string> = {
-  'r-vocab': '短文の語句空所補充',
-  'r-conversation': '会話文の空所補充',
-  'r-cloze': '長文の語句空所補充',
-  'r-passage': '長文の内容一致選択',
-  'w-email': 'Eメール',
-  'w-opinion': '英作文（意見論述）',
-  'l-part1': 'リスニング第1部',
-  'l-part2': 'リスニング第2部',
-  'l-part3': 'リスニング第3部',
-  's-interview': '面接',
+/**
+ * 大問の表示名は級で違う。SectionId の値（l-part2 / l-part3）は記録の解釈の基準なので変えず、
+ * 表示名だけを級で引く（2級のリスニングは第1部が会話の内容一致、第2部が文の内容一致。
+ * 準2級の「第1部（応答文選択）」は2級に無い）。
+ * SECTION_LABEL は読み込み時の級で選ぶ（級は起動時に1度だけ決まり、切り替えは再読み込み。grade.ts）。
+ */
+export const SECTION_LABEL_BY_GRADE: Record<Grade, Record<SectionId, string>> = {
+  pre2: {
+    'r-vocab': '短文の語句空所補充',
+    'r-conversation': '会話文の空所補充',
+    'r-cloze': '長文の語句空所補充',
+    'r-passage': '長文の内容一致選択',
+    'w-email': 'Eメール',
+    'w-opinion': '英作文（意見論述）',
+    'l-part1': 'リスニング第1部',
+    'l-part2': 'リスニング第2部',
+    'l-part3': 'リスニング第3部',
+    's-interview': '面接',
+  },
+  g2: {
+    'r-vocab': '短文の語句空所補充',
+    // 2級に会話文の空所補充の大問は無い。引かれることは無いが Record を埋めるために置く
+    'r-conversation': '会話文の空所補充',
+    'r-cloze': '長文の語句空所補充',
+    'r-passage': '長文の内容一致選択',
+    'w-email': 'Eメール',
+    'w-opinion': '英作文（意見論述）',
+    // 2級の l-part1 は無い。引かれることは無いが Record を埋めるために置く
+    'l-part1': 'リスニング',
+    'l-part2': 'リスニング第1部',
+    'l-part3': 'リスニング第2部',
+    's-interview': '面接',
+  },
 };
+
+export const SECTION_LABEL: Record<SectionId, string> = SECTION_LABEL_BY_GRADE[GRADE];
 
 export const SECTION_SKILL: Record<SectionId, Skill> = {
   'r-vocab': 'reading',
@@ -244,25 +270,49 @@ export const RUBRIC: Record<WritingSection, RubricCriterion[]> = {
   ],
 };
 
-export const WRITING_SPEC: Record<
-  WritingSection,
-  { label: string; wordRange: [number, number]; maxScore: number; goal: number; task: string }
-> = {
-  'w-email': {
-    label: 'Eメール返信',
-    wordRange: [40, 50],
-    maxScore: 12,
-    goal: 8,
-    task: '相手の質問に答え、下線部について具体的な質問を2つする',
+type WritingSpec = { label: string; wordRange: [number, number]; maxScore: number; goal: number; task: string };
+
+/**
+ * 級ごとの課題の仕様。2級の意見論述は 80〜100 語（公式）で、準2級の 50〜60 語とは別物。
+ * 満点は両級とも観点4つ×4点＝16点。2級の英文要約（w-summary）は G2-03 で足す。
+ */
+export const WRITING_SPEC_BY_GRADE: Record<Grade, Record<WritingSection, WritingSpec>> = {
+  pre2: {
+    'w-email': {
+      label: 'Eメール返信',
+      wordRange: [40, 50],
+      maxScore: 12,
+      goal: 8,
+      task: '相手の質問に答え、下線部について具体的な質問を2つする',
+    },
+    'w-opinion': {
+      label: '英作文（意見論述）',
+      wordRange: [50, 60],
+      maxScore: 16,
+      goal: 10,
+      task: '自分の意見と、それを支える理由を2つ書く',
+    },
   },
-  'w-opinion': {
-    label: '英作文（意見論述）',
-    wordRange: [50, 60],
-    maxScore: 16,
-    goal: 10,
-    task: '自分の意見と、それを支える理由を2つ書く',
+  g2: {
+    // 2級に Eメール返信は無い（引かれない）。Record を埋めるために準2級と同じ値を置く
+    'w-email': {
+      label: 'Eメール返信',
+      wordRange: [40, 50],
+      maxScore: 12,
+      goal: 8,
+      task: '相手の質問に答え、下線部について具体的な質問を2つする',
+    },
+    'w-opinion': {
+      label: '英作文（意見論述）',
+      wordRange: [80, 100],
+      maxScore: 16,
+      goal: 10,
+      task: '自分の意見と、それを支える理由を2つ書く',
+    },
   },
 };
+
+export const WRITING_SPEC: Record<WritingSection, WritingSpec> = WRITING_SPEC_BY_GRADE[GRADE];
 
 export interface WritingSubmission {
   id?: number;

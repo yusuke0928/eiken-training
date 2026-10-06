@@ -1,7 +1,8 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ITEM_BY_ID } from '../../content';
 import { loadReviewPos } from '../../data/db';
-import { PRE2, questionsToTarget, scoreView } from '../../engine/scoring';
+import { questionsToTarget, scoreView, scoringOf } from '../../engine/scoring';
+import { GRADE } from '../../grade';
 import { SECTION_LABEL, TAG_LABEL, type SectionId } from '../../types';
 import { Button, ProgressRing, Screen, TopBar } from '../../ui/primitives';
 import type { SessionResult } from '../practice/QuestionScreen';
@@ -23,8 +24,8 @@ export function DiagnosticResultScreen({
   const resumeNote = reviewResumeNote(savedPos);
   const total = results.length;
   const correct = results.filter((r) => r.correct).length;
-  const view = scoreView(correct, total);
-  const toGo = questionsToTarget(correct, total);
+  const view = scoreView(GRADE, correct, total);
+  const toGo = questionsToTarget(GRADE, correct, total);
 
   const bySection = new Map<SectionId, { c: number; t: number }>();
   const byTag = new Map<string, { c: number; t: number }>();
@@ -128,7 +129,7 @@ export function DiagnosticResultScreen({
 
         <p className="mt-6 rounded-2xl bg-surface-2 p-4 text-[12px] leading-relaxed text-ink-faint">
           ※ 英検のCSEスコアは受験者全体の中での相対評価で決まるため、正答率から正確に換算することはできません。
-          ここに出る数値（目安 {PRE2.perSkillTarget} 点で合格ライン相当）はあくまで練習用の目安です。
+          ここに出る数値（目安 {scoringOf(GRADE).perSkillTarget} 点で合格ライン相当）はあくまで練習用の目安です。
         </p>
       </main>
 

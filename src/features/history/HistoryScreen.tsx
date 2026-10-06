@@ -2,9 +2,9 @@ import { useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, loadReviewPos, loadStreak } from '../../data/db';
 import { downloadBackup, restoreBackup } from '../../data/backup';
-import { PRE2, estimateSkillCse } from '../../engine/scoring';
+import { estimateSkillCse, scoringOf } from '../../engine/scoring';
 import { ITEM_BY_ID, WRITING_BY_ID } from '../../content';
-import { inGrade, mockInGrade } from '../../grade';
+import { GRADE, inGrade, mockInGrade } from '../../grade';
 import { SECTION_SKILL, WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import {
@@ -163,14 +163,14 @@ export function HistoryScreen({
         return null;
       }
       const cse =
-        estimateSkillCse(r.filter((a) => a.correct).length / r.length) +
-        estimateSkillCse(l.filter((a) => a.correct).length / l.length) +
-        estimateSkillCse(wTotal / wMax);
+        estimateSkillCse(GRADE, r.filter((a) => a.correct).length / r.length) +
+        estimateSkillCse(GRADE, l.filter((a) => a.correct).length / l.length) +
+        estimateSkillCse(GRADE, wTotal / wMax);
       const d = new Date(m.finishedAt);
       return {
         label: `${d.getMonth() + 1}/${d.getDate()}`,
-        value: cse / PRE2.firstStageMax,
-        caption: `${d.getMonth() + 1}/${d.getDate()}の模試 ・ CSE目安 ${cse} / ${PRE2.firstStageMax}`,
+        value: cse / scoringOf(GRADE).firstStageMax,
+        caption: `${d.getMonth() + 1}/${d.getDate()}の模試 ・ CSE目安 ${cse} / ${scoringOf(GRADE).firstStageMax}`,
       };
     })
     .filter((x): x is TrendPoint => x !== null);
@@ -271,9 +271,9 @@ export function HistoryScreen({
               {mockTrend.length >= 2 ? (
                 <TrendLine
                   points={mockTrend}
-                  target={PRE2.firstStagePass / PRE2.firstStageMax}
+                  target={scoringOf(GRADE).firstStagePass / scoringOf(GRADE).firstStageMax}
                   targetLabel="合格"
-                  format={(v) => `${Math.round(v * PRE2.firstStageMax)}`}
+                  format={(v) => `${Math.round(v * scoringOf(GRADE).firstStageMax)}`}
                 />
               ) : (
                 <p className="text-[14px] text-ink-sub">{mockTrend[0].caption}</p>

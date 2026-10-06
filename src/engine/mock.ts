@@ -1,4 +1,5 @@
 import { ITEMS, ITEM_BY_ID, PASSAGES, WRITING_BY_ID, WRITING_PROMPTS } from '../content';
+import { GRADE, GRADE_META } from '../grade';
 import type { MCQItem, SectionId, WritingSection } from '../types';
 
 /**
@@ -20,7 +21,8 @@ export interface MockBlock {
   formats?: string[];
 }
 
-export const WRITTEN_BLUEPRINT: MockBlock[] = [
+/* 準2級のブループリントは1文字も変えない（配布済みで、他人が慣れた構成） */
+const PRE2_WRITTEN_BLUEPRINT: MockBlock[] = [
   { kind: 'mcq', section: 'r-vocab', label: '大問1 短文の語句空所補充', count: 15 },
   { kind: 'mcq', section: 'r-conversation', label: '大問2 会話文の空所補充', count: 5 },
   { kind: 'mcq', section: 'r-cloze', label: '大問3 長文の語句空所補充', count: 2 },
@@ -42,15 +44,73 @@ export const WRITTEN_BLUEPRINT: MockBlock[] = [
   { kind: 'writing', section: 'w-opinion', label: '大問6 英作文（意見論述）', count: 1 },
 ];
 
-export const LISTENING_BLUEPRINT: MockBlock[] = [
+/**
+ * 2級（公式の問題冊子の見出しどおり：1 / 2A・2B / 3A・3B / 4 / 5）。
+ * 大問2は A と B の2セット（各3段落・空所3つ）。別の本文でなければ模試にならないので、
+ * buildPaper が使用済みの長文を除いて選ぶ。
+ *
+ * 大問4（英文要約）は G2-03 で入る。大問番号は公式どおり 4 / 5 なので、
+ * 意見論述はいま「大問5」と出し、要約は 3B と 5 のあいだに1行足すだけで入るようにしてある：
+ *   { kind: 'writing', section: 'w-summary', label: '大問4 英文要約', count: 1 },
+ */
+const G2_WRITTEN_BLUEPRINT: MockBlock[] = [
+  { kind: 'mcq', section: 'r-vocab', label: '大問1 短文の語句空所補充', count: 17 },
+  { kind: 'mcq', section: 'r-cloze', label: '大問2A 長文の語句空所補充', count: 3 },
+  { kind: 'mcq', section: 'r-cloze', label: '大問2B 長文の語句空所補充', count: 3 },
+  {
+    kind: 'mcq',
+    section: 'r-passage',
+    formats: ['email'],
+    label: '大問3A 長文の内容一致選択（Eメール）',
+    count: 3,
+  },
+  {
+    kind: 'mcq',
+    section: 'r-passage',
+    formats: ['article'],
+    label: '大問3B 長文の内容一致選択（説明文）',
+    count: 5,
+  },
+  { kind: 'writing', section: 'w-opinion', label: '大問5 英作文（意見論述）', count: 1 },
+];
+
+/*
+ * リスニングのセクションIDは級で変えない（記録の解釈が変わるため）。
+ * 2級は第1部（応答文選択）が無く、l-part2 が「第1部 会話の内容一致」、l-part3 が「第2部 文の内容一致」になる。
+ */
+const PRE2_LISTENING_BLUEPRINT: MockBlock[] = [
   { kind: 'mcq', section: 'l-part1', label: '第1部 会話の応答文選択', count: 10 },
   { kind: 'mcq', section: 'l-part2', label: '第2部 会話の内容一致選択', count: 10 },
   { kind: 'mcq', section: 'l-part3', label: '第3部 文の内容一致選択', count: 10 },
 ];
 
-export const WRITTEN_MS = 80 * 60 * 1000;
-/** ライティング2題に残しておきたい時間。1題300点あるので、ここを削ると致命傷になる */
-export const WRITING_TARGET_MS = 30 * 60 * 1000;
+const G2_LISTENING_BLUEPRINT: MockBlock[] = [
+  { kind: 'mcq', section: 'l-part2', label: '第1部 会話の内容一致選択', count: 15 },
+  { kind: 'mcq', section: 'l-part3', label: '第2部 文の内容一致選択', count: 15 },
+];
+
+export const WRITTEN_BLUEPRINT: MockBlock[] =
+  GRADE === 'g2' ? G2_WRITTEN_BLUEPRINT : PRE2_WRITTEN_BLUEPRINT;
+export const LISTENING_BLUEPRINT: MockBlock[] =
+  GRADE === 'g2' ? G2_LISTENING_BLUEPRINT : PRE2_LISTENING_BLUEPRINT;
+
+/** 筆記の選択問題の数（結果画面の「選択問題◯問に使った」用。ブループリントから数える） */
+export const WRITTEN_MCQ_COUNT = WRITTEN_BLUEPRINT.filter((b) => b.kind === 'mcq').reduce(
+  (n, b) => n + b.count,
+  0,
+);
+
+/** 筆記の試験時間。準2級80分／2級85分（grade.ts） */
+export const WRITTEN_MS = GRADE_META[GRADE].writtenMin * 60 * 1000;
+/** 筆記のライティングの題数。入口・結果画面の文言と目標時間をここから組み立てる（要約が入れば自然に2になる） */
+export const WRITING_COUNT = WRITTEN_BLUEPRINT.filter((b) => b.kind === 'writing').reduce(
+  (n, b) => n + b.count,
+  0,
+);
+/** ライティングに残しておきたい時間（分）。準2級は2題で30分／2級は2題で35分、1題なら17.5分（理由は grade.ts） */
+export const WRITING_TARGET_MIN = WRITING_COUNT * GRADE_META[GRADE].writingMinPerItem;
+/** ライティングに残しておきたい時間。ここを削ると致命傷になる */
+export const WRITING_TARGET_MS = WRITING_TARGET_MIN * 60 * 1000;
 /** リスニングは放送に合わせて進むので、目安として持っておくだけ */
 export const LISTENING_APPROX_MS = 25 * 60 * 1000;
 /** 本番は放送が終わると約10秒で次の問題へ進む */
@@ -93,8 +153,17 @@ function passageSets(section: SectionId, formats?: string[]): MCQItem[][] {
     .map((p) => ITEMS.filter((i) => i.passageId === p.id));
 }
 
-function pickPassageItems(section: SectionId, count: number, formats?: string[]): MCQItem[] {
-  const sets = passageSets(section, formats);
+/**
+ * 長文セットから count 問取る。exclude に入っている本文は使わない
+ * （2級の大問2A・2Bが同じ本文にならないように。使った本文は呼び出し側が積む）。
+ */
+function pickPassageItems(
+  section: SectionId,
+  count: number,
+  formats?: string[],
+  exclude: ReadonlySet<string> = new Set(),
+): MCQItem[] {
+  const sets = passageSets(section, formats).filter((s) => !exclude.has(s[0]?.passageId ?? ''));
   // 設問数がちょうど合うセットを優先する（足りなければ多いものから借りる）
   const exact = sets.filter((s) => s.length === count);
   const usable = exact.length > 0 ? exact : sets.filter((s) => s.length >= count);
@@ -102,9 +171,17 @@ function pickPassageItems(section: SectionId, count: number, formats?: string[])
   return chosen.slice(0, count);
 }
 
-function pickItems(section: SectionId, count: number, formats?: string[]): MCQItem[] {
+function pickItems(
+  section: SectionId,
+  count: number,
+  formats?: string[],
+  usedPassages?: Set<string>,
+): MCQItem[] {
   if (section === 'r-cloze' || section === 'r-passage') {
-    return pickPassageItems(section, count, formats);
+    const picked = pickPassageItems(section, count, formats, usedPassages);
+    const pid = picked[0]?.passageId;
+    if (pid) usedPassages?.add(pid);
+    return picked;
   }
   const pool = shuffle(ITEMS.filter((i) => i.section === section));
   // 大問1は本番もおおむね易しい順に並ぶ
@@ -113,6 +190,7 @@ function pickItems(section: SectionId, count: number, formats?: string[]): MCQIt
 
 export function buildPaper(scope: MockScope): MockPaper {
   let no = 0;
+  const usedPassages = new Set<string>();
   const written: MockQuestion[] =
     scope === 'listening'
       ? []
@@ -126,7 +204,7 @@ export function buildPaper(scope: MockScope): MockPaper {
               no: ++no,
             }));
           }
-          return pickItems(block.section as SectionId, block.count, block.formats).map((i) => ({
+          return pickItems(block.section as SectionId, block.count, block.formats, usedPassages).map((i) => ({
             kind: 'mcq' as const,
             itemId: i.id,
             block: block.label,
@@ -157,6 +235,7 @@ export function paperShortfall(scope: MockScope): string[] {
     ...(scope === 'written' ? [] : LISTENING_BLUEPRINT),
   ];
   const gaps: string[] = [];
+  const used = new Set<string>();
   for (const b of blocks) {
     if (b.kind === 'writing') {
       const have = WRITING_PROMPTS.filter((p) => p.section === b.section).length;
@@ -164,9 +243,18 @@ export function paperShortfall(scope: MockScope): string[] {
       continue;
     }
     if (b.section === 'r-cloze' || b.section === 'r-passage') {
-      // 長文は「1大問ぶんをまかなえるセットが1つ以上あるか」で見る
-      const ok = passageSets(b.section as SectionId, b.formats).some((s) => s.length >= b.count);
-      if (!ok) gaps.push(`${b.label}: ${b.count}問ぶんの長文セットがない`);
+      // 長文は「1大問ぶんをまかなえるセットが、まだ使っていないものの中に1つ以上あるか」で見る。
+      // 2級の大問2A・2Bは同じ長文を2回使えないので、2つ目は1つ目の分を引いて数える
+      const sets = passageSets(b.section as SectionId, b.formats).filter(
+        (s) => s.length >= b.count && !used.has(s[0]?.passageId ?? ''),
+      );
+      if (sets.length === 0) {
+        gaps.push(`${b.label}: ${b.count}問ぶんの長文セットがない`);
+      } else {
+        // 数え上げ用に、いちばん小さいセットから順に消費したことにする（本番の選び方とは独立の下限チェック）
+        const exact = sets.find((s) => s.length === b.count) ?? sets[0];
+        used.add(exact[0].passageId ?? '');
+      }
       continue;
     }
     const have = ITEMS.filter((i) => i.section === b.section).length;

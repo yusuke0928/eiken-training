@@ -12,6 +12,7 @@ import { WordCardScreen } from './features/words/WordCardScreen';
 import { SpeakingScreen } from './features/speaking/SpeakingScreen';
 import { clearSession, db, getKv, loadMock, loadSession, setKv, type SavedMock } from './data/db';
 import { GRADE_READY, ITEM_BY_ID, SPEAKING_RAW, WRITING_BY_ID } from './content';
+import { GRADE, GRADE_META } from './grade';
 import { ComingSoonScreen } from './features/grade/GradeSwitch';
 import { applyResult } from './engine/srs';
 import { bumpDayLog } from './data/db';
@@ -120,7 +121,7 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      const onboarded = await getKv<boolean>('onboarded');
+      const onboarded = await getKv<boolean>(GRADE_META[GRADE].onboardedKey);
       const base: Route = onboarded ? { k: 'home' } : { k: 'welcome' };
 
       // 中断された演習が残っていれば、そこへ戻す。
@@ -316,7 +317,7 @@ export default function App() {
                 : push({ k: 'comingSoon' })
             }
             onSkip={async () => {
-              await setKv('onboarded', true);
+              await setKv(GRADE_META[GRADE].onboardedKey, true);
               goHome();
             }}
           />
@@ -612,6 +613,6 @@ async function saveDiagnostic(results: SessionResult[]) {
     bySection,
     byTag,
   };
-  await setKv('diagnostic', payload);
-  await setKv('onboarded', true);
+  await setKv(GRADE_META[GRADE].diagnosticKey, payload);
+  await setKv(GRADE_META[GRADE].onboardedKey, true);
 }

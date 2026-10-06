@@ -1948,6 +1948,14 @@ const ESSAY_G2 =
   'I think that students should be allowed to use smartphones at school. I have two reasons. First, smartphones are useful for learning. ' +
   'Students can look up new words in a dictionary application and check information for their projects. Second, smartphones help students stay safe. ' +
   'If there is an accident, they can contact their parents quickly. For these reasons, I believe that schools should let students use smartphones.';
+// 要約は45〜55語・丸写しなし・意見なしの自分の言葉（G2-03）
+const SUMMARY_G2 =
+  'Many people around the world now use translation apps. These apps allow users to talk with speakers of other languages and look up unfamiliar words. ' +
+  'However, wrong translations may create misunderstandings, and depending on the apps too often can weaken the language skills of students.';
+// R-3：模試の結果画面で丸写しが見えるよう、模試の要約には本文の連続7語を入れておく
+const SUMMARY_COPIED =
+  'Many people around the world now use translation apps. Sometimes they choose the wrong word, and students need care. ' +
+  'However, wrong translations may create misunderstandings, and depending on the apps too often can weaken the language skills of students.';
 const ESSAY_PRE2 =
   'I think students should join a club. I have two reasons. First, they can make many friends there. For example, I met my best friend in the tennis club. ' +
   'Second, club activities teach them how to work with other people. For these reasons, I think students should join a club.';
@@ -1994,13 +2002,15 @@ async function walkFullMock(pg, { writtenN, listenN, essay }) {
   const firstMain = {};
   const choices = pg.locator('main ul > li > button');
   const fallback = pg.getByRole('button', { name: /音が出ないときは/ });
+  let essayNo = 0; // essay が配列なら、ライティングの出てきた順に1つずつ入れる（2級は要約→意見論述）
   for (let i = 0; i < writtenN + listenN; i++) {
     await pg.locator('header span.truncate').first().waitFor({ timeout: 8000 });
     const label = (await pg.locator('header span.truncate').first().textContent()).trim();
     seq.push(label);
     if (!(label in firstMain)) firstMain[label] = await pg.locator('main').innerText();
+    if (label.includes('英文要約')) await pg.screenshot({ path: join(OUT, 'g2-03-mock-run-summary.png') });
     if (await pg.locator('textarea').count()) {
-      await pg.locator('textarea').fill(essay);
+      await pg.locator('textarea').fill(Array.isArray(essay) ? essay[essayNo++] : essay);
     } else {
       await choices.first().or(fallback).waitFor({ timeout: 8000 });
       if (await fallback.count()) {
@@ -2092,16 +2102,16 @@ let g2MockBlocks;
   await pg.locator('button', { hasText: '模擬テスト' }).first().click();
   await pg.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
   const st = await pg.locator('body').innerText();
-  for (const need of ['筆記 85分', '大問1 短文の語句空所補充', '大問2A 長文の語句空所補充', '大問2B 長文の語句空所補充', '大問3A', '大問3B', '大問5 英作文（意見論述）', '第1部 会話の内容一致選択', '第2部 文の内容一致選択', '合格ラインの目安は一次1950点中 1520点']) {
+  for (const need of ['筆記 85分', '大問1 短文の語句空所補充', '大問2A 長文の語句空所補充', '大問2B 長文の語句空所補充', '大問3A', '大問3B', '大問4 英文要約', '大問5 英作文（意見論述）', '第1部 会話の内容一致選択', '第2部 文の内容一致選択', '合格ラインの目安は一次1950点中 1520点']) {
     if (!st.includes(need)) throw new Error(`2級の模試の入口に「${need}」が出ていない: ${st.slice(0, 300)}`);
   }
-  for (const bad of ['大問6', '第3部', '応答文選択', '筆記 80分', '1800', '1322', '大問4']) {
+  for (const bad of ['大問6', '第3部', '応答文選択', '筆記 80分', '1800', '1322']) {
     if (st.includes(bad)) throw new Error(`2級の模試の入口に「${bad}」が出ている`);
   }
-  // ライティングは今は1題（要約は G2-03）。題数からの組み立てなので「2題」「35〜40分」は出ない（M-5・R-5）
-  if (!st.includes('ライティング1題に') || !st.includes('18〜23分')) throw new Error('2級の入口のライティング文言が題数（1題）・18〜23分になっていない');
-  if (!st.includes('筆記だけ。ライティング1題まで含む')) throw new Error('2級の筆記の説明が「ライティング1題まで含む」になっていない');
-  if (/ライティング2題|35〜40分/.test(st)) throw new Error('2級の入口に、いまの構成と合わない「ライティング2題」「35〜40分」が出ている');
+  // G2-03：要約が入ってライティングは2題。題数からの組み立てなので「35〜40分」に自然に戻る
+  if (!st.includes('ライティング2題に') || !st.includes('35〜40分')) throw new Error('2級の入口のライティング文言が題数（2題）・35〜40分になっていない');
+  if (!st.includes('筆記だけ。ライティング2題まで含む')) throw new Error('2級の筆記の説明が「ライティング2題まで含む」になっていない');
+  if (/ライティング1題|18〜23分/.test(st)) throw new Error('2級の入口に、要約が入る前の「ライティング1題」「18〜23分」が残っている');
   await pg.screenshot({ path: join(OUT, 'g2-02-mock-setup-g2.png'), fullPage: true });
   await pg.locator('button', { hasText: 'フル' }).first().click();
   await pg.locator('main ul > li > button').first().waitFor({ timeout: 10000 });
@@ -2110,12 +2120,12 @@ let g2MockBlocks;
   if (!/85:00|84:5\d/.test(clock0)) throw new Error(`筆記の残り時間が85:00から始まっていない: ${clock0}`);
   await pg.screenshot({ path: join(OUT, 'g2-02-mock-run-g2-q1.png') });
 
-  const { seq, firstMain } = await walkFullMock(pg, { writtenN: 32, listenN: 30, essay: ESSAY_G2 });
+  const { seq, firstMain } = await walkFullMock(pg, { writtenN: 33, listenN: 30, essay: [SUMMARY_COPIED, ESSAY_G2] });
   const r = runs(seq);
   g2MockBlocks = r;
   const expect = [
     ['大問1 短文の語句空所補充', 17], ['大問2A 長文の語句空所補充', 3], ['大問2B 長文の語句空所補充', 3],
-    ['大問3A 長文の内容一致選択（Eメール）', 3], ['大問3B 長文の内容一致選択（説明文）', 5], ['大問5 英作文（意見論述）', 1],
+    ['大問3A 長文の内容一致選択（Eメール）', 3], ['大問3B 長文の内容一致選択（説明文）', 5], ['大問4 英文要約', 1], ['大問5 英作文（意見論述）', 1],
     ['第1部 会話の内容一致選択', 15], ['第2部 文の内容一致選択', 15],
   ];
   if (JSON.stringify(r) !== JSON.stringify(expect)) throw new Error(`2級の模試の構成が違う:\n実際 ${JSON.stringify(r)}\n期待 ${JSON.stringify(expect)}`);
@@ -2132,17 +2142,32 @@ let g2MockBlocks;
   const pa = passageOf(byBlock[0][0]);
   const pb = passageOf(byBlock[1][0]);
   if (pa === pb) throw new Error(`大問2AとBが同じ長文（${pa}）`);
-  console.log('  ✓ 2級のフル模試：85:00開始／大問1(17)・2A(3)・2B(3)・3A(3)・3B(5)・5(1)／リスニング第1部15・第2部15／「大問6」「第3部」なし');
+  console.log('  ✓ 2級のフル模試：85:00開始／大問1(17)・2A(3)・2B(3)・3A(3)・3B(5)・4要約(1)・5(1)／リスニング第1部15・第2部15／「大問6」「第3部」なし');
   console.log('  ✓ 大問2Aと2Bは別の本文');
 
   await pg.screenshot({ path: join(OUT, 'g2-02-mock-result-g2-unscored.png') });
+  // R-3：要約の自己採点を開くと、形式チェック（丸写しの箇所）と要点チェックリストが出る。意見論述には出ない
+  {
+    const open = pg.getByRole('button', { name: /モデル解答を見て採点する/ });
+    if ((await open.count()) !== 2) throw new Error('模試の結果にライティングの採点ボタンが2つ無い');
+    await open.first().click();
+    await pg.getByText('要点チェック（自分で確かめる）').waitFor({ timeout: 5000 });
+    const sc = await pg.locator('main').innerText();
+    if (!sc.includes('本文の丸写しがない') || !sc.includes('Sometimes they choose the wrong word, and')) throw new Error('模試の自己採点に丸写しの箇所が出ていない');
+    if ((await pg.locator('main li.bg-again-soft', { hasText: '丸写し' }).count()) !== 1) throw new Error('模試の自己採点の丸写しが赤になっていない');
+    if ((await pg.locator('main ul button[aria-pressed]').count()) !== 3 || (await pg.locator('main ul button[aria-pressed="true"]').count()) !== 0) throw new Error('模試の自己採点の要点チェックが3件・未チェックでない');
+    await pg.screenshot({ path: join(OUT, 'g2-03r-mock-scorer-summary.png') });
+    await pg.getByRole('button', { name: '閉じる' }).first().click();
+  }
+  // R-9：模試の要約の指示文に語数が1回だけ出る
+  if ((firstMain['大問4 英文要約'].match(/45〜55語/g) ?? []).length !== 1) throw new Error('模試の要約の指示文に「45〜55語」が1回でない');
   await scoreAllWritings(pg);
   const rt = await pg.locator('main').innerText();
   if (!/\/ 1950/.test(rt)) throw new Error(`2級の模試の結果が1950点満点になっていない: ${rt.slice(0, 300)}`);
   if (!rt.includes('合格ラインの目安は 1520点')) throw new Error('合格ラインが1520点になっていない');
   if (!rt.includes('選択問題31問に使った')) throw new Error('「選択問題31問」になっていない（17+6+8）');
-  if (!rt.includes('目標18分以上')) throw new Error('ライティングの目標が1題ぶん（17.5分→18分）になっていない');
-  if (rt.includes('目標35分')) throw new Error('2級の結果が、1題しか無いのに35分を基準にしている');
+  if (!rt.includes('目標35分以上')) throw new Error('ライティングの目標が2題ぶん（17.5分×2＝35分）になっていない');
+  if (rt.includes('目標18分')) throw new Error('2級の結果が、要約が入ったのに1題ぶん（18分）のままになっている');
   if (/第3部|1322|1800|1題300点/.test(rt)) throw new Error('2級の模試の結果に準2級の数字・見出しが残っている');
   await pg.screenshot({ path: join(OUT, 'g2-02-mock-result-g2.png') });
   await pg.screenshot({ path: join(OUT, 'g2-02-mock-result-g2-full.png'), fullPage: true });
@@ -2349,6 +2374,284 @@ console.log('  ✓ ようこそ画面：準2級 10/03・10/06・11/16・11/25、
   if (ht.includes('準2級にもどす')) throw new Error('準2級のホームに「準2級にもどす」が出ている');
   if (!ht.includes('Ver.1.3')) throw new Error('準2級のホームの版表記が Ver.1.3 でない');
   console.log('  ✓ 準2級のホームに「準2級にもどす」は出ない');
+  await c.close();
+}
+
+/* ---- G2-03：英文要約（w-summary）----
+   見るもの：要約が意見論述の else に落ちない（First / Second / For these reasons を求めない）、
+   語数 45〜55 の赤・緑、丸写し（連続7語）と意見の混入、要点チェックリスト（機械は○×をつけない）、
+   2級の意見論述は語数が外れても赤にしない（目安）、準2級のライティングは変わらない。 */
+console.log('G2-03：英文要約');
+
+const wordsOf = (s) => s.trim().split(/\s+/).filter(Boolean);
+const SUMMARY_WORDS = wordsOf(SUMMARY_G2);
+/** 自分の言葉の要約を n 語に切り出す（丸写しも意見も入らない） */
+const summaryOf = (n) => SUMMARY_WORDS.slice(0, n).join(' ');
+
+/** ライティング道場で「翻訳アプリ」の要約の編集画面まで進む */
+async function openSummaryEditor(pg) {
+  await pg.locator('button', { hasText: 'ライティング道場' }).first().click();
+  await pg.getByText('ライティングはたった2題で650点。').waitFor({ timeout: 5000 });
+  await pg.getByRole('button', { name: '英文要約' }).click();
+  await pg.locator('button', { hasText: '翻訳アプリ' }).click();
+  await pg.locator('textarea').waitFor({ timeout: 5000 });
+}
+const meter = (pg) => pg.locator('header span.rounded-full').filter({ hasText: /\/ 45–55語/ });
+const hasClass = async (loc, cls) => ((await loc.first().getAttribute('class')) ?? '').includes(cls);
+
+{
+  const { c, pg } = await g2Open('g2-03a(2級の要約)', { grade: 'g2', date: '2026-10-06' });
+
+  // 道場のタブ：意見論述 / 英文要約（Eメール返信は無い）
+  await pg.locator('button', { hasText: 'ライティング道場' }).first().click();
+  await pg.getByText('ライティングはたった2題で650点。').waitFor({ timeout: 5000 });
+  const lt = await pg.locator('main').innerText();
+  if (!lt.includes('英文要約') || !lt.includes('意見論述')) throw new Error('2級の道場に「意見論述」「英文要約」のタブが無い');
+  if (lt.includes('Eメール返信')) throw new Error('2級の道場に Eメール返信が出ている');
+  await pg.getByRole('button', { name: '英文要約' }).click();
+  const st = await pg.locator('main').innerText();
+  if (!st.includes('45〜55語') || st.includes('目安')) throw new Error(`要約の語数が「45〜55語」（目安なし）でない: ${st.slice(0, 200)}`);
+  await pg.screenshot({ path: join(OUT, 'g2-03-list-summary.png') });
+  await pg.locator('button', { hasText: '翻訳アプリ' }).click();
+  await pg.locator('textarea').waitFor({ timeout: 5000 });
+
+  // 課題文：英語が出て、日本語は最初は隠れている。「日本語で読む」で開く
+  let body = await pg.locator('main').innerText();
+  if (!body.includes('translation apps on their smartphones')) throw new Error('要約の本文（sourceText）が出ていない');
+  if (body.includes('スマートフォンの翻訳アプリを使う人')) throw new Error('日本語訳が最初から出ている');
+  await pg.getByRole('button', { name: '日本語で読む' }).click();
+  await pg.getByText('スマートフォンの翻訳アプリを使う人').waitFor({ timeout: 3000 });
+  await pg.screenshot({ path: join(OUT, 'g2-03-editor-empty-ja.png') });
+  await pg.getByRole('button', { name: '日本語を閉じる' }).click();
+
+  // R-7：本文は段落ごとの <p>（3つ）で、日本語訳も3段落
+  if ((await pg.locator('main section p.en').count()) !== 3) throw new Error('要約の本文が3つの段落に分かれていない');
+  await pg.getByRole('button', { name: '日本語で読む' }).click();
+  if ((await pg.locator('main section div.anim-fade p').count()) !== 3) throw new Error('日本語訳が3つの段落に分かれていない');
+  await pg.getByRole('button', { name: '日本語を閉じる' }).click();
+  // 書く前に見る型：First / Second / For these reasons を要求しない（意見論述の else に落ちていない）
+  await pg.getByRole('button', { name: /書き方を見る/ }).click();
+  await pg.getByText('第1段落の要点を1文で').waitFor({ timeout: 3000 });
+  await pg.screenshot({ path: join(OUT, 'g2-03-editor-template.png'), fullPage: true });
+  body = await pg.locator('body').innerText();
+  for (const bad of ['First, ~', 'Second, ~', 'For these reasons', '理由の目印', 'まとめの文', '理由が2つ']) {
+    if (body.includes(bad)) throw new Error(`要約の編集画面に意見論述の型「${bad}」が出ている（else に落ちている）`);
+  }
+  if (!body.includes('However,')) throw new Error('要約の型に However, が無い');
+  // R-8：番号付きの手順は3つ。「コツ」は手順に数えず、注記として別に出す
+  if ((await pg.locator('main ol > li').count()) !== 3) throw new Error('要約の型の手順が3つでない（コツが4番目の手順になっている）');
+  if (!body.includes('コツ：')) throw new Error('要約の型に「コツ」の注記が無い');
+  await pg.screenshot({ path: join(OUT, 'g2-03r-editor-template.png'), fullPage: true });
+
+  // 語数：44 → 赤 / 50 → 緑 / 56 → 赤（公式の「指示」なので断定する）
+  const ta = pg.locator('textarea');
+  for (const [n, want, shot] of [[44, 'again', 'g2-03-words-44'], [50, 'correct', 'g2-03-words-50'], [56, 'again', 'g2-03-words-56']]) {
+    // 56語は自分の言葉の要約が足りないので、同じ文を重ねて長くする（丸写し判定は本文と比べるので影響しない）
+    const text = n <= SUMMARY_WORDS.length ? summaryOf(n) : [...SUMMARY_WORDS, ...SUMMARY_WORDS].slice(0, n).join(' ');
+    await ta.fill(text);
+    const m = meter(pg);
+    const t = (await m.innerText()).trim();
+    if (!t.startsWith(`${n} /`)) throw new Error(`語数メーターが ${n} 語になっていない: ${t}`);
+    if (!(await hasClass(m, `text-${want}`))) throw new Error(`${n}語のメーターの色が ${want} でない: ${await m.first().getAttribute('class')}`);
+    await pg.screenshot({ path: join(OUT, `${shot}.png`) });
+  }
+
+  // 自分の言葉で書いた要約には、どのチェックにも赤が出ない（正しく言い換えた子に赤を出さない）
+  await ta.fill(SUMMARY_G2);
+  let chips = pg.locator('div.sticky span.rounded-full');
+  if ((await chips.count()) < 3) throw new Error('要約のチェックチップが3つ出ていない（語数・丸写し・意見）');
+  if ((await pg.locator('div.sticky span.bg-again-soft').count()) !== 0) throw new Error('自分の言葉で書いた要約に赤が出ている');
+  await pg.screenshot({ path: join(OUT, 'g2-03-editor-paraphrase-ok.png') });
+
+  // 丸写し：連続6語では何も出ない／連続7語ではその箇所を見せる
+  const SIX = 'Sometimes they choose the wrong word';
+  const SEVEN = 'Sometimes they choose the wrong word, and';
+  await ta.fill(`${summaryOf(38)} ${SIX}. Students need care.`);
+  // 語数は足りなくて赤なので、見るのは丸写しのチップだけ
+  if ((await pg.locator('div.sticky span.bg-again-soft', { hasText: '丸写し' }).count()) !== 0) throw new Error('連続6語の一致に赤が出ている（しきい値が7でない）');
+  if ((await pg.locator('div.sticky p').innerText()).includes(SIX)) throw new Error('連続6語の一致が表示されている');
+  await pg.screenshot({ path: join(OUT, 'g2-03-verbatim-6.png') });
+  // R-2：語数が足りない（28語）状態でも、一言は語数ではなく丸写しの箇所を先に見せる
+  await ta.fill(`${summaryOf(18)} ${SEVEN} students need care.`);
+  if (!(await pg.locator('header span.rounded-full').filter({ hasText: /\/ 45–55語/ }).innerText()).startsWith('28 /')) throw new Error('丸写しの検査が、語数が足りない状態になっていない');
+  const copyChip = pg.locator('div.sticky span.bg-again-soft', { hasText: '丸写し' });
+  if ((await copyChip.count()) !== 1) throw new Error('連続7語の一致が検出されない');
+  const hint = await pg.locator('div.sticky p').innerText();
+  if (!hint.includes(SEVEN)) throw new Error(`丸写しの箇所がそのまま見えていない: ${hint}`);
+  if (/\d+\s*%/.test(hint)) throw new Error('丸写しが「◯%」の数字になっている');
+  await pg.screenshot({ path: join(OUT, 'g2-03-verbatim-7.png') });
+
+  // 意見の混入
+  await ta.fill(`${summaryOf(10)} I think these apps are good.`); // R-2：語数不足（16語）でも意見の一言が先に出る
+  const opChip = pg.locator('div.sticky span.bg-again-soft', { hasText: '意見' });
+  if ((await opChip.count()) !== 1) throw new Error('「I think」が意見の混入として指摘されない');
+  const ohint = await pg.locator('div.sticky p').innerText();
+  if (!ohint.includes('I think') || !ohint.includes('自分の考えは書かない')) throw new Error(`意見の指摘にその語・理由が無い: ${ohint}`);
+  await pg.screenshot({ path: join(OUT, 'g2-03-opinion.png') });
+
+  // R-6：意見の検出は空白の数・改行に左右されない。似た別の語（I thinks / Hi think / we shoulder / I believed）は拾わない
+  const opChips = () => pg.locator('div.sticky span.bg-again-soft', { hasText: '意見' }).count();
+  for (const hit of ['I  think apps are good.', 'I\nthink apps are good.', 'In  my\nopinion apps are good.', 'We\tshould use apps.']) {
+    await ta.fill(`${summaryOf(30)} ${hit}`);
+    if ((await opChips()) !== 1) throw new Error(`意見として拾えていない: ${JSON.stringify(hit)}`);
+  }
+  for (const miss of ['I thinks apps are good.', 'Hi think apps are good.', 'We shoulder the cost.', 'I believed apps were good.']) {
+    await ta.fill(`${summaryOf(30)} ${miss}`);
+    if ((await opChips()) !== 0) throw new Error(`意見でないのに拾っている: ${JSON.stringify(miss)}`);
+  }
+  // 提出 → 見くらべ画面：要点チェックリスト（日本語・○×なし）、公式の採点基準ではない旨
+  await ta.fill(SUMMARY_G2);
+  await pg.getByRole('button', { name: '提出してモデル解答を見る' }).click();
+  await pg.getByText('要点チェック').waitFor({ timeout: 8000 });
+  const rv = await pg.locator('main').innerText();
+  for (const need of ['翻訳アプリを使う人が世界中で増えている', '違う言語の相手と話せる', '誤訳で誤解が起きる', '英検の公式な採点基準ではありません', '丸写し']) {
+    if (!rv.includes(need)) throw new Error(`要約の見くらべ画面に「${need}」が無い`);
+  }
+  for (const bad of ['First / Second', 'For these reasons', '英検の採点観点そのまま', '○', '×']) {
+    if (rv.includes(bad)) throw new Error(`要約の見くらべ画面に「${bad}」が出ている`);
+  }
+  if ((await pg.locator('main ul button[aria-pressed]').count()) !== 3) throw new Error('要点チェックが3件でない');
+  if ((await pg.locator('main ul button[aria-pressed="true"]').count()) !== 0) throw new Error('要点チェックが最初から入っている（機械が判定している）');
+  if ((await pg.locator('main li.bg-again-soft').count()) !== 0) throw new Error('自分の言葉の要約の「形式チェック」に赤が出ている');
+  await pg.screenshot({ path: join(OUT, 'g2-03-review-top.png') });
+  await pg.locator('main ul button[aria-pressed]').first().click();
+  await pg.screenshot({ path: join(OUT, 'g2-03-review-keypoints.png'), fullPage: true });
+  // 3つの観点で自己採点して記録できる
+  const fours = pg.getByRole('button', { name: '4', exact: true });
+  if ((await fours.count()) !== 3) throw new Error('要約の自己採点の観点が3つでない');
+  for (let i = 0; i < 3; i++) await fours.nth(i).click();
+  await pg.getByText('/ 12点').waitFor({ timeout: 3000 });
+  await pg.getByRole('button', { name: '記録して終わる' }).click();
+  const rows = await readAllRows(pg, 'writings');
+  const rec = rows.find((r) => r.promptId === 'g2-w-summary-001');
+  if (!rec || rec.section !== 'w-summary' || rec.total !== 12) throw new Error(`要約の記録が保存されていない: ${JSON.stringify(rec)}`);
+  console.log('  ✓ 2級の要約：語数は44=赤・50=緑・56=赤、連続6語は無反応・7語はその箇所を表示、I think を指摘、要点は日本語チェックリスト（○×なし）、型に First/Second/For these reasons なし');
+  await c.close();
+}
+
+// ---------- 2級の意見論述：80〜100語を外れても赤にしない（公式は「目安」） ----------
+{
+  const { c, pg } = await g2Open('g2-03b(2級の意見論述の目安)', { grade: 'g2', date: '2026-10-06' });
+  await pg.locator('button', { hasText: 'ライティング道場' }).first().click();
+  await pg.getByText('ライティングはたった2題で650点。').waitFor({ timeout: 5000 });
+  const lt = await pg.locator('main').innerText();
+  if (!lt.includes('80〜100語が目安')) throw new Error('2級の意見論述が「80〜100語が目安」になっていない');
+  await pg.locator('button', { hasText: '学校でのスマートフォン' }).click();
+  await pg.locator('textarea').waitFor({ timeout: 5000 });
+  await pg.locator('textarea').fill('I think that students should use smartphones. First, they are useful. Second, they are safe. For these reasons, I agree.');
+  const m = pg.locator('header span.rounded-full').filter({ hasText: /\/ 80–100語/ });
+  const mt = (await m.innerText()).trim();
+  if (!mt.includes('目安')) throw new Error(`語数メーターに「目安」が無い: ${mt}`);
+  if (await hasClass(m, 'text-again')) throw new Error('80語に届かないだけで語数メーターが赤くなっている（目安のはず）');
+  if ((await pg.locator('div.sticky span.bg-again-soft').count()) !== 0) throw new Error('意見論述の語数不足が赤いチップになっている');
+  await pg.screenshot({ path: join(OUT, 'g2-03-opinion-guide.png') });
+  // R-2：目安（語数）と赤（First / Second）が両方外れているとき、一言は赤のほうを出す
+  await pg.locator('textarea').fill('I agree with this idea because it is useful.');
+  const gh = await pg.locator('div.sticky p').innerText();
+  if (!/first/i.test(gh) || gh.includes('目安')) throw new Error(`目安の一言が赤の一言を隠している: ${gh}`);
+  await pg.screenshot({ path: join(OUT, 'g2-03r-opinion-hint-priority.png') });
+  await pg.locator('textarea').fill('I think that students should use smartphones. First, they are useful. Second, they are safe. For these reasons, I agree.');
+  await pg.getByRole('button', { name: '提出してモデル解答を見る' }).click();
+  await pg.getByRole('heading', { name: '形式チェック' }).waitFor({ timeout: 8000 });
+  if ((await pg.locator('main li.bg-again-soft').count()) !== 0) throw new Error('見くらべ画面で、目安の語数が赤くなっている');
+  await pg.screenshot({ path: join(OUT, 'g2-03-opinion-guide-review.png') });
+  console.log('  ✓ 2級の意見論述：80〜100語は「目安」。外れても赤にならない（First / Second / まとめの検査は従来どおり）');
+  await c.close();
+}
+
+// ---------- 準2級のライティングは変わらない ----------
+{
+  const { c, pg } = await g2Open('g2-03c(準2級のライティング)', { grade: 'pre2', date: '2026-10-06' });
+  await pg.locator('button', { hasText: 'ライティング道場' }).first().click();
+  await pg.getByText('ライティングはたった2題で600点。').waitFor({ timeout: 5000 });
+  const lt = await pg.locator('main').innerText();
+  if (lt.includes('英文要約') || lt.includes('目安')) throw new Error('準2級の道場に英文要約・目安が出ている');
+  if (!lt.includes('Eメール返信') || !lt.includes('50〜60語')) throw new Error('準2級の道場の表示が変わっている');
+  await pg.locator('main ul button').first().click();
+  await pg.locator('textarea').waitFor({ timeout: 5000 });
+  await pg.locator('textarea').fill('I think students should join a club. Because it is fun.');
+  const m = pg.locator('header span.rounded-full').filter({ hasText: /\/ 50–60語/ });
+  if (!(await hasClass(m, 'text-again'))) throw new Error('準2級の意見論述の語数不足が赤でなくなっている');
+  if ((await m.innerText()).includes('目安')) throw new Error('準2級の語数メーターに「目安」が出ている');
+  await pg.screenshot({ path: join(OUT, 'g2-03-pre2-opinion.png') });
+  // R-2：準2級の一言は従来どおり「最初に外れた検査」（語数が先）
+  const ph = await pg.locator('div.sticky p').innerText();
+  if (!/^あと\d+語。理由に For example を足すと自然に伸びる$/.test(ph)) throw new Error(`準2級の上部の一言が変わっている: ${ph}`);
+  // R-1：準2級の注記は 74cfe12 と1文字も違わない（文の区切りの空白も）。74cfe12 の JSX から起こした文字列
+  const OLD_EDITOR_NOTE =
+    '書いた内容は自動で保存されます。途中でアプリを閉じても消えません。自動修正はオフにしてあります。本番は手書きなので、スペルも自分で書けるようにしておこう。 上のチェックは語数や疑問符の数など「数えられること」だけを見ていて、内容が合っているかは判定していません。';
+  const editorNote = await pg.locator('main > p.mt-2').textContent();
+  if (editorNote !== OLD_EDITOR_NOTE) throw new Error(`準2級の編集画面の注記が 74cfe12 と違う:\n${JSON.stringify(editorNote)}`);
+  await pg.locator('textarea').fill('I think students should join a club. First, they can make friends. Second, they learn teamwork. For these reasons, I think so.');
+  await pg.getByRole('button', { name: '提出してモデル解答を見る' }).click();
+  await pg.getByRole('heading', { name: '形式チェック' }).waitFor({ timeout: 8000 });
+  const OLD_REVIEW_NOTE =
+    '※ 形式チェックは語数や疑問符の数など「数えられること」だけを見ています。 内容が合っているかどうかは判定していません。最終的な添削は先生や英語が得意な人に見てもらうのが確実です。';
+  const reviewNote = await pg.locator('main > p.mt-6').textContent();
+  if (reviewNote !== OLD_REVIEW_NOTE) throw new Error(`準2級の見くらべ画面の注記が 74cfe12 と違う:\n${JSON.stringify(reviewNote)}`);
+  console.log('  ✓ 準2級のライティング（編集・見くらべの注記は 74cfe12 と完全一致）：意見論述50〜60語は従来どおり範囲外で赤・「目安」「英文要約」は出ない');
+  await c.close();
+}
+
+/* ---- G2-03-R：レビュー指摘の手直し ---- */
+console.log('G2-03-R：要約のレビュー指摘');
+
+// R-5：丸写しの語の数え方は語数カウンタと同じ（ハイフンでつないだ語・数字は1語）。公式の模範解答は検出0件のまま
+{
+  const { findVerbatim } = await import('../src/lib/verbatim.ts');
+  const srcH = 'We know the well-known fact that apps are useful for many people.';
+  // 語数カウンタでは「the well-known fact that apps are」は6語。7語と出して本人が数えて6語、にならない
+  if (findVerbatim(srcH, 'Yes the well-known fact that apps are fine.').length !== 0) throw new Error('ハイフンでつないだ語を2語に数えている（6語の一致を丸写しにした）');
+  if (findVerbatim(srcH, 'Yes the well-known fact that apps are useful.').length !== 1) throw new Error('7語（well-known を1語）の一致を拾えていない');
+  const srcN = 'There are 1,000 apps in the store now.';
+  if (findVerbatim(srcN, 'There are 1,000 apps in the shop.').length !== 0) throw new Error('数字を語として数えていない（6語を拾った）');
+  if (findVerbatim(srcN, 'There are 1,000 apps in the store.').length !== 1) throw new Error('数字を1語として7語の一致を拾えていない');
+  // 公式の模範解答2本（docs/verify-2026-08-16/verify_verbatim.py と同じ文）
+  const official = [
+    ['As technology improves, ways to communicate have become more diverse. Nowadays, social media plays a significant role in our daily lives. Especially among young people, it has become a popular way to communicate with others.\nWhy do so many young people like it? One reason is that social media helps them feel connected to other people. They can chat with friends anytime, and share messages, pictures, or videos. Social media also helps them learn new things. They can find new ideas from people outside their local community.\nHowever, there are some problems. It can affect mental health. Some young people start to feel like they are not good enough when they compare themselves to others on social media. Moreover, if young people share too much personal information online or talk to strangers, they might end up in dangerous situations. They have to be aware of these risks when using social media.',
+      'Social media has become a popular way for young people to communicate with others. It helps them feel connected to others and learn new things. However, they have to understand that it can damage their mental health by comparing themselves to others or might be involved in dangerous situations by sharing personal information.'],
+    ['More and more people are buying clothes on the Internet. Nowadays, people even buy socks, hats, and other items from online stores.\nThe good thing about buying these items online is that people can save money. When they shop online, they can compare the prices without going to the store.\nHowever, there is a problem. Online shopping users can sometimes be disappointed. The reason for this is that the actual products may be different from the photos on the online stores.',
+      'More people are buying clothes online. The good thing is that people can save money without going to the store. However, they can be disappointed when the actual products differ from the photos online.'],
+  ];
+  const longest = official.map(([s, a]) => {
+    let n = 0;
+    while (findVerbatim(s, a, n + 1).length > 0) n++;
+    return n;
+  });
+  for (const [s, a] of official) if (findVerbatim(s, a).length !== 0) throw new Error('公式の模範解答が丸写しとして検出された（しきい値7）');
+  console.log(`  ✓ R-5：丸写しの語数はハイフン語・数字を1語で数える／公式の模範解答2本はしきい値7で検出0件（最長一致 ${longest.join('語 / ')}語）`);
+}
+
+// R-10：Ver.1.3 で受けた2級の模試（ライティング1題）は、1題ぶんの目標（18分）で判定する
+{
+  const { c, pg } = await g2Open('g2-03r-oldmock(Ver.1.3の2級の模試)', { grade: 'g2', date: '2026-10-06' });
+  await pg.evaluate(async () => {
+    await new Promise((resolve, reject) => {
+      const req = indexedDB.open('eiken-pre2');
+      req.onerror = () => reject(req.error);
+      req.onsuccess = () => {
+        const tx = req.result.transaction('mocks', 'readwrite');
+        const now = Date.now();
+        tx.objectStore('mocks').add({
+          scope: 'written', startedAt: now - 6e6, finishedAt: now - 1e6,
+          writtenElapsedMs: 85 * 60000 - 20 * 60000, writingRemainingMs: 20 * 60000,
+          answers: [{ itemId: 'g2-v-001', selected: 0, correct: true }],
+          writings: [{ promptId: 'g2-w-opinion-001', text: 'I think so.', wordCount: 3 }],
+        });
+        tx.oncomplete = () => resolve(null);
+        tx.onerror = () => reject(tx.error);
+      };
+    });
+  });
+  await pg.reload({ waitUntil: 'networkidle' });
+  await pg.getByText('まだ採点していないライティングがあるよ').click();
+  await pg.getByText('時間の使い方').waitFor({ timeout: 8000 });
+  const t = await pg.locator('main').innerText();
+  if (!t.includes('目標18分以上')) throw new Error(`Ver.1.3 の模試（1題）の目標が18分でない: ${t.slice(t.indexOf('時間の使い方'), t.indexOf('時間の使い方') + 200)}`);
+  if (t.includes('目標35分')) throw new Error('1題の模試を35分で判定している');
+  if (!t.includes('ライティングに20分残せている')) throw new Error('20分残せているのに「残せている」と出ない');
+  await pg.screenshot({ path: join(OUT, 'g2-03r-oldmock-result.png'), fullPage: true });
+  console.log('  ✓ R-10：Ver.1.3 で受けた2級の模試（1題）は「目標18分以上」・20分残して「残せている」');
   await c.close();
 }
 

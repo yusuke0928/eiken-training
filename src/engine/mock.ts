@@ -49,9 +49,8 @@ const PRE2_WRITTEN_BLUEPRINT: MockBlock[] = [
  * 大問2は A と B の2セット（各3段落・空所3つ）。別の本文でなければ模試にならないので、
  * buildPaper が使用済みの長文を除いて選ぶ。
  *
- * 大問4（英文要約）は G2-03 で入る。大問番号は公式どおり 4 / 5 なので、
- * 意見論述はいま「大問5」と出し、要約は 3B と 5 のあいだに1行足すだけで入るようにしてある：
- *   { kind: 'writing', section: 'w-summary', label: '大問4 英文要約', count: 1 },
+ * 大問番号は公式どおり 4（英文要約）／5（意見論述）。ライティングが2題になるので、
+ * 目標時間は 題数 × 17.5分 ＝ 35分に自然に戻る（grade.ts の writingMinPerItem）。
  */
 const G2_WRITTEN_BLUEPRINT: MockBlock[] = [
   { kind: 'mcq', section: 'r-vocab', label: '大問1 短文の語句空所補充', count: 17 },
@@ -71,6 +70,7 @@ const G2_WRITTEN_BLUEPRINT: MockBlock[] = [
     label: '大問3B 長文の内容一致選択（説明文）',
     count: 5,
   },
+  { kind: 'writing', section: 'w-summary', label: '大問4 英文要約', count: 1 },
   { kind: 'writing', section: 'w-opinion', label: '大問5 英作文（意見論述）', count: 1 },
 ];
 

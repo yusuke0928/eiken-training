@@ -3,12 +3,13 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { writingPromptsIn } from '../../content';
 import { db } from '../../data/db';
 import { GRADE, GRADE_META } from '../../grade';
+import { wordRangeText } from '../../engine/writing';
 import { WRITING_SPEC, type WritingSection } from '../../types';
 import { Screen, TopBar } from '../../ui/primitives';
 import { ChevronRight, Level } from '../../ui/icons';
 
 // 課題が1つも無い種類はタブに出さない（2級に Eメール返信は無い）
-const SECTIONS: WritingSection[] = (['w-opinion', 'w-email'] as WritingSection[]).filter(
+const SECTIONS: WritingSection[] = (['w-opinion', 'w-email', 'w-summary'] as WritingSection[]).filter(
   (s) => writingPromptsIn(s).length > 0,
 );
 
@@ -66,7 +67,7 @@ export function WritingListScreen({
           <p className="mb-2 text-[13px] font-semibold text-ink">{spec.task}</p>
           <div className="flex flex-wrap gap-2 text-[12px]">
             <span className="rounded-full bg-surface-2 px-3 py-1 text-ink-sub">
-              {spec.wordRange[0]}〜{spec.wordRange[1]}語
+              {wordRangeText(section)}
             </span>
             <span className="rounded-full bg-surface-2 px-3 py-1 text-ink-sub">
               {spec.maxScore}点満点

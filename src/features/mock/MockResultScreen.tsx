@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ITEM_BY_ID, WRITING_BY_ID } from '../../content';
 import { db, loadReviewPos } from '../../data/db';
-import { formatClock, WRITING_TARGET_MS, WRITTEN_MCQ_COUNT, WRITTEN_MS } from '../../engine/mock';
+import { formatClock, WRITING_COUNT, WRITTEN_MCQ_COUNT, WRITTEN_MS } from '../../engine/mock';
 import { estimateSkillCse, scoringOf } from '../../engine/scoring';
 import { GRADE, GRADE_META, gradeOfMock, mockInGrade } from '../../grade';
 import { OtherGradeNotice } from '../grade/GradeSwitch';
-import { totalScore } from '../../engine/writing';
-import { RUBRIC, SECTION_LABEL, WRITING_SPEC, type MockRecord, type SectionId } from '../../types';
+import { mechanicalGrader, totalScore } from '../../engine/writing';
+import { CheckResultList, KeyPointsChecklist } from '../writing/WritingParts';
+import { RUBRIC, RUBRIC_NOTE, SECTION_LABEL, WRITING_SPEC, type MockRecord, type SectionId } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import { countReviewable, mockReviewId, reviewResumeNote, type ReviewAnswer } from '../result/AnswerReviewScreen';
 
@@ -70,6 +71,11 @@ export function MockResultScreen({
   // ライティングに入った時点の残り時間。古い記録には入っていないので null 許容
   const left = record.writingRemainingMs ?? null;
   const mcqMs = left === null ? 0 : WRITTEN_MS - left;
+  // 目標時間は、その問題用紙のライティングの題数から出す。Ver.1.3 で受けた2級の模試（要約なしの1題）を
+  // 開いたときに、いまの構成（2題＝35分）で「35分残せていない」と嘘の赤を出さないため。
+  // 準2級は 2題×15分＝30分で従来どおり
+  const WRITING_TARGET_MS =
+    (record.writings.length > 0 ? record.writings.length : WRITING_COUNT) * GRADE_META[GRADE].writingMinPerItem * 60 * 1000;
 
   return (
     <Screen>
@@ -251,6 +257,7 @@ export function MockResultScreen({
                     {open && (
                       <WritingScorer
                         promptId={w.promptId}
+                        text={w.text}
                         initial={w.scores ?? {}}
                         onSave={async (scores) => {
                           const total = totalScore(prompt.section, scores);
@@ -325,10 +332,12 @@ export function MockResultScreen({
 
 function WritingScorer({
   promptId,
+  text,
   initial,
   onSave,
 }: {
   promptId: string;
+  text: string;
   initial: Record<string, number>;
   onSave: (scores: Record<string, number>) => void;
 }) {
@@ -340,6 +349,22 @@ function WritingScorer({
 
   return (
     <div className="anim-fade mt-4">
+      {/* 英文要約だけ、書いた直後の道場と同じ形式チェックと要点チェックを出す。
+          出さないと、本文を写したことに気づかないまま自己採点してしまう。準2級・意見論述は従来のまま */}
+      {prompt.section === 'w-summary' && (
+        <div className="mb-4 flex flex-col gap-4">
+          <div>
+            <p className="mb-2 text-[12px] font-bold text-ink-faint">形式チェック</p>
+            <CheckResultList checks={mechanicalGrader.check(prompt, text)} />
+          </div>
+          {prompt.keyPoints && (
+            <div>
+              <p className="mb-2 text-[12px] font-bold text-ink-faint">要点チェック（自分で確かめる）</p>
+              <KeyPointsChecklist keyPoints={prompt.keyPoints} />
+            </div>
+          )}
+        </div>
+      )}
       <div className="mb-4 rounded-2xl bg-primary-soft p-4">
         <p className="mb-1 text-[12px] font-semibold text-primary">モデル解答</p>
         <p className="en whitespace-pre-line text-ink">{prompt.modelAnswer}</p>
@@ -347,6 +372,11 @@ function WritingScorer({
           {prompt.modelNote}
         </p>
       </div>
+      {RUBRIC_NOTE[prompt.section] && (
+        <p className="mb-3 rounded-2xl bg-surface-2 p-3 text-[12px] leading-relaxed text-ink-sub">
+          {RUBRIC_NOTE[prompt.section]}
+        </p>
+      )}
       <ul className="mb-4 flex flex-col gap-3">
         {rubric.map((c) => (
           <li key={c.key}>

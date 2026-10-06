@@ -3,7 +3,8 @@ import { WRITING_BY_ID } from '../../content';
 import { gradeOfId } from '../../grade';
 import { OtherGradeNotice } from '../grade/GradeSwitch';
 import { loadDraft, saveDraft } from '../../data/db';
-import { TEMPLATE, countWords, mechanicalGrader } from '../../engine/writing';
+import { TEMPLATE, TEMPLATE_NOTE, checkTone, countWords, mechanicalGrader, pickHint, wordTone } from '../../engine/writing';
+import { Paragraphs } from './WritingParts';
 import { WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import { Alert, Check } from '../../ui/icons';
@@ -21,6 +22,7 @@ function WritingEditorScreenBody({
   const spec = WRITING_SPEC[prompt.section];
   const [text, setText] = useState('');
   const [showHelp, setShowHelp] = useState(false);
+  const [showJa, setShowJa] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
   // 書きかけを失うのがいちばん痛いので、入力のたびに端末へ保存する
@@ -44,7 +46,7 @@ function WritingEditorScreenBody({
 
   const words = countWords(text);
   const [min, max] = spec.wordRange;
-  const inRange = words >= min && words <= max;
+  const tone = wordTone(prompt.section, words);
   const checks = mechanicalGrader.check(prompt, text);
 
   return (
@@ -55,14 +57,15 @@ function WritingEditorScreenBody({
         right={
           <span
             className={`rounded-full px-3 py-1 text-[13px] font-bold tabular-nums ${
-              words === 0
+              tone === 'empty' || tone === 'note'
                 ? 'bg-surface-2 text-ink-faint'
-                : inRange
+                : tone === 'ok'
                   ? 'bg-correct-soft text-correct'
                   : 'bg-again-soft text-again'
             }`}
           >
-            {words} / {min}–{max}語
+            {/* 目安（2級の意見論述）は範囲外でも赤にしないので、「目安」と書いて指示と区別する */}
+            {words} / {min}–{max}語{spec.wordLevel === 'guide' ? '（目安）' : ''}
           </span>
         }
       />
@@ -78,7 +81,11 @@ function WritingEditorScreenBody({
               <span
                 key={c.id}
                 className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[12px] font-semibold ${
-                  c.ok ? 'bg-correct-soft text-correct' : 'bg-again-soft text-again'
+                  checkTone(c) === 'ok'
+                    ? 'bg-correct-soft text-correct'
+                    : checkTone(c) === 'note'
+                      ? 'bg-surface-2 text-ink-sub'
+                      : 'bg-again-soft text-again'
                 }`}
               >
                 {c.ok ? <Check size={13} /> : <Alert size={13} />}
@@ -87,7 +94,7 @@ function WritingEditorScreenBody({
             ))}
           </div>
           <p className="mt-1.5 text-[12px] leading-snug text-ink-sub">
-            {(checks.find((c) => !c.ok) ?? checks[0]).hint}
+            {pickHint(checks)}
           </p>
         </div>
       )}
@@ -98,7 +105,33 @@ function WritingEditorScreenBody({
         </p>
 
         {/* 課題文 */}
-        {prompt.section === 'w-email' ? (
+        {prompt.section === 'w-summary' ? (
+          <section className="mb-4 rounded-3xl border border-line bg-surface-2 p-4">
+            <p className="mb-2 text-[12px] font-bold text-ink-faint">この英文を要約する</p>
+            <Paragraphs text={prompt.sourceText ?? ''} className="en text-ink" />
+            {/* 読めないと1文字も書けない問題なので逃げ道を置く。最初は隠して、まず英語で読ませる */}
+            {prompt.sourceTextJa && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setShowJa((v) => !v)}
+                  className="mt-3 min-h-[44px] w-full rounded-2xl border border-dashed border-line text-[13px] font-semibold text-ink-sub active:bg-surface"
+                >
+                  {showJa ? '日本語を閉じる' : '日本語で読む'}
+                </button>
+                {showJa && (
+                  <div className="anim-fade mt-3">
+                    <Paragraphs text={prompt.sourceTextJa} className="text-[14px] leading-relaxed text-ink-sub" />
+                  </div>
+                )}
+              </>
+            )}
+            <p className="mt-3 border-t border-line pt-3 text-[13px] leading-relaxed text-ink-sub">
+              自分の意見や感想は<span className="font-semibold">書かない</span>。
+              本文の文をそのまま写さず、自分の言葉で言い換える。
+            </p>
+          </section>
+        ) : prompt.section === 'w-email' ? (
           <section className="mb-4 rounded-3xl border border-line bg-surface-2 p-4">
             <p className="mb-2 text-[12px] font-bold text-ink-faint">相手からのメール</p>
             <p className="en whitespace-pre-line text-ink">
@@ -143,6 +176,13 @@ function WritingEditorScreenBody({
                   </li>
                 ))}
               </ol>
+              {TEMPLATE_NOTE[prompt.section] && (
+                <p className="mt-3 rounded-2xl bg-surface-2 p-3 text-[13px] leading-relaxed text-ink-sub">
+                  <span className="font-bold">コツ：</span>
+                  {TEMPLATE_NOTE[prompt.section]!.text}
+                  <span className="en mt-1 block text-[14px] text-ink">{TEMPLATE_NOTE[prompt.section]!.example}</span>
+                </p>
+              )}
             </section>
             <section className="rounded-3xl border border-line bg-surface p-4">
               <p className="mb-2 text-[12px] font-bold text-ink-faint">この課題で使える表現</p>
@@ -172,8 +212,10 @@ function WritingEditorScreenBody({
         <p className="mt-2 text-[12px] leading-relaxed text-ink-faint">
           書いた内容は自動で保存されます。途中でアプリを閉じても消えません。
           <br />
-          自動修正はオフにしてあります。本番は手書きなので、スペルも自分で書けるようにしておこう。
-          上のチェックは語数や疑問符の数など「数えられること」だけを見ていて、内容が合っているかは判定していません。
+          自動修正はオフにしてあります。本番は手書きなので、スペルも自分で書けるようにしておこう。{' '}
+          {prompt.section === 'w-summary'
+            ? '上のチェックは語数・丸写し・意見の混入だけを見ています。要点が入っているかは判定しません（提出したあと、自分で確かめます）。'
+            : '上のチェックは語数や疑問符の数など「数えられること」だけを見ていて、内容が合っているかは判定していません。'}
         </p>
       </main>
 

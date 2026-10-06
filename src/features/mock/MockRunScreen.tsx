@@ -8,7 +8,8 @@ import {
   type MockPaper,
   type MockQuestion,
 } from '../../engine/mock';
-import { countWords } from '../../engine/writing';
+import { countWords, wordRangeText, wordTone } from '../../engine/writing';
+import { Paragraphs } from '../writing/WritingParts';
 import { WRITING_SPEC, choicesAreSpoken, isListening } from '../../types';
 import { Button, ProgressBar, Screen, renderStem } from '../../ui/primitives';
 import { Bookmark, Home } from '../../ui/icons';
@@ -436,7 +437,8 @@ function writingWordIssues(paper: MockPaper, writings: Record<string, string>): 
     const spec = WRITING_SPEC[prompt.section];
     const [min, max] = spec.wordRange;
     const words = countWords(text);
-    if (words < min || words > max) {
+    // 目安（2級の意見論述）は外れても警告しない。公式が「目安」と書いているものを「収まっていない」と言うと嘘になる
+    if (spec.wordLevel === 'must' && (words < min || words > max)) {
       issues.push({ key: q.promptId, label: spec.label, words, min, max, over: words > max });
     }
   }
@@ -551,22 +553,23 @@ function McqBlock({
 function WordMeter({ promptId, text }: { promptId: string; text: string }) {
   const prompt = WRITING_BY_ID.get(promptId);
   if (!prompt) return null;
-  const [min, max] = WRITING_SPEC[prompt.section].wordRange;
+  const spec = WRITING_SPEC[prompt.section];
+  const [min, max] = spec.wordRange;
   const words = countWords(text);
-  const inRange = words >= min && words <= max;
+  const tone = wordTone(prompt.section, words);
   return (
     <div className="mt-2 flex items-center justify-between">
       <span className="text-[11px] text-ink-faint">語数</span>
       <span
         className={`rounded-full px-2.5 py-0.5 text-[12px] font-bold tabular-nums ${
-          words === 0
+          tone === 'empty' || tone === 'note'
             ? 'bg-surface-2 text-ink-faint'
-            : inRange
+            : tone === 'ok'
               ? 'bg-correct-soft text-correct'
               : 'bg-again-soft text-again'
         }`}
       >
-        {words} / {min}–{max}語
+        {words} / {min}–{max}語{spec.wordLevel === 'guide' ? '（目安）' : ''}
       </span>
     </div>
   );
@@ -588,15 +591,20 @@ function WritingBlock({
   const spec = WRITING_SPEC[prompt.section];
   const [min, max] = spec.wordRange;
   const words = countWords(value);
-  const inRange = words >= min && words <= max;
+  const tone = wordTone(prompt.section, words);
 
   return (
     <>
       <p className="mb-3 rounded-2xl bg-surface-2 px-4 py-3 text-[13px] font-semibold leading-relaxed text-ink-sub">
-        {spec.task}（{min}〜{max}語）
+        {spec.task}（{wordRangeText(prompt.section)}）
       </p>
 
-      {prompt.section === 'w-email' ? (
+      {prompt.section === 'w-summary' ? (
+        <section className="mb-4 rounded-3xl border border-line bg-surface-2 p-4">
+          <p className="mb-2 text-[12px] font-bold text-ink-faint">この英文を要約する</p>
+          <Paragraphs text={prompt.sourceText ?? ''} className="en text-ink" />
+        </section>
+      ) : prompt.section === 'w-email' ? (
         <section className="mb-4 rounded-3xl border border-line bg-surface-2 p-4">
           <p className="mb-2 text-[12px] font-bold text-ink-faint">相手からのメール</p>
           <p className="en whitespace-pre-line text-ink">
@@ -623,10 +631,10 @@ function WritingBlock({
       {/* 語数はヘッダーにも常時出している。型や表現のヒントは試験モードでは出さない */}
       <p
         className={`mt-2 text-right text-[13px] font-bold tabular-nums ${
-          words === 0 ? 'text-ink-faint' : inRange ? 'text-correct' : 'text-again'
+          tone === 'empty' || tone === 'note' ? 'text-ink-faint' : tone === 'ok' ? 'text-correct' : 'text-again'
         }`}
       >
-        {words} 語（{min}〜{max}）
+        {words} 語（{min}〜{max}{spec.wordLevel === 'guide' ? '・目安' : ''}）
       </p>
     </>
   );

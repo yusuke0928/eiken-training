@@ -23,8 +23,8 @@ import { ChevronRight } from '../../ui/icons';
 // ②のときだけ noteCheckEach に差し替える（作業指示書 B-R-1 (b)）。
 // listening は元々時間・ライティングに触れていないため両モード共通でよい。
 const META = GRADE_META[GRADE];
-// 英作文の大問番号は級で違う（準2級は5・6、2級は5。要約の4は G2-03 で入る）
-const WRITING_BLOCKS = GRADE === 'g2' ? '大問5' : '大問5・6';
+// 英作文の大問番号は級で違う（準2級は5・6、2級は要約の4と意見論述の5）
+const WRITING_BLOCKS = GRADE === 'g2' ? '大問4・5' : '大問5・6';
 
 const SCOPES: { scope: MockScope; minutes: number; note: string; noteCheckEach?: string }[] = [
   {

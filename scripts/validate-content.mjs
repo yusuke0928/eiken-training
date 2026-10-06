@@ -8,6 +8,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 // アプリ本体と同じ並び替えを使う（Node の型ストリッピングでそのまま読める）
 import { shuffleChoices } from '../src/lib/shuffle.ts';
+// 要約の丸写し検出は画面と同じものを使う（模範解答が自分で警告を出すなら、しきい値が間違っている）
+import { OPINION_PATTERNS, findOpinion, findVerbatim } from '../src/lib/verbatim.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const load = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
@@ -349,13 +351,47 @@ for (const p of g2Passages) {
   }
 }
 
-// ライティング：2級の意見論述は 80〜100 語。要約（w-summary）は G2-03
+// 英文要約はコンテンツが壊れていると採点も壊れるので、ビルド時に止める
+function checkSummary(w, at) {
+  const n = countWords(w.modelAnswer ?? '');
+  if (n < 45 || n > 55) errors.push(`${at}: modelAnswer が${n}語。45〜55語に収める必要がある`);
+  const sn = countWords(w.sourceText ?? '');
+  if (sn < 130 || sn > 160) errors.push(`${at}: sourceText が${sn}語。130〜160語に収める必要がある`);
+  if (!Array.isArray(w.keyPoints) || w.keyPoints.length !== 3 || w.keyPoints.some((k) => !k?.ja?.trim())) {
+    errors.push(`${at}: keyPoints は3件（元文が3段落）で、すべて ja が必要`);
+  }
+  if (!w.sourceTextJa?.trim()) errors.push(`${at}: sourceTextJa がない`);
+  if ((w.sourceText ?? '').split('\n').filter((p) => p.trim()).length !== 3) {
+    errors.push(`${at}: sourceText は3段落（改行区切り）`);
+  }
+  if (!w.modelNote?.trim()) errors.push(`${at}: modelNote がない`);
+  if (!Array.isArray(w.usefulPhrases) || w.usefulPhrases.length < 3) errors.push(`${at}: usefulPhrases は3つ以上`);
+  if (!Array.isArray(w.commonMistakes) || w.commonMistakes.length < 2) errors.push(`${at}: commonMistakes は2つ以上`);
+  // 本文に「I think / we should」などがあると、正しく言い換えた要約にも「意見の混入」の赤が出る。
+  // アプリ側で本文を除く処理は入れず、本文を書く側で避ける（誤検出の余地が無い）
+  const srcOpinion = OPINION_PATTERNS.map((re) => (w.sourceText ?? '').match(re)?.[0]).filter(Boolean);
+  if (srcOpinion.length > 0) {
+    errors.push(`${at}: sourceText に意見の表現がある（${srcOpinion.join(' / ')}）。筆者の主張は it is important to / experts say などで書く`);
+  }
+  // 模範解答が丸写し・意見の検出に引っかかるなら、しきい値か模範解答が間違っている
+  const copied = findVerbatim(w.sourceText ?? '', w.modelAnswer ?? '');
+  if (copied.length > 0) errors.push(`${at}: modelAnswer が本文と連続7語以上一致している（${copied.join(' / ')}）`);
+  const op = findOpinion(w.modelAnswer ?? '');
+  if (op.length > 0) errors.push(`${at}: modelAnswer に意見の表現がある（${op.join(' / ')}）`);
+  console.log(`  ${w.id}: 要約 ${n}語（元文${sn}語）`);
+}
+
+// ライティング：2級の意見論述は 80〜100 語。要約（w-summary）は 45〜55 語
 for (const w of g2Rows.writing) {
   const at = `g2/writing.json / ${w.id}`;
   if (seenIds.has(w.id)) errors.push(`${at}: id が重複している`);
   else seenIds.add(w.id);
+  if (w.section === 'w-summary') {
+    checkSummary(w, at);
+    continue;
+  }
   if (w.section !== 'w-opinion') {
-    errors.push(`${at}: section は w-opinion（要約は G2-03 で足す）`);
+    errors.push(`${at}: section は w-opinion / w-summary のどちらか`);
     continue;
   }
   if (!w.question?.trim()) errors.push(`${at}: question がない`);
@@ -382,7 +418,7 @@ for (const r of g2Rows.speaking) {
   const articleSets = g2Passages.filter((p) => p.section === 'r-passage' && p.format === 'article' && (p.items?.length ?? 0) >= 5);
   console.log(
     `  模擬テスト: 大問1 ${g2Rows.vocab.length}/17問, 大問2 ${clozeSets.length}/2セット, 大問3A ${emailSets.length}/1セット, 大問3B ${articleSets.length}/1セット, ` +
-      `第1部 ${g2ListenCounts['l-part2'] ?? 0}/15, 第2部 ${g2ListenCounts['l-part3'] ?? 0}/15, 意見論述 ${g2Rows.writing.length}/1題`,
+      `第1部 ${g2ListenCounts['l-part2'] ?? 0}/15, 第2部 ${g2ListenCounts['l-part3'] ?? 0}/15, 意見論述 ${g2Rows.writing.filter((w) => w.section === 'w-opinion').length}/1題, 要約 ${g2Rows.writing.filter((w) => w.section === 'w-summary').length}/1題`,
   );
   if (g2Rows.vocab.length > 0 || g2Passages.length > 0 || g2Rows.listening.length > 0) {
     if (g2Rows.vocab.length < 17) errors.push(`2級模試: 大問1は17問必要（いま${g2Rows.vocab.length}問）`);
@@ -391,7 +427,8 @@ for (const r of g2Rows.speaking) {
     if (articleSets.length < 1) errors.push('2級模試: 大問3B（説明文・5問）のセットがない');
     if ((g2ListenCounts['l-part2'] ?? 0) < 15) errors.push(`2級模試: リスニング第1部（l-part2）は15問必要（いま${g2ListenCounts['l-part2'] ?? 0}問）`);
     if ((g2ListenCounts['l-part3'] ?? 0) < 15) errors.push(`2級模試: リスニング第2部（l-part3）は15問必要（いま${g2ListenCounts['l-part3'] ?? 0}問）`);
-    if (g2Rows.writing.length < 1) errors.push('2級模試: 意見論述が1題必要');
+    if (!g2Rows.writing.some((w) => w.section === 'w-opinion')) errors.push('2級模試: 意見論述が1題必要');
+    if (!g2Rows.writing.some((w) => w.section === 'w-summary')) errors.push('2級模試: 大問4の英文要約が1題必要');
 
     // 診断：会話文が無いので 10 / 4 / 6（src/content.ts の G2_DIAGNOSTIC_PLAN と揃えること）
     const g2plan = { 'r-vocab': 10, 'r-cloze': 4, 'r-passage': 6 };

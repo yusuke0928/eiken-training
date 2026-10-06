@@ -4,9 +4,9 @@ import { gradeOfId } from '../../grade';
 import { OtherGradeNotice } from '../grade/GradeSwitch';
 import { bumpDayLog, clearDraft, db } from '../../data/db';
 import { countWords, mechanicalGrader, totalScore } from '../../engine/writing';
-import { RUBRIC, WRITING_SPEC } from '../../types';
+import { RUBRIC, RUBRIC_NOTE, WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
-import { Alert, Check } from '../../ui/icons';
+import { CheckResultList, KeyPointsChecklist } from './WritingParts';
 
 function WritingReviewScreenBody({
   promptId,
@@ -59,32 +59,14 @@ function WritingReviewScreenBody({
         </Block>
 
         <Block title="形式チェック">
-          <ul className="flex flex-col gap-2">
-            {checks.map((c) => (
-              <li
-                key={c.id}
-                className={`flex items-start gap-3 rounded-2xl p-3 ${
-                  c.ok ? 'bg-correct-soft' : 'bg-again-soft'
-                }`}
-              >
-                <span
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                    c.ok ? 'bg-correct text-correct-ink' : 'bg-again text-again-ink'
-                  }`}
-                  aria-hidden
-                >
-                  {c.ok ? <Check size={12} /> : <Alert size={12} />}
-                </span>
-                <span>
-                  <span className={`block text-[14px] font-semibold ${c.ok ? 'text-correct' : 'text-again'}`}>
-                    {c.label}
-                  </span>
-                  <span className="block text-[13px] text-ink-sub">{c.hint}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
+          <CheckResultList checks={checks} />
         </Block>
+
+        {prompt.section === 'w-summary' && prompt.keyPoints && (
+          <Block title="要点チェック（自分で確かめる）">
+            <KeyPointsChecklist keyPoints={prompt.keyPoints} />
+          </Block>
+        )}
 
         <Block title="モデル解答">
           <div className="rounded-3xl bg-primary-soft p-4">
@@ -105,7 +87,18 @@ function WritingReviewScreenBody({
           </ul>
         </Block>
 
-        <Block title={`自己採点（英検の採点観点そのまま・${spec.maxScore}点満点）`}>
+        <Block
+          title={
+            RUBRIC_NOTE[prompt.section]
+              ? `自己採点（手がかり・${spec.maxScore}点満点）`
+              : `自己採点（英検の採点観点そのまま・${spec.maxScore}点満点）`
+          }
+        >
+          {RUBRIC_NOTE[prompt.section] && (
+            <p className="mb-3 rounded-2xl bg-surface-2 p-3 text-[12px] leading-relaxed text-ink-sub">
+              {RUBRIC_NOTE[prompt.section]}
+            </p>
+          )}
           <p className="mb-3 text-[13px] leading-relaxed text-ink-faint">
             モデル解答と見くらべて、自分で点をつける。甘くつけても意味がないので、
             チェック項目を全部満たしていたら4点、というつもりで。
@@ -171,8 +164,11 @@ function WritingReviewScreenBody({
         )}
 
         <p className="mt-6 rounded-2xl bg-surface-2 p-4 text-[12px] leading-relaxed text-ink-faint">
-          ※ 形式チェックは語数や疑問符の数など「数えられること」だけを見ています。
-          内容が合っているかどうかは判定していません。最終的な添削は先生や英語が得意な人に見てもらうのが確実です。
+          {/* 準2級は 74cfe12 と1文字も違わない文字列（文の区切りの空白も同じ）にする */}
+          {prompt.section === 'w-summary'
+            ? '※ 形式チェックは語数・丸写し・意見の混入だけを見ています。要点が入っているかどうかは判定していません。'
+            : '※ 形式チェックは語数や疑問符の数など「数えられること」だけを見ています。 内容が合っているかどうかは判定していません。'}
+          最終的な添削は先生や英語が得意な人に見てもらうのが確実です。
         </p>
       </main>
 

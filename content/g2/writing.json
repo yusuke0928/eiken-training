@@ -19,5 +19,38 @@
       "First / Second を使わず、理由の境目が分からない（構成点が下がる）",
       "語数が80語に届かない、または100語を大きく超える（語数が範囲外だと減点の対象）"
     ]
+  },
+  {
+    "id": "g2-w-summary-001",
+    "section": "w-summary",
+    "topic": "翻訳アプリ",
+    "difficulty": 1,
+    "sourceText": "In recent years, more and more people are using translation apps on their smartphones. These apps can change a sentence from one language into another in a few seconds. Travelers, students, and workers around the world now use them almost every day.\nThere are some clear advantages to this technology. First, people can talk with someone who speaks a different language, even if they have never studied it. Also, learners can quickly find the meaning of a word they do not know, so they can enjoy reading books and websites written in other languages.\nHowever, translation apps are not perfect. Sometimes they choose the wrong word, and this can cause a misunderstanding between people. In addition, if students depend on the apps too much, they may stop trying to remember new words, and their own language skills may not improve.",
+    "sourceTextJa": "近年、スマートフォンの翻訳アプリを使う人がどんどん増えている。こうしたアプリは、ある言語の文を数秒で別の言語に変えることができる。旅行者、学生、働く人々は、世界中でほぼ毎日それを使っている。\nこの技術には、はっきりした利点がある。まず、学んだことのない言語を話す相手とも話すことができる。また、学習者は知らない単語の意味をすぐに調べられるので、ほかの言語で書かれた本やウェブサイトを楽しんで読める。\nしかし、翻訳アプリは完璧ではない。ときどき間違った語を選び、それが人どうしの誤解を生むことがある。さらに、学生がアプリに頼りすぎると、新しい単語を覚えようとしなくなり、自分の語学力が伸びないかもしれない。",
+    "keyPoints": [
+      {
+        "ja": "翻訳アプリを使う人が世界中で増えている"
+      },
+      {
+        "ja": "良い点：違う言語の相手と話せる／知らない単語をすぐ調べられる"
+      },
+      {
+        "ja": "問題点：誤訳で誤解が起きる／頼りすぎると語学力が伸びない"
+      }
+    ],
+    "usefulPhrases": [
+      "~ are now used by many people.",
+      "They let people ~ and help ~.",
+      "However, ~ sometimes ~.",
+      "~ may keep students from ~ing.",
+      "This can cause ~."
+    ],
+    "modelAnswer": "Translation apps are now used by many people around the world. They let people talk with those who speak other languages and help learners understand unknown words. However, the apps sometimes make mistakes that cause misunderstandings, and relying on them too much may keep students from improving their own language skills.",
+    "modelNote": "元の3段落に1文ずつ対応させた3文。つなぎ言葉は However, の1つだけ。第3文は2つの問題点を and と「前置詞＋動名詞」で1文に詰めて、語数を収めている。本文の言い回し（clear advantages / depend on など）はそのまま使わず、unknown words や relying on に言い換えた。",
+    "commonMistakes": [
+      "本文の文をそのまま抜き出している（言い換える）",
+      "自分の意見を書いてしまっている（I think ~ は要約では書かない）",
+      "第2・第3段落の細かい例まで全部入れて、語数をオーバーする"
+    ]
   }
 ]

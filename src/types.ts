@@ -185,7 +185,7 @@ export interface DiagnosticResult {
 
 /* ---------------- ライティング ---------------- */
 
-export type WritingSection = 'w-email' | 'w-opinion';
+export type WritingSection = 'w-email' | 'w-opinion' | 'w-summary';
 
 export interface WritingPrompt {
   id: string;
@@ -195,8 +195,12 @@ export interface WritingPrompt {
   difficulty: 1 | 2 | 3;
   /** 意見論述の QUESTION */
   question?: string;
-  /** Eメールで与えられる相手のメール本文 */
+  /** Eメールで与えられる相手のメール本文／英文要約の元の英文（3段落・130〜160語） */
   sourceText?: string;
+  /** 英文要約の日本語訳。読めないと1文字も書けないので逃げ道として置く（最初は隠す） */
+  sourceTextJa?: string;
+  /** 英文要約の各段落の要点。日本語のチェックリストとして本人に見せるだけで、機械は触らない */
+  keyPoints?: { ja: string }[];
   /** Eメールの下線部。ここについて質問を2つするのが課題 */
   underline?: string;
   usefulPhrases: string[];
@@ -214,7 +218,8 @@ export interface RubricCriterion {
 
 /**
  * 英検準2級の公式の採点観点にそのまま合わせる（Eメール・意見論述）。
- * 2級の英文要約の観点は G2-03 で足す。
+ * 2級の英文要約は公式が観点を公開していないので、公式のポイント解説の言い方を日本語に落とした
+ * 自己採点の手がかり（RUBRIC_NOTE で「公式の採点基準ではない」と画面に出す）。
  * Eメールに「構成」がないのは、友達へのカジュアルな返信だから。
  */
 export const RUBRIC: Record<WritingSection, RubricCriterion[]> = {
@@ -268,19 +273,57 @@ export const RUBRIC: Record<WritingSection, RubricCriterion[]> = {
       checks: ['主語と動詞が合っている', '時制が一貫している', '同じ形の文ばかりになっていない'],
     },
   ],
+  'w-summary': [
+    {
+      key: 'content',
+      label: '内容',
+      description: '全体を短くまとめられているか',
+      checks: ['各段落の要点が入っている（要点のチェックリストと見くらべる）', '細かい例や数字を入れすぎていない'],
+    },
+    {
+      key: 'own-words',
+      label: '自分の言葉',
+      description: '意見が混ざらず、言い換えられているか',
+      checks: ['自分の意見・感想を書いていない', '元の英文の文をそのまま写していない'],
+    },
+    {
+      key: 'clarity',
+      label: '分かりやすさ',
+      description: '英文を読んでいない人にも伝わるか',
+      checks: ['この要約だけ読んで話の流れが分かる', '文法・語順の誤りで意味が取れなくなっていない'],
+    },
+  ],
 };
 
-type WritingSpec = { label: string; wordRange: [number, number]; maxScore: number; goal: number; task: string };
+/** 自己採点の観点に添える注意。ここに書いたセクションは、画面に必ず出す */
+export const RUBRIC_NOTE: Partial<Record<WritingSection, string>> = {
+  'w-summary':
+    'これは英検の公式な採点基準ではありません（英検は要約の採点観点を公開していない）。公式の解説の言い方をもとにした、自己採点の手がかりです。',
+};
+
+type WritingSpec = {
+  label: string;
+  wordRange: [number, number];
+  /**
+   * 語数の範囲の重み。'must' は公式の「指示」なので範囲外は赤（準2級の全課題・2級の要約）。
+   * 'guide' は公式が「語数の目安は」と書いているだけなので、外れても赤にしない（2級の意見論述）
+   */
+  wordLevel: 'must' | 'guide';
+  maxScore: number;
+  goal: number;
+  task: string;
+};
 
 /**
  * 級ごとの課題の仕様。2級の意見論述は 80〜100 語（公式）で、準2級の 50〜60 語とは別物。
- * 満点は両級とも観点4つ×4点＝16点。2級の英文要約（w-summary）は G2-03 で足す。
+ * 意見論述は観点4つ×4点＝16点、Eメール・英文要約は観点3つ×4点＝12点。
  */
 export const WRITING_SPEC_BY_GRADE: Record<Grade, Record<WritingSection, WritingSpec>> = {
   pre2: {
     'w-email': {
       label: 'Eメール返信',
       wordRange: [40, 50],
+      wordLevel: 'must',
       maxScore: 12,
       goal: 8,
       task: '相手の質問に答え、下線部について具体的な質問を2つする',
@@ -288,9 +331,19 @@ export const WRITING_SPEC_BY_GRADE: Record<Grade, Record<WritingSection, Writing
     'w-opinion': {
       label: '英作文（意見論述）',
       wordRange: [50, 60],
+      wordLevel: 'must',
       maxScore: 16,
       goal: 10,
       task: '自分の意見と、それを支える理由を2つ書く',
+    },
+    // 準2級に英文要約は無い（引かれない）。Record を埋めるために2級と同じ値を置く
+    'w-summary': {
+      label: '英文要約',
+      wordRange: [45, 55],
+      wordLevel: 'must',
+      maxScore: 12,
+      goal: 8,
+      task: '英文を読んで、内容を自分の言葉でまとめる（自分の意見は書かない）',
     },
   },
   g2: {
@@ -298,6 +351,7 @@ export const WRITING_SPEC_BY_GRADE: Record<Grade, Record<WritingSection, Writing
     'w-email': {
       label: 'Eメール返信',
       wordRange: [40, 50],
+      wordLevel: 'must',
       maxScore: 12,
       goal: 8,
       task: '相手の質問に答え、下線部について具体的な質問を2つする',
@@ -305,9 +359,20 @@ export const WRITING_SPEC_BY_GRADE: Record<Grade, Record<WritingSection, Writing
     'w-opinion': {
       label: '英作文（意見論述）',
       wordRange: [80, 100],
+      // 公式は「語数の目安は80〜100語」。外れても赤にしない
+      wordLevel: 'guide',
       maxScore: 16,
       goal: 10,
       task: '自分の意見と、それを支える理由を2つ書く',
+    },
+    // 公式は語数を45〜55語と「指示」している。外れたら赤
+    'w-summary': {
+      label: '英文要約',
+      wordRange: [45, 55],
+      wordLevel: 'must',
+      maxScore: 12,
+      goal: 8,
+      task: '英文を読んで、内容を自分の言葉でまとめる（自分の意見は書かない）',
     },
   },
 };

@@ -3,7 +3,7 @@ import { db } from '../../data/db';
 import { GRADE, GRADE_META, inGrade } from '../../grade';
 import { loadReport } from '../../engine/selector';
 import type { Stat } from '../../engine/mastery';
-import { SECTION_LABEL, TAG_LABEL, WRITING_SPEC, type SectionId } from '../../types';
+import { SECTION_LABEL, TAG_LABEL, WRITING_SPEC, type SectionId, type WritingSection } from '../../types';
 import { Screen, TopBar } from '../../ui/primitives';
 
 const SKILL_LABEL = { reading: 'リーディング', listening: 'リスニング', writing: 'ライティング' } as const;
@@ -15,14 +15,14 @@ export function FocusScreen({ onBack }: { onBack: () => void }) {
       const rows = (await db.writings.toArray()).filter((r) => inGrade(r.promptId));
       if (rows.length === 0) return null;
       // 課題ごとの最高点だけを見る（練習で伸びた結果を評価したいので）
-      const best = new Map<string, { total: number; section: string }>();
+      const best = new Map<string, { total: number; section: WritingSection }>();
       for (const r of rows) {
         const cur = best.get(r.promptId);
         if (!cur || r.total > cur.total) best.set(r.promptId, { total: r.total, section: r.section });
       }
       const list = [...best.values()];
       const ratio =
-        list.reduce((s, b) => s + b.total / WRITING_SPEC[b.section as 'w-email' | 'w-opinion'].maxScore, 0) /
+        list.reduce((s, b) => s + b.total / WRITING_SPEC[b.section].maxScore, 0) /
         list.length;
       return { count: list.length, ratio };
     },

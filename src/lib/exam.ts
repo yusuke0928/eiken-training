@@ -130,7 +130,8 @@ function nextMilestoneG2(from: Date): Countdown {
   }
   // 試験日を過ぎたら、待つのは結果。負の日数は出さない
   if (toResult >= 0) {
-    return { label: '2級の試験', text: `結果は${formatJp(EXAM_G2.resultDate)}`, days: null, urgent: false };
+    // 日付は note（下の小さい行）に回す。text に入れると「結果は1月25日(月)」が2行に折り返していた
+    return { label: '2級の試験', text: '結果をまつ', note: `結果は${formatJp(EXAM_G2.resultDate)}`, days: null, urgent: false };
   }
   return { label: '2級の試験', text: 'おつかれさま', days: null, urgent: false };
 }

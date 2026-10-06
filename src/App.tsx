@@ -11,11 +11,12 @@ import { HistoryScreen } from './features/history/HistoryScreen';
 import { WordCardScreen } from './features/words/WordCardScreen';
 import { SpeakingScreen } from './features/speaking/SpeakingScreen';
 import { clearSession, db, getKv, loadMock, loadSession, setKv, type SavedMock } from './data/db';
-import { ITEM_BY_ID, WRITING_BY_ID } from './content';
+import { GRADE_READY, ITEM_BY_ID, SPEAKING_RAW, WRITING_BY_ID } from './content';
+import { ComingSoonScreen } from './features/grade/GradeSwitch';
 import { applyResult } from './engine/srs';
 import { bumpDayLog } from './data/db';
 import { countWords } from './engine/writing';
-import { buildPaper, scopeLabel, type MockPaper, type MockQuestion, type MockScope } from './engine/mock';
+import { buildPaper, paperIsKnown, scopeLabel, type MockPaper, type MockQuestion, type MockScope } from './engine/mock';
 import { MockSetupScreen, type MockEntryMode } from './features/mock/MockSetupScreen';
 import { MockRunScreen, type MockDraft } from './features/mock/MockRunScreen';
 import { MockResultScreen } from './features/mock/MockResultScreen';
@@ -56,6 +57,8 @@ if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
 
 type Route =
   | { k: 'welcome' }
+  // 中身がまだ無い級（2級）で、問題が要る画面を開こうとしたときの行き先
+  | { k: 'comingSoon' }
   | { k: 'home' }
   | { k: 'training' }
   | {
@@ -129,7 +132,11 @@ export default function App() {
       // 解答自体は attempts と復習ボックスに記録済みなので、捨てても失われるものはない。
       // 模試の自動着地も同じ理由で期限を切る（MOCK_AUTO_RESUME_WINDOW_MS 参照）。
       const savedMock = await loadMock();
-      if (savedMock && Date.now() - savedMock.updatedAt < MOCK_AUTO_RESUME_WINDOW_MS) {
+      if (
+        savedMock &&
+        paperIsKnown(savedMock.paper) &&
+        Date.now() - savedMock.updatedAt < MOCK_AUTO_RESUME_WINDOW_MS
+      ) {
         setStack([{ k: 'home' }, { k: 'mockRun', paper: savedMock.paper, restore: savedMock }]);
         window.history.pushState({}, '');
         return;
@@ -141,7 +148,14 @@ export default function App() {
       // 保存自体が「1問でも答えた時点」から始まる（QuestionScreen 側）ので
       // 本来はここでの results チェックは重複するが、保存側の前提が変わっても
       // 空の演習に復帰しないことがこの行だけで分かるよう、あえて重ねて書いている。
-      if (saved && fresh && saved.results.length > 0 && saved.ids.length > 0) {
+      if (
+        saved &&
+        fresh &&
+        saved.results.length > 0 &&
+        saved.ids.length > 0 &&
+        // 他の級の id が混ざった中断データには戻さない（級の切り替えでは捨てているが二重の備え）
+        saved.ids.every((id) => ITEM_BY_ID.has(id))
+      ) {
         setStack([
           { k: 'home' },
           {
@@ -280,17 +294,26 @@ export default function App() {
   return <NavProvider goHome={goHome}>{renderRoute()}</NavProvider>;
 
   function renderRoute() {
+    // 2級は Phase 3 までは問題が空。問題が要る画面は白画面にせず「準備中」を出す。
+    // 学習の記録・単語カード・ホームは中身が無くても成立するので通す
+    const needsItems = ['training', 'writingList', 'mockSetup', 'focus'].includes(route.k);
+    if (route.k === 'comingSoon' || (needsItems && !GRADE_READY) || (route.k === 'speaking' && SPEAKING_RAW.length === 0)) {
+      return <ComingSoonScreen onBack={back} />;
+    }
     switch (route.k) {
       case 'welcome':
         return (
           <WelcomeScreen
             onStart={() =>
-              push({
-                k: 'practice',
-                ids: buildDiagnosticQueue(),
-                mode: 'diagnostic',
-                title: '診断テスト',
-              })
+              // 問題が0問の級で診断を始めると、空のまま「完了」扱いで onboarded が書かれてしまう
+              GRADE_READY
+                ? push({
+                    k: 'practice',
+                    ids: buildDiagnosticQueue(),
+                    mode: 'diagnostic',
+                    title: '診断テスト',
+                  })
+                : push({ k: 'comingSoon' })
             }
             onSkip={async () => {
               await setKv('onboarded', true);
@@ -302,11 +325,11 @@ export default function App() {
       case 'home':
         return (
           <HomeScreen
-            onMini={startMini}
+            onMini={GRADE_READY ? startMini : () => push({ k: 'comingSoon' })}
             onTraining={() => push({ k: 'training' })}
-            onReview={startReview}
+            onReview={GRADE_READY ? startReview : () => push({ k: 'comingSoon' })}
             onWriting={() => push({ k: 'writingList' })}
-            onListening={startListening}
+            onListening={GRADE_READY ? startListening : () => push({ k: 'comingSoon' })}
             onFocus={() => push({ k: 'focus' })}
             onMock={() => push({ k: 'mockSetup' })}
             onHistory={() => push({ k: 'history' })}

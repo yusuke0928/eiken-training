@@ -4,6 +4,8 @@ import { ITEM_BY_ID, WRITING_BY_ID } from '../../content';
 import { db, loadReviewPos } from '../../data/db';
 import { formatClock, WRITING_TARGET_MS, WRITTEN_MS } from '../../engine/mock';
 import { PRE2, estimateSkillCse } from '../../engine/scoring';
+import { gradeOfMock, mockInGrade } from '../../grade';
+import { OtherGradeNotice } from '../grade/GradeSwitch';
 import { totalScore } from '../../engine/writing';
 import { RUBRIC, SECTION_LABEL, WRITING_SPEC, type MockRecord, type SectionId } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
@@ -35,12 +37,20 @@ export function MockResultScreen({
     );
   }
 
+  // 他の級の模試は開かない。集計すると id が引けず数字が壊れるので、一覧へ戻す
+  if (!mockInGrade(record)) {
+    return <OtherGradeNotice title="模試の結果" of={gradeOfMock(record)} onBack={onDone} />;
+  }
+
   const reviewCounts = countReviewable(record.answers);
   const reading = split(record, (s) => s.startsWith('r-'));
   const listening = split(record, (s) => s.startsWith('l-'));
   const writingTotal = record.writings.reduce((sum, w) => sum + (w.total ?? 0), 0);
   const writingMax = record.writings.reduce(
-    (sum, w) => sum + WRITING_SPEC[WRITING_BY_ID.get(w.promptId)!.section].maxScore,
+    (sum, w) => {
+      const section = WRITING_BY_ID.get(w.promptId)?.section;
+      return sum + (section ? WRITING_SPEC[section].maxScore : 0);
+    },
     0,
   );
   const allScored = record.writings.every((w) => w.total !== undefined);
@@ -214,7 +224,8 @@ export function MockResultScreen({
           <Section title="ライティングの自己採点">
             <ul className="flex flex-col gap-3">
               {record.writings.map((w) => {
-                const prompt = WRITING_BY_ID.get(w.promptId)!;
+                const prompt = WRITING_BY_ID.get(w.promptId);
+                if (!prompt) return null;
                 const spec = WRITING_SPEC[prompt.section];
                 const open = openWriting === w.promptId;
                 return (
@@ -320,6 +331,7 @@ function WritingScorer({
   initial: Record<string, number>;
   onSave: (scores: Record<string, number>) => void;
 }) {
+  // 呼び出し元（ライティングの自己採点の一覧）が prompt の存在を確かめてから渡す
   const prompt = WRITING_BY_ID.get(promptId)!;
   const rubric = RUBRIC[prompt.section];
   const [scores, setScores] = useState<Record<string, number>>(initial);

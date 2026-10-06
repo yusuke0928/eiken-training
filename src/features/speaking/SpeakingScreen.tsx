@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import cards from '../../../content/pre2/speaking.json';
+import { SPEAKING_RAW } from '../../content';
 import { useSpeech } from '../../lib/speech';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import { Check, ChevronRight, Play, Warning } from '../../ui/icons';
@@ -26,7 +26,7 @@ interface SpeakingCard {
   questions: { no: number; prompt: string; model: string; checks: string[] }[];
 }
 
-const CARDS = cards as SpeakingCard[];
+const CARDS = SPEAKING_RAW as SpeakingCard[];
 const SILENT_SEC = 20;
 
 type Step = 'silent' | 'read' | number; // number = No.n

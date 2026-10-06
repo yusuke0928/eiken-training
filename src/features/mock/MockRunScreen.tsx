@@ -242,7 +242,7 @@ export function MockRunScreen({
             itemId={q.itemId}
             selected={mcq[key]}
             onSelect={(i) => setMcq({ ...mcq, [key]: i })}
-            listening={isListening(ITEM_BY_ID.get(q.itemId)!.section)}
+            listening={isListening(ITEM_BY_ID.get(q.itemId)?.section ?? 'r-vocab')}
             audioDone={audioDone}
             textFallback={textFallback}
             onTextFallback={() => {
@@ -478,7 +478,9 @@ function McqBlock({
   onTextFallback: () => void;
   onAudioDone: () => void;
 }) {
-  const item = ITEM_BY_ID.get(itemId)!;
+  const item = ITEM_BY_ID.get(itemId);
+  // 他の級の id が紛れても落とさない（級の切り替えで中断復帰は捨てているが、二重の備え）
+  if (!item) return null;
   const passage = item.passageId ? PASSAGES.get(item.passageId) : undefined;
   const blankNo = item.stem.match(/^\(\s*(\d+)\s*\)$/)?.[1];
   const hideChoices = listening && choicesAreSpoken(item.section) && !audioDone;
@@ -547,7 +549,8 @@ function McqBlock({
 
 /** ヘッダーに出す語数メーター。書きながら常に見える位置に置く */
 function WordMeter({ promptId, text }: { promptId: string; text: string }) {
-  const prompt = WRITING_BY_ID.get(promptId)!;
+  const prompt = WRITING_BY_ID.get(promptId);
+  if (!prompt) return null;
   const [min, max] = WRITING_SPEC[prompt.section].wordRange;
   const words = countWords(text);
   const inRange = words >= min && words <= max;
@@ -580,7 +583,8 @@ function WritingBlock({
   value: string;
   onChange: (v: string) => void;
 }) {
-  const prompt = WRITING_BY_ID.get(promptId)!;
+  const prompt = WRITING_BY_ID.get(promptId);
+  if (!prompt) return null;
   const spec = WRITING_SPEC[prompt.section];
   const [min, max] = spec.wordRange;
   const words = countWords(value);

@@ -1657,6 +1657,276 @@ if (await p16.getByText('ライティング道場へ').count()) {
 console.log('  ✓ 復帰後は導線が出ない（mockScopeを持ち回さない設計どおり。落ちないことを優先）');
 await p16ctx.close();
 
+/* ---- G2-01：級の器と切り替え（既存ステップは1行も触らず、末尾に足す） ----
+   3章の本丸：準2級で模試を1本走らせ、2級に切り替えても「学習の記録」が落ちないこと、
+   準2級に戻すと記録がそのまま見えること、やりかけの演習が切り替えで終わりになること。
+   切り替え導線の出る日付（二次の翌日〜）も page.clock で固定して見る。 */
+console.log('G2-01：級の切り替え');
+const g1ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const g1 = await g1ctx.newPage();
+activePage = g1;
+activePageLabel = 'g1(級の切り替え)';
+g1.on('console', (m) => m.type() === 'error' && errors.push(`[級の切り替え] ${m.text()}`));
+g1.on('pageerror', (e) => errors.push(`[級の切り替え] pageerror: ${e.message}`));
+
+// 実時間に依存させない。切り替え導線は 2026-11-16 以降に出るので、固定しないと
+// 実時間がそれを過ぎた日から「導線が出ていない」の検査が必ず赤になる
+await g1.clock.setFixedTime(new Date('2026-10-06T12:00:00+09:00'));
+await g1.goto(URL, { waitUntil: 'networkidle' });
+// localStorage が空なら必ず準2級（既定）
+if ((await g1.evaluate(() => localStorage.getItem('eiken.grade'))) !== null) {
+  throw new Error('新規の端末なのに級が設定されている');
+}
+// 診断テストを実際に流す（学習の記録の「診断の答え合わせ」が級で出し分けられることを確かめる前提）
+await g1.getByRole('button', { name: '診断テストをはじめる' }).click();
+for (let i = 0; i < 40; i++) {
+  if (await g1.getByText('診断テストの結果').count()) break;
+  const c = g1.locator('main ul > li > button');
+  await c.first().waitFor({ timeout: 8000 });
+  await c.nth(0).click();
+  await g1.getByRole('button', { name: '決定' }).click();
+  await g1.waitForTimeout(120);
+}
+await g1.getByText('診断テストの結果').waitFor({ timeout: 10000 });
+await g1.getByRole('button', { name: 'はじめる' }).click();
+await g1.getByText('今日のミッション').waitFor({ timeout: 8000 });
+if (!(await g1.locator('body').innerText()).includes('英検準2級')) throw new Error('既定が準2級になっていない');
+// 準2級で診断の答え合わせを数問見て、保存位置（reviewPos:diagnostic）を作る
+await g1.locator('button', { hasText: '学習の記録' }).first().click();
+await g1.getByRole('button', { name: '診断テストの答え合わせを見る' }).click();
+await g1.getByRole('heading', { name: /^(まちがえた問題|ぜんぶ見る)$/ }).waitFor({ timeout: 8000 });
+for (let i = 0; i < 2; i++) {
+  await g1.getByRole('button', { name: '次へ' }).click();
+  await g1.waitForTimeout(80);
+}
+const g1DiagPos = (await g1.locator('header').getByText(/^\d+ \/ \d+$/).textContent()).trim().split(' / ')[0];
+await g1.waitForTimeout(400);
+await g1.getByLabel('もどる').click();
+await g1.getByRole('heading', { name: '学習の記録' }).waitFor({ timeout: 5000 });
+await g1.getByLabel('ホーム').click();
+await g1.getByText('今日のミッション').waitFor({ timeout: 8000 });
+const posBefore = (await readKv(g1, ['reviewPos:diagnostic']))['reviewPos:diagnostic'];
+if (!posBefore || posBefore.pos < 1) throw new Error(`検査の前提：準2級の診断の保存位置ができていない: ${JSON.stringify(posBefore)}`);
+if (await g1.getByText('2級にきりかえる').count()) throw new Error('準2級の一次後・二次前なのにホームに切り替え導線が出ている');
+console.log('  ✓ 空の端末は準2級で起動し、ホームに切り替え導線は出ない');
+
+// 準2級で模試を1本（ライティングつき）走らせる
+await g1.locator('button', { hasText: '模擬テスト' }).first().click();
+await g1.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+await g1.locator('button', { hasText: '筆記のみ' }).first().click();
+await g1.locator('main ul > li > button').first().waitFor({ timeout: 10000 });
+await g1.locator('main ul > li > button').first().click();
+await g1.getByRole('button', { name: /^次へ$/ }).click();
+await g1.locator('button', { hasText: '一覧' }).first().click();
+await g1.getByRole('button', { name: '30', exact: true }).click();
+await g1.locator('textarea').waitFor({ timeout: 8000 });
+await g1.locator('textarea').fill('Hi Alex! Thank you for your e-mail. I like pop music the best. Where was it held? How many bands did you see there?');
+await g1.locator('button', { hasText: '一覧' }).first().click();
+await g1.getByRole('button', { name: '31', exact: true }).click();
+await g1.locator('textarea').waitFor({ timeout: 8000 });
+await g1.locator('textarea').fill('I think students should join a club. First, they can make friends. Second, they learn teamwork. For these reasons, I agree.');
+await g1.locator('button', { hasText: '一覧' }).first().click();
+await g1.getByRole('button', { name: '提出する' }).last().click();
+await g1.getByText('提出していい？').waitFor({ timeout: 5000 });
+await g1.getByRole('button', { name: '提出する' }).last().click();
+await g1.getByText('技能べつ').waitFor({ timeout: 15000 });
+const preMocks = await countRows(g1, 'mocks');
+const preAttempts = await countRows(g1, 'attempts');
+if (preMocks < 1 || preAttempts < 1) throw new Error(`準2級の模試が記録されていない（mocks=${preMocks}, attempts=${preAttempts}）`);
+console.log(`  ✓ 準2級で模試を1本記録（mocks=${preMocks}, attempts=${preAttempts}）`);
+
+// ②（1問ごとに答え合わせ）の途中で切り替える → やりかけは終わりになり、落ちない
+await g1.goto(URL, { waitUntil: 'networkidle' });
+await g1.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await g1.locator('button', { hasText: '模擬テスト' }).first().click();
+await g1.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+await g1.locator('button', { hasText: '② 1問ごとに答え合わせ' }).first().click();
+await g1.locator('button', { hasText: '筆記のみ' }).first().click();
+await g1.locator('main ul > li > button').first().waitFor({ timeout: 10000 });
+await g1.locator('main ul > li > button').first().click();
+await g1.getByRole('button', { name: '決定' }).click();
+await g1.getByText('こたえ').waitFor({ timeout: 8000 });
+await g1.getByRole('button', { name: /^(つぎへ|結果を見る)$/ }).click();
+await g1.waitForTimeout(500);
+if (!(await readKv(g1, ['session'])).session) throw new Error('検査の前提：②の途中の session が保存されていない');
+
+// #grade で切り替え画面を開く → 確認シート → 2級へ
+await g1.goto(URL + '#grade', { waitUntil: 'networkidle' });
+await g1.getByText('いまの級').waitFor({ timeout: 8000 });
+await g1.getByRole('button', { name: '2級にきりかえる' }).click();
+await g1.getByText('やりかけの演習と模試は終わりになるよ').waitFor({ timeout: 5000 });
+await g1.getByText('面接の練習も2級のものになるよ').waitFor({ timeout: 5000 });
+await g1.getByText('準2級の記録は消えない').waitFor({ timeout: 5000 });
+await g1.screenshot({ path: join(OUT, 'g2-01-switch-sheet.png') });
+await g1.getByRole('button', { name: '2級にきりかえる' }).last().click();
+await g1.getByText('2級の問題はまだ準備中だよ').first().waitFor({ timeout: 10000 });
+if ((await g1.evaluate(() => localStorage.getItem('eiken.grade'))) !== 'g2') throw new Error('2級に切り替わっていない');
+const afterSwitch = await readKv(g1, ['session', 'mock', 'reviewPos:diagnostic', 'reviewPos:diagnostic-g2']);
+if (afterSwitch.__error || afterSwitch.__timeout) throw new Error(`kv が読めない: ${JSON.stringify(afterSwitch)}`);
+if (afterSwitch.session) throw new Error(`切り替えで session が捨てられていない: ${JSON.stringify(afterSwitch.session).slice(0, 80)}`);
+// 診断の保存位置は級別のキー。準2級のキーは残り、2級のキーは触られていない
+if (JSON.stringify(afterSwitch['reviewPos:diagnostic']) !== JSON.stringify(posBefore)) throw new Error('切り替えで準2級の診断の保存位置が変わった');
+if (afterSwitch['reviewPos:diagnostic-g2'] !== undefined) throw new Error('2級の診断の保存位置に準2級の位置が流れ込んだ');
+if (!(await g1.locator('body').innerText()).includes('英検2級')) throw new Error('2級のホームに「英検2級」が出ていない');
+if ((await g1.title()) !== '英検2級トレーニング') throw new Error(`タブ名が2級になっていない: ${await g1.title()}`);
+await g1.screenshot({ path: join(OUT, 'g2-02-home-g2.png') });
+console.log('  ✓ 2級に切り替わる（やりかけの演習は終わり・準備中が出る・白画面にならない）');
+
+// 問題が要る画面は「準備中」で戻り道がある
+for (const name of ['模擬テスト', 'ライティング道場', '論点別']) {
+  await g1.locator('button', { hasText: name }).first().click();
+  await g1.getByText('2級の問題はまだ準備中だよ').waitFor({ timeout: 5000 });
+  await g1.getByRole('button', { name: '準2級にもどす' }).waitFor({ timeout: 5000 });
+  await g1.getByLabel('もどる').click();
+  await g1.getByText('今日のミッション').waitFor({ timeout: 5000 });
+}
+console.log('  ✓ 2級の模試・ライティング・論点別は「準備中」と戻り道を出す');
+
+// 本丸：2級にして「学習の記録」を開いても落ちない。他の級の数字が混ざらない
+await g1.locator('button', { hasText: '学習の記録' }).first().click();
+await g1.getByText('これまでに解いた').waitFor({ timeout: 8000 });
+const histG2 = await g1.locator('main').innerText();
+// 準2級で診断を流してあるので、これは本当に「級で絞られている」ことを確かめている（前提は上で作った）
+if (histG2.includes('診断テストの答え合わせを見る')) throw new Error('2級の学習の記録に準2級の診断の答え合わせが出ている');
+if (!/これまでに解いた\s*0\s*問/.test(histG2)) throw new Error(`2級の学習の記録に準2級の件数が混ざっている: ${histG2.slice(0, 120)}`);
+await g1.screenshot({ path: join(OUT, 'g2-03-history-g2.png') });
+console.log('  ✓ 2級で「学習の記録」を開いても落ちず、準2級の記録は混ざらない');
+
+// 準2級に戻す → 記録がそのまま見える
+await g1.getByLabel('ホーム').click();
+await g1.getByText('今日のミッション').waitFor({ timeout: 8000 });
+await g1.getByRole('button', { name: '準2級にもどす' }).click();
+await g1.getByRole('button', { name: '準2級にきりかえる' }).click();
+await g1.getByText('まだ採点していないライティングがあるよ').waitFor({ timeout: 10000 });
+if ((await g1.evaluate(() => localStorage.getItem('eiken.grade'))) !== 'pre2') throw new Error('準2級に戻っていない');
+if ((await countRows(g1, 'mocks')) !== preMocks || (await countRows(g1, 'attempts')) < preAttempts) {
+  throw new Error('級を行き来したら記録の件数が変わった');
+}
+await g1.locator('button', { hasText: '学習の記録' }).first().click();
+await g1.getByText('これまでに解いた').waitFor({ timeout: 8000 });
+await g1.getByRole('button', { name: '診断テストの答え合わせを見る' }).waitFor({ timeout: 5000 });
+const histP2 = await g1.locator('main').innerText();
+if (/これまでに解いた\s*0\s*問/.test(histP2)) throw new Error('準2級に戻したのに記録が見えない');
+await g1.getByText(`つづきから：${g1DiagPos}問目から`).waitFor({ timeout: 5000 });
+console.log('  ✓ 準2級に戻すと、切り替える前の記録と診断の答え合わせの保存位置がそのまま見える');
+await g1ctx.close();
+
+/* 本番形式の模試を途中で止めた状態（kv に mock がある）を作る。切り替えで破棄されるか／
+   書き込み失敗のときに残るかを、実際に kv を見て確かめるための前提 */
+async function startMidMock(ctxOpts, label, initScript) {
+  const c = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const pg = await c.newPage();
+  activePage = pg;
+  activePageLabel = label;
+  pg.on('console', (m) => m.type() === 'error' && errors.push(`[${label}] ${m.text()}`));
+  pg.on('pageerror', (e) => errors.push(`[${label}] pageerror: ${e.message}`));
+  if (initScript) await pg.addInitScript(initScript);
+  await pg.goto(URL, { waitUntil: 'networkidle' });
+  await pg.getByRole('button', { name: 'あとにする' }).click();
+  await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  await pg.locator('button', { hasText: '模擬テスト' }).first().click();
+  await pg.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+  await pg.locator('button', { hasText: '筆記のみ' }).first().click();
+  await pg.locator('main ul > li > button').first().waitFor({ timeout: 10000 });
+  await pg.locator('main ul > li > button').first().click();
+  let kv = {};
+  for (let i = 0; i < 20; i++) {
+    await pg.waitForTimeout(250);
+    kv = await readKv(pg, ['mock', 'session']);
+    if (kv.mock) break;
+  }
+  if (kv.__error || kv.__timeout || !kv.mock) throw new Error(`検査の前提：途中の模試が kv に保存されていない: ${JSON.stringify(kv).slice(0, 100)}`);
+  return { c, pg };
+}
+
+// R-4：模試を途中で止めて切り替える → kv の mock が本当に消える
+{
+  const { c, pg } = await startMidMock(null, 'g1b(模試の途中で切り替え)');
+  await pg.goto(URL + '#grade', { waitUntil: 'networkidle' });
+  await pg.getByRole('button', { name: '2級にきりかえる' }).click();
+  await pg.getByRole('button', { name: '2級にきりかえる' }).last().click();
+  await pg.getByText('2級の問題はまだ準備中だよ').first().waitFor({ timeout: 10000 });
+  const kv = await readKv(pg, ['mock', 'session']);
+  if (kv.__error || kv.__timeout) throw new Error(`kv が読めない: ${JSON.stringify(kv)}`);
+  if (kv.mock || kv.session) throw new Error(`模試の途中で切り替えたのに mock/session が残っている: ${JSON.stringify(kv).slice(0, 100)}`);
+  console.log('  ✓ 模試の途中で2級に切り替えると、中断した模試は捨てられる（落ちない）');
+  await c.close();
+}
+
+// R-6：級の書き込みが失敗する端末では、やりかけを消さず、シートに失敗を出す
+{
+  const { c, pg } = await startMidMock(
+    null,
+    'g1c(級の書き込み失敗)',
+    () => {
+      const orig = Storage.prototype.setItem;
+      Storage.prototype.setItem = function (k, v) {
+        if (k === 'eiken.grade') throw new Error('blocked');
+        return orig.call(this, k, v);
+      };
+    },
+  );
+  await pg.goto(URL + '#grade', { waitUntil: 'networkidle' });
+  await pg.getByRole('button', { name: '2級にきりかえる' }).click();
+  await pg.getByRole('button', { name: '2級にきりかえる' }).last().click();
+  await pg.getByText('きりかえられなかったよ').waitFor({ timeout: 5000 });
+  await pg.waitForTimeout(500);
+  const kv = await readKv(pg, ['mock']);
+  if (kv.__error || kv.__timeout || !kv.mock) throw new Error(`級が書けなかったのにやりかけの模試が消えた: ${JSON.stringify(kv).slice(0, 100)}`);
+  if ((await pg.evaluate(() => localStorage.getItem('eiken.grade'))) !== null) throw new Error('書き込み失敗のはずが級が変わっている');
+  if (!(await pg.getByRole('button', { name: '2級にきりかえる' }).last().isEnabled())) throw new Error('失敗後にボタンが押せないまま');
+  await pg.screenshot({ path: join(OUT, 'g2r-01-switch-failed.png') });
+  console.log('  ✓ 級の書き込みが失敗しても、やりかけの模試は消えず、失敗がシートに出る');
+  await c.close();
+}
+
+// R-5：2級（問題0問）でようこそ画面から診断を始めても、完了扱いにならない
+{
+  const c = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const pg = await c.newPage();
+  activePage = pg;
+  activePageLabel = 'g1d(2級のようこそ)';
+  pg.on('console', (m) => m.type() === 'error' && errors.push(`[2級のようこそ] ${m.text()}`));
+  pg.on('pageerror', (e) => errors.push(`[2級のようこそ] pageerror: ${e.message}`));
+  await pg.addInitScript(() => localStorage.setItem('eiken.grade', 'g2'));
+  await pg.goto(URL, { waitUntil: 'networkidle' });
+  await pg.getByRole('button', { name: '診断テストをはじめる' }).click();
+  await pg.getByText('2級の問題はまだ準備中だよ').waitFor({ timeout: 5000 });
+  const kv = await readKv(pg, ['onboarded', 'diagnostic']);
+  if (kv.onboarded || kv.diagnostic) throw new Error(`2級で診断を始めただけで完了扱いになった: ${JSON.stringify(kv)}`);
+  await pg.screenshot({ path: join(OUT, 'g2r-02-welcome-g2-coming-soon.png') });
+  console.log('  ✓ 2級（0問）でようこそ画面から診断を始めても、完了扱いにならず「準備中」が出る');
+  await c.close();
+}
+
+/* 切り替え導線の出る日付：二次（2026-11-15）が終わるまでは隠し、翌日から出す */
+// 2級の中身が空のあいだは、11/16 でも「準備中」しか無い級へ誘導しないので出さない。
+// 中身が入ったら（content/g2 に1問でも入ったら）出る、に自動で切り替わる
+const g2HasContent = ['vocab', 'passage', 'listening'].some(
+  (f) => JSON.parse(readFileSync(join(root, `content/g2/${f}.json`), 'utf8')).length > 0,
+);
+for (const [date, shown] of [
+  ['2026-10-06', false],
+  ['2026-11-15', false],
+  ['2026-11-16', g2HasContent],
+]) {
+  const dctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const dp = await dctx.newPage();
+  activePage = dp;
+  activePageLabel = `g1-date(${date})`;
+  dp.on('console', (m) => m.type() === 'error' && errors.push(`[級の導線 ${date}] ${m.text()}`));
+  dp.on('pageerror', (e) => errors.push(`[級の導線 ${date}] pageerror: ${e.message}`));
+  await dp.clock.setFixedTime(new Date(`${date}T12:00:00+09:00`));
+  await dp.goto(URL, { waitUntil: 'networkidle' });
+  await dp.getByRole('button', { name: 'あとにする' }).click();
+  await dp.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  const has = (await dp.getByText('準2級おつかれさま。2級にきりかえる？').count()) > 0;
+  if (has !== shown) throw new Error(`${date} の切り替え導線: 期待=${shown ? '出る' : '隠れる'} 実際=${has ? '出る' : '隠れる'}`);
+  await dp.screenshot({ path: join(OUT, `g2-04-home-${date}.png`) });
+  await dctx.close();
+}
+console.log(`  ✓ 切り替え導線は 2026-10-06 / 11-15 は隠れ、11-16 は ${g2HasContent ? '出る' : '2級が空なので出ない'}`);
+
 await browser.close();
 
 if (errors.length) {

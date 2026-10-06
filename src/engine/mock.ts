@@ -1,4 +1,4 @@
-import { ITEMS, PASSAGES, WRITING_PROMPTS } from '../content';
+import { ITEMS, ITEM_BY_ID, PASSAGES, WRITING_BY_ID, WRITING_PROMPTS } from '../content';
 import type { MCQItem, SectionId, WritingSection } from '../types';
 
 /**
@@ -64,6 +64,17 @@ export interface MockPaper {
   scope: MockScope;
   written: MockQuestion[];
   listening: MockQuestion[];
+}
+
+/**
+ * 保存された模試の問題が、いまの級でぜんぶ引けるか。
+ * 級を切り替えると中断復帰は捨てるが、書き出しファイルからの復元などで
+ * 他の級の模試が kv に紛れても、復帰して落ちないようにするための確認。
+ */
+export function paperIsKnown(paper: MockPaper): boolean {
+  return [...paper.written, ...paper.listening].every((q) =>
+    q.kind === 'writing' ? WRITING_BY_ID.has(q.promptId) : ITEM_BY_ID.has(q.itemId),
+  );
 }
 
 function shuffle<T>(a: T[]): T[] {

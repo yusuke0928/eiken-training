@@ -1,3 +1,4 @@
+import { GRADE, GRADE_META } from '../../grade';
 import { useEffect, useState } from 'react';
 import { ITEM_BY_ID, PASSAGES } from '../../content';
 import { clearReviewPos, loadReviewPos, saveReviewPos, type ReviewPos } from '../../data/db';
@@ -35,8 +36,12 @@ export function mockReviewId(mockId: number): string {
   return `mock-${mockId}`;
 }
 
-/** 診断テストは1人1回しか走らない前提なので固定の1つでよい（App.tsx・HistoryScreen.tsx 共通） */
-export const DIAGNOSTIC_REVIEW_ID = 'diagnostic';
+/**
+ * 診断テストは1人1回しか走らない前提なので級ごとに固定の1つでよい（App.tsx・HistoryScreen.tsx 共通）。
+ * 準2級は配布済みの既存キー 'diagnostic' のまま、2級だけ別キーにして
+ * 「◯問目まで見た」が級をまたいで流用されないようにする（GRADE_META）。
+ */
+export const DIAGNOSTIC_REVIEW_ID = GRADE_META[GRADE].diagnosticReviewId;
 
 /**
  * 結果画面の入口ボタンに添える「続きがある」の一言。

@@ -32,12 +32,24 @@ function pushMcqItems(items) {
   }
 }
 
-const vocab = load('content/pre2/vocab.json');
-const conversation = load('content/pre2/conversation.json');
-const listening = load('content/pre2/listening.json');
-const passages = load('content/pre2/passage.json');
-const writing = load('content/pre2/writing.json');
-const speaking = load('content/pre2/speaking.json');
+/* 準2級と2級の両方を読む。優先語は級で分けない：どちらの級でも「アプリの本文に出てくる語」で、
+   分けると単語カードの並びが級で変わって混乱する。
+   2級に会話文の空所補充の大問は無いので conversation.json は無くても落ちない */
+const loadBoth = (name) => {
+  const rows = load(`content/pre2/${name}.json`);
+  try {
+    return [...rows, ...load(`content/g2/${name}.json`)];
+  } catch (e) {
+    if (e.code === 'ENOENT') return rows;
+    throw e;
+  }
+};
+const vocab = loadBoth('vocab');
+const conversation = loadBoth('conversation');
+const listening = loadBoth('listening');
+const passages = loadBoth('passage');
+const writing = loadBoth('writing');
+const speaking = loadBoth('speaking');
 
 pushMcqItems(vocab);
 pushMcqItems(conversation);

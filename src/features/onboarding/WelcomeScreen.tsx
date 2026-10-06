@@ -1,4 +1,5 @@
 import { DIAGNOSTIC_TOTAL } from '../../content';
+import { GRADE, GRADE_META } from '../../grade';
 import { EXAM, daysUntil, formatJp } from '../../lib/exam';
 import { Button, Screen } from '../../ui/primitives';
 
@@ -8,7 +9,7 @@ export function WelcomeScreen({ onStart, onSkip }: { onStart: () => void; onSkip
   return (
     <Screen>
       <main className="flex flex-1 flex-col justify-center px-6 py-12">
-        <p className="mb-2 text-[13px] font-semibold tracking-wide text-primary">英検準2級</p>
+        <p className="mb-2 text-[13px] font-semibold tracking-wide text-primary">{GRADE_META[GRADE].label}</p>
         <h1 className="mb-4 text-[30px] font-bold leading-tight text-ink">
           まず、いまの
           <br />

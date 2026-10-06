@@ -5,10 +5,12 @@ import {
   LISTENING_BLUEPRINT,
   WRITTEN_BLUEPRINT,
   formatClock,
+  paperIsKnown,
   paperShortfall,
   scopeLabel,
   type MockScope,
 } from '../../engine/mock';
+import { mockInGrade } from '../../grade';
 import { PRE2 } from '../../engine/scoring';
 import { Screen, TopBar } from '../../ui/primitives';
 import { ChevronRight } from '../../ui/icons';
@@ -62,7 +64,8 @@ export function MockSetupScreen({
   const [entryMode, setEntryMode] = useState<MockEntryMode>('exam');
   const saved = useLiveQuery(() => loadMock(), [], undefined);
   const past = useLiveQuery(
-    () => db.mocks.orderBy('finishedAt').reverse().limit(5).toArray(),
+    async () =>
+      (await db.mocks.orderBy('finishedAt').reverse().toArray()).filter(mockInGrade).slice(0, 5),
     [],
     [],
   );
@@ -98,7 +101,7 @@ export function MockSetupScreen({
           </div>
         )}
 
-        {saved && (
+        {saved && paperIsKnown(saved.paper) && (
           <button
             type="button"
             onClick={() => onResume(saved)}

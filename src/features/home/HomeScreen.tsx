@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, loadStreak, todayCount, todayWordCount } from '../../data/db';
 import { loadReport } from '../../engine/selector';
 import { reviewBacklog } from '../../engine/srs';
 import { scoreView } from '../../engine/scoring';
 import { APP_VERSION_LABEL } from '../../lib/appVersion';
-import { EXAM, applyReminder, formatJp, nextMilestone } from '../../lib/exam';
+import { G2_HAS_CONTENT, GRADE_READY } from '../../content';
+import { GRADE, GRADE_META, mockInGrade } from '../../grade';
+import { GradeOfferCard, GradeSwitchSheet } from '../grade/GradeSwitch';
+import { EXAM, applyReminder, daysUntil, formatJp, nextMilestone } from '../../lib/exam';
 import { TAG_LABEL } from '../../types';
 import { Button, Card, ProgressRing, Screen } from '../../ui/primitives';
 import {
@@ -64,9 +68,16 @@ export function HomeScreen({
   const report = useLiveQuery(() => loadReport(), [], undefined);
   // 自己採点を後回しにした模試は忘れられやすいので、ここから戻れるようにする
   const pendingMock = useLiveQuery(async () => {
-    const rows = await db.mocks.orderBy('finishedAt').reverse().limit(5).toArray();
+    const rows = (await db.mocks.orderBy('finishedAt').reverse().toArray()).filter(mockInGrade).slice(0, 5);
     return rows.find((m) => m.writings.some((w) => w.total === undefined)) ?? null;
   }, [], null);
+
+  const [switchTo, setSwitchTo] = useState<'pre2' | 'g2' | null>(null);
+  // 2級への導線は二次試験が終わってから。二次の直前に「2級にきりかえる？」を出すと、
+  // 二次の練習（面接も2級のものになる）から気を逸らす。
+  // ここで読む EXAM は準2級のもの（G2-02 で級ごとの表になるまで、2級側では使わない）
+  // 2級の中身がまだ空なら出さない（「準備中」しか無い級へ誘導しないため）
+  const showGradeOffer = GRADE === 'pre2' && G2_HAS_CONTENT && daysUntil(EXAM.secondStage) < 0;
 
   const milestone = nextMilestone();
   const reminder = applyReminder();
@@ -80,8 +91,25 @@ export function HomeScreen({
       <main className="flex-1 px-5 pt-[calc(20px+env(safe-area-inset-top))] pb-10">
         <div className="mb-5 flex items-baseline justify-between">
           <h1 className="text-[22px] font-bold text-ink">{greeting()}</h1>
-          <span className="text-[13px] text-ink-faint">英検準2級</span>
+          <span className="text-[13px] text-ink-faint">{GRADE_META[GRADE].label}</span>
         </div>
+
+        {showGradeOffer && <GradeOfferCard onClick={() => setSwitchTo('g2')} />}
+
+        {!GRADE_READY && (
+          <div className="mb-4 rounded-2xl bg-accent-soft px-4 py-3">
+            <p className="text-[14px] font-semibold text-ink">
+              {GRADE_META[GRADE].short}の問題はまだ準備中だよ
+            </p>
+            <button
+              type="button"
+              onClick={() => setSwitchTo('pre2')}
+              className="mt-1 min-h-[44px] text-[13px] font-semibold text-primary"
+            >
+              準2級にもどす
+            </button>
+          </div>
+        )}
 
         {/* 今日やること1つだけを大きく出す。メニューを眺めさせない（DESIGN.md §3.2） */}
         <div className="mb-4 rounded-[28px] border border-line bg-surface p-5">
@@ -306,6 +334,7 @@ export function HomeScreen({
         {/* 本人が自分で最新版か確かめられる場所。囲みや色は付けず、控えめに1行だけ */}
         <p className="mt-3 text-[11px] text-ink-faint">{APP_VERSION_LABEL}</p>
       </main>
+      {switchTo && <GradeSwitchSheet to={switchTo} onCancel={() => setSwitchTo(null)} />}
     </Screen>
   );
 }

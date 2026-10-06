@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { bumpDayLog, bumpWordLog, db, localDateKey } from '../../data/db';
 import { BOX_INTERVAL_DAYS } from '../../engine/srs';
+import { GRADE, GRADE_META } from '../../grade';
 import { EXAM, daysUntil } from '../../lib/exam';
 import { useSpeech } from '../../lib/speech';
 import {
@@ -50,16 +51,18 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
   // box2〜3は「まだ4回積んでいないが、1回もやり直していないわけでもない」＝おぼえかけの語
   const halfway = (cards ?? []).filter((c) => c.box >= 2 && c.box <= 3).length;
 
-  // 一次までに準2級の語を一周できるペース（P3→R2-1）。
+  // 一次までに、いまの級の語を一周できるペース（P3→R2-1）。
+  // 母数は級に合わせる（準2級=p2 1,511語／2級=g2 1,486語）。
+  // 日付はまだ準2級の一次のまま（2級の日程は G2-02 で級ごとの表になるまで正しくない）。
   // 母数は「まだ box>=4 に達していない語」にする。デッキ全体（1,511語固定）で割ると、
   // 進めるほど「すでにおぼえた語」まで毎回数え直す前提になり、直前ほど実態から離れた
   // 大きい数字が出る。試験10日前に見せるべきは「今からやる分」であって全体量ではない
   const daysToFirstStage = daysUntil(EXAM.firstStage);
   const maxDeckSize = SIZES[SIZES.length - 1];
-  const p2Words = wordsIn('p2');
-  const p2Remaining = p2Words.filter((w) => (state.get(w.word)?.box ?? 0) < 4).length;
+  const gradeWords = wordsIn(GRADE_META[GRADE].wordLevel);
+  const gradeRemaining = gradeWords.filter((w) => (state.get(w.word)?.box ?? 0) < 4).length;
   const perDayToFinish =
-    daysToFirstStage > 0 && p2Remaining > 0 ? Math.ceil(p2Remaining / daysToFirstStage) : null;
+    daysToFirstStage > 0 && gradeRemaining > 0 ? Math.ceil(gradeRemaining / daysToFirstStage) : null;
   // 母数を減らしてもなお1日の最大サイズ（100枚）を超えるときは、届かない数字を
   // 出すのをやめる（R2-1）。数字を正確に出すことより、次の一手を選べることを優先する
   const paceReachable = perDayToFinish !== null && perDayToFinish <= maxDeckSize;
@@ -176,10 +179,10 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
    */
   function paceHint() {
     if (daysToFirstStage <= 0) return null;
-    if (p2Remaining === 0) {
+    if (gradeRemaining === 0) {
       return (
         <p className="mt-3 rounded-2xl bg-correct-soft px-3 py-2.5 text-[12px] leading-relaxed text-correct">
-          準2級はもうおぼえきったよ。ここからは「今日のふり返り」で仕上げよう。
+          {GRADE_META[GRADE].short}はもうおぼえきったよ。ここからは「今日のふり返り」で仕上げよう。
         </p>
       );
     }
@@ -188,7 +191,7 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
       return (
         <p className="mt-3 rounded-2xl bg-primary-soft px-3 py-2.5 text-[12px] leading-relaxed text-ink-sub">
           一次まであと<span className="font-semibold text-primary">{daysToFirstStage}日</span>。
-          準2級の残り{p2Remaining}語を一周するには 1日
+          {GRADE_META[GRADE].short}の残り{gradeRemaining}語を一周するには 1日
           <span className="font-semibold text-primary">{perDayToFinish}枚</span>。
           {recommendedSize && `${recommendedSize}枚ならこのペースで間に合うよ。`}
         </p>
@@ -446,7 +449,7 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
                 }`}
               >
                 {s}
-                {/* 一次までに準2級の語を一周できる、間に合う最小の枚数につける（P3） */}
+                {/* 一次までにいまの級の語を一周できる、間に合う最小の枚数につける（P3） */}
                 {recommendedSize === s && (
                   <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent px-1.5 py-0.5 text-[9px] font-bold text-accent-ink">
                     おすすめ

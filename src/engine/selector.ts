@@ -1,5 +1,6 @@
 import { db } from '../data/db';
 import { ALL_SECTIONS, ALL_TAGS, DIAGNOSTIC_PLAN, ITEMS, ITEM_BY_ID, itemsInSection } from '../content';
+import { inGrade } from '../grade';
 import { dueCards } from './srs';
 import { buildReport, difficultyBand, itemWeight, weightedPick, type MasteryReport } from './mastery';
 import { isListening, type MCQItem } from '../types';
@@ -22,7 +23,8 @@ function shuffle<T>(arr: T[]): T[] {
 
 /** 解答履歴から、いまの習熟度と重点配分を作る */
 export async function loadReport(): Promise<MasteryReport> {
-  const attempts = await db.attempts.toArray();
+  // 他の級の解答は数えない。数えると「解いた問題数」や正答率に別の級が混ざる
+  const attempts = (await db.attempts.toArray()).filter((a) => inGrade(a.itemId));
   return buildReport(attempts, ALL_TAGS, ALL_SECTIONS);
 }
 
@@ -73,7 +75,9 @@ function spread(items: MCQItem[]): MCQItem[] {
 export async function buildMiniQueue(size: number): Promise<string[]> {
   const report = await loadReport();
   const band = difficultyBand(report.overall, report.answered);
-  const due = await dueCards();
+  // 他の級の期限切れカードで復習の枠を食わないよう、枠を数える前にいまの級へ絞る
+  // （絞らないと、枠だけ取られて後段で捨てられ、2級のミニ演習が縮んで復習も入らない）
+  const due = (await dueCards()).filter((c) => known(c.itemId));
 
   const wantReview = Math.min(due.length, Math.round(size * 0.45));
   const picked = due.slice(0, wantReview).map((c) => c.itemId);
@@ -87,7 +91,7 @@ export async function buildMiniQueue(size: number): Promise<string[]> {
     ...weightedPick(usable, (i) => itemWeight(i.id, report), size - picked.length).map((i) => i.id),
   );
 
-  const items = spread(picked.map((id) => ITEM_BY_ID.get(id)!).filter(Boolean));
+  const items = spread(picked.map((id) => ITEM_BY_ID.get(id)).filter((i): i is MCQItem => !!i));
   return groupByPassage(items.map((i) => i.id));
 }
 

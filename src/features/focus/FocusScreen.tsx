@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../../data/db';
+import { inGrade } from '../../grade';
 import { loadReport } from '../../engine/selector';
 import type { Stat } from '../../engine/mastery';
 import { SECTION_LABEL, TAG_LABEL, WRITING_SPEC, type SectionId } from '../../types';
@@ -11,7 +12,7 @@ export function FocusScreen({ onBack }: { onBack: () => void }) {
   const report = useLiveQuery(() => loadReport(), [], undefined);
   const writing = useLiveQuery(
     async () => {
-      const rows = await db.writings.toArray();
+      const rows = (await db.writings.toArray()).filter((r) => inGrade(r.promptId));
       if (rows.length === 0) return null;
       // 課題ごとの最高点だけを見る（練習で伸びた結果を評価したいので）
       const best = new Map<string, { total: number; section: string }>();

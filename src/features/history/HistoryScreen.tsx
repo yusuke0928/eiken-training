@@ -4,6 +4,7 @@ import { db, loadReviewPos, loadStreak } from '../../data/db';
 import { downloadBackup, restoreBackup } from '../../data/backup';
 import { PRE2, estimateSkillCse } from '../../engine/scoring';
 import { ITEM_BY_ID, WRITING_BY_ID } from '../../content';
+import { inGrade, mockInGrade } from '../../grade';
 import { SECTION_SKILL, WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import {
@@ -38,7 +39,16 @@ export function HistoryScreen({
       db.mocks.orderBy('finishedAt').toArray(),
       loadStreak(),
     ]);
-    return { attempts, writings, mocks, streak };
+    // 記録は消さず、いまの級のものだけ集計する。他の級の id は引けず、数字が混ざったり
+    // 集計中に落ちたりするので、ここで入口を絞る（級は問題 id の接頭辞で分かれている）。
+    // 件数は書き出しファイルからの復元確認（「いまの端末の記録◯問ぶん」）にだけ全級ぶんを使う
+    return {
+      attempts: attempts.filter((a) => inGrade(a.itemId)),
+      writings: writings.filter((w) => inGrade(w.promptId)),
+      mocks: mocks.filter(mockInGrade),
+      allAttemptCount: attempts.length,
+      streak,
+    };
   }, [], undefined);
 
   // 続きがあれば「何問目から」を添える（C-1）。data の読み込みより前に呼ぶ
@@ -57,7 +67,7 @@ export function HistoryScreen({
     );
   }
 
-  const { attempts, writings, mocks, streak } = data;
+  const { attempts, writings, mocks, streak, allAttemptCount } = data;
   const total = attempts.length;
   const correct = attempts.filter((a) => a.correct).length;
 
@@ -71,7 +81,8 @@ export function HistoryScreen({
   // db.attempts に触れるのは読むだけで、書き込みは一切足していない（絶対に守ることの1）。
   const diagnosticByItem = new Map<string, ReviewAnswer>();
   for (const a of attempts) {
-    if (a.mode === 'diagnostic') {
+    // 件数と答え合わせの中身を一致させるため、いま収録されている問題だけを数える
+    if (a.mode === 'diagnostic' && ITEM_BY_ID.has(a.itemId)) {
       diagnosticByItem.set(a.itemId, { itemId: a.itemId, selected: a.selected, correct: a.correct });
     }
   }
@@ -144,10 +155,10 @@ export function HistoryScreen({
       const r = m.answers.filter((a) => ITEM_BY_ID.get(a.itemId)?.section.startsWith('r-'));
       const l = m.answers.filter((a) => ITEM_BY_ID.get(a.itemId)?.section.startsWith('l-'));
       const wTotal = m.writings.reduce((s, w) => s + (w.total ?? 0), 0);
-      const wMax = m.writings.reduce(
-        (s, w) => s + WRITING_SPEC[WRITING_BY_ID.get(w.promptId)!.section].maxScore,
-        0,
-      );
+      const wMax = m.writings.reduce((s, w) => {
+        const section = WRITING_BY_ID.get(w.promptId)?.section;
+        return s + (section ? WRITING_SPEC[section].maxScore : 0);
+      }, 0);
       if (r.length === 0 || l.length === 0 || wMax === 0 || m.writings.some((w) => w.total === undefined)) {
         return null;
       }
@@ -325,7 +336,7 @@ export function HistoryScreen({
             <p className="mb-1 text-[17px] font-bold text-ink">読み込むと、いまの記録は消えます</p>
             <p className="mb-5 text-[14px] leading-relaxed text-ink-sub">
               ファイルの中身で全部置き換えます。いまの端末の記録（
-              {total}問ぶん）は戻せません。よければ続けてください。
+              {allAttemptCount}問ぶん）は戻せません。よければ続けてください。
             </p>
             <div className="flex gap-3">
               <Button variant="ghost" onClick={() => setConfirmRestore(null)}>

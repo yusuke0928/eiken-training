@@ -187,7 +187,8 @@ export interface RubricCriterion {
 }
 
 /**
- * 英検準2級の公式の採点観点にそのまま合わせる。
+ * 英検準2級の公式の採点観点にそのまま合わせる（Eメール・意見論述）。
+ * 2級の英文要約の観点は G2-03 で足す。
  * Eメールに「構成」がないのは、友達へのカジュアルな返信だから。
  */
 export const RUBRIC: Record<WritingSection, RubricCriterion[]> = {

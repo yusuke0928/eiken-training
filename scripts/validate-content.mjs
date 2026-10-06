@@ -262,6 +262,51 @@ if (priority) {
   }
 }
 
+/* ---------- 2級（器だけ。中身の検査は G2-02 / G2-03 で足す） ----------
+   2級は Phase 3 で中身が入るまで空配列。空でもエラーにしない（「まだ0問」と出して通す）。
+   中身が入ったら、id の接頭辞（g2-）と重複だけは今から効かせる：
+   級は問題 id の接頭辞で分けているので、ここが崩れると attempts / srs が級をまたいで混ざる。
+   conversation.json は2級に会話文の空所補充の大問が無いので、置かない。 */
+console.log('\n2級:');
+for (const f of ['vocab', 'passage', 'listening', 'writing', 'speaking']) {
+  const file = `content/g2/${f}.json`;
+  const rows = load(file);
+  if (!Array.isArray(rows)) {
+    errors.push(`${file}: 配列でない`);
+    continue;
+  }
+  console.log(`  ${file}: ${rows.length === 0 ? 'まだ0問' : `${rows.length}件`}`);
+  for (const r of rows) {
+    if (!r.id?.startsWith('g2-')) errors.push(`${file} / ${r.id ?? '(id なし)'}: id は g2- で始めること`);
+    else if (seenIds.has(r.id)) errors.push(`${file} / ${r.id}: id が重複している`);
+    else seenIds.add(r.id);
+  }
+}
+
+/* ---------- id の接頭辞（級の絞り込みの前提） ----------
+   アプリの級の絞り込み（src/grade.ts の inGrade）は id の接頭辞だけに頼っている。
+   接頭辞の無い問題は、演習はできるのに記録・正答率・重点配分から黙って消える。
+   長文の items[].id・ライティング・面接も含め、全 id がその級の接頭辞で始まることを1か所で見る。 */
+const PREFIX = { pre2: 'p2-', g2: 'g2-' };
+for (const [grade, dir, files] of [
+  ['pre2', 'pre2', ['vocab', 'conversation', 'passage', 'listening', 'writing', 'speaking']],
+  ['g2', 'g2', ['vocab', 'passage', 'listening', 'writing', 'speaking']],
+]) {
+  for (const f of files) {
+    const file = `content/${dir}/${f}.json`;
+    const ids = [];
+    for (const r of load(file)) {
+      ids.push(r.id);
+      for (const it of r.items ?? []) ids.push(it.id);
+    }
+    for (const id of ids) {
+      if (typeof id !== 'string' || !id.startsWith(PREFIX[grade])) {
+        errors.push(`${file} / ${id ?? '(id なし)'}: id は ${PREFIX[grade]} で始めること（級の絞り込みが接頭辞に頼っている）`);
+      }
+    }
+  }
+}
+
 console.log(`\n合計 ${seenIds.size}問`);
 for (const w of warnings) console.log(`⚠️  ${w}`);
 if (errors.length) {

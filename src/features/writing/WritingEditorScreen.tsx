@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { WRITING_BY_ID } from '../../content';
+import { gradeOfId } from '../../grade';
+import { OtherGradeNotice } from '../grade/GradeSwitch';
 import { loadDraft, saveDraft } from '../../data/db';
 import { TEMPLATE, countWords, mechanicalGrader } from '../../engine/writing';
 import { WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import { Alert, Check } from '../../ui/icons';
 
-export function WritingEditorScreen({
+function WritingEditorScreenBody({
   promptId,
   onSubmit,
   onBack,
@@ -197,4 +199,15 @@ function renderUnderline(source: string, underline: string) {
       {after}
     </>
   );
+}
+
+/**
+ * 他の級の課題 id が来ても白画面にしない。Body は prompt がある前提で書かれているので、
+ * フックの順序を崩さないよう、存在確認だけを外側の薄い殻に分けた。
+ */
+export function WritingEditorScreen(props: Parameters<typeof WritingEditorScreenBody>[0]) {
+  if (!WRITING_BY_ID.has(props.promptId)) {
+    return <OtherGradeNotice title="ライティング道場" of={gradeOfId(props.promptId)} onBack={props.onBack} />;
+  }
+  return <WritingEditorScreenBody {...props} />;
 }

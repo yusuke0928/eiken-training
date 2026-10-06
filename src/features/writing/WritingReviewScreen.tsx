@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { WRITING_BY_ID } from '../../content';
+import { gradeOfId } from '../../grade';
+import { OtherGradeNotice } from '../grade/GradeSwitch';
 import { bumpDayLog, clearDraft, db } from '../../data/db';
 import { countWords, mechanicalGrader, totalScore } from '../../engine/writing';
 import { RUBRIC, WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import { Alert, Check } from '../../ui/icons';
 
-export function WritingReviewScreen({
+function WritingReviewScreenBody({
   promptId,
   text,
   onBack,
@@ -190,4 +192,15 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
       {children}
     </section>
   );
+}
+
+/**
+ * 他の級の課題 id が来ても白画面にしない。Body は prompt がある前提で書かれているので、
+ * フックの順序を崩さないよう、存在確認だけを外側の薄い殻に分けた。
+ */
+export function WritingReviewScreen(props: Parameters<typeof WritingReviewScreenBody>[0]) {
+  if (!WRITING_BY_ID.has(props.promptId)) {
+    return <OtherGradeNotice title="ライティングの結果" of={gradeOfId(props.promptId)} onBack={props.onBack} />;
+  }
+  return <WritingReviewScreenBody {...props} />;
 }

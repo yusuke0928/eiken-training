@@ -1,1 +1,124 @@
-[]
+[
+  {
+    "id": "g2-s-001",
+    "title": "Community Gardens",
+    "passage": "Community gardens are becoming popular in many cities. People who do not have yards at home can grow vegetables and flowers in shared spaces. Gardeners often make new friends while they work together. Some cities also let children grow vegetables in the gardens. In this way, the children can learn about nature. Many cities plan to build more.",
+    "passageJa": "市民農園は多くの都市で人気が出てきている。自宅に庭のない人も、共有の場所で野菜や花を育てることができる。育てる人どうしは、いっしょに作業するあいだに新しい友だちをつくることが多い。子どもたちに、農園で野菜を育てさせる都市もある。こうして、子どもたちは自然について学ぶことができる。多くの都市が、さらに増やす計画を立てている。",
+    "scenes": [
+      {
+        "no": 1,
+        "note": "土曜の朝。女の子と父親が、家の近くの市民農園に着いたところ。父親は種の袋を持っていて、女の子が父親に話しかけている。",
+        "image": null,
+        "actions": [
+          {
+            "ja": "父親が種の袋を持っている",
+            "en": "Yui's father was holding a bag of seeds."
+          }
+        ],
+        "speech": [
+          {
+            "who": "女の子",
+            "ja": "トマトを育てようよ！",
+            "en": "Let's grow tomatoes!"
+          }
+        ]
+      },
+      {
+        "no": 2,
+        "label": "Ten minutes later",
+        "note": "10分後。父親がくわで土に穴を掘り、女の子がその穴に種を入れている。近くで年配の女性が2人を見て笑っている。",
+        "image": null,
+        "actions": [
+          {
+            "ja": "父親が土に穴を掘っている",
+            "en": "Her father was digging holes in the soil."
+          },
+          {
+            "ja": "女の子が穴に種を入れている",
+            "en": "Yui was putting seeds into them."
+          },
+          {
+            "ja": "年配の女性がほほえんでいる",
+            "en": "An old woman nearby was smiling at them."
+          }
+        ],
+        "speech": []
+      },
+      {
+        "no": 3,
+        "label": "A few months later",
+        "note": "数か月後。畑にはトマトが赤く実っている。女の子がトマトを摘んでいて、頭の中では、近所の人たちが食べて喜ぶ姿を思い浮かべている。",
+        "image": null,
+        "actions": [
+          {
+            "ja": "女の子がトマトを摘んでいる",
+            "en": "Yui was picking tomatoes."
+          },
+          {
+            "ja": "みんなが喜ぶと考えている",
+            "en": "She was thinking that everyone would be happy."
+          }
+        ],
+        "speech": [
+          {
+            "who": "女の子（心の中）",
+            "ja": "みんな、食べたら喜ぶだろうな。",
+            "en": "Everyone will be happy to eat these."
+          }
+        ]
+      }
+    ],
+    "openingSentence": "One Saturday morning, Yui and her father went to a community garden near their house.",
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how can children learn about nature in some cities?",
+        "model": "By growing vegetables in the gardens.",
+        "checks": [
+          "By ~ing の形で答えられた",
+          "In this way の前の文（let children grow vegetables）から答えを取れた",
+          "主語をつけすぎず簡潔に言えた"
+        ]
+      },
+      {
+        "no": 2,
+        "kind": "story",
+        "prompt": "Now, please look at the pictures. You have 20 seconds to prepare. Your story should begin with this sentence:",
+        "model": "One Saturday morning, Yui and her father went to a community garden near their house. Yui's father was holding a bag of seeds, and Yui said to him, \"Let's grow tomatoes!\" Ten minutes later, her father was digging holes in the soil, and Yui was putting seeds into them. An old woman nearby was smiling at them. A few months later, Yui was picking tomatoes. She was thinking that everyone would be happy to eat them.",
+        "checks": [
+          "言い出しの1文を、そのまま最初に言えた",
+          "3つのコマすべてに触れた",
+          "コマの動作を過去進行形（was / were ~ing）で言えた",
+          "Ten minutes later / A few months later など、時間の言葉を使えた",
+          "1コマ目のセリフを said to ..., \"...\" の形で入れられた",
+          "3コマ目の思っていることを入れられた"
+        ]
+      },
+      {
+        "no": 3,
+        "prompt": "Some people say that schools should teach students how to grow vegetables. What do you think about that?",
+        "model": "I agree. First, students can learn how much work it takes to make food. Second, they can enjoy working together and make friends.",
+        "checks": [
+          "I agree. / I disagree. をはっきり言えた",
+          "理由を2つ言えた",
+          "First / Second などでつないで、止まらずに話せた"
+        ]
+      },
+      {
+        "no": 4,
+        "prompt": "Do you think more people will work from home in the future?",
+        "followUp": {
+          "yes": "Why?",
+          "no": "Why not?"
+        },
+        "model": "Yes, I do. People can save time because they don't have to go to the office. Also, they can spend more time with their families.",
+        "modelNo": "No, I don't. Working at home is sometimes difficult because it is hard to talk with other people. Also, some jobs cannot be done at home.",
+        "checks": [
+          "Yes / No を先にはっきり言えた",
+          "Why? / Why not? と聞かれたら、すぐに理由を言えた",
+          "理由を2つ言えた"
+        ]
+      }
+    ]
+  }
+]

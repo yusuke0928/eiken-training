@@ -3,7 +3,7 @@
  * 問題は手で書き足していく前提なので、壊れたデータが混ざったらここで止める。
  *   npm run validate
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 // アプリ本体と同じ並び替えを使う（Node の型ストリッピングでそのまま読める）
@@ -405,10 +405,65 @@ for (const w of g2Rows.writing) {
   }
 }
 
-// 面接（G2-04 で中身を検査する）。ここでは id の重複だけ見る
+// 面接。2級は3コマ・No.1〜4・No.2 は過去進行形で並べる・No.4 は Yes/No のあとに Why? の2段
 for (const r of g2Rows.speaking) {
   if (r.id && seenIds.has(r.id)) errors.push(`g2/speaking.json / ${r.id}: id が重複している`);
   else if (r.id) seenIds.add(r.id);
+  const at = `g2/speaking.json / ${r.id}`;
+  const wc = (r.passage ?? '').trim().split(/\s+/).filter(Boolean).length;
+  if (wc < 55 || wc > 70) errors.push(`${at}: パッセージが${wc}語。2級は60語程度（55〜70語）`);
+  if (!r.passageJa) errors.push(`${at}: passageJa がない`);
+  if (!r.openingSentence) errors.push(`${at}: openingSentence（No.2 の言い出し）がない`);
+  if (r.sceneA || r.sceneB) errors.push(`${at}: 準2級の sceneA / sceneB が混ざっている（2級は scenes の3コマ）`);
+  if (!Array.isArray(r.scenes) || r.scenes.length !== 3) {
+    errors.push(`${at}: scenes は3コマ`);
+  } else {
+    r.scenes.forEach((sc, i) => {
+      if (sc.no !== i + 1) errors.push(`${at}: scenes[${i}].no が ${i + 1} でない`);
+      // 1コマ目には時間のラベルが無い（公式。言い出しの1文がその役をする）。2・3コマ目は必須
+      if (i > 0 && !sc.label) errors.push(`${at}: scenes[${i}].label（時間経過のラベル）がない`);
+      if (i === 0 && sc.label) errors.push(`${at}: scenes[0] に label がある（公式の1コマ目には時間のラベルが無い）`);
+      if (!sc.note) errors.push(`${at}: scenes[${i}].note（日本語のコマ説明）がない`);
+      if (!('image' in sc)) errors.push(`${at}: scenes[${i}].image がない（無ければ null）`);
+      // 画像を指しているのにファイルが無いと、画面は「準備中」に落ちて気づけない
+      else if (sc.image !== null && !existsSync(join(root, 'src/features/speaking/art/g2', sc.image))) errors.push(`${at}: scenes[${i}].image のファイルが src/features/speaking/art/g2/ に無い: ${sc.image}`);
+      if (!Array.isArray(sc.actions) || sc.actions.length === 0) errors.push(`${at}: scenes[${i}].actions がない`);
+      // コマ説明に英文を混ぜない（答えを先に見せてしまう）
+      if (/[A-Za-z]{3,}/.test(sc.note ?? '')) errors.push(`${at}: scenes[${i}].note に英文が混ざっている（日本語だけにする）`);
+    });
+  }
+  const qs = r.questions ?? [];
+  if (qs.map((x) => x.no).join(',') !== '1,2,3,4') errors.push(`${at}: questions は No.1〜4 の4つ（No.5 は無い）`);
+  for (const x of qs) {
+    if (!x.prompt || !x.model || !Array.isArray(x.checks) || x.checks.length === 0) errors.push(`${at} No.${x.no}: prompt / model / checks のどれかがない`);
+  }
+  // model が無いデータで TypeError にならないよう、ここまでに積んだエラーがある設問は以降の検査から外す
+  const q1 = qs.find((x) => x.no === 1);
+  if (q1?.prompt && q1?.model) {
+    // 本番の No.1 は In this way, ... の文から聞いて By ~ing で答えさせる
+    if (!q1.prompt.startsWith('According to the passage')) errors.push(`${at}: No.1 の prompt が "According to the passage" で始まっていない`);
+    if (!q1.model.startsWith('By ')) errors.push(`${at}: No.1 の model が "By ~ing" で始まっていない`);
+    if (!/\b(In this way|By doing so),/.test(r.passage ?? '')) errors.push(`${at}: パッセージに "In this way," か "By doing so," の文がない（No.1 の根拠）`);
+  }
+  const q2 = qs.find((x) => x.no === 2);
+  if (q2?.model) {
+    if (!r.openingSentence || !q2.model.startsWith(r.openingSentence)) errors.push(`${at}: No.2 の model が言い出しの1文で始まっていない`);
+    const prog = (q2.model.match(/\b(was|were)\s+\w+ing\b/g) ?? []).length;
+    if (prog < 3) errors.push(`${at}: No.2 の model に過去進行形（was/were ~ing）が${prog}個。3個以上（現在進行形では本番の形と合わない）`);
+    if (/\b(is|are)\s+\w+ing\b/.test(q2.model)) errors.push(`${at}: No.2 の model に現在進行形が混ざっている`);
+  }
+  const q3 = qs.find((x) => x.no === 3);
+  if (q3?.prompt && q3?.model) {
+    if (!/What do you think about that\?$/.test(q3.prompt)) errors.push(`${at}: No.3 の prompt が "What do you think about that?" で終わっていない`);
+    if (!/^Some people say that /.test(q3.prompt)) errors.push(`${at}: No.3 の prompt が "Some people say that" で始まっていない`);
+    if (!/^I (agree|disagree)\./.test(q3.model)) errors.push(`${at}: No.3 の model が I agree. / I disagree. で始まっていない`);
+  }
+  const q4 = qs.find((x) => x.no === 4);
+  if (q4?.model) {
+    if (q4.followUp?.yes !== 'Why?' || q4.followUp?.no !== 'Why not?') errors.push(`${at}: No.4 の followUp は {yes:"Why?", no:"Why not?"}`);
+    if (!/^Yes, I do\./.test(q4.model)) errors.push(`${at}: No.4 の model は "Yes, I do." で始める（No の例は modelNo）`);
+    if (!/^No, I don't\./.test(q4.modelNo ?? '')) errors.push(`${at}: No.4 の modelNo は "No, I don't." で始める`);
+  }
 }
 
 // 模試・診断が成り立つか。数字は WORK-ORDER-G2-02 の表（src/engine/mock.ts の G2 ブループリントと揃えること）

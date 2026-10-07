@@ -10,6 +10,7 @@ import { FocusScreen } from './features/focus/FocusScreen';
 import { HistoryScreen } from './features/history/HistoryScreen';
 import { WordCardScreen } from './features/words/WordCardScreen';
 import { SpeakingScreen } from './features/speaking/SpeakingScreen';
+import { G2SpeakingScreen } from './features/speaking/G2SpeakingScreen';
 import { clearSession, db, getKv, loadMock, loadSession, setKv, type SavedMock } from './data/db';
 import { GRADE_READY, ITEM_BY_ID, SPEAKING_RAW, WRITING_BY_ID } from './content';
 import { GRADE, GRADE_META } from './grade';
@@ -363,7 +364,8 @@ export default function App() {
         return <WordCardScreen onBack={back} />;
 
       case 'speaking':
-        return <SpeakingScreen onBack={back} />;
+        // 2級の面接は形が違う（3コマ・No.1〜4・No.2 の後にカードを伏せる）ので別画面。準2級の画面には級の分岐を入れない
+        return GRADE === 'g2' ? <G2SpeakingScreen onBack={back} /> : <SpeakingScreen onBack={back} />;
 
       case 'mockSetup':
         return (

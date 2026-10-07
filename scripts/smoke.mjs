@@ -2655,6 +2655,256 @@ console.log('G2-03-R：要約のレビュー指摘');
   await c.close();
 }
 
+/* ---- G2-04：2級の二次（面接）----
+   見るもの：No.2 の後にカードが伏せられる（No.3・No.4 でパッセージも3コマも DOM に無い）、
+   No.2 の考慮20秒と言い出しの1文、No.4 が Yes/No → Why? / Why not? の2段、No.5 が無い、録音できる、
+   戻って見ようとしたら一言出る。準2級の面接の画面の文字列は 38d5998 のものと完全一致。 */
+console.log('G2-04：2級の面接');
+
+/** 録音の検査用。headless では getUserMedia が応答しないので、実物の MediaRecorder に合成の音声を流す */
+/* 本物のマイクは取得に時間がかかる（許可ダイアログ）。その待ち中の連打・離脱でマイクを掴みっぱなしにしないかを見るため、
+   600ms 遅らせ、掴んだ全ストリームを window.__mics に残す（生きているトラックの数を数える） */
+const FAKE_MIC = () => {
+  window.__mics = [];
+  navigator.mediaDevices.getUserMedia = async () => {
+    await new Promise((r) => setTimeout(r, 600));
+    const ac = new AudioContext();
+    const d = ac.createMediaStreamDestination();
+    const o = ac.createOscillator();
+    o.connect(d);
+    o.start();
+    window.__mics.push(d.stream);
+    return d.stream;
+  };
+};
+const liveMics = (pg) => pg.evaluate(() => (window.__mics ?? []).flatMap((m) => m.getTracks()).filter((t) => t.readyState === 'live').length);
+const PASSAGE_SNIPPET = 'Community gardens are becoming popular';
+// 1コマ目に時間のラベルは無い（公式）。2・3コマ目のラベルだけを見る
+const SCENE_LABELS = ['Ten minutes later', 'A few months later'];
+
+{
+  const { c, pg } = await g2Open('g2-04(2級の面接)', { grade: 'g2', date: '2026-10-07' });
+  await pg.addInitScript(FAKE_MIC);
+  await pg.reload({ waitUntil: 'networkidle' });
+  await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  const bodyText = () => pg.locator('body').innerText();
+
+  await pg.locator('button', { hasText: '面接シミュレーター' }).first().click();
+  await pg.getByText('本番の流れ（約7分）').waitFor({ timeout: 8000 });
+  let t = await bodyText();
+  if (t.includes('No.5') || t.includes('イラストA')) throw new Error('2級の面接の一覧に準2級の形（No.5・イラストA）が出ている');
+  if ((await pg.locator('main ul > li > button').count()) < 1) throw new Error('2級の面接カードが1枚も無い');
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-list.png') }); // フェード・シートの動きが終わってから撮る
+
+  await pg.locator('main ul > li > button').first().click();
+  await pg.getByRole('button', { name: /あと\d+秒/ }).waitFor({ timeout: 8000 });
+  t = await bodyText();
+  if (!t.includes(PASSAGE_SNIPPET)) throw new Error('黙読でパッセージが出ていない');
+  await pg.getByRole('button', { name: '音読へ' }).click({ timeout: 60000 });
+  await pg.getByText('英語のタイトルから読む').waitFor({ timeout: 5000 });
+  await pg.getByRole('button', { name: 'No.1へ' }).click();
+  await pg.getByText('According to the passage').waitFor({ timeout: 5000 });
+  if (!(await bodyText()).includes(PASSAGE_SNIPPET)) throw new Error('No.1 でパッセージが見えない（No.1 はパッセージを見て答える）');
+  if (!(await bodyText()).includes('In this way,')) throw new Error('パッセージに In this way, の文が無い（No.1 は By ~ing で答える形）');
+  await pg.getByRole('button', { name: /解答例を見る/ }).click();
+  if (!(await pg.locator('main .bg-primary-soft').allInnerTexts()).some((x) => x.startsWith('By '))) throw new Error('No.1 の解答例が By ~ing で始まっていない');
+
+  // No.2 の考慮時間20秒。数え終わるまで始められない。言い出しの1文と3コマの時間ラベルが見える
+  await pg.getByRole('button', { name: 'No.2へ' }).click();
+  await pg.getByRole('button', { name: /あと\d+秒/ }).waitFor({ timeout: 5000 });
+  if (!(await pg.getByRole('button', { name: /あと\d+秒/ }).isDisabled())) throw new Error('No.2 の考慮時間中に「始める」が押せる');
+  t = await bodyText();
+  if (!t.includes('One Saturday morning, Yui and her father went to a community garden near their house.')) throw new Error('No.2 の考慮時間に言い出しの1文が出ていない');
+  for (const l of SCENE_LABELS) if (!t.includes(l)) throw new Error(`3コマの時間ラベル「${l}」が出ていない`);
+  if (!t.includes('イラストは準備中')) throw new Error('イラストが無いのに「準備中」の案内が出ていない');
+  if (await pg.locator('main img').count()) throw new Error('イラストが無いのに img（壊れた画像）が出ている');
+  if (t.includes('was holding') || t.includes('was digging')) throw new Error('考慮時間中に答え（過去進行形の英文）が出ている');
+  // R-8：考える20秒のあいだ、スクロールせずに3コマ目と言い出しの1文が見える（絵を見て考える時間が実質短くならない）
+  {
+    const barTop = (await pg.locator('div.fixed.bottom-0').first().boundingBox()).y;
+    for (const [label, loc] of [
+      ['3コマ目のラベル', pg.getByText('A few months later').first()],
+      ['3コマ目の説明', pg.getByText('トマトが赤く実っている', { exact: false }).first()],
+      ['言い出しの1文', pg.getByText('One Saturday morning, Yui and her father went').first()],
+    ]) {
+      const bb = await loc.boundingBox();
+      if (!bb || bb.y + bb.height > barTop) throw new Error(`考える20秒の画面で「${label}」がスクロールしないと見えない（bottom=${bb && bb.y + bb.height}, 下の帯の上端=${barTop}）`);
+    }
+    if ((t.match(/One Saturday morning/g) ?? []).length !== 1) throw new Error('1コマ目に時間のラベル（One Saturday morning）が出ている。出るのは言い出しの1文の中だけ');
+  }
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-prep.png') }); // フェード・シートの動きが終わってから撮る
+  await pg.getByRole('button', { name: 'No.2をはじめる' }).click({ timeout: 60000 });
+
+  // 録音：経過秒数が出る → 止める → 聞き直せる
+  await pg.getByRole('button', { name: '● 録音' }).click();
+  await pg.getByRole('button', { name: /■ 停止 0:0\d/ }).waitFor({ timeout: 8000 });
+  await pg.waitForTimeout(1200);
+  await pg.getByRole('button', { name: /■ 停止/ }).click();
+  await pg.getByText('いまの録音').waitFor({ timeout: 8000 });
+  if ((await pg.locator('main audio').count()) !== 1) throw new Error('録音を止めても聞き直せない');
+  await pg.getByRole('button', { name: /解答例を見る/ }).click();
+  t = await bodyText();
+  if (!/was holding/.test(t) || !/was digging/.test(t)) throw new Error('No.2 の解答例が過去進行形になっていない');
+  if (/\b(is|are) \w+ing\b/.test(await pg.locator('main .bg-primary-soft').allInnerTexts().then((a) => a.join(' ')))) throw new Error('No.2 の解答例に現在進行形が混ざっている');
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-no2.png') }); // フェード・シートの動きが終わってから撮る
+
+  // ★ここでカードを裏返す。No.3 ではパッセージも3コマも DOM に存在しない
+  await pg.getByRole('button', { name: /No\.3へ/ }).click();
+  await pg.getByText('Some people say that').waitFor({ timeout: 5000 });
+  const assertCardHidden = async (where) => {
+    const tt = await bodyText();
+    if (tt.includes(PASSAGE_SNIPPET)) throw new Error(`${where}：パッセージが画面に出ている（カードを伏せていない）`);
+    for (const l of SCENE_LABELS) if (tt.includes(l)) throw new Error(`${where}：3コマの時間ラベル「${l}」が画面に出ている（カードを伏せていない）`);
+    if (tt.includes('トマト') || tt.includes('市民農園に着いた')) throw new Error(`${where}：3コマの説明が画面に出ている`);
+    if (await pg.locator('main img').count()) throw new Error(`${where}：イラストが出ている`);
+  };
+  await assertCardHidden('No.3');
+  {
+    const head = await pg.locator('header').first().innerText();
+    if (head.includes('Community Gardens') || !head.includes('面接')) throw new Error(`カードを伏せたあとの帯にカードの題が出ている: ${head}`);
+  }
+  await pg.getByText('カードはふせたよ').waitFor({ timeout: 3000 });
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-no3-hidden.png') }); // フェード・シートの動きが終わってから撮る
+
+  // 戻ろうとしたら一言出る。「見ない」ならカードは出ないまま
+  await pg.getByRole('button', { name: 'カードをもう一度見る' }).click();
+  await pg.getByText('本番ではここからカードは見られないよ').waitFor({ timeout: 3000 });
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-peek-confirm.png') }); // フェード・シートの動きが終わってから撮る
+  await pg.getByRole('button', { name: '見ない' }).click();
+  await pg.waitForTimeout(400);
+  await assertCardHidden('No.3（見ないを選んだあと）');
+  // それでも見たい子には見せる（練習なので封じ切らない）。閉じたらまた消える
+  await pg.getByRole('button', { name: 'カードをもう一度見る' }).click();
+  await pg.getByRole('button', { name: 'それでも見る' }).click();
+  await pg.getByText('本番では見られないカードです').waitFor({ timeout: 3000 });
+  if (!(await bodyText()).includes(PASSAGE_SNIPPET)) throw new Error('「それでも見る」を選んだのにカードが出ない');
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-peek-open.png') }); // フェード・シートの動きが終わってから撮る
+  await pg.getByRole('button', { name: 'カードを閉じて答えにもどる' }).click();
+  await pg.waitForTimeout(400);
+  await assertCardHidden('No.3（見たあと閉じた）');
+
+  // No.4：2段構え。「No.5へ」は存在しない
+  await pg.getByRole('button', { name: 'No.4へ' }).click();
+  await pg.getByText('Do you think more people will work from home').waitFor({ timeout: 5000 });
+  await assertCardHidden('No.4');
+  if (await pg.getByRole('button', { name: /No\.5/ }).count()) throw new Error('2級に「No.5へ」がある');
+  if (!(await pg.getByRole('button', { name: 'Yes か No を選んでね' }).isDisabled())) throw new Error('Yes/No を答える前に「おわる」へ進める（1画面で意見と理由を求める形になっている）');
+  if (await pg.getByText('Why?').count() || await pg.getByText('Why not?').count()) throw new Error('Yes/No を選ぶ前に Why? が出ている');
+  if (await pg.getByRole('button', { name: /解答例を見る/ }).count()) throw new Error('Yes/No を選ぶ前に解答例が見える');
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-no4-stage1.png') }); // フェード・シートの動きが終わってから撮る
+  // 1段目の録音（Yes/No）。録音中に Yes/No を押したら録音は止まって '4' に残る
+  await pg.getByRole('button', { name: '● 録音' }).click();
+  await pg.getByRole('button', { name: /■ 停止/ }).waitFor({ timeout: 8000 });
+  await pg.waitForTimeout(700);
+  await pg.getByRole('button', { name: 'No と言った' }).click();
+  // No を答えたら Why not?
+  await pg.getByText('Why not?').waitFor({ timeout: 3000 });
+  await pg.getByRole('button', { name: '● 録音' }).waitFor({ timeout: 5000 });
+  if (await pg.getByText('Why?', { exact: true }).count()) throw new Error('No を選んだのに Why? が出ている（Why not? のはず）');
+  await pg.getByRole('button', { name: /解答例を見る/ }).click();
+  if (!(await bodyText()).includes("No, I don't.")) throw new Error('No を選んだのに No の解答例が出ない');
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-no4-whynot.png') });
+  // 理由を録る → Yes に選び直す。前の理由の録音は捨てられ、「いまの録音」に残らない
+  await pg.getByRole('button', { name: '● 録音' }).click();
+  await pg.getByRole('button', { name: /■ 停止/ }).waitFor({ timeout: 8000 });
+  await pg.waitForTimeout(700);
+  await pg.getByRole('button', { name: /■ 停止/ }).click();
+  await pg.getByText('いまの録音').waitFor({ timeout: 8000 });
+  await pg.getByRole('button', { name: 'Yes と言った' }).click();
+  await pg.getByText('Why?', { exact: true }).waitFor({ timeout: 3000 });
+  if (await pg.getByText('Why not?').count()) throw new Error('Yes を選んだのに Why not? が出ている');
+  await pg.getByText('理由は録り直しだよ').waitFor({ timeout: 3000 });
+  if (await pg.getByText('いまの録音').count()) throw new Error('選び直したのに前の理由の録音が「いまの録音」に残っている');
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-no4-why.png') });
+  // 理由をもう一度録る
+  await pg.getByRole('button', { name: '● 録音' }).click();
+  await pg.getByRole('button', { name: /■ 停止/ }).waitFor({ timeout: 8000 });
+  await pg.waitForTimeout(700);
+  await pg.getByRole('button', { name: /■ 停止/ }).click();
+  await pg.getByText('いまの録音').waitFor({ timeout: 8000 });
+  if ((await liveMics(pg)) !== 0) throw new Error('録音を止めたのに生きたマイクが残っている');
+  await pg.getByRole('button', { name: 'おわる' }).click();
+  await pg.getByText('おつかれさま').waitFor({ timeout: 8000 });
+  t = await bodyText();
+  if (!t.includes('No.4（Yes / No）') || !t.includes('No.4（理由）')) throw new Error('No.4 の録音が2本（Yes/No と理由）に分かれていない');
+  if (!t.includes('もう一度見たので、本番より易しい練習')) throw new Error('カードを見直したのに、終わりの画面で伝えていない');
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-done.png') }); // フェード・シートの動きが終わってから撮る
+  console.log('  ✓ 2級の面接を No.1〜No.4 まで通せる：考慮20秒・言い出しの1文・No.3 でカードが消える・No.4 は2段・No.5 なし・録音できる');
+
+  // 準2級に戻したあとの文言：切り替えシートの「2級→準2級」の向き
+  await pg.goto(URL + '#grade', { waitUntil: 'networkidle' });
+  await pg.getByRole('button', { name: '準2級にきりかえる' }).click();
+  await pg.getByText('面接の練習も準2級のものになるよ').waitFor({ timeout: 5000 });
+  console.log('  ✓ 2級→準2級の切り替えシートの文言も「面接の練習も準2級のものになるよ」');
+  await c.close();
+}
+
+/* R-3：マイクを待っている間の連打・離脱・止める指示で、生きたマイクを掴んだままにしない。
+   iPhone ではオレンジの録音中の点が残る種類の不具合。getUserMedia を600ms遅らせた偽マイクで、生きたトラックを数える */
+{
+  const { c, pg } = await g2Open('g2-04-mic(待ち中の連打・離脱)', { grade: 'g2', date: '2026-10-07' });
+  await pg.addInitScript(FAKE_MIC);
+  await pg.reload({ waitUntil: 'networkidle' });
+  await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  await pg.locator('button', { hasText: '面接シミュレーター' }).first().click();
+  await pg.getByText('本番の流れ（約7分）').waitFor({ timeout: 8000 });
+  await pg.locator('main ul > li > button').first().click();
+  await pg.getByRole('button', { name: '音読へ' }).click({ timeout: 60000 });
+  const rec = pg.getByRole('button', { name: '● 録音' });
+  // (a) 待ち中の連打。マイクは1本しか掴まず、止めたら0になる
+  await rec.dblclick();
+  await pg.getByRole('button', { name: /■ 停止/ }).waitFor({ timeout: 8000 });
+  await pg.waitForTimeout(400);
+  await pg.getByRole('button', { name: /■ 停止/ }).click();
+  await pg.getByText('いまの録音').waitFor({ timeout: 8000 });
+  if ((await pg.evaluate(() => window.__mics.length)) !== 1) throw new Error('待ち中の連打で getUserMedia が2回走った（2本目のマイクが宙に浮く）');
+  if ((await liveMics(pg)) !== 0) throw new Error('(a) 連打のあと、止めたのに生きたマイクが残っている');
+  // (c) 待ち中に「No.1へ」（止める指示）。届いたマイクは使わず手放す
+  await rec.click();
+  await pg.getByRole('button', { name: 'No.1へ' }).click();
+  await pg.waitForTimeout(1500);
+  if ((await liveMics(pg)) !== 0) throw new Error('(c) 待ち中に次へ進んだのに、あとから届いたマイクが生きている');
+  if (await pg.getByRole('button', { name: /■ 停止/ }).count()) throw new Error('(c) 次へ進んだのに録音が始まっている');
+  // (b) 待ち中に画面を離れる（unmount をすり抜けない）
+  await rec.click();
+  await pg.getByLabel('もどる').click();
+  await pg.getByText('この面接をやめる？').waitFor({ timeout: 5000 });
+  await pg.getByRole('button', { name: 'カード一覧にもどる' }).click();
+  await pg.waitForTimeout(1500);
+  if ((await liveMics(pg)) !== 0) throw new Error('(b) 待ち中に画面を離れたのに、あとから届いたマイクが生きている（録音中の点が残る）');
+  console.log('  ✓ R-3：マイク待ちの連打・次へ・画面を離れる、のどれでも生きたマイクは0本');
+  await c.close();
+}
+
+/* 準2級の面接は 38d5998 から1文字も変えていない。
+   画面の文字列を、変更前のコードから採った scripts/baseline-pre2-speaking.json と突き合わせる（G2-03-R の R-1 と同じやり方） */
+{
+  const base = JSON.parse(readFileSync(join(root, 'scripts', 'baseline-pre2-speaking.json'), 'utf8'));
+  const { c, pg } = await g2Open('g2-04-pre2(準2級の面接は変わらない)', { grade: 'pre2', date: '2026-10-07' });
+  await pg.locator('button', { hasText: '面接シミュレーター' }).first().click();
+  await pg.getByText('本番の流れ').waitFor({ timeout: 8000 });
+  const same = async (key) => {
+    const now = await pg.locator('main').innerText();
+    if (now !== base[key]) throw new Error(`準2級の面接（${key}）が 38d5998 と違う:\n--- 38d5998\n${base[key]}\n--- いま\n${now}`);
+  };
+  await same('list');
+  await pg.locator('main ul > li > button').first().click();
+  await pg.getByRole('button', { name: /あと\d+秒/ }).waitFor({ timeout: 8000 });
+  await pg.getByRole('button', { name: '音読へ' }).click({ timeout: 60000 });
+  await same('read');
+  for (let n = 1; n <= 5; n++) {
+    await pg.getByRole('button', { name: `No.${n}へ` }).click();
+    await pg.waitForTimeout(300);
+    await same('no' + n);
+  }
+  await pg.getByRole('button', { name: 'おわる' }).click();
+  await pg.getByText('おつかれさま').waitFor({ timeout: 8000 });
+  await same('done');
+  await pg.waitForTimeout(700); await pg.screenshot({ path: join(OUT, 'g2-04-pre2-unchanged.png') }); // フェード・シートの動きが終わってから撮る
+  console.log('  ✓ 準2級の面接（一覧・音読・No.1〜No.5・おわり）の画面の文字列は 38d5998 と完全一致');
+  await c.close();
+}
+
 await browser.close();
 
 if (errors.length) {

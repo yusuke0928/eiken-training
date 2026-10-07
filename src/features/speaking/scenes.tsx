@@ -42,7 +42,7 @@ const CARD_IMAGES: Record<string, { a: string; b?: string }> = {
  * - タップで全画面表示にする。イラストAは脇役が実寸だと小さく、本番同様
  *   手元でじっくり見る場面なので拡大できるようにした。Bも含め挙動を揃えている。
  */
-function SceneImage({ src, alt, label }: { src: string; alt: string; label: string }) {
+export function SceneImage({ src, alt, label }: { src: string; alt: string; label: string }) {
   const [open, setOpen] = useState(false);
   // 拡大時、コンテナ幅より画像の描画幅が大きく、横スクロールが要るか。
   // 【中1】拡大しても絵の一部しか見えないのに、横に続く手がかりが無い、への対応。

@@ -77,9 +77,15 @@ function appearingIn(dir) {
   }
   for (const s of speaking) {
     push(s.passage);
+    push(s.openingSentence);
+    for (const sc of s.scenes ?? []) {
+      push(sc.label);
+      for (const a of sc.actions ?? []) push(a.en);
+      for (const sp of sc.speech ?? []) push(sp.en);
+    }
     for (const a of s.sceneA?.actions ?? []) push(a.en);
     push(s.sceneB?.en);
-    for (const q of s.questions ?? []) push(q.prompt, q.model);
+    for (const q of s.questions ?? []) push(q.prompt, q.model, q.modelNo);
   }
 
   const corpusLower = texts.join(' \n ').toLowerCase();

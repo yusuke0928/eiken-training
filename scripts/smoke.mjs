@@ -14,6 +14,9 @@ import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(root, '.smoke');
+/* ホームの版表記の期待値は package.json から組み立てる（1.4.0 → Ver.1.4）。番号を直書きすると、版を上げるたびに smoke が落ちる。
+   アプリ側の組み立て（src/lib/appVersion.ts）と同じく、先頭2つだけを使う */
+const VER = `Ver.${JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version.split('.').slice(0, 2).join('.')}`;
 const URL = process.env.SMOKE_URL ?? 'http://localhost:5173';
 mkdirSync(OUT, { recursive: true });
 
@@ -2355,7 +2358,7 @@ console.log('  ✓ ようこそ画面：準2級 10/03・10/06・11/16・11/25、
 {
   const { c, pg } = await g2Open('g2-02r-back(2級のホーム)', { grade: 'g2', date: '2026-10-06' });
   const ht = await pg.locator('main').innerText();
-  if (!ht.includes('Ver.1.3')) throw new Error(`ホームの版表記が Ver.1.3 でない: ${ht.slice(-120)}`);
+  if (!ht.includes(VER)) throw new Error(`ホームの版表記が ${VER} でない: ${ht.slice(-120)}`);
   const back = pg.getByRole('button', { name: '準2級にもどす' });
   await back.scrollIntoViewIfNeeded();
   await pg.screenshot({ path: join(OUT, 'g2-02r-home-g2-bottom.png') });
@@ -2365,14 +2368,14 @@ console.log('  ✓ ようこそ画面：準2級 10/03・10/06・11/16・11/25、
   await pg.getByRole('button', { name: '準2級にきりかえる' }).click();
   await pg.waitForFunction(() => localStorage.getItem('eiken.grade') === 'pre2', null, { timeout: 8000 });
   await pg.getByText('英検準2級').first().waitFor({ timeout: 8000 });
-  console.log('  ✓ 2級のホームの一番下から「準2級にもどす」→ 確認シート → 準2級に戻れる。版は Ver.1.3');
+  console.log('  ✓ 2級のホームの一番下から「準2級にもどす」→ 確認シート → 準2級に戻れる。版は ' + VER);
   await c.close();
 }
 {
   const { c, pg } = await g2Open('g2-02r-pre2home(準2級のホーム)', { grade: 'pre2', date: '2026-10-06' });
   const ht = await pg.locator('main').innerText();
   if (ht.includes('準2級にもどす')) throw new Error('準2級のホームに「準2級にもどす」が出ている');
-  if (!ht.includes('Ver.1.3')) throw new Error('準2級のホームの版表記が Ver.1.3 でない');
+  if (!ht.includes(VER)) throw new Error(`準2級のホームの版表記が ${VER} でない`);
   console.log('  ✓ 準2級のホームに「準2級にもどす」は出ない');
   await c.close();
 }

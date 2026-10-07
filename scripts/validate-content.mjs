@@ -395,6 +395,9 @@ for (const w of g2Rows.writing) {
     continue;
   }
   if (!w.question?.trim()) errors.push(`${at}: question がない`);
+  // 公式の意見論述は TOPIC（疑問文）＋ POINTS 3つ
+  if (!/\?$/.test((w.question ?? '').trim())) errors.push(`${at}: question が疑問文（?で終わる）ではない`);
+  if (!Array.isArray(w.points) || w.points.length !== 3 || w.points.some((x) => !x?.trim()) || new Set(w.points).size !== 3) errors.push(`${at}: points は重複しない3つ（公式の POINTS）`);
   if (!w.modelNote?.trim()) errors.push(`${at}: modelNote がない`);
   if (!Array.isArray(w.usefulPhrases) || w.usefulPhrases.length < 3) errors.push(`${at}: usefulPhrases は3つ以上`);
   if (!Array.isArray(w.commonMistakes) || w.commonMistakes.length < 2) errors.push(`${at}: commonMistakes は2つ以上`);
@@ -458,7 +461,16 @@ for (const r of g2Rows.speaking) {
     if (!/^Some people say that /.test(q3.prompt)) errors.push(`${at}: No.3 の prompt が "Some people say that" で始まっていない`);
     if (!/^I (agree|disagree)\./.test(q3.model)) errors.push(`${at}: No.3 の model が I agree. / I disagree. で始まっていない`);
   }
+  // 公式の No.3 は賛成・反対の両方の手本を載せる
+  if (q3?.model && !/^I disagree\./.test(q3.modelAlt ?? '') && !/^I agree\./.test(q3.modelAlt ?? '')) errors.push(`${at}: No.3 に modelAlt（反対の立場の手本）がない`);
+  if (q3?.modelAlt && q3.model && q3.modelAlt.slice(0, 8) === q3.model.slice(0, 8)) errors.push(`${at}: No.3 の modelAlt が model と同じ立場`);
+  // イラスト発注用に、各コマの「描く内容」を英語と日本語で1つずつ残す
+  (r.scenes ?? []).forEach((sc, i) => {
+    if (!sc.drawing?.en?.trim() || !sc.drawing?.ja?.trim()) errors.push(`${at}: scenes[${i}].drawing（描く内容 en / ja）がない`);
+  });
   const q4 = qs.find((x) => x.no === 4);
+  // 公式の No.4 は「状況の1文 ＋ Do you think ...?」
+  if (q4?.prompt && !/[.!]\s+Do you think .*\?$/.test(q4.prompt)) errors.push(`${at}: No.4 の prompt が「状況の1文 ＋ Do you think ...?」の形ではない`);
   if (q4?.model) {
     if (q4.followUp?.yes !== 'Why?' || q4.followUp?.no !== 'Why not?') errors.push(`${at}: No.4 の followUp は {yes:"Why?", no:"Why not?"}`);
     if (!/^Yes, I do\./.test(q4.model)) errors.push(`${at}: No.4 の model は "Yes, I do." で始める（No の例は modelNo）`);
@@ -689,8 +701,11 @@ reportAnswerDistribution('2級 ', g2Positions);
     ['大問3B 説明文（セット）', countOf((p) => p.section === 'r-passage' && p.format === 'article'), 4],
     ['リスニング第1部 会話（l-part2）', g2Rows.listening.filter((x) => x.section === 'l-part2').length, 45],
     ['リスニング第2部 文（l-part3）', g2Rows.listening.filter((x) => x.section === 'l-part3').length, 45],
+    ['英文要約（w-summary）', g2Rows.writing.filter((w) => w.section === 'w-summary').length, 6],
+    ['意見論述（w-opinion）', g2Rows.writing.filter((w) => w.section === 'w-opinion').length, 8],
+    ['面接カード', g2Rows.speaking.length, 4],
   ];
-  console.log('\n2級 P3-A / P3-B の目標数:');
+  console.log('\n2級 P3-A / P3-B / P3-C の目標数:');
   for (const [label, have, want] of targets) {
     console.log(`  ${label}: ${have}/${want}`);
     if (have < want) errors.push(`2級 目標数: ${label} が${have}（目標${want}）`);

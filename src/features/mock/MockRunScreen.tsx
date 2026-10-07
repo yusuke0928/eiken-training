@@ -615,6 +615,16 @@ function WritingBlock({
         <section className="mb-4 rounded-3xl border border-line bg-surface-2 p-4">
           <p className="mb-2 text-[12px] font-bold text-ink-faint">QUESTION</p>
           <p className="en text-ink">{prompt.question}</p>
+          {prompt.points && prompt.points.length > 0 && (
+            <>
+              <p className="mb-1 mt-3 border-t border-line pt-3 text-[12px] font-bold text-ink-faint">POINTS（理由を考える手がかり）</p>
+              <ul className="en flex flex-wrap gap-2">
+                {prompt.points.map((p) => (
+                  <li key={p} className="rounded-full bg-surface px-3 py-1 text-[14px] text-ink-sub">{p}</li>
+                ))}
+              </ul>
+            </>
+          )}
         </section>
       )}
 

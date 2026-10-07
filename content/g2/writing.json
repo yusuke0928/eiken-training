@@ -18,39 +18,391 @@
       "理由が1つしかない、または2つの理由が同じ内容（内容点が下がる）",
       "First / Second を使わず、理由の境目が分からない（構成点が下がる）",
       "語数が80語に届かない、または100語を大きく超える（語数が範囲外だと減点の対象）"
+    ],
+    "points": [
+      "Learning",
+      "Safety",
+      "Distraction"
     ]
   },
   {
-    "id": "g2-w-summary-001",
+    "id": "g2-w-opinion-002",
+    "section": "w-opinion",
+    "topic": "学校での調理",
+    "difficulty": 2,
+    "question": "Today, some schools teach their students how to cook. Do you think this is a good idea?",
+    "points": [
+      "Future life",
+      "Health",
+      "Other subjects"
+    ],
+    "usefulPhrases": [
+      "I think that ~. / I do not think that ~.",
+      "I have two reasons.",
+      "First, ~. For example, ~.",
+      "Second, ~.",
+      "For these reasons, I believe that ~."
+    ],
+    "modelAnswer": "I think that schools should teach students how to cook. I have two reasons. First, cooking is a useful skill for the future. For example, students who can make simple meals will be able to take care of themselves when they start living alone. Second, cooking helps students learn about healthy food. If they know how to choose fresh ingredients and make balanced meals, they will be more careful about what they eat. For these reasons, I believe that all schools should have cooking lessons.",
+    "modelNote": "意見→理由2つ→まとめの型。第1の理由は「将来の生活」、第2の理由は「健康」で、POINTS の2つを使った。各理由に For example や If ~ の1文を足すと、80語を超える。",
+    "commonMistakes": [
+      "理由が「楽しい」だけで、具体例がない（内容点が下がる）",
+      "First / Second を使わず、理由の境目が分からない（構成点が下がる）",
+      "最後のまとめで、意見を言い換えずに前の文をそのまま繰り返す"
+    ]
+  },
+  {
+    "id": "g2-w-opinion-003",
+    "section": "w-opinion",
+    "topic": "公共交通機関",
+    "difficulty": 2,
+    "question": "Today, many cities are trying to reduce the number of cars on their roads. Do you think people should use public transportation more often instead of cars?",
+    "points": [
+      "Environment",
+      "Cost",
+      "Convenience"
+    ],
+    "usefulPhrases": [
+      "I think that ~. / I do not think that ~.",
+      "I have two reasons.",
+      "First, ~. For example, ~.",
+      "Second, ~. For example, ~.",
+      "For these reasons, I believe that ~."
+    ],
+    "modelAnswer": "I think that people should use public transportation more often. I have two reasons. First, it is better for the environment. For example, one bus can carry many passengers, so it produces less pollution than the same number of people driving separately. Second, it is cheaper for most people. For example, a monthly train pass often costs less than the gas, parking fees, and repairs for a car. For these reasons, I believe that public transportation is a better choice than cars.",
+    "modelNote": "POINTS の Environment と Cost を理由にした。理由ごとに観点を1つにする：費用の理由には費用の例（定期券とガソリン代・駐車場代）だけを書き、「電車で本が読める」のような便利さは混ぜない。語数が足りないときは、理由を3つ目に増やすのではなく、各理由の For example を具体的にする。",
+    "commonMistakes": [
+      "「便利だから」だけで、誰にとって便利かを書いていない",
+      "2つの理由が同じ内容になっている、または1つの理由の中に別の利点が混ざる",
+      "語数が100語を大きく超える"
+    ]
+  },
+  {
+    "id": "g2-w-opinion-004",
+    "section": "w-opinion",
+    "topic": "ネットショッピング",
+    "difficulty": 2,
+    "question": "Today, more and more people buy things on the Internet. Do you think shopping online is better than shopping at stores?",
+    "points": [
+      "Price",
+      "Time",
+      "Product quality"
+    ],
+    "usefulPhrases": [
+      "I do not think that ~.",
+      "I have two reasons.",
+      "First, ~. For example, ~.",
+      "Second, ~.",
+      "For these reasons, I believe that ~."
+    ],
+    "modelAnswer": "I do not think that shopping online is better than shopping at stores. I have two reasons. First, people can check products carefully at stores. For example, when I buy shoes, I always try them on to make sure they fit well. Second, shopping at stores is more enjoyable. People can find interesting things they did not plan to buy, and they can talk with the staff. For these reasons, I believe that stores are still a better place to shop.",
+    "modelNote": "反対の立場（I do not think ~）の書き方の手本。理由の1つ目は POINTS の Product quality に近い内容。自分の経験（靴を試す）を例にすると、具体的で書きやすい。",
+    "commonMistakes": [
+      "「ネットは悪い」とだけ書いて、店のほうが良い理由になっていない",
+      "例が一般的すぎる（自分の経験を1つ入れるとよい）",
+      "not better を not good と書いて、問いとずれる"
+    ]
+  },
+  {
+    "id": "g2-w-opinion-005",
+    "section": "w-opinion",
+    "topic": "高校生のアルバイト",
+    "difficulty": 2,
+    "question": "Today, some high school students have part-time jobs. Do you think this is a good idea?",
+    "points": [
+      "Money",
+      "Studies",
+      "Experience"
+    ],
+    "usefulPhrases": [
+      "I think that it is a good idea for ~ to ~.",
+      "I have two reasons.",
+      "First, ~. For example, ~.",
+      "Second, ~.",
+      "For these reasons, I believe that ~."
+    ],
+    "modelAnswer": "I think that it is a good idea for high school students to have part-time jobs. I have two reasons. First, they can learn how hard it is to earn money. For example, a student who works at a restaurant will understand the value of the things he or she buys. Second, they can gain experience in dealing with different kinds of people, such as customers and coworkers. For example, a student who works at a shop learns how to speak politely to customers. For these reasons, I believe that part-time jobs are good for high school students.",
+    "modelNote": "POINTS の Money と Experience を使った。it is a good idea for ~ to ... の形で TOPIC の問いにそのまま答えている。he or she は、特定の性別を決めたくないときの言い方。",
+    "commonMistakes": [
+      "勉強との両立の話だけになり、問いの「良い考えか」に答えていない",
+      "理由が「お金がほしい」だけで、読む人が納得しにくい",
+      "最後のまとめが無く、文が途中で終わる"
+    ]
+  },
+  {
+    "id": "g2-w-opinion-006",
+    "section": "w-opinion",
+    "topic": "海外旅行する若者の数",
+    "difficulty": 2,
+    "question": "Today, many young people want to learn about other countries. Do you think the number of young people who travel abroad will increase in the future?",
+    "points": [
+      "Cost",
+      "Internet",
+      "Language"
+    ],
+    "usefulPhrases": [
+      "I think that the number of ~ will increase. / I do not think that ~.",
+      "I have two reasons.",
+      "First, ~. For example, ~.",
+      "Second, ~. This means that ~.",
+      "For these reasons, I believe that ~."
+    ],
+    "modelAnswer": "I think that the number of young people who travel abroad will increase. I have two reasons. First, traveling will become cheaper and easier. For example, airlines already offer low prices, and people can find hotels on their smartphones. Second, young people are more interested in other cultures than before. This means that they want to see foreign places with their own eyes after watching videos of them on the Internet. For these reasons, I believe that more young people will travel abroad in the future.",
+    "modelNote": "「~の数は増えるか」の型（公式の2回出ている形）。問いの number of ~ will increase をそのまま使って意見を言い、理由は「費用・手軽さ」（Cost）と「関心の高まり」（Internet）にした。「旅行はいいものだ」の話にずれないように、増える理由を書く。This means that ~ は、理由をもう一歩説明するときに使える。",
+    "commonMistakes": [
+      "「増える」の理由が「みんな行きたいから」だけで、根拠がない",
+      "問いの number of ~ を無視して、「海外旅行はいいことだ」の話になる",
+      "予想（will increase）を、自分の希望（I want）に変えてしまう"
+    ]
+  },
+  {
+    "id": "g2-w-opinion-007",
+    "section": "w-opinion",
+    "topic": "持参カップの割引",
+    "difficulty": 2,
+    "question": "Today, some cafés give a discount to customers who bring their own cups. Do you think more stores should do this?",
+    "points": [
+      "Environment",
+      "Cost",
+      "Customers"
+    ],
+    "usefulPhrases": [
+      "I think that ~ should ~.",
+      "I have two reasons.",
+      "First, ~. For example, ~.",
+      "Second, ~. As a result, ~.",
+      "For these reasons, I believe that ~."
+    ],
+    "modelAnswer": "I think that more stores should give discounts to customers who bring their own cups. I have two reasons. First, it helps reduce garbage. For example, a busy café can save hundreds of paper cups a day if even some customers bring their own. Second, it encourages customers to change their habits. When people get a discount, they will remember to carry a cup every day. As a result, the habit may spread to other places. For these reasons, I believe that more stores should do this.",
+    "modelNote": "POINTS の Environment と Customers（お客さんの行動）を理由にした。理由1は「ごみが減る」、理由2は「習慣が変わる」で、As a result を使ってその先にどうなるかまで書くと、理由に筋が通る。TOPIC の問いは more stores should do this なので、まとめでも同じ形で答えを言い直した。",
+    "commonMistakes": [
+      "「ごみが減る」を2つの理由に言い換えて、同じ内容を2回書く",
+      "店の損得（割引で店が損をする）に触れず、お客さんの話だけになる",
+      "最後のまとめで、問いの more stores should do this に答えていない"
+    ]
+  },
+  {
+    "id": "g2-w-opinion-008",
+    "section": "w-opinion",
+    "topic": "SNSの使いすぎ",
+    "difficulty": 2,
+    "question": "Today, many students spend a lot of time on social media. Do you think this is a problem?",
+    "points": [
+      "Studying",
+      "Communication",
+      "Health"
+    ],
+    "usefulPhrases": [
+      "I think that ~ is a problem.",
+      "I have two reasons.",
+      "First, ~. For example, ~.",
+      "Second, ~.",
+      "For these reasons, I believe that ~."
+    ],
+    "modelAnswer": "I think that it is a problem for students to spend a lot of time on social media. I have two reasons. First, they have less time to study. For example, a student who checks messages every few minutes cannot concentrate on homework, so it takes a long time to finish it. Second, they may sleep less. For example, a student who keeps watching videos at night may go to bed late and feel sleepy in class. For these reasons, I believe that students should limit the time they spend on social media.",
+    "modelNote": "POINTS の Studying と Health を使った。TOPIC は「長い時間を使うこと」が問題か、なので、どちらの理由も「時間を取られること」から結果を書いている（勉強の時間が減る／睡眠が減る）。concentrate on（集中する）や limit（制限する）は2級でよく使う表現。",
+    "commonMistakes": [
+      "SNS 全部が悪いと言い切って、例が1つもない",
+      "「友達と話せる」という反対側の話ばかり書く",
+      "「長い時間」ではなく SNS の危険（だまされるなど）の話になって、TOPIC からずれる"
+    ]
+  },
+  {
+    "id": "g2-w-summary-002",
     "section": "w-summary",
-    "topic": "翻訳アプリ",
-    "difficulty": 1,
-    "sourceText": "In recent years, more and more people are using translation apps on their smartphones. These apps can change a sentence from one language into another in a few seconds. Travelers, students, and workers around the world now use them almost every day.\nThere are some clear advantages to this technology. First, people can talk with someone who speaks a different language, even if they have never studied it. Also, learners can quickly find the meaning of a word they do not know, so they can enjoy reading books and websites written in other languages.\nHowever, translation apps are not perfect. Sometimes they choose the wrong word, and this can cause a misunderstanding between people. In addition, if students depend on the apps too much, they may stop trying to remember new words, and their own language skills may not improve.",
-    "sourceTextJa": "近年、スマートフォンの翻訳アプリを使う人がどんどん増えている。こうしたアプリは、ある言語の文を数秒で別の言語に変えることができる。旅行者、学生、働く人々は、世界中でほぼ毎日それを使っている。\nこの技術には、はっきりした利点がある。まず、学んだことのない言語を話す相手とも話すことができる。また、学習者は知らない単語の意味をすぐに調べられるので、ほかの言語で書かれた本やウェブサイトを楽しんで読める。\nしかし、翻訳アプリは完璧ではない。ときどき間違った語を選び、それが人どうしの誤解を生むことがある。さらに、学生がアプリに頼りすぎると、新しい単語を覚えようとしなくなり、自分の語学力が伸びないかもしれない。",
+    "topic": "キャッシュレス決済",
+    "difficulty": 2,
+    "sourceText": "Cashless payment is spreading quickly in many countries. Instead of coins and bills, people now use credit cards, smartphone apps, or special cards to pay for things. Even small shops and food stalls have started to accept these methods. Many governments also encourage this change.\nThis change has several benefits. Customers do not need to carry a lot of money, and they can pay in just a few seconds. Shops also gain from it, because they spend less time counting cash at the end of the day and make fewer mistakes when giving change.\nHowever, there are some problems. A phone with a dead battery cannot be used at the register, and a system failure can stop all payments at once. Moreover, people tend to spend more when they cannot see their money leaving their wallets, and some find it hard to keep track of their spending.",
+    "sourceTextJa": "現金を使わない支払いが、多くの国で急速に広がっている。硬貨や紙幣のかわりに、人々はクレジットカードやスマートフォンのアプリ、専用のカードで支払うようになった。小さな店や屋台でさえ、こうした方法を受け付け始めている。多くの政府も、この変化を後押ししている。\nこの変化にはいくつかの利点がある。客は多くの現金を持ち歩く必要がなく、ほんの数秒で支払える。店にとっても得があり、1日の終わりに現金を数える時間が減り、おつりを間違えることも少なくなる。\nしかし、問題もある。電池が切れた携帯電話はレジで使えないし、システムの故障で、すべての支払いが一度に止まることもある。さらに、お金が財布から出ていくのが見えないと、人はより多く使う傾向があり、支出を把握するのが難しいと感じる人もいる。",
     "keyPoints": [
       {
-        "ja": "翻訳アプリを使う人が世界中で増えている"
+        "ja": "現金を使わない支払いが多くの国で広がっている"
       },
       {
-        "ja": "良い点：違う言語の相手と話せる／知らない単語をすぐ調べられる"
+        "ja": "良い点：客は現金を持ち歩かずに早く払える／店は現金を数える手間が減る"
       },
       {
-        "ja": "問題点：誤訳で誤解が起きる／頼りすぎると語学力が伸びない"
+        "ja": "問題点：電池切れや故障で払えなくなる／使いすぎやすい"
       }
     ],
     "usefulPhrases": [
-      "~ are now used by many people.",
-      "They let people ~ and help ~.",
-      "However, ~ sometimes ~.",
-      "~ may keep students from ~ing.",
-      "This can cause ~."
+      "~ is spreading around the world.",
+      "It lets people ~ without ~ing.",
+      "On the other hand, ~",
+      "~ may stop when ~",
+      "People may ~ more than they plan."
     ],
-    "modelAnswer": "Translation apps are now used by many people around the world. They let people talk with those who speak other languages and help learners understand unknown words. However, the apps sometimes make mistakes that cause misunderstandings, and relying on them too much may keep students from improving their own language skills.",
-    "modelNote": "元の3段落に1文ずつ対応させた3文。つなぎ言葉は However, の1つだけ。第3文は2つの問題点を and と「前置詞＋動名詞」で1文に詰めて、語数を収めている。本文の言い回し（clear advantages / depend on など）はそのまま使わず、unknown words や relying on に言い換えた。",
+    "modelAnswer": "Cashless payment is spreading around the world. It lets customers pay quickly without carrying much money, and shops can save time on counting cash. On the other hand, payments may stop when a phone runs out of power or the system breaks down, and people may spend more than they intend.",
+    "modelNote": "元の3段落に対応させた3文。良い点は「客」と「店」の2つを and でつなぎ、問題点も「止まる」と「使いすぎ」の2つを and でつないだ。本文の dead battery は runs out of power、failure は breaks down、keep track of は入れずに省いて、語数を収めた。",
     "commonMistakes": [
-      "本文の文をそのまま抜き出している（言い換える）",
-      "自分の意見を書いてしまっている（I think ~ は要約では書かない）",
-      "第2・第3段落の細かい例まで全部入れて、語数をオーバーする"
+      "「現金のかわりに使うもの」（カード・アプリ・専用カード）を全部並べて、語数を使い切る",
+      "良い点を「便利」の一言で済ませ、客と店のどちらの得かを書かない",
+      "問題点の「支払いが止まる」と「使いすぎ」のどちらかを落とす"
+    ]
+  },
+  {
+    "id": "g2-w-summary-003",
+    "section": "w-summary",
+    "topic": "電子書籍",
+    "difficulty": 2,
+    "sourceText": "More and more people are reading books on tablets and e-readers instead of printed books. An e-book is a book that is stored as digital data, and it can be bought and downloaded in a few moments. Libraries in some countries also make e-books available to readers for free.\nThere are several advantages to this style of reading. A single device can hold hundreds of books, so readers can carry their favorite stories wherever they go. In addition, readers can change the size of the letters, which is helpful for people who have difficulty seeing small print.\nStill, e-books have some disadvantages. Looking at a bright screen for a long time may put a strain on the eyes. Also, readers cannot lend an e-book to a friend as easily as a paper book, and a device with a dead battery is useless.",
+    "sourceTextJa": "タブレットや電子書籍端末で、紙の本のかわりに本を読む人がどんどん増えている。電子書籍はデジタルデータとして保存された本で、あっという間に買ってダウンロードできる。国によっては、図書館が電子書籍を読者に無料で提供してもいる。\nこの読み方にはいくつかの利点がある。1台の端末に何百冊もの本を入れておけるので、読者はお気に入りの物語をどこへでも持っていける。さらに、文字の大きさを変えられるので、小さな字が見えにくい人の助けになる。\nそれでも、電子書籍にはいくつか欠点がある。明るい画面を長時間見ていると、目に負担がかかるかもしれない。また、電子書籍は紙の本のように友達に簡単には貸せないし、電池が切れた端末は役に立たない。",
+    "keyPoints": [
+      {
+        "ja": "紙のかわりに電子書籍で読む人が増えている"
+      },
+      {
+        "ja": "良い点：1台に何百冊も入って持ち運べる／文字の大きさを変えられる"
+      },
+      {
+        "ja": "問題点：目が疲れるかもしれない／友達に貸しにくい／電池が切れると使えない"
+      }
+    ],
+    "usefulPhrases": [
+      "More people are ~ing ~ instead of ~.",
+      "A single device can ~.",
+      "This is helpful for people who ~.",
+      "However, ~ may ~.",
+      "~ cannot be ~ as easily as ~."
+    ],
+    "modelAnswer": "Many people now read e-books instead of paper books. One device can store hundreds of books, so people can take them anywhere, and the letters can be enlarged. However, reading from a screen for hours may make the eyes tired, and e-books cannot be lent to friends as easily as printed ones.",
+    "modelNote": "元の3段落に1文ずつ対応させた3文（導入・良い点・問題点）。本文の printed books は paper books、change the size of the letters は the letters can be enlarged に言い換えた。問題点は「目の疲れ」と「貸しにくさ」の2つに絞り、電池切れは入れていない。要点を全部入れなくても、各段落の中心が入っていればよい。",
+    "commonMistakes": [
+      "本文の paper book / dead battery などをそのまま使い、言い換えていない",
+      "良い点だけ書いて、問題点（目の疲れ・貸しにくさ）を落とす",
+      "「私は紙の本のほうが好き」など、自分の感想を足してしまう"
+    ]
+  },
+  {
+    "id": "g2-w-summary-004",
+    "section": "w-summary",
+    "topic": "小さな町の観光",
+    "difficulty": 2,
+    "sourceText": "In recent years, many small towns have begun to welcome tourists from other parts of the country and from abroad. Pictures of beautiful scenery and traditional food spread quickly on social media, and visitors come to see these places for themselves. Local governments often support this trend by advertising their towns to people in other regions.\nTourism brings several benefits to these towns. Visitors spend money at hotels, restaurants, and gift shops, which creates new jobs for local people. It also gives young residents a reason to stay in their hometowns instead of moving to big cities.\nNevertheless, too many visitors can cause trouble. Narrow roads become crowded, and some tourists leave trash or make noise late at night, which disturbs the people who live there. As a result, residents may begin to dislike visitors, and the quiet atmosphere that attracted tourists may be lost.",
+    "sourceTextJa": "近年、多くの小さな町が、国内の別の地域や外国からの観光客を迎え入れ始めている。美しい景色や伝統的な食べ物の写真がSNSですばやく広まり、訪れる人はそうした場所を自分の目で見にやって来る。地方自治体は、他の地域の人々に町を宣伝して、この流れを後押しすることが多い。\n観光は、こうした町にいくつかの利益をもたらす。観光客はホテルやレストラン、土産物店でお金を使い、それが地元の人々の新しい仕事を生む。また、若い住民が大都市に出ていかず、ふるさとにとどまる理由にもなる。\nそれでも、観光客が多すぎるとトラブルが起きる。狭い道は混雑し、ごみを捨てたり夜遅くに騒いだりする観光客もいて、そこに住む人々の迷惑になる。その結果、住民は観光客を嫌いになり始め、観光客を引きつけた静かな雰囲気が失われるかもしれない。",
+    "keyPoints": [
+      {
+        "ja": "小さな町が観光客を迎え入れ始めている"
+      },
+      {
+        "ja": "良い点：観光客がお金を使い、地元の仕事が増える／若い人が町に残る理由になる"
+      },
+      {
+        "ja": "問題点：混雑・ごみ・騒音で住民が迷惑する／静かな雰囲気が失われるかもしれない"
+      }
+    ],
+    "usefulPhrases": [
+      "Small towns are welcoming ~.",
+      "This creates ~ for local people.",
+      "However, too many ~ can ~.",
+      "~ may cause trouble for residents.",
+      "The quiet atmosphere may be lost."
+    ],
+    "modelAnswer": "Tourists are visiting small towns more often than before. Their spending creates jobs for local people, and young people have a reason to remain in their hometowns. However, too many visitors cause crowded roads, trash, and noise, so residents may be annoyed, and the peaceful atmosphere of the towns may disappear.",
+    "modelNote": "元の3段落に1文ずつ対応させた3文（導入・良い点・問題点）。本文の spend money は spending という名詞に変え、disturb は be annoyed、quiet は peaceful に言い換えた。問題点の3つの例（混雑・ごみ・騒音）は1つの節にまとめて並べると語数に収まる。「若い人が残る」は、観光のおかげで残る理由ができる、という因果で書いた。",
+    "commonMistakes": [
+      "「観光客が増えるのは良いことだ」と、自分の評価を書いてしまう",
+      "良い点と問題点を細かく書いて、第1段落の導入を忘れる",
+      "混雑・ごみ・騒音を別々の文にして、語数が55語を超える"
+    ]
+  },
+  {
+    "id": "g2-w-summary-005",
+    "section": "w-summary",
+    "topic": "カーシェアリング",
+    "difficulty": 2,
+    "sourceText": "Car sharing is becoming more and more popular in big cities. Members of a car-sharing service reserve a car with a smartphone application and use it for a few hours. After that, they return it to a parking space, and another member can use the same car.\nThere are several advantages. People who share a car do not have to pay for a car, insurance, or a parking space at home, so they can save a lot of money. Moreover, when fewer people own cars, cities have less traffic and need fewer parking lots.\nOn the other hand, car sharing has some problems. During busy times, such as holidays, all the cars may already be reserved, so members cannot use one when they need it. Also, members must return the car on time and keep it clean, and some people feel this is troublesome.",
+    "sourceTextJa": "カーシェアリングは大都市でますます人気になってきている。カーシェアのサービスの会員は、スマートフォンのアプリで車を予約し、数時間使う。その後、駐車スペースに返し、同じ車を別の会員が使うことができる。\nいくつかの長所がある。車を共有する人は、車の購入費や保険、自宅の駐車場代を払わなくてよいので、多くのお金を節約できる。さらに、車を持つ人が減れば、都市の交通量は減り、駐車場も少なくてすむ。\n一方で、カーシェアにはいくつかの問題もある。休日などの混み合う時期には、すべての車がすでに予約されていて、必要なときに使えないことがある。また、会員は車を時間どおりに返して、きれいに保たなければならず、それを面倒に感じる人もいる。",
+    "keyPoints": [
+      {
+        "ja": "カーシェアリングが大都市で広がっている"
+      },
+      {
+        "ja": "良い点：購入費・保険・駐車場代がかからず節約できる／車が減って交通量や駐車場が減る"
+      },
+      {
+        "ja": "問題点：混む時期は予約で埋まって使えない／時間どおり返す・きれいに保つのが面倒"
+      }
+    ],
+    "usefulPhrases": [
+      "More people are ~ing ~.",
+      "This helps people save ~.",
+      "It also reduces ~.",
+      "However, ~ may be unavailable when ~.",
+      "Some people find it ~."
+    ],
+    "modelAnswer": "Car sharing is growing in big cities, where members use cars by reserving them through an app. Members can save money because they do not have to buy cars, and traffic may decrease. However, cars may be unavailable on busy days, and some people find the rules for returning them troublesome.",
+    "modelNote": "元の3段落に1文ずつ対応させた3文。導入に where の節を足して、しくみ（アプリで予約する）を短く入れた。問題点の「ルールを守るのが面倒」は the rules for returning them と言い換え、本文の on time / keep it clean は書かずにまとめた。",
+    "commonMistakes": [
+      "会員のしくみ（アプリで予約・数時間使う）の説明に語数を使いすぎる",
+      "「お金の節約」と「交通量の減少」のどちらかだけで、第2段落の要点が半分になる",
+      "「だから私はカーシェアに賛成」のような結論を書く"
+    ]
+  },
+  {
+    "id": "g2-w-summary-006",
+    "section": "w-summary",
+    "topic": "学校のボランティア活動",
+    "difficulty": 2,
+    "sourceText": "Many schools now ask their students to take part in volunteer activities, such as cleaning parks, visiting nursing homes, or helping at local events. These programs are often part of regular school life, and students usually join them during or after school hours. Teachers say that these programs are meant to help students grow.\nVolunteer activities offer important experiences. Students gain awareness of problems in their communities and meet people of different generations whom they do not usually talk to. In addition, many students feel a sense of responsibility and pride when they see that their work is helping someone in their town.\nHowever, there are some concerns. Students who are busy with club activities and homework may not have enough time to join, and some may feel tired. Furthermore, if students are forced to participate, they may do the work without interest and learn very little from it.",
+    "sourceTextJa": "多くの学校が、公園の掃除や老人ホームの訪問、地域の行事の手伝いなど、ボランティア活動への参加を生徒に求めるようになっている。こうした取り組みは、通常の学校生活の一部になっていることが多く、生徒は授業時間中や放課後に参加するのがふつうだ。先生たちは、こうした取り組みは生徒の成長を助けるためのものだと言う。\nボランティア活動は大切な経験を与えてくれる。生徒は地域の問題への意識が高まり、ふだんあまり話さない世代の違う人たちと出会う。さらに、自分の活動が町の誰かの助けになっていると分かると、責任感と誇らしさを感じる生徒も多い。\nしかし、心配な点もある。部活動や宿題で忙しい生徒は、参加する時間が十分になく、疲れを感じるかもしれない。さらに、参加を強制されると、興味を持たずに作業をして、そこからほとんど学べないかもしれない。",
+    "keyPoints": [
+      {
+        "ja": "多くの学校が生徒にボランティア活動への参加を求めている"
+      },
+      {
+        "ja": "良い点：地域の問題を学べる／いろいろな年齢の人と出会える／役に立っていると誇らしく感じる"
+      },
+      {
+        "ja": "問題点：忙しくて時間がとれず疲れる／強制されると興味を持てず学べない"
+      }
+    ],
+    "usefulPhrases": [
+      "Many schools ask students to ~.",
+      "Students can learn about ~ and meet ~.",
+      "However, some students ~.",
+      "If ~ are forced to ~, they may ~.",
+      "~ may learn very little."
+    ],
+    "modelAnswer": "Many schools want students to do volunteer work. Through it, students can learn about local problems and meet people of various ages. However, busy students may not have enough time, and those who are forced to join may take no interest in the work and learn little from it.",
+    "modelNote": "元の3段落に1文ずつ対応させた3文。導入は ask students to take part in を want students to do に、良い点の meet people of different ages は of various ages に言い換えた。問題点は「時間がない」と「強制」の2つを and でつないだ。",
+    "commonMistakes": [
+      "「ボランティアは大切だ」と、自分の意見でまとめてしまう",
+      "例（公園掃除・老人ホーム）を並べて、語数をオーバーする",
+      "問題点の「時間がない」と「強制されると学べない」を混ぜて、どちらか分からない文にする"
+    ]
+  },
+  {
+    "id": "g2-w-summary-007",
+    "section": "w-summary",
+    "topic": "屋上緑化",
+    "difficulty": 2,
+    "sourceText": "In many large cities, more and more buildings are covered with plants on their roofs. These green roofs are made by laying soil on top of a building and planting grass, flowers, or small trees. Some city governments support the idea by giving money to building owners who decide to make one.\nGreen roofs have several good points for city life. Plants absorb rainwater, which helps prevent floods when it rains heavily. They also keep a building cooler in summer, so people can use less electricity for air conditioning. In addition, insects and birds come to the plants, and office workers can relax in the green space.\nHowever, there are some difficulties. Building a green roof is expensive, and the roof must be strong enough to carry the weight of the soil and water. Moreover, the plants require regular maintenance, such as watering and pulling out weeds, and poor care may lead to leaks.",
+    "sourceTextJa": "大都市では、屋根を植物でおおった建物がどんどん増えている。こうした屋上緑化は、建物の上に土を敷き、草や花、小さな木を植えて作られる。建物の持ち主が屋上緑化をする場合に、お金を出して後押しする市や町もある。\n屋上緑化は、都市の生活にいくつかの利点をもたらす。植物は雨水を吸収するので、大雨のときの洪水を防ぐのに役立つ。また、夏に建物を涼しく保つので、冷房に使う電気を減らせる。さらに、虫や鳥が植物のところにやって来て、オフィスで働く人は緑の空間でくつろぐことができる。\nしかし、難しい点もある。屋上緑化を作るには費用がかかるし、屋根は土と水の重さに耐えられるほど強くなければならない。さらに、植物には水やりや草取りなどの手入れが定期的に必要で、世話をしないと雨もれにつながるかもしれない。",
+    "keyPoints": [
+      {
+        "ja": "大都市で、屋根を植物でおおう「屋上緑化」が増えている"
+      },
+      {
+        "ja": "良い点：雨水を吸って洪水を防ぐ／建物が夏に涼しくなる／虫や鳥が来て、人がくつろげる"
+      },
+      {
+        "ja": "問題点：作る費用がかかり、屋根の強さも必要／手入れが要り、怠ると雨もれの原因になる"
+      }
+    ],
+    "usefulPhrases": [
+      "~ are becoming common in ~.",
+      "They help reduce ~ and keep ~ cooler.",
+      "They offer ~ a place to ~.",
+      "However, ~ is expensive, and ~ must be ~.",
+      "~ need regular care to avoid ~."
+    ],
+    "modelAnswer": "Green roofs are becoming common in big cities. They soak up rainwater to reduce flooding, keep buildings cooler, and offer birds, insects, and workers a green space. However, building one is costly and requires a sturdy roof, and the plants also need regular care to avoid leaks.",
+    "modelNote": "元の3段落に1文ずつ対応させた3文。第2文は、良い点3つ（雨水・涼しさ・緑の空間）を動詞を並べる形（soak up ~, keep ~, offer ~）で1文に詰めた。本文の absorb は soak up、prevent floods は reduce flooding、maintenance は regular care に言い換えている。第3文は問題点の「費用」「屋根の強さ」「手入れ」を、and でつないで並べた。",
+    "commonMistakes": [
+      "1文目に「土の上に草や花を植える」などの作り方を長く書いて、良い点・問題点の語数が足りなくなる",
+      "良い点を「環境によい」の一言にして、雨水・涼しさのような具体的な利点を落とす",
+      "問題点を「お金がかかる」だけにして、屋根の強さと手入れのどちらかを落とす"
     ]
   }
 ]

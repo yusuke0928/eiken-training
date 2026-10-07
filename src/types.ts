@@ -195,6 +195,8 @@ export interface WritingPrompt {
   difficulty: 1 | 2 | 3;
   /** 意見論述の QUESTION */
   question?: string;
+  /** 2級の意見論述の POINTS（公式どおり3つ）。理由を考える手がかりで、これ以外の観点で書いてもよい */
+  points?: string[];
   /** Eメールで与えられる相手のメール本文／英文要約の元の英文（3段落・130〜160語） */
   sourceText?: string;
   /** 英文要約の日本語訳。読めないと1文字も書けないので逃げ道として置く（最初は隠す） */

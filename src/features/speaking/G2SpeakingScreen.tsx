@@ -25,6 +25,8 @@ interface Scene {
   note: string;
   /** イラストのファイル名（art/g2/ に置く）。無ければ null でコマ説明を出す。画像が後から入る前提の口 */
   image: string | null;
+  /** イラスト発注用の「描く内容」。画面には出さない */
+  drawing?: { en: string; ja: string };
   actions: { ja: string; en: string }[];
   speech: { who: string; ja: string; en: string }[];
 }
@@ -35,6 +37,8 @@ interface Question {
   prompt: string;
   model: string;
   modelNo?: string;
+  /** No.3 の反対の立場の手本（model が I agree. なら I disagree.）。公式も両方の例を載せる */
+  modelAlt?: string;
   followUp?: { yes: string; no: string };
   checks: string[];
 }
@@ -532,6 +536,12 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
                         <p className="en rounded-2xl bg-primary-soft p-3 text-[16px] leading-relaxed text-ink">
                           {q.no === 4 && said === 'no' && q.modelNo ? q.modelNo : q.model}
                         </p>
+                        {q.no === 3 && q.modelAlt && (
+                          <>
+                            <p className="mb-1 mt-3 text-[12px] font-bold text-ink-faint">反対の立場ならこう言える</p>
+                            <p className="en rounded-2xl bg-surface-2 p-3 text-[16px] leading-relaxed text-ink">{q.modelAlt}</p>
+                          </>
+                        )}
                         {q.no === 2 && (
                           <ul className="mt-3 flex flex-col gap-1.5">
                             {card.scenes.flatMap((s) =>

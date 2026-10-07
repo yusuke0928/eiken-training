@@ -1953,12 +1953,24 @@ const ESSAY_G2 =
   'If there is an accident, they can contact their parents quickly. For these reasons, I believe that schools should let students use smartphones.';
 // 要約は45〜55語・丸写しなし・意見なしの自分の言葉（G2-03）
 const SUMMARY_G2 =
-  'Many people around the world now use translation apps. These apps allow users to talk with speakers of other languages and look up unfamiliar words. ' +
-  'However, wrong translations may create misunderstandings, and depending on the apps too often can weaken the language skills of students.';
-// R-3：模試の結果画面で丸写しが見えるよう、模試の要約には本文の連続7語を入れておく
-const SUMMARY_COPIED =
-  'Many people around the world now use translation apps. Sometimes they choose the wrong word, and students need care. ' +
-  'However, wrong translations may create misunderstandings, and depending on the apps too often can weaken the language skills of students.';
+  'Many large cities now have buildings with plants on their roofs. These gardens soak up rain, make rooms cooler in summer, and give birds and workers a pleasant place. ' +
+  'On the other hand, they cost a lot of money to build, and owners must take care of them regularly.';
+// R-3：模試の結果画面で丸写しが見えるよう、模試の要約には本文の連続8語を入れておく。
+// 模試の要約は6題からランダムに出るので、画面に出ている本文から第3段落の2文目の頭8語を拾う（固定の1題を前提にしない）
+let copiedRun = '';
+const SUMMARY_COPIED = (mainText) => {
+  const flat = mainText.replace(/\s+/g, ' ');
+  const w = JSON.parse(readFileSync(join(root, 'content/g2/writing.json'), 'utf8')).find(
+    (x) => x.section === 'w-summary' && flat.includes(x.sourceText.split('\n')[0].replace(/\s+/g, ' ').slice(0, 60)),
+  );
+  if (!w) throw new Error('模試の要約の本文が画面から特定できない');
+  const sentences = w.sourceText.split('\n')[2].split(/(?<=[.?!])\s+/);
+  copiedRun = sentences[1].split(/\s+/).slice(0, 8).join(' ').replace(/[,.]$/, '');
+  return (
+    'Many people around the world now use new services. ' + copiedRun + ', and users need care. ' +
+    'However, wrong choices may create misunderstandings, and depending on them too often can weaken the skills of students.'
+  );
+};
 const ESSAY_PRE2 =
   'I think students should join a club. I have two reasons. First, they can make many friends there. For example, I met my best friend in the tennis club. ' +
   'Second, club activities teach them how to work with other people. For these reasons, I think students should join a club.';
@@ -2013,7 +2025,8 @@ async function walkFullMock(pg, { writtenN, listenN, essay }) {
     if (!(label in firstMain)) firstMain[label] = await pg.locator('main').innerText();
     if (label.includes('英文要約')) await pg.screenshot({ path: join(OUT, 'g2-03-mock-run-summary.png') });
     if (await pg.locator('textarea').count()) {
-      await pg.locator('textarea').fill(Array.isArray(essay) ? essay[essayNo++] : essay);
+      const v = Array.isArray(essay) ? essay[essayNo++] : essay;
+      await pg.locator('textarea').fill(typeof v === 'function' ? v(await pg.locator('main').innerText()) : v);
     } else {
       await choices.first().or(fallback).waitFor({ timeout: 8000 });
       if (await fallback.count()) {
@@ -2156,7 +2169,7 @@ let g2MockBlocks;
     await open.first().click();
     await pg.getByText('要点チェック（自分で確かめる）').waitFor({ timeout: 5000 });
     const sc = await pg.locator('main').innerText();
-    if (!sc.includes('本文の丸写しがない') || !sc.includes('Sometimes they choose the wrong word, and')) throw new Error('模試の自己採点に丸写しの箇所が出ていない');
+    if (!sc.includes('本文の丸写しがない') || !sc.includes(copiedRun)) throw new Error('模試の自己採点に丸写しの箇所が出ていない');
     if ((await pg.locator('main li.bg-again-soft', { hasText: '丸写し' }).count()) !== 1) throw new Error('模試の自己採点の丸写しが赤になっていない');
     if ((await pg.locator('main ul button[aria-pressed]').count()) !== 3 || (await pg.locator('main ul button[aria-pressed="true"]').count()) !== 0) throw new Error('模試の自己採点の要点チェックが3件・未チェックでない');
     await pg.screenshot({ path: join(OUT, 'g2-03r-mock-scorer-summary.png') });
@@ -2391,12 +2404,12 @@ const SUMMARY_WORDS = wordsOf(SUMMARY_G2);
 /** 自分の言葉の要約を n 語に切り出す（丸写しも意見も入らない） */
 const summaryOf = (n) => SUMMARY_WORDS.slice(0, n).join(' ');
 
-/** ライティング道場で「翻訳アプリ」の要約の編集画面まで進む */
+/** ライティング道場で「屋上緑化」の要約の編集画面まで進む */
 async function openSummaryEditor(pg) {
   await pg.locator('button', { hasText: 'ライティング道場' }).first().click();
   await pg.getByText('ライティングはたった2題で650点。').waitFor({ timeout: 5000 });
   await pg.getByRole('button', { name: '英文要約' }).click();
-  await pg.locator('button', { hasText: '翻訳アプリ' }).click();
+  await pg.locator('button', { hasText: '屋上緑化' }).click();
   await pg.locator('textarea').waitFor({ timeout: 5000 });
 }
 const meter = (pg) => pg.locator('header span.rounded-full').filter({ hasText: /\/ 45–55語/ });
@@ -2415,15 +2428,15 @@ const hasClass = async (loc, cls) => ((await loc.first().getAttribute('class')) 
   const st = await pg.locator('main').innerText();
   if (!st.includes('45〜55語') || st.includes('目安')) throw new Error(`要約の語数が「45〜55語」（目安なし）でない: ${st.slice(0, 200)}`);
   await pg.screenshot({ path: join(OUT, 'g2-03-list-summary.png') });
-  await pg.locator('button', { hasText: '翻訳アプリ' }).click();
+  await pg.locator('button', { hasText: '屋上緑化' }).click();
   await pg.locator('textarea').waitFor({ timeout: 5000 });
 
   // 課題文：英語が出て、日本語は最初は隠れている。「日本語で読む」で開く
   let body = await pg.locator('main').innerText();
-  if (!body.includes('translation apps on their smartphones')) throw new Error('要約の本文（sourceText）が出ていない');
-  if (body.includes('スマートフォンの翻訳アプリを使う人')) throw new Error('日本語訳が最初から出ている');
+  if (!body.includes('covered with plants on their roofs')) throw new Error('要約の本文（sourceText）が出ていない');
+  if (body.includes('屋根を植物でおおった建物')) throw new Error('日本語訳が最初から出ている');
   await pg.getByRole('button', { name: '日本語で読む' }).click();
-  await pg.getByText('スマートフォンの翻訳アプリを使う人').waitFor({ timeout: 3000 });
+  await pg.getByText('屋根を植物でおおった建物').waitFor({ timeout: 3000 });
   await pg.screenshot({ path: join(OUT, 'g2-03-editor-empty-ja.png') });
   await pg.getByRole('button', { name: '日本語を閉じる' }).click();
 
@@ -2467,8 +2480,8 @@ const hasClass = async (loc, cls) => ((await loc.first().getAttribute('class')) 
   await pg.screenshot({ path: join(OUT, 'g2-03-editor-paraphrase-ok.png') });
 
   // 丸写し：連続6語では何も出ない／連続7語ではその箇所を見せる
-  const SIX = 'Sometimes they choose the wrong word';
-  const SEVEN = 'Sometimes they choose the wrong word, and';
+  const SIX = 'Building a green roof is expensive';
+  const SEVEN = 'Building a green roof is expensive, and';
   await ta.fill(`${summaryOf(38)} ${SIX}. Students need care.`);
   // 語数は足りなくて赤なので、見るのは丸写しのチップだけ
   if ((await pg.locator('div.sticky span.bg-again-soft', { hasText: '丸写し' }).count()) !== 0) throw new Error('連続6語の一致に赤が出ている（しきい値が7でない）');
@@ -2507,7 +2520,7 @@ const hasClass = async (loc, cls) => ((await loc.first().getAttribute('class')) 
   await pg.getByRole('button', { name: '提出してモデル解答を見る' }).click();
   await pg.getByText('要点チェック').waitFor({ timeout: 8000 });
   const rv = await pg.locator('main').innerText();
-  for (const need of ['翻訳アプリを使う人が世界中で増えている', '違う言語の相手と話せる', '誤訳で誤解が起きる', '英検の公式な採点基準ではありません', '丸写し']) {
+  for (const need of ['「屋上緑化」が増えている', '雨水を吸って洪水を防ぐ', '作る費用がかかり', '英検の公式な採点基準ではありません', '丸写し']) {
     if (!rv.includes(need)) throw new Error(`要約の見くらべ画面に「${need}」が無い`);
   }
   for (const bad of ['First / Second', 'For these reasons', '英検の採点観点そのまま', '○', '×']) {
@@ -2526,7 +2539,7 @@ const hasClass = async (loc, cls) => ((await loc.first().getAttribute('class')) 
   await pg.getByText('/ 12点').waitFor({ timeout: 3000 });
   await pg.getByRole('button', { name: '記録して終わる' }).click();
   const rows = await readAllRows(pg, 'writings');
-  const rec = rows.find((r) => r.promptId === 'g2-w-summary-001');
+  const rec = rows.find((r) => r.promptId === 'g2-w-summary-007');
   if (!rec || rec.section !== 'w-summary' || rec.total !== 12) throw new Error(`要約の記録が保存されていない: ${JSON.stringify(rec)}`);
   console.log('  ✓ 2級の要約：語数は44=赤・50=緑・56=赤、連続6語は無反応・7語はその箇所を表示、I think を指摘、要点は日本語チェックリスト（○×なし）、型に First/Second/For these reasons なし');
   await c.close();

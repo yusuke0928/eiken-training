@@ -1,9 +1,9 @@
 [
   {
-    "id": "g2-s-001",
+    "id": "g2-s-002",
     "title": "Community Gardens",
-    "passage": "Community gardens are becoming popular in many cities. People who do not have yards at home can grow vegetables and flowers in shared spaces. Gardeners often make new friends while they work together. Some cities also let children grow vegetables in the gardens. In this way, the children can learn about nature. Many cities plan to build more.",
-    "passageJa": "市民農園は多くの都市で人気が出てきている。自宅に庭のない人も、共有の場所で野菜や花を育てることができる。育てる人どうしは、いっしょに作業するあいだに新しい友だちをつくることが多い。子どもたちに、農園で野菜を育てさせる都市もある。こうして、子どもたちは自然について学ぶことができる。多くの都市が、さらに増やす計画を立てている。",
+    "passage": "Community gardens are becoming popular in many cities. Local governments provide shared spaces where people who do not have yards at home can grow vegetables and flowers. Working together also has a benefit: gardeners often make new friends. Some cities also let children grow vegetables in the gardens. In this way, the children can learn about nature. Many cities plan to build more of them.",
+    "passageJa": "市民農園は多くの都市で人気が出てきている。自治体は、自宅に庭のない人が野菜や花を育てられる共有の場所を用意している。いっしょに作業することには利点もあり、育てる人どうしは新しい友だちをつくることが多い。子どもたちに、農園で野菜を育てさせる都市もある。こうして、子どもたちは自然について学ぶことができる。多くの都市が、さらに増やす計画を立てている。",
     "scenes": [
       {
         "no": 1,
@@ -21,7 +21,11 @@
             "ja": "トマトを育てようよ！",
             "en": "Let's grow tomatoes!"
           }
-        ]
+        ],
+        "drawing": {
+          "en": "A girl and her father stand at the gate of a community garden on a sunny morning. The father holds a small paper bag of seeds, and the girl looks up at him with a smile. Plain long-sleeved clothes and hats. No text, no sweat.",
+          "ja": "晴れた朝、市民農園の入り口に立つ女の子と父親。父親は種の小さな紙袋を持ち、女の子が笑顔で父親を見上げている。長そでの普通の服と帽子。文字・汗は入れない。"
+        }
       },
       {
         "no": 2,
@@ -42,7 +46,11 @@
             "en": "An old woman nearby was smiling at them."
           }
         ],
-        "speech": []
+        "speech": [],
+        "drawing": {
+          "en": "The father digs a small hole in the soil with a hoe, and the girl drops seeds into the hole. An old woman stands a few steps away and smiles at them. No text, no sweat.",
+          "ja": "父親がくわで土に小さな穴を掘り、女の子がその穴に種を落としている。数歩はなれて、年配の女性が2人に笑いかけている。文字・汗は入れない。"
+        }
       },
       {
         "no": 3,
@@ -65,7 +73,11 @@
             "ja": "みんな、食べたら喜ぶだろうな。",
             "en": "Everyone will be happy to eat these."
           }
-        ]
+        ],
+        "drawing": {
+          "en": "Red tomatoes are ripe on green plants. The girl picks one tomato with a calm smile. A small thought bubble (no words inside) shows neighbors smiling and eating tomatoes. No text, no sweat.",
+          "ja": "緑の茎に赤いトマトが実っている。女の子が穏やかにほほえみながらトマトを1つ摘んでいる。頭の横の考えの吹き出し（中に文字は入れない）には、近所の人たちがトマトを食べて笑っている様子。文字・汗は入れない。"
+        }
       }
     ],
     "openingSentence": "One Saturday morning, Yui and her father went to a community garden near their house.",
@@ -102,17 +114,427 @@
           "I agree. / I disagree. をはっきり言えた",
           "理由を2つ言えた",
           "First / Second などでつないで、止まらずに話せた"
-        ]
+        ],
+        "modelAlt": "I disagree. First, students already have many other important subjects to study. Second, students who want to learn gardening can do it at home or in their community."
       },
       {
         "no": 4,
-        "prompt": "Do you think more people will work from home in the future?",
+        "prompt": "Today, many companies let their employees work from home. Do you think more people will work from home in the future?",
         "followUp": {
           "yes": "Why?",
           "no": "Why not?"
         },
         "model": "Yes, I do. People can save time because they don't have to go to the office. Also, they can spend more time with their families.",
         "modelNo": "No, I don't. Working at home is sometimes difficult because it is hard to talk with other people. Also, some jobs cannot be done at home.",
+        "checks": [
+          "Yes / No を先にはっきり言えた",
+          "Why? / Why not? と聞かれたら、すぐに理由を言えた",
+          "理由を2つ言えた"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-s-003",
+    "title": "Beach Cleanup Events",
+    "passage": "Many towns by the sea hold beach cleanup events during the summer. Volunteers of all ages walk along the beach and pick up empty bottles and cans, which prevents them from being carried out to sea. Some towns also invite tourists to join the events. In this way, visitors can learn about the local environment. Many people say that taking part raises their awareness of trash.",
+    "passageJa": "海に面した多くの町が、夏のあいだに海岸の清掃イベントを開く。あらゆる年齢のボランティアが海岸を歩き、空きびんや空き缶を拾うので、それらが波にさらわれて海に出ていくのを防げる。観光客をイベントに招く町もある。こうして、訪れた人はその土地の環境について学ぶことができる。参加すると、ごみへの意識が高まる、と言う人は多い。",
+    "scenes": [
+      {
+        "no": 1,
+        "note": "夏の朝、海岸に着いた男の子と母親。母親はごみ袋を持っていて、男の子が母親に話しかけている。",
+        "image": null,
+        "drawing": {
+          "en": "A boy and his mother stand on a sandy beach on a summer morning. The mother holds a large trash bag, and the boy points along the beach with a bright smile. Light summer clothes with sleeves and hats. No text, no sweat.",
+          "ja": "夏の朝、砂浜に立つ男の子と母親。母親は大きなごみ袋を持ち、男の子が明るい笑顔で砂浜の先を指さしている。袖のある軽い夏服と帽子。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "母親がごみ袋を持っている",
+            "en": "Kenta's mother was holding a trash bag."
+          }
+        ],
+        "speech": [
+          {
+            "who": "男の子",
+            "ja": "今日はたくさん空きびんを見つけるよ！",
+            "en": "I'll find a lot of bottles today!"
+          }
+        ]
+      },
+      {
+        "no": 2,
+        "label": "Twenty minutes later",
+        "note": "20分後。男の子がペットボトルを拾っていて、母親は空き缶を袋に入れている。近くで、カメラを肩にかけ大きなリュックを背負った旅行者の女の子が、2人に手をふっている。",
+        "image": null,
+        "drawing": {
+          "en": "The boy bends down to pick up a plastic bottle, and his mother puts a can into her trash bag. A tourist girl with a camera on her shoulder, a guidebook in one hand and a large backpack stands nearby and waves at them. No text, no sweat.",
+          "ja": "男の子が体をかがめてペットボトルを拾い、母親が空き缶をごみ袋に入れている。肩にカメラをかけ、片手にガイドブックを持ち、大きなリュックを背負った旅行者の女の子が近くに立ち、2人に手をふっている。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "男の子がペットボトルを拾っている",
+            "en": "Kenta was picking up a plastic bottle."
+          },
+          {
+            "ja": "母親が空き缶を袋に入れている",
+            "en": "His mother was putting cans into her bag."
+          },
+          {
+            "ja": "旅行者の女の子が手をふっている",
+            "en": "A tourist girl nearby was waving to them."
+          }
+        ],
+        "speech": []
+      },
+      {
+        "no": 3,
+        "label": "One hour later",
+        "note": "1時間後。海岸はすっかりきれいになっている。男の子が海岸を見わたしていて、頭の中では、来年もまた参加したいと思っている。",
+        "image": null,
+        "drawing": {
+          "en": "The beach is clean. The boy stands with his mother and looks at the sea with a happy face. A small thought bubble (no words inside) shows the boy with a trash bag on the same beach next summer. No text, no sweat.",
+          "ja": "海岸はきれいになっている。男の子が母親のそばに立ち、うれしそうに海を見ている。考えの吹き出し（中に文字は入れない）には、来年の夏、同じ海岸でごみ袋を持つ男の子の姿。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "男の子がきれいな海岸を見ている",
+            "en": "Kenta was looking at the clean beach."
+          },
+          {
+            "ja": "来年もまた参加したいと考えている",
+            "en": "He was thinking that he wanted to join the event again next year."
+          }
+        ],
+        "speech": [
+          {
+            "who": "男の子（心の中）",
+            "ja": "来年もまた参加したいな。",
+            "en": "I want to join again next year."
+          }
+        ]
+      }
+    ],
+    "openingSentence": "One summer morning, Kenta and his mother went to a beach to join a cleanup event.",
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how can visitors learn about the local environment in some towns?",
+        "model": "By joining the beach cleanup events.",
+        "checks": [
+          "By ~ing の形で答えられた",
+          "In this way の前の文（Some towns also invite tourists to join the events）から答えを取れた",
+          "主語をつけすぎず簡潔に言えた"
+        ]
+      },
+      {
+        "no": 2,
+        "kind": "story",
+        "prompt": "Now, please look at the pictures. You have 20 seconds to prepare. Your story should begin with this sentence:",
+        "model": "One summer morning, Kenta and his mother went to a beach to join a cleanup event. Kenta's mother was holding a trash bag, and Kenta said to her, \"I'll find a lot of bottles today!\" Twenty minutes later, Kenta was picking up a plastic bottle, and his mother was putting cans into her bag. A tourist girl nearby was waving to them. One hour later, Kenta was looking at the clean beach. He was thinking that he wanted to join the event again next year.",
+        "checks": [
+          "言い出しの1文を、そのまま最初に言えた",
+          "3つのコマすべてに触れた",
+          "コマの動作を過去進行形（was / were ~ing）で言えた",
+          "2・3コマ目の時間の言葉（ラベル）を使えた",
+          "1コマ目のセリフを said to ..., \"...\" の形で入れられた",
+          "3コマ目の思っていることを入れられた"
+        ]
+      },
+      {
+        "no": 3,
+        "prompt": "Some people say that students should take part in volunteer activities in their communities. What do you think about that?",
+        "model": "I agree. First, students can learn about problems in their town. Second, they can make friends with people of different ages.",
+        "modelAlt": "I disagree. First, many students are too busy with club activities and homework. Second, volunteer work is not fun if students are forced to do it.",
+        "checks": [
+          "I agree. / I disagree. をはっきり言えた",
+          "理由を2つ言えた",
+          "First / Second などでつないで、止まらずに話せた"
+        ]
+      },
+      {
+        "no": 4,
+        "prompt": "Today, many people use their own shopping bags and water bottles instead of disposable ones. Do you think more people will try to reduce their trash in the future?",
+        "followUp": {
+          "yes": "Why?",
+          "no": "Why not?"
+        },
+        "model": "Yes, I do. Many people are learning that trash causes problems for the environment. Also, more stores will sell products with less packaging.",
+        "modelNo": "No, I don't. Using their own bags and bottles takes some time and effort. Also, many people prefer to buy things that are cheap and convenient.",
+        "checks": [
+          "Yes / No を先にはっきり言えた",
+          "Why? / Why not? と聞かれたら、すぐに理由を言えた",
+          "理由を2つ言えた"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-s-004",
+    "title": "Bicycle Sharing",
+    "passage": "In many cities, bicycle-sharing services are becoming popular. These services provide bicycles that people can borrow at one station and return at another. Many tourists use them, too, because the bicycles are available at any time of the day. Some cities are building more stations near train stations. In this way, they make it easier for people to move around the city. Bicycles are also good for the environment.",
+    "passageJa": "多くの都市で、自転車のシェアリングサービスが人気になってきている。こうしたサービスは自転車を用意していて、人々はあるステーションで借りて、別のステーションで返すことができる。自転車は1日のどの時間でも使えるので、観光客もよく利用する。駅の近くにステーションを増やしている都市もある。こうして、人々が街の中を移動しやすくしている。自転車は環境にもよい。",
+    "scenes": [
+      {
+        "no": 1,
+        "note": "日曜の午後、駅前の自転車ステーションに着いた女の子と母親。母親はスマートフォンで地図を見ていて、女の子が母親に話しかけている。",
+        "image": null,
+        "drawing": {
+          "en": "A girl and her mother stand next to a row of rental bicycles at a bicycle station in front of a train station on a Sunday afternoon. The mother looks at a map on her phone, and the girl points ahead with a smile. Simple casual clothes with sleeves. No text, no sweat.",
+          "ja": "日曜の午後、駅前に並んだレンタル自転車のそばに立つ女の子と母親。母親はスマートフォンの地図を見ていて、女の子が笑顔で前方を指さしている。袖のある普通の私服。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "母親がスマートフォンで地図を見ている",
+            "en": "Mika's mother was checking a map on her phone."
+          }
+        ],
+        "speech": [
+          {
+            "who": "女の子",
+            "ja": "自転車で水族館に行こうよ！",
+            "en": "Let's go to the aquarium by bicycle!"
+          }
+        ]
+      },
+      {
+        "no": 2,
+        "label": "Twenty minutes later",
+        "note": "20分後。女の子が川ぞいの道を自転車で走っていて、母親がそのうしろについて走っている。近くで、年配の男性が犬の散歩をしている。",
+        "image": null,
+        "drawing": {
+          "en": "The girl rides a bicycle along a riverside path, and her mother rides behind her. Both wear bicycle helmets. An old man walks a small dog on the path nearby. Bright daytime scene. No text, no sweat.",
+          "ja": "女の子が川ぞいの道を自転車で走り、そのうしろを母親が走っている。2人とも自転車用のヘルメットをかぶっている。近くの道では、年配の男性が小さな犬を散歩させている。明るい昼の場面。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "女の子が川ぞいを自転車で走っている",
+            "en": "Mika was riding along the river."
+          },
+          {
+            "ja": "母親が女の子のうしろを走っている",
+            "en": "Her mother was following her."
+          },
+          {
+            "ja": "年配の男性が犬を散歩させている",
+            "en": "An old man was walking his dog nearby."
+          }
+        ],
+        "speech": []
+      },
+      {
+        "no": 3,
+        "label": "Forty minutes later",
+        "note": "40分後。水族館の近くのステーション。女の子が自転車を返していて、母親は水族館を指さしている。女の子は、帰りもまた乗りたいと思っている。",
+        "image": null,
+        "drawing": {
+          "en": "At a bicycle station near an aquarium building, the girl, wearing a bicycle helmet, parks her rental bicycle in a stand while her mother points at the aquarium. A small thought bubble (no words inside) shows the girl riding a bicycle. No text, no sweat.",
+          "ja": "水族館の建物の近くのステーションで、自転車用のヘルメットをかぶった女の子が借りた自転車をスタンドに止め、母親が水族館を指さしている。考えの吹き出し（中に文字は入れない）には、自転車に乗る女の子の姿。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "女の子が自転車を返している",
+            "en": "Mika was returning her bicycle."
+          },
+          {
+            "ja": "母親が水族館を指さしている",
+            "en": "Her mother was pointing at the aquarium."
+          },
+          {
+            "ja": "帰りもまた乗りたいと考えている",
+            "en": "She was thinking that she wanted to ride again on the way home."
+          }
+        ],
+        "speech": [
+          {
+            "who": "女の子（心の中）",
+            "ja": "帰りもまた乗りたいな。",
+            "en": "I want to ride again on the way home."
+          }
+        ]
+      }
+    ],
+    "openingSentence": "One Sunday afternoon, Mika and her mother went to a bicycle station near the train station.",
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how do some cities make it easier for people to move around the city?",
+        "model": "By building more stations near train stations.",
+        "checks": [
+          "By ~ing の形で答えられた",
+          "In this way の前の文（Some cities are building more stations near train stations）から答えを取れた",
+          "主語をつけすぎず簡潔に言えた"
+        ]
+      },
+      {
+        "no": 2,
+        "kind": "story",
+        "prompt": "Now, please look at the pictures. You have 20 seconds to prepare. Your story should begin with this sentence:",
+        "model": "One Sunday afternoon, Mika and her mother went to a bicycle station near the train station. Mika's mother was checking a map on her phone, and Mika said to her, \"Let's go to the aquarium by bicycle!\" Twenty minutes later, Mika was riding along the river, and her mother was following her. An old man was walking his dog nearby. Forty minutes later, Mika was returning her bicycle, and her mother was pointing at the aquarium. Mika was thinking that she wanted to ride again on the way home.",
+        "checks": [
+          "言い出しの1文を、そのまま最初に言えた",
+          "3つのコマすべてに触れた",
+          "コマの動作を過去進行形（was / were ~ing）で言えた",
+          "2・3コマ目の時間の言葉（ラベル）を使えた",
+          "1コマ目のセリフを said to ..., \"...\" の形で入れられた",
+          "3コマ目の思っていることを入れられた"
+        ]
+      },
+      {
+        "no": 3,
+        "prompt": "Some people say that people should use bicycles more often instead of cars. What do you think about that?",
+        "model": "I agree. First, riding a bicycle is good for our health. Second, it does not pollute the air, so it is better for the environment.",
+        "modelAlt": "I disagree. First, bicycles are not convenient when it rains. Second, it is difficult to carry heavy things or to travel a long distance by bicycle.",
+        "checks": [
+          "I agree. / I disagree. をはっきり言えた",
+          "理由を2つ言えた",
+          "First / Second などでつないで、止まらずに話せた"
+        ]
+      },
+      {
+        "no": 4,
+        "prompt": "Today, many people learn foreign languages with smartphone apps. Do you think more people will learn languages with apps in the future?",
+        "followUp": {
+          "yes": "Why?",
+          "no": "Why not?"
+        },
+        "model": "Yes, I do. Apps are cheap, so many people can start easily. Also, people can study anytime they want, even for a short time.",
+        "modelNo": "No, I don't. Many people stop using apps after a few days. Also, they need teachers or friends to keep studying.",
+        "checks": [
+          "Yes / No を先にはっきり言えた",
+          "Why? / Why not? と聞かれたら、すぐに理由を言えた",
+          "理由を2つ言えた"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-s-005",
+    "title": "Short-Term Study Abroad",
+    "passage": "Many high schools now give students an opportunity to join short study programs abroad. Students stay with local families for two or three weeks and take classes at a school there. They also try to speak English with their host families every day. In this way, they can improve their language skills. Some students make friends there and keep in touch with them after returning home.",
+    "passageJa": "多くの高校が、いまでは生徒に短期の海外留学プログラムに参加する機会を与えている。生徒は2、3週間、現地の家庭に滞在し、そこの学校で授業を受ける。毎日、ホストファミリーと英語で話すようにもしている。こうして、語学力を伸ばすことができる。現地で友だちをつくり、帰国後も連絡を取り合う生徒もいる。",
+    "scenes": [
+      {
+        "no": 1,
+        "note": "8月の朝、空港に着いた女の子と両親。父親は女の子のスーツケースを運んでいて、母親が女の子に話しかけている。",
+        "image": null,
+        "drawing": {
+          "en": "A girl and her parents walk through an airport hall. The father carries her suitcase, and the mother talks to the girl with a gentle smile. Simple casual clothes with sleeves. No text, no sweat.",
+          "ja": "空港のロビーを歩く女の子と両親。父親が女の子のスーツケースを運び、母親がやさしくほほえみながら女の子に話しかけている。袖のある普通の私服。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "父親がスーツケースを運んでいる",
+            "en": "Aya's father was carrying her suitcase."
+          }
+        ],
+        "speech": [
+          {
+            "who": "母親",
+            "ja": "着いたら電話してね。",
+            "en": "Please call us when you arrive."
+          }
+        ]
+      },
+      {
+        "no": 2,
+        "label": "Three days later at the host family's house",
+        "note": "3日後、ホストファミリーの家の台所。女の子がホストマザーといっしょに夕食を作っていて、ホストファーザーが食卓を整えている。",
+        "image": null,
+        "drawing": {
+          "en": "In a bright home kitchen, the girl cooks dinner with her host mother, and the host father sets plates on a table behind them. Everyone smiles. Simple casual clothes with aprons. No text, no sweat.",
+          "ja": "明るい家庭の台所で、女の子がホストマザーといっしょに夕食を作り、そのうしろでホストファーザーが食卓に皿を並べている。みんな笑顔。エプロンをした普通の私服。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "女の子が夕食を作っている",
+            "en": "Aya was making dinner with her host mother."
+          },
+          {
+            "ja": "ホストファーザーが食卓を整えている",
+            "en": "Her host father was setting the table."
+          }
+        ],
+        "speech": []
+      },
+      {
+        "no": 3,
+        "label": "Two weeks later at the airport",
+        "note": "2週間後、空港。女の子がホストファミリーに手をふってお別れをしていて、ホストファミリーも手をふり返している。女の子は、またいつか会いたいと思っている。",
+        "image": null,
+        "drawing": {
+          "en": "In the airport departure lobby, the girl with a backpack waves goodbye to three host family members, who wave back with warm smiles. A small thought bubble (no words inside) shows the host family sitting around a dinner table. No text, no sweat.",
+          "ja": "空港の出発ロビーで、リュックを背負った女の子が、ホストファミリー3人に手をふってお別れをしている。3人はあたたかい笑顔で手をふり返している。考えの吹き出し（中に文字は入れない）には、食卓を囲むホストファミリーの姿。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "女の子が手をふってお別れしている",
+            "en": "Aya was waving goodbye to her host family."
+          },
+          {
+            "ja": "ホストファミリーが手をふり返している",
+            "en": "Her host family was waving back."
+          },
+          {
+            "ja": "また会いたいと考えている",
+            "en": "She was thinking that she wanted to see them again someday."
+          }
+        ],
+        "speech": [
+          {
+            "who": "女の子（心の中）",
+            "ja": "いつかまた会いたいな。",
+            "en": "I want to see them again someday."
+          }
+        ]
+      }
+    ],
+    "openingSentence": "One morning in August, Aya and her parents went to the airport because she was leaving for a study program abroad.",
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how can students improve their language skills?",
+        "model": "By speaking English with their host families every day.",
+        "checks": [
+          "By ~ing の形で答えられた",
+          "In this way の前の文（They also try to speak English with their host families every day）から答えを取れた",
+          "主語をつけすぎず簡潔に言えた"
+        ]
+      },
+      {
+        "no": 2,
+        "kind": "story",
+        "prompt": "Now, please look at the pictures. You have 20 seconds to prepare. Your story should begin with this sentence:",
+        "model": "One morning in August, Aya and her parents went to the airport because she was leaving for a study program abroad. Aya's father was carrying her suitcase, and her mother said to her, \"Please call us when you arrive.\" Three days later at the host family's house, Aya was making dinner with her host mother, and her host father was setting the table. Two weeks later at the airport, Aya was waving goodbye to her host family, and they were waving back. She was thinking that she wanted to see them again someday.",
+        "checks": [
+          "言い出しの1文を、そのまま最初に言えた",
+          "3つのコマすべてに触れた",
+          "コマの動作を過去進行形（was / were ~ing）で言えた",
+          "2・3コマ目の時間の言葉（ラベル）を使えた",
+          "1コマ目のセリフを said to ..., \"...\" の形で入れられた",
+          "3コマ目の思っていることを入れられた"
+        ]
+      },
+      {
+        "no": 3,
+        "prompt": "Some people say that high school students should study abroad. What do you think about that?",
+        "model": "I agree. First, students can improve their English a lot. Second, they can learn about other cultures and become more independent.",
+        "modelAlt": "I disagree. First, studying abroad costs a lot of money for many families. Second, students may miss important classes at their own school.",
+        "checks": [
+          "I agree. / I disagree. をはっきり言えた",
+          "理由を2つ言えた",
+          "First / Second などでつないで、止まらずに話せた"
+        ]
+      },
+      {
+        "no": 4,
+        "prompt": "Today, many people use online maps and navigation apps when they travel. Do you think people will stop using paper maps in the future?",
+        "followUp": {
+          "yes": "Why?",
+          "no": "Why not?"
+        },
+        "model": "Yes, I do. Smartphones are becoming cheaper, and almost everyone has one. Also, online maps show the newest information.",
+        "modelNo": "No, I don't. Paper maps are useful when a phone's battery runs out. Also, some people like looking at a big map when they plan a trip.",
         "checks": [
           "Yes / No を先にはっきり言えた",
           "Why? / Why not? と聞かれたら、すぐに理由を言えた",

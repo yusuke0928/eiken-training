@@ -1,352 +1,1408 @@
 [
   {
-    "id": "g2-p-cloze-001",
+    "id": "g2-p-cloze-003",
     "section": "r-cloze",
     "format": "article",
-    "title": "Farms in the Sky",
-    "body": "In many large cities, it is becoming more and more difficult to find enough land to grow food. As a result, some companies have started to build vertical farms. These are tall buildings in which vegetables grow in layers under artificial lights. Because the plants are protected from bad weather, a vertical farm can produce fresh vegetables all year round, ( 1 ) of the season outside. Some of these farms are even built in old offices and empty warehouses, so they do not take land away from other uses.\n\nVertical farms also use far less water than ordinary farms. Some of them ( 2 ) the water that the plants do not use, so they need only about five percent of the water that is used in traditional farming. In addition, because the vegetables are grown close to the people who eat them, they do not have to be carried over long distances. This means that they reach shoppers fresher than vegetables that have traveled for several days.\n\n( 3 ), vertical farms are not perfect. The lights and machines use a great deal of electricity, which makes the vegetables more expensive than those from ordinary farms. Researchers are now looking for ways to power vertical farms with solar energy. If they succeed, the price may drop, and fresh local vegetables could become available to many more people in the future.",
-    "translation": "多くの大都市では、食べ物を育てるのに十分な土地を見つけることがますます難しくなっている。その結果、垂直農場を作り始める会社も出てきた。これは、人工の光の下で野菜が何段にも重なって育つ高いビルのことだ。植物は悪天候から守られているので、垂直農場は外の季節に関係なく、一年じゅう新鮮な野菜を作れる。こうした農場の中には古いオフィスや空の倉庫の中に作られているものさえあり、ほかの用途の土地を奪うことはない。\n\n垂直農場は、ふつうの農場よりもはるかに少ない水しか使わない。植物が使わなかった水を再利用する農場もあり、従来の農業で使われる水のわずか5パーセントほどしか必要としない。さらに、野菜は食べる人の近くで育てられるので、長い距離を運ぶ必要がない。そのため、何日もかけて運ばれてきた野菜よりも新鮮な状態で買い物客に届く。\n\nしかし、垂直農場は完璧ではない。照明や機械が大量の電気を使うため、野菜はふつうの農場のものより高くなる。研究者たちは今、垂直農場を太陽エネルギーで動かす方法を探している。それがうまくいけば値段が下がり、新鮮な地元の野菜が将来もっと多くの人の手に届くようになるかもしれない。",
-    "wordCount": 232,
+    "title": "Libraries of Things",
+    "body": "In many towns, libraries now lend far more than books. Some of them operate a \"library of things.\" Members can borrow tools, cameras, musical instruments, and even sewing machines for a few days. The idea began with a simple question. Why should every household purchase a drill that will be used for only ten minutes a year? Many residents find that borrowing is much cheaper than buying, and they also appreciate the fact that ( 1 ). Because fewer products have to be manufactured, less material is wasted, and the environmental effect of each purchase becomes smaller.\n\nThese libraries also strengthen the community. People who borrow a ladder or a camping stove often start chatting with the staff and with other members. Some libraries hold workshops. There, volunteers show visitors how to repair a broken chair or grow vegetables on a balcony, so that residents can ( 2 ). One library even organizes a monthly \"tool night.\" Neighbors gather to practice using unfamiliar equipment together, and many of them say that they have made new friends there.\n\nRunning such a service takes careful planning, and not every library can afford it. Some libraries ask members to pay a small yearly fee to cover the cost of repairs. A few even keep a waiting list for popular items such as camping tents. Others depend on donations from local businesses and on volunteers who fix damaged items. ( 3 ), a library of things becomes a project that the whole community supports. It is no longer a service that the staff provide alone.",
+    "translation": "多くの町で、図書館は本よりはるかに多くのものを貸すようになっている。「モノの図書館」を運営する図書館もあり、会員は道具、カメラ、楽器、ミシンまでも数日間借りられる。この発想は単純な疑問から生まれた。年に10分しか使わないドリルを、なぜどの家庭も買わなければならないのか。借りるほうが買うよりずっと安いと考える住民が多く、1つの道具を近所の多くの人で共有できる点も喜ばれている。作らなければならない製品が減るので、材料のむだが減り、1回の購入が環境に与える影響も小さくなる。\n\nこうした図書館は、地域のつながりも強める。はしごやキャンプ用コンロを借りる人は、職員や他の会員とおしゃべりを始めることが多い。壊れたいすの直し方やベランダでの野菜の育て方をボランティアが教える講座を開く図書館もあり、住民は家で役立つ技を身につけられる。毎月「道具の夜」を開き、近所の人が集まって見慣れない道具の使い方をいっしょに練習する図書館さえあり、参加者の多くは、そこで新しい友達ができたと言う。\n\nこうしたサービスの運営には慎重な計画が必要で、どの図書館でも費用をまかなえるわけではない。修理の費用をまかなうために、会員に少額の年会費を求める図書館もあり、キャンプ用テントなど人気の品物には順番待ちの名簿を作る図書館さえある。地元の企業からの寄付や、壊れた物を直すボランティアに頼る図書館もある。こうして、モノの図書館は、職員だけが提供するサービスではなく、地域全体が支えるプロジェクトになる。",
+    "wordCount": 261,
     "items": [
       {
-        "id": "g2-p-cloze-001-q1",
+        "id": "g2-p-cloze-003-q1",
         "tags": [
-          "read:vocab-in-context"
+          "read:inference"
         ],
         "difficulty": 2,
         "stem": "( 1 )",
         "choices": [
-          "regardless",
-          "capable",
-          "aware",
-          "afraid"
+          "one tool can be shared by many neighbors",
+          "most tools are too heavy to carry home",
+          "repairing a machine costs more than buying",
+          "each member must keep a tool forever"
         ],
         "answerIndex": 0,
-        "explanation": "regardless of ~ = ~に関係なく。「悪天候から守られている」ので、外の季節に関係なく一年じゅう作れる、とつながる。",
+        "explanation": "直後に Because fewer products have to be manufactured（作る製品が減るので）とある。1つの道具を近所の多くの人で共有できるなら、作る数が減る。",
         "distractorNotes": [
-          "regardless of = ~に関係なく",
-          "capable of は「~できる」。季節には使わない",
-          "aware of は「~に気づいて」",
-          "afraid of は「~をこわがって」"
+          "共有すれば、作るものも捨てるものも減る",
+          "重さの話は本文に出てこない",
+          "借りるほうが安い、という前の文と逆",
+          "「借りる」は返すこと。ずっと持つのとは逆"
         ]
       },
       {
-        "id": "g2-p-cloze-001-q2",
+        "id": "g2-p-cloze-003-q2",
         "tags": [
-          "read:vocab-in-context"
+          "read:inference"
+        ],
+        "difficulty": 2,
+        "stem": "( 2 )",
+        "choices": [
+          "pick up practical skills for use at home",
+          "avoid paying the yearly membership fee",
+          "ask the staff to repair everything for free",
+          "forget how their own tools work"
+        ],
+        "answerIndex": 0,
+        "explanation": "講座では、ボランティアが直し方・育て方を見せる。so that の目的としては、見た人が家で使える技を身につけられる、が自然。",
+        "distractorNotes": [
+          "講座で技を覚える、という流れ",
+          "会費の話は講座とつながらない",
+          "「直し方を見せる」講座なので、職員が全部直すのではない",
+          "講座の目的と逆"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-003-q3",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 3 )",
+        "choices": [
+          "In this way",
+          "On the other hand",
+          "Even so",
+          "For example"
+        ],
+        "answerIndex": 0,
+        "explanation": "前の文までは「会費・寄付・ボランティアで支える」仕組み。それをまとめて「地域全体が支えるプロジェクトになる」と結論づけているので、In this way（こうして）。",
+        "distractorNotes": [
+          "In this way = こうして（前の内容のまとめ）",
+          "On the other hand = 一方で。対比の内容ではない",
+          "Even so = それでも。前の内容と逆の流れではない",
+          "For example = たとえば。結論は例ではない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-cloze-004",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Dark Sky Parks",
+    "body": "In large cities, it is almost impossible to see many stars at night because of the bright lights from streets, signs, and buildings. This problem is known as light pollution, and it has spread rapidly around the world. In some cities, the night sky is so bright that many children have never seen the Milky Way. Scientists point out that light pollution affects more than our view of the sky. Birds that travel at night can lose their way because of artificial light, and baby sea turtles, which normally follow the bright horizon over the ocean, sometimes ( 1 ), where they are in great danger.\n\nTo protect the night sky, some regions have created \"dark sky parks.\" Visitors can see thousands of stars with their own eyes, and the Milky Way appears as a pale river across the sky. Nearby towns have replaced their street lights with new ones that ( 2 ). This change was expensive at first, but it has lowered electricity bills, and the stars have become much easier to see. Some parks also ask visitors to use red flashlights, because red light does not spoil night vision.\n\nDark sky parks have also become a valuable tourist attraction. Some hotels near them say that they receive more guests around the new moon, when the sky is darkest, and local guides lead evening tours. ( 3 ), one small village that used to be almost unknown now welcomes thousands of visitors every year. Astronomers hope that these places will remind people that a dark night is also part of nature and worth protecting.",
+    "translation": "大都市では、通りや看板やビルの明るい光のせいで、夜に多くの星を見ることはほとんど不可能だ。この問題は光害として知られ、世界じゅうで急速に広がっている。都市によっては夜空が明るすぎて、天の川を見たことのない子どもも多い。科学者は、光害は空の眺めに影響するだけではないと指摘する。夜に移動する鳥は人工の光で道に迷うことがあり、ふだんは海の上の明るい水平線を目指す子ウミガメも、ときどき道路やホテルの明かりのほうへ向かってしまい、大きな危険にさらされる。\n\n夜空を守るため、「ダークスカイ・パーク」をつくった地域がある。訪れた人は何千もの星を自分の目で見ることができ、天の川は空にかかる淡い川のように見える。近くの町は、街灯を、光が地面だけを照らして空に向かわないものに取りかえた。この変更は最初は費用がかかったが、電気代が下がり、星もずっと見えやすくなった。公園によっては、赤い光は暗闇での視力を損なわないので、赤い懐中電灯を使うよう来園者に頼んでいる。\n\nダークスカイ・パークは貴重な観光資源にもなっている。新月のころは空がいちばん暗いので、その時期に宿泊客が増えると言う近くのホテルもあり、地元のガイドが夜のツアーを案内している。たとえば、ほとんど知られていなかったある小さな村は、いまでは毎年何千人もの訪問者を迎えている。天文学者は、こうした場所が、暗い夜も自然の一部で、守る価値があることを人々に思い出させてくれるよう望んでいる。",
+    "wordCount": 266,
+    "items": [
+      {
+        "id": "g2-p-cloze-004-q1",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "( 1 )",
+        "choices": [
+          "head for the lights of roads and hotels",
+          "swim away from the coast much too quickly",
+          "dig deeper into the sand to hide",
+          "wait on the shore until the morning"
+        ],
+        "answerIndex": 0,
+        "explanation": "ふだんは海の上の明るい水平線を目指す子ガメが、人工の光で間違えて街の明かりへ向かう。birds lose their way と同じ「道に迷う」話。where they are in great danger とも合う。",
+        "distractorNotes": [
+          "海ではなく街の明かりへ向かってしまう",
+          "海から遠ざかる理由が本文にない",
+          "砂に隠れる話は出てこない",
+          "朝まで待つ話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-004-q2",
+        "tags": [
+          "read:inference"
         ],
         "difficulty": 3,
         "stem": "( 2 )",
         "choices": [
-          "recycle",
-          "waste",
-          "borrow",
-          "spill"
+          "shine only on the ground, not up into the sky",
+          "light up the area above the town",
+          "turn on automatically during the daytime",
+          "show visitors where the stars are"
         ],
         "answerIndex": 0,
-        "explanation": "「使わなかった水を ( ) ので、水が5パーセントですむ」という流れ。recycle = 再利用する。",
+        "explanation": "目的は夜空を守ること（星が見えやすくなる）。だから光は空ではなく地面だけを照らすようにした。",
         "distractorNotes": [
-          "recycle = 再利用する",
-          "waste = 無駄にする。水が少なくてすむ理由にならない",
-          "borrow = 借りる",
-          "spill = こぼす"
+          "光を地面だけに向ける。星が見えやすくなる",
+          "空を明るくしたら星が見えなくなる。目的と逆",
+          "昼間の話は出てこない",
+          "星の位置を教える話は出てこない"
         ]
       },
       {
-        "id": "g2-p-cloze-001-q3",
+        "id": "g2-p-cloze-004-q3",
         "tags": [
           "read:structure"
         ],
         "difficulty": 2,
         "stem": "( 3 )",
         "choices": [
-          "However",
           "For example",
-          "As a result",
-          "Similarly"
+          "Without this",
+          "Even so",
+          "Instead"
         ],
         "answerIndex": 0,
-        "explanation": "前の段落は長所、この段落は「完璧ではない」と短所を述べる。逆の内容をつなぐ However が入る。",
+        "explanation": "前の文の「観光資源になった」の具体例として、ある小さな村の話を出している。例を示す For example。",
         "distractorNotes": [
-          "However = しかし（逆接）",
-          "For example = たとえば。例は続かない",
-          "As a result = その結果。長所の結果が欠点にはならない",
-          "Similarly = 同様に。同じ向きの内容をつなぐ"
+          "For example = たとえば（具体例）",
+          "Without this = それがなければ。意味が通らない",
+          "Even so = それでも。前の内容と逆の流れではない",
+          "Instead = かわりに。前の内容を打ち消さない"
         ]
       }
     ]
   },
   {
-    "id": "g2-p-cloze-002",
+    "id": "g2-p-cloze-005",
     "section": "r-cloze",
     "format": "article",
-    "title": "Sharing Bicycles",
-    "body": "Bike-sharing systems have become popular in cities around the world. With a smartphone or a card, people can ( 1 ) a bicycle at one station, ride it to their destination, and leave it at another station. For short trips, this is often faster than waiting for a bus, and it costs very little. Some cities have more than ten thousand bicycles, and many workers now use them to get to the office.\n\nCities that have introduced bike sharing report several benefits. There are fewer cars on the road, so the air is cleaner. Many users also say that they feel healthier because they get more exercise ( 2 ) their daily routine. However, there is one problem. Some riders leave bicycles in front of shops or on sidewalks, which makes it hard for people to walk and for shop owners to do business.\n\nTo solve this problem, some cities now require riders to park bicycles only in special areas. Riders who do not follow the rule must pay an extra fee. Officials hope that these rules will ( 3 ) both the convenience of bike sharing and the safety of people walking on the street.",
-    "translation": "自転車シェアリングは世界中の都市で人気になっている。スマートフォンやカードを使えば、ある駅で自転車のロックを外し、目的地まで乗って、別の駅に置いていける。短い移動なら、バスを待つより速いことが多く、費用もごくわずかだ。1万台以上の自転車を持つ都市もあり、いまでは多くの会社員が通勤に使っている。\n\n自転車シェアリングを導入した都市は、いくつかの利点を報告している。道路を走る車が減るので、空気がきれいになる。また、毎日の生活の一部として運動量が増えるので、健康になったと感じる利用者も多い。しかし、問題が1つある。店の前や歩道に自転車を置きっぱなしにする人がいて、歩く人や店の経営者の迷惑になっているのだ。\n\nこの問題を解決するため、自転車を決められた場所にだけ駐輪するよう求める都市も出てきた。ルールを守らない利用者は追加料金を払わなければならない。当局は、こうしたルールが、自転車シェアリングの便利さと、通りを歩く人の安全の両方を守ることを期待している。",
-    "wordCount": 196,
+    "title": "Walking School Buses",
+    "body": "In some towns, children no longer have to be driven to school. Instead, they join a \"walking school bus.\" A group of children walks along a fixed route, with one adult leading at the front and another following at the back. Each group is organized by parents or volunteers from the neighborhood, who make a schedule so that every adult takes a turn. At certain corners along the way, other children ( 1 ), just like passengers getting on a bus. The name \"walking school bus\" was first used in Australia in the 1990s, and similar programs have since appeared in Europe and North America, although children in Japan have walked to school in groups for much longer.\n\nParents appreciate the system for several reasons. Many working parents cannot spare the time to accompany their children every morning, but by taking turns as leaders, they ( 2 ). Roads near schools also become safer, because fewer cars stop in front of the gate to drop off children, and drivers become more cautious when they see a large group walking on the sidewalk. Some towns even provide the groups with bright vests, so that drivers can see the children more easily.\n\nThe program offers several advantages for the children, too. They get some exercise before lessons begin, and many of them say that they can concentrate better in class. ( 3 ), a few schools report that fewer students arrive late. For many families, the daily walk has also become a pleasant time to talk with friends, and it helps children become aware of traffic dangers and learn to follow the rules.",
+    "translation": "町によっては、子どもたちはもう車で学校に送ってもらう必要がない。かわりに、「歩くスクールバス」に参加する。子どもたちのグループが決まった道を歩き、先頭に大人が1人、最後尾にもう1人の大人がつく。各グループは近所の保護者やボランティアが運営し、どの大人も順番に務められるよう予定表を作る。途中の決まった角では、バスに乗りこむ乗客のように、ほかの子どもたちが待っていてグループに加わる。「歩くスクールバス」という名前は1990年代にオーストラリアで初めて使われ、その後ヨーロッパや北米にも同様の取り組みが現れたが、日本の子どもたちは、もっと昔から集団で歩いて登校してきた。\n\n保護者はいくつかの理由でこの仕組みをありがたく思っている。働く親の多くは毎朝子どもに付き添う時間がないが、交代で先頭を務めることで、負担を他の家庭と分けあえる。学校の近くの道路も、校門の前で子どもを降ろす車が減り、運転手も歩道を歩く大きな集団を見ると注意深くなるので、安全になる。グループに明るい色のベストを用意する町もあり、運転手が子どもたちをより見つけやすくなっている。\n\nこの取り組みは子どもたちにも利点がいくつかある。授業が始まる前に少し運動でき、授業に集中しやすくなったと言う子も多い。さらに、遅刻する生徒が減ったと報告する学校もある。多くの家庭にとって、毎日の道のりは友達と話す楽しい時間にもなり、子どもたちが交通の危険に気づき、ルールを守ることを学ぶ助けにもなる。",
+    "wordCount": 271,
     "items": [
       {
-        "id": "g2-p-cloze-002-q1",
+        "id": "g2-p-cloze-005-q1",
         "tags": [
-          "read:vocab-in-context"
+          "read:inference"
         ],
         "difficulty": 2,
         "stem": "( 1 )",
         "choices": [
-          "unlock",
-          "install",
-          "publish",
-          "inherit"
+          "wait there and join the group",
+          "leave the group and walk home alone",
+          "run ahead of the leader alone",
+          "wait for their parents to pick them up"
         ],
         "answerIndex": 0,
-        "explanation": "駅にある自転車を使い始める動作。スマホやカードでロックを外す、の意味の unlock が合う。",
+        "explanation": "just like passengers getting on a bus（バスに乗りこむ乗客のように）が手がかり。角で待っていて、グループに加わる。",
         "distractorNotes": [
-          "unlock = 鍵(ロック)を外す",
-          "install = 設置する。利用者の動作ではない",
-          "publish = 出版する",
-          "inherit = 受け継ぐ"
+          "バス停のように待ってグループに加わる",
+          "「乗客」のたとえと逆",
+          "リーダーの先に1人で走る話は出てこない",
+          "車で送らない取り組みの話。迎えを待つ話は出てこない"
         ]
       },
       {
-        "id": "g2-p-cloze-002-q2",
+        "id": "g2-p-cloze-005-q2",
         "tags": [
-          "read:vocab-in-context"
+          "read:inference"
         ],
         "difficulty": 3,
         "stem": "( 2 )",
         "choices": [
-          "as part of",
-          "in need of",
-          "in spite of",
-          "on behalf of"
+          "share the burden with other families",
+          "spend a lot more money on bus tickets",
+          "give up their jobs for a while",
+          "ask the school to change its start time"
         ],
         "answerIndex": 0,
-        "explanation": "as part of ~ = ~の一部として。「毎日の習慣の一部として運動量が増える」という意味になる。",
+        "explanation": "働く親は付き添う時間がない → 交代で先頭を務める → 負担を他の家庭と分けあえる。taking turns と合う。",
         "distractorNotes": [
-          "as part of = ~の一部として",
-          "in need of = ~を必要として",
-          "in spite of = ~にもかかわらず。意味が通らない",
-          "on behalf of = ~の代わりに"
+          "交代で務めれば負担を分けあえる",
+          "バス代の話は出てこない",
+          "仕事をやめる話は出てこない",
+          "始業時間を変える話は出てこない"
         ]
       },
       {
-        "id": "g2-p-cloze-002-q3",
+        "id": "g2-p-cloze-005-q3",
         "tags": [
-          "read:vocab-in-context"
+          "read:structure"
         ],
         "difficulty": 3,
         "stem": "( 3 )",
         "choices": [
-          "protect",
-          "ruin",
-          "delay",
-          "ignore"
+          "In addition",
+          "Instead",
+          "Unfortunately",
+          "On the other hand"
         ],
         "answerIndex": 0,
-        "explanation": "ルールの目的は、便利さと安全の両方を守ること。protect = 守る。",
+        "explanation": "前の文は「運動できて、授業に集中しやすい」というよい点。さらに「遅刻が減った学校もある」と同じ向きの内容を足すので In addition。",
         "distractorNotes": [
-          "protect = 守る",
-          "ruin = だめにする。目的と逆",
-          "delay = 遅らせる",
-          "ignore = 無視する"
+          "In addition = さらに（つけ加え）",
+          "Instead = かわりに。前の内容を打ち消さない",
+          "Unfortunately = 残念ながら。よい話が続いている",
+          "On the other hand = 一方で。逆の内容ではない"
         ]
       }
     ]
   },
   {
-    "id": "g2-p-email-001",
+    "id": "g2-p-cloze-006",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Tiny Forests",
+    "body": "Cities have plenty of roads and buildings, but very few places where wildlife can live. To change this situation, some groups have started planting \"tiny forests.\" These are small plots about the size of a tennis court, where roughly six hundred young trees are packed closely together. The method was developed by a Japanese botanist named Akira Miyawaki, who believed that ( 1 ). He therefore chose only trees that had grown naturally in each area for thousands of years. He mixed many different kinds together instead of planting a single kind.\n\nBecause the young trees compete for sunlight, they grow upward quickly. A tiny forest can become dense within only a few years. These small forests ( 2 ). Birds and insects arrive first, and later small mammals follow. On hot summer days, the air near the trees is also cooler than the air above the nearby roads. The leaves also absorb some of the noise from traffic. Nearby residents can walk along a path beside the forest and watch the changes through the seasons.\n\nTiny forests are not a perfect answer to every problem, of course. They need to be watered and weeded during the first two years. Also, a small area cannot absorb as much carbon dioxide as a large natural forest. ( 3 ), many neighbors say that a little green space makes their daily lives more pleasant. Volunteers, including children from nearby schools, plant most of the forests themselves. Schools often use the forests as outdoor classrooms, where students count insects and measure the growth of the trees every month.",
+    "translation": "都市には道路や建物がたくさんあるが、野生生物が暮らせる場所はほとんどない。この状況を変えるため、「ミニ森」を植えはじめた団体がある。テニスコートほどの広さの区画に、約600本の若い木をぎっしり植える方法だ。この方法を考えたのは宮脇昭という日本の植物学者で、森はその土地に昔からある木でつくるべきだと考えていた。そのため、それぞれの地域に何千年も前から自然に生えてきた木だけを選び、1種類だけを植えるのではなく、多くの種類を混ぜて植えた。\n\n若い木は日光を取りあって上へ速く伸びるので、ミニ森は数年で茂る。こうした小さな森は、さまざまな野生生物が暮らせる場所になる。まず鳥や虫がやって来て、やがて小さな哺乳類も続く。暑い夏の日には、木の近くの空気は近くの道路の上の空気より涼しく、葉が交通の騒音を少し吸収してもくれる。近くの住民は森のそばの道を歩きながら、季節ごとの変化を眺められる。\n\nもちろん、ミニ森はあらゆる問題の完璧な答えではない。最初の2年は水やりと草取りが必要で、狭い場所では大きな自然の森ほど二酸化炭素を吸収できない。それでも、近所の人の多くは、ちょっとした緑の空間が毎日の生活を心地よくしてくれると言い、ミニ森の多くは、近くの学校の子どもを含むボランティアが自分たちで植えている。学校はミニ森を屋外の教室として使うことも多く、生徒が毎月、虫を数えたり木の成長を測ったりする。",
+    "wordCount": 265,
+    "items": [
+      {
+        "id": "g2-p-cloze-006-q1",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "( 1 )",
+        "choices": [
+          "a forest should be made of trees native to the area",
+          "tall buildings should be built next to every forest",
+          "trees grow best when they are kept far apart",
+          "gardens are more useful to wildlife than forests"
+        ],
+        "answerIndex": 0,
+        "explanation": "直後の He therefore chose only trees that had grown naturally in each area...（それで、その地域に自然に生えてきた木だけを選んだ）が根拠。その土地原産の木でつくる、が宮脇氏の考え。",
+        "distractorNotes": [
+          "その土地原産の木でつくる、が宮脇氏の考え",
+          "ビルの話は本文に出てこない",
+          "木は密集して植えるので逆",
+          "庭と森を比べる話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-006-q2",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "support a wide variety of wildlife",
+          "keep insects away from nearby homes",
+          "attract more traffic to the area",
+          "prevent birds from entering the city"
+        ],
+        "answerIndex": 0,
+        "explanation": "直後に Birds and insects arrive first（鳥や虫がまず来る）とある。さまざまな野生生物のすみかになる、とつながる。",
+        "distractorNotes": [
+          "鳥や虫が来る、という次の文とつながる",
+          "虫は来ると次の文が言っている",
+          "交通量の話は出てこない。むしろ騒音を吸収する",
+          "鳥が来ると次の文が言っている"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-006-q3",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 3 )",
+        "choices": [
+          "Even so",
+          "As a result",
+          "For example",
+          "In the same way"
+        ],
+        "answerIndex": 0,
+        "explanation": "前の文は欠点（水やりが必要・二酸化炭素の吸収が少ない）。後ろは「それでも近所の人は快適だと言う」と、欠点があっても好意的という流れ。Even so（それでも）。",
+        "distractorNotes": [
+          "Even so = それでも（欠点があっても）",
+          "As a result = その結果。欠点の結果が「快適」にはならない",
+          "For example = たとえば。例は続かない",
+          "In the same way = 同じように。同じ向きの内容をつなぐ"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-cloze-007",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Repair Cafes",
+    "body": "The first repair cafe opened in the Netherlands in 2009, and the idea has since spread to many countries. Repair cafes are especially popular with people who are worried about the amount of waste that modern society produces. At a repair cafe, people bring broken things such as small appliances, bicycles, and clothes, and volunteers help them ( 1 ). Some cafes open only once a month, while others are held every week in community centers. Visitors are welcome to sit down, have a cup of tea, and watch the work.\n\nMost of the volunteers are retired engineers, tailors, or simply people who enjoy fixing things. They bring their own equipment and do not ask for money, but visitors can leave a small donation if they wish. Many visitors discover that ( 2 ). A woman who brought in a broken radio, for example, was surprised to learn that the problem was only a loose wire, and the volunteer showed her how to fix it herself next time.\n\nRepair cafes also bring significant benefits to the environment. Every year, huge amounts of electronic waste are thrown away, and much of it ends up in places where it can pollute soil and water. ( 3 ), when a hair dryer is repaired instead of replaced, one fewer machine is discarded, and fewer new ones need to be produced. Some cafes also keep records of the items that they repair, which helps researchers understand why products break so often. The volunteers hope that people will start to think twice before they buy a new product.",
+    "translation": "最初の「修理カフェ」は2009年にオランダで開かれ、この発想はその後、多くの国に広まった。修理カフェは、現代社会が出すごみの量を心配する人にとくに人気がある。修理カフェでは、小型の電化製品や自転車や衣類などの壊れた物を持ちこむと、ボランティアが捨てずに直す手伝いをしてくれる。月に1回だけ開くカフェもあれば、公民館で毎週開くカフェもある。訪れた人はすわってお茶を飲みながら、作業を見ていてもよい。\n\nボランティアの多くは、引退した技術者や仕立て屋、あるいは単に物を直すのが好きな人たちだ。自分たちの道具を持ってきて、お金は求めないが、希望すれば訪問者は少額の寄付を置いていける。多くの訪問者が、修理は思っていたより簡単だと気づく。たとえば、壊れたラジオを持ちこんだ女性は、原因が配線のゆるみだけだと知って驚き、ボランティアは次は自分で直せるよう方法を教えた。\n\n修理カフェは環境にも役立つ。毎年大量の電子ごみが捨てられ、その多くは土や水を汚すおそれのある場所に行き着く。たとえば、ヘアドライヤーを買いかえずに直せば、捨てられる機械が1つ減り、新しく作る必要のある機械も減る。直した物を記録しているカフェもあり、研究者が製品がなぜこんなに壊れやすいのかを理解する助けになっている。ボランティアは、人々が新しい製品を買う前によく考えるようになることを望んでいる。",
+    "wordCount": 263,
+    "items": [
+      {
+        "id": "g2-p-cloze-007-q1",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 2,
+        "stem": "( 1 )",
+        "choices": [
+          "repair the items instead of throwing them out",
+          "replace the items with newer models",
+          "find cheaper copies of the items online",
+          "sell the items to a nearby shop for a better price"
+        ],
+        "answerIndex": 0,
+        "explanation": "壊れた物を持ちこみ、ボランティアが助ける。目的は、捨てずに直すこと（第3段落の環境の話ともつながる）。",
+        "distractorNotes": [
+          "捨てずに直すのが修理カフェの目的",
+          "新しい型に取りかえるのは、直すことの反対",
+          "ネットで安い物を探す話は出てこない",
+          "売る話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-007-q2",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "repairs are often easier than they expected",
+          "most old machines are simply not worth repairing",
+          "new products usually cost less than repairs",
+          "volunteers prefer to work without visitors"
+        ],
+        "answerIndex": 0,
+        "explanation": "直後の for example の例（壊れたラジオの原因が配線のゆるみだけで、簡単に直せた）が根拠。修理は思ったより簡単、とつながる。",
+        "distractorNotes": [
+          "例（ゆるんだ配線だけだった）が裏づける",
+          "例では簡単に直せている。逆",
+          "費用の比較は出てこない",
+          "ボランティアは作業を見せて教えている。逆"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-007-q3",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 2,
+        "stem": "( 3 )",
+        "choices": [
+          "For example",
+          "Instead",
+          "At first",
+          "On the other hand"
+        ],
+        "answerIndex": 0,
+        "explanation": "前の文の「電子ごみを減らせる」を、ヘアドライヤーの具体例で説明している。例を示す For example。",
+        "distractorNotes": [
+          "For example = たとえば（具体例）",
+          "Instead = かわりに。前の内容を打ち消さない",
+          "At first = 最初は。時間の順序の話ではない",
+          "On the other hand = 一方で。対比の内容ではない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-cloze-008",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "The Second Life of Clothes",
+    "body": "Fashion changes quickly, and many people buy new clothes every season. As a result, huge amounts of clothing that is still wearable are thrown away each year. To deal with this problem, secondhand shops and online sales sites have become popular, especially among young people who ( 1 ). Some shops sell clothes that were worn only once for a wedding or a school event, and these items can cost a small fraction of the new price. Some young shoppers even say that finding a rare old jacket is more exciting than buying a new one.\n\nSome companies have also begun to collect old clothes from their customers. The clothes are cleaned and sold again, or they are cut up and turned into new cloth. One sports brand even uses old jackets ( 2 ). Customers who bring in clothes often receive a discount on their next purchase, so the system also helps the company win loyal fans. Some stores repair torn clothes for free as well, so that customers do not need to replace them. Some designers have also begun to create new clothes from old fabric, and these unique pieces are sometimes sold at high prices.\n\nRecycling clothing is more difficult than recycling bottles or paper. Many garments are made from several kinds of fibers mixed together. ( 3 ), separating them takes a great deal of time and energy. Experts say that the most effective way to reduce waste is simply to wear each piece of clothing for as long as possible and to repair it when it is damaged.",
+    "translation": "流行は急速に変わり、季節ごとに新しい服を買う人が多い。その結果、まだ着られる服が大量に毎年捨てられている。この問題に対処するため、中古品店やネットの販売サイトが人気になっていて、とくに安く流行のおしゃれをしたい若者に支持されている。結婚式や学校行事で1回しか着られなかった服を売る店もあり、そうした服は新品のほんの一部の値段で買えることもある。珍しい古着のジャケットを見つけるほうが、新品を買うよりわくわくすると言う人もいる。\n\nお客から古着を回収しはじめた会社もある。服は洗浄されて再び売られるか、細かく切って新しい布にされる。あるスポーツ用品のブランドは、古いジャケットを新しいバッグや帽子を作る材料として使ってさえいる。服を持ちこんだお客は次の買い物で割引を受けられることが多く、この仕組みは会社が熱心なファンを増やすのにも役立っている。破れた服を無料で直し、新しく買わなくてすむようにする店もある。古い布から新しい服を作るデザイナーもいて、そうした一点物は高い値段で売られることもある。\n\n衣類のリサイクルは、びんや紙のリサイクルより難しい。多くの衣類は、数種類の繊維が混ざってできている。そのため、それを分けるには多くの時間とエネルギーがかかる。専門家は、ごみを減らす最も効果的な方法は、1着の服をできるだけ長く着て、傷んだら直すことだと言う。",
+    "wordCount": 263,
+    "items": [
+      {
+        "id": "g2-p-cloze-008-q1",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 2,
+        "stem": "( 1 )",
+        "choices": [
+          "want to look stylish without spending much",
+          "prefer to wear the same outfit every day",
+          "have never entered a clothing shop",
+          "hope to become famous fashion designers"
+        ],
+        "answerIndex": 0,
+        "explanation": "古着や中古品が人気になる理由。安く買える中古品は、おしゃれをしたいがお金をかけたくない人に合う。",
+        "distractorNotes": [
+          "おしゃれをしたいが、お金はかけたくない",
+          "毎日同じ服なら中古品は必要ない",
+          "服の店に入ったことがないなら中古品店にも行かない",
+          "デザイナーを目指す話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-008-q2",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "as material for making new bags and hats",
+          "as prizes for runners in its own races",
+          "as packaging for the orders that it ships",
+          "as decorations for its shops in winter"
+        ],
+        "answerIndex": 0,
+        "explanation": "前の文に「切って新しい布にする」とある。ジャケットを材料にして新しい製品を作る、とつながる。",
+        "distractorNotes": [
+          "布にして新製品の材料にする、という前の文とつながる",
+          "賞品にする話は出てこない",
+          "包装の話は出てこない",
+          "店の飾りにする話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-008-q3",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 3 )",
+        "choices": [
+          "As a result",
+          "For example",
+          "On the other hand",
+          "Instead"
+        ],
+        "answerIndex": 0,
+        "explanation": "前の文「繊維が混ざっている」が原因で、「分けるのに時間とエネルギーがかかる」が結果。原因と結果をつなぐ As a result。",
+        "distractorNotes": [
+          "As a result = その結果（原因→結果）",
+          "For example = たとえば。結果は例ではない",
+          "On the other hand = 一方で。対比の内容ではない",
+          "Instead = かわりに。前の内容を打ち消さない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-cloze-009",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Farms in the Sky",
+    "body": "In many large cities, it is becoming more and more difficult to find enough land to grow food. As a result, some companies have started to build vertical farms, tall buildings in which vegetables grow in layers under artificial lights. Because the plants are protected from bad weather, a vertical farm can produce fresh vegetables all year round, ( 1 ). Some of these farms are even built in old offices and empty warehouses, so they do not take land away from other uses.\n\nVertical farms also use far less water than ordinary farms. Some of them ( 2 ), so most of the water is used again instead of being lost. In addition, because the vegetables are grown close to the people who eat them, they do not have to be carried over long distances. This means that they reach shoppers fresher than vegetables that have traveled for several days, and a great deal of fuel is saved as well. Farms in the countryside often have to send their crops over long distances, but a vertical farm in the middle of a city can supply nearby restaurants and shops every morning.\n\nVertical farms have their own weaknesses, however. The lights and machines use a great deal of electricity, which makes the vegetables more expensive than those from ordinary farms. ( 3 ), researchers are now looking for ways to power vertical farms with solar energy. If they succeed, prices may drop, and fresh local vegetables could become available to many more people in the future.",
+    "translation": "多くの大都市では、食べ物を育てる十分な土地を見つけることがますます難しくなっている。その結果、垂直農場を作りはじめた会社がある。人工の光の下で野菜が何段にも重なって育つ高いビルのことだ。植物は悪天候から守られているので、垂直農場は外の季節に関係なく、一年じゅう新鮮な野菜を作れる。こうした農場の中には古いオフィスや空の倉庫の中に作られているものさえあり、ほかの用途の土地を奪うことはない。\n\n垂直農場は、ふつうの農場よりはるかに少ない水しか使わない。植物が吸収しなかった水を集める農場もあり、水の大部分が失われずに再び使われる。さらに、野菜は食べる人の近くで育てられるので、長い距離を運ぶ必要がない。そのため、何日もかけて運ばれてきた野菜よりも新鮮な状態で買い物客に届き、燃料も大幅に節約できる。田舎の農場は作物を遠くまで送らなければならないことが多いが、都会の真ん中にある垂直農場なら、近くのレストランや店に毎朝届けられる。\n\nしかし、垂直農場にも弱点がある。照明や機械が大量の電気を使うため、野菜はふつうの農場のものより高くなる。このため、研究者たちは今、垂直農場を太陽エネルギーで動かす方法を探している。それがうまくいけば値段が下がり、新鮮な地元の野菜が将来、もっと多くの人の手に届くようになるかもしれない。",
+    "wordCount": 256,
+    "items": [
+      {
+        "id": "g2-p-cloze-009-q1",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 2,
+        "stem": "( 1 )",
+        "choices": [
+          "regardless of the season outside",
+          "except during the hottest summer months",
+          "only when the sun is strong",
+          "depending on the amount of rain"
+        ],
+        "answerIndex": 0,
+        "explanation": "直前に protected from bad weather（悪天候から守られている）とある。外の天気や季節に左右されずに一年じゅう作れる、は regardless of ~。",
+        "distractorNotes": [
+          "regardless of ~ = ~に関係なく",
+          "暑い時期を除く、は all year round と合わない",
+          "太陽の光ではなく人工の光で育てる",
+          "雨の量に左右されるなら、守られているとは言えない"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-009-q2",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "collect the water that the plants do not absorb",
+          "release the extra water into nearby rivers",
+          "buy water from the city every day",
+          "move the plants outdoors when it rains"
+        ],
+        "answerIndex": 0,
+        "explanation": "直後に most of the water is used again（水の大部分が再び使われる）とある。植物が吸収しなかった水を集めて再利用する、とつながる。",
+        "distractorNotes": [
+          "余った水を集めて、また使う",
+          "川に流したら再利用にならない",
+          "買う話は、少ない水ですむ話と合わない",
+          "屋外に出す話は、悪天候から守る話と逆"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-009-q3",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 3 )",
+        "choices": [
+          "Therefore",
+          "Meanwhile",
+          "In contrast",
+          "Similarly"
+        ],
+        "answerIndex": 0,
+        "explanation": "前の文の「電気をたくさん使うので野菜が高くなる」が理由で、研究者が太陽エネルギーを探している。理由を受けて結果を述べる Therefore（そのため）。",
+        "distractorNotes": [
+          "Therefore = そのため（理由→結果）",
+          "Meanwhile = その間に。因果のつながりを表さない",
+          "In contrast = 対照的に。逆の内容ではない",
+          "Similarly = 同様に。同じ種類の欠点が続くわけではない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-cloze-010",
+    "section": "r-cloze",
+    "format": "article",
+    "title": "Sharing Bicycles",
+    "body": "Bike-sharing systems have become popular in cities around the world. With a smartphone or a card, people can unlock a bicycle at one station, ride it to their destination, and leave it at another station. In some cities, stations are located every few hundred meters, so riders can easily find a bicycle or a place to leave it. For short trips, this is often faster than waiting for a bus, and it costs very little. Some large cities now have thousands of bicycles, and many workers use them to ( 1 ). These bicycles are designed to be strong and simple, so that almost anyone can use them.\n\nCities that have introduced bike sharing report several benefits. There are fewer cars on the road, so the air is cleaner. Some local governments also hope that bike sharing will help them to avoid building expensive new roads. Many users also say that they feel healthier because they get more exercise ( 2 ). Some riders, however, leave bicycles in front of shops or on sidewalks, which makes it hard for people to walk and for owners to do business.\n\nTo solve this problem, some cities now require riders to park bicycles only in designated areas, and riders who ignore the rule must pay an extra fee. ( 3 ), special phone applications show users where free parking spaces are available, which makes it easier to follow the rules. Officials hope that these measures will help maintain both the convenience of bike sharing and the safety of people walking on the street.",
+    "translation": "自転車シェアリングは世界中の都市で人気になっている。スマートフォンやカードを使えば、ある駅で自転車のロックを外し、目的地まで乗って、別の駅に置いていける。数百メートルおきに駅がある都市もあり、自転車や返す場所を簡単に見つけられる。短い移動なら、バスを待つより速いことが多く、費用もごくわずかだ。いまでは数千台の自転車を持つ大都市もあり、多くの会社員が朝の混んだ電車を避けるために使っている。こうした自転車は丈夫で単純に作られていて、ほとんどだれでも使える。\n\n自転車シェアリングを導入した都市は、いくつかの利点を報告している。道路を走る車が減るので、空気がきれいになる。高い費用のかかる新しい道路を作らずにすむことを期待する自治体もある。また、毎日の生活の一部として運動量が増えるので、健康になったと感じる利用者も多い。しかし、店の前や歩道に自転車を置きっぱなしにする人がいて、歩く人や店の経営者の迷惑になっている。\n\nこの問題を解決するため、自転車を決められた場所にだけ駐輪するよう求める都市も出てきており、ルールを守らない利用者は追加料金を払わなければならない。同時に、空いている駐輪場所を示すスマートフォンのアプリもあり、ルールを守りやすくなっている。当局は、こうした対策が、自転車シェアリングの便利さと、通りを歩く人の安全の両方を保つことを期待している。",
+    "wordCount": 260,
+    "items": [
+      {
+        "id": "g2-p-cloze-010-q1",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 2,
+        "stem": "( 1 )",
+        "choices": [
+          "avoid the crowded trains in the morning rush",
+          "ride long distances with their friends on weekends",
+          "travel to the countryside much more quickly",
+          "get to the office without paying anything"
+        ],
+        "answerIndex": 0,
+        "explanation": "前の文で「バスを待つより速い・安い」と、通勤に便利な話をしている。通勤の会社員が朝の混んだ電車を避けるために使う、が自然。",
+        "distractorNotes": [
+          "混んだ電車を避けるために使う",
+          "前の文は For short trips（短い移動）の話。週末の長距離の話は出てこない",
+          "短い移動の話。田舎へ行く話は出てこない",
+          "費用は very little（ごくわずか）。ただではない"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-010-q2",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "( 2 )",
+        "choices": [
+          "as part of their daily routine",
+          "in spite of the cleaner city air",
+          "in need of a better schedule",
+          "on behalf of the local shops"
+        ],
+        "answerIndex": 0,
+        "explanation": "as part of ~ = ~の一部として。「毎日の生活の一部として運動量が増える」という意味になる。",
+        "distractorNotes": [
+          "as part of ~ = ~の一部として",
+          "in spite of ~ = ~にもかかわらず。意味が通らない",
+          "in need of ~ = ~を必要として",
+          "on behalf of ~ = ~の代わりに"
+        ]
+      },
+      {
+        "id": "g2-p-cloze-010-q3",
+        "tags": [
+          "read:structure"
+        ],
+        "difficulty": 3,
+        "stem": "( 3 )",
+        "choices": [
+          "At the same time",
+          "In contrast",
+          "As a result",
+          "For instance"
+        ],
+        "answerIndex": 0,
+        "explanation": "前の文の罰金という対策に、アプリという別の対策を並べている。同じ時期に別のこともしているので At the same time（同時に）。",
+        "distractorNotes": [
+          "At the same time = 同時に（別の対策を並べる）",
+          "In contrast = 対照的に。対比の内容ではない",
+          "As a result = その結果。アプリは罰金の結果ではない",
+          "For instance = たとえば。アプリは罰金の例ではない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-email-005",
     "section": "r-passage",
     "format": "email",
     "title": "River Clean-up Day",
-    "body": "From: Rachel Moore\nTo: Daniel Kim\nDate: November 2\nSubject: River Clean-up Day\n\nDear Daniel,\n\nThank you for signing up for this year's River Clean-up Day. We now have more than eighty volunteers, which is twice as many as last year!\n\nI need to tell you about one change. The event was going to be held at Maple Park, but the heavy storm last month left a lot of trash along the Hirose River, so we have decided to clean the riverside instead. We will meet at the Greenhill Community Center at nine o'clock on Saturday, November 20, and then take a bus to the river together. The bus will bring us back by two o'clock.\n\nPlease wear clothes that you do not mind getting dirty and bring your own water bottle. We will give you gloves and bags. Lunch will be provided by the Sunrise Bakery, and we would like to make sure that nobody gets food that they cannot eat. So please let me know by November 15 if you have any food allergies.\n\nThank you again for your help. I am looking forward to seeing you on the 20th.\n\nSincerely,\nRachel Moore\nGreenhill Community Center",
-    "translation": "差出人：レイチェル・ムーア／宛先：ダニエル・キム／日付：11月2日／件名：川の清掃デー\n\nダニエルさん\n\n今年の川の清掃デーに申し込んでくださり、ありがとうございます。ボランティアは80人以上になり、昨年の2倍です！\n\n1つ変更をお伝えしなければなりません。行事はメイプル公園で行う予定でしたが、先月の大嵐でヒロセ川沿いに多くのごみが残ったため、代わりに川辺を掃除することにしました。11月20日（土）の9時にグリーンヒル・コミュニティセンターに集まり、みんなでバスに乗って川へ向かいます。バスは2時までに戻ってきます。\n\n汚れてもよい服装で、水筒を持ってきてください。手袋とごみ袋はこちらで用意します。昼食はサンライズ・ベーカリーが提供してくれます。食べられない物が出ないようにしたいので、食物アレルギーがある場合は11月15日までに知らせてください。\n\nあらためて、ご協力ありがとうございます。20日にお会いするのを楽しみにしています。\n\nグリーンヒル・コミュニティセンター　レイチェル・ムーア",
-    "wordCount": 198,
+    "body": "From: Rachel Moore <rmoore@greenhill-cc.org>\nTo: Daniel Kim <dkim@mapleridge-mail.net>\nDate: November 2\nSubject: River Clean-up Day\n\nDear Daniel,\n\nThank you for registering for this year's River Clean-up Day. We now have more than eighty volunteers, which is twice as many as last year, and I am delighted by the enthusiasm that people in our community have shown.\n\nI must inform you about one important change. The event was originally going to be held in Maple Park, but a heavy rainstorm last month left a large amount of trash along the Willow River, so we have decided to clean the riverside instead. We will gather at the Greenhill Community Center at nine o'clock on November 20, and then we will travel together to the river by bus. The bus will bring everyone back by two o'clock in the afternoon.\n\nPlease wear clothes that you do not mind getting dirty and bring your own water bottle. We will supply gloves and bags. Lunch will be provided by the Sunrise Bakery, and we want to make sure that nobody receives food that he or she cannot eat. Therefore, please let me know by November 15 if you have any food allergies.\n\nThank you again for your support. I am looking forward to seeing you on the 20th.\n\nSincerely,\nRachel Moore\nGreenhill Community Center",
+    "translation": "差出人：レイチェル・ムーア／宛先：ダニエル・キム／日付：11月2日／件名：川の清掃デー\n\nダニエルさん\n\n今年の川の清掃デーに登録してくださり、ありがとうございます。ボランティアは80人を超え、昨年の2倍になりました。地域の皆さんの熱意に、うれしく思っています。\n\n1つ大切な変更をお知らせしなければなりません。行事はもともとメイプル公園で行う予定でしたが、先月の大雨でウィロー川沿いに大量のごみが残ったため、かわりに川辺を掃除することにしました。11月20日の9時にグリーンヒル・コミュニティセンターに集合し、みんなでバスに乗って川へ向かいます。バスは午後2時までに全員を連れて戻ります。\n\n汚れてもよい服装で、水筒を持ってきてください。手袋とごみ袋はこちらで用意します。昼食はサンライズ・ベーカリーが提供してくれます。食べられない物が出ないようにしたいので、食物アレルギーがある場合は11月15日までに知らせてください。\n\nあらためて、ご協力ありがとうございます。20日にお会いするのを楽しみにしています。\n\nグリーンヒル・コミュニティセンター　レイチェル・ムーア",
+    "wordCount": 219,
     "items": [
       {
-        "id": "g2-p-email-001-q1",
+        "id": "g2-p-email-005-q1",
         "tags": [
           "read:main-idea"
         ],
         "difficulty": 1,
         "stem": "Why did Rachel Moore write to Daniel?",
         "choices": [
-          "To give him information about an event he has joined.",
-          "To ask him to lead a group of volunteers.",
-          "To thank him for cleaning the river last year.",
-          "To invite him to a party at the bakery."
+          "To explain a change in the plan for an event he will join.",
+          "To ask him to take charge of the group of volunteers.",
+          "To thank him for the help he gave at last year's event.",
+          "To invite him to the opening of a new bakery near the river."
         ],
         "answerIndex": 0,
-        "explanation": "冒頭の Thank you for signing up と、そのあとの変更・集合場所・持ち物の連絡から、参加するダニエルに行事の情報を伝えるメールだと分かる。",
+        "explanation": "最初に登録へのお礼を述べ、そのあと I must inform you about one important change（大切な変更を知らせる）と、場所の変更や集合の連絡を書いている。",
         "distractorNotes": [
-          "参加者への連絡という目的に合う",
+          "参加するイベントの計画変更を知らせる",
           "リーダーを頼む内容は書かれていない",
-          "去年の話は出てこない。80人の話は昨年との人数の比較だけ",
-          "パン屋は昼食を出すだけで、パーティーへの招待ではない"
+          "去年の話は、人数を比べるだけで出てくる。お礼の目的ではない",
+          "パン屋は昼食を出すだけで、開店の招待ではない"
         ]
       },
       {
-        "id": "g2-p-email-001-q2",
+        "id": "g2-p-email-005-q2",
         "tags": [
           "read:detail"
         ],
         "difficulty": 2,
-        "stem": "What has changed about the event?",
+        "stem": "Regarding the River Clean-up Day,",
         "choices": [
-          "The place where the volunteers will work.",
-          "The day on which the event will be held.",
-          "The time when the bus will come back.",
-          "The number of volunteers who can join."
+          "the work will now be done somewhere other than the park.",
+          "the number of volunteers is lower than it was last year.",
+          "each volunteer must buy gloves and bags before the day.",
+          "the bus will leave the river early in the morning."
         ],
         "answerIndex": 0,
-        "explanation": "第2段落に The event was going to be held at Maple Park ... decided to clean the riverside instead とある。変わったのは作業する場所。",
+        "explanation": "第2段落に、行事はもともとメイプル公園で行う予定だったが、かわりに川辺を掃除すると決めたとある。",
         "distractorNotes": [
-          "公園から川辺へ。これが変更点",
-          "日付は11月20日のまま。変更とは書かれていない",
-          "戻りの時刻は2時までと書かれているだけで、変更とは書かれていない",
-          "ボランティアが増えたのは事実だが、「参加できる人数」の変更ではない"
+          "公園ではなく川辺で行う",
+          "ボランティアは去年の2倍に増えた",
+          "手袋とごみ袋は主催者が用意する",
+          "バスは午後2時までに戻る。川を朝早く出るのではない"
         ]
       },
       {
-        "id": "g2-p-email-001-q3",
+        "id": "g2-p-email-005-q3",
         "tags": [
-          "read:detail"
+          "read:inference"
         ],
-        "difficulty": 2,
-        "stem": "What does Rachel ask Daniel to do by November 15?",
+        "difficulty": 3,
+        "stem": "Why does Rachel mention the Sunrise Bakery?",
         "choices": [
-          "Tell her about any food he cannot eat.",
-          "Bring gloves and bags to the river.",
-          "Buy a ticket for the bus.",
-          "Find more volunteers for the event."
+          "To lead into her request about food allergies.",
+          "To suggest that Daniel should buy his lunch there.",
+          "To tell Daniel that the event will begin at the bakery.",
+          "To ask Daniel to carry the lunch to the river by bus."
         ],
         "answerIndex": 0,
-        "explanation": "第3段落の最後に please let me know by November 15 if you have any food allergies とある。",
+        "explanation": "第3段落で、昼食はサンライズ・ベーカリーが出す、食べられない物が出ないようにしたい、だからアレルギーを知らせてほしい、とつなげている。",
         "distractorNotes": [
-          "アレルギーなど食べられない物を知らせる",
-          "手袋とごみ袋はレイチェルの側が用意する",
-          "バスのチケットの話は出てこない",
-          "ボランティア集めの依頼は書かれていない"
+          "昼食の話は、アレルギーを知らせてほしいという依頼の前置き",
+          "昼食は提供される。買う話は出てこない",
+          "集合場所はコミュニティセンター",
+          "昼食を運ぶ依頼は出てこない"
         ]
       }
     ]
   },
   {
-    "id": "g2-p-article-001",
+    "id": "g2-p-email-002",
     "section": "r-passage",
-    "format": "article",
-    "title": "Bees on the Roof",
-    "body": "In recent years, more and more people in big cities have started keeping bees on the roofs of tall buildings. At first, many people thought that this was a strange idea, because bees need flowers, and cities seem to have very few of them. However, beekeepers have found that bees living in cities often do better than those living in the countryside.\n\nOne reason is that the countryside is changing. In many farming areas, large fields grow only one kind of crop, so bees can find food only during a short period of the year. Farmers also use chemicals to protect their crops, and these chemicals can harm bees. In contrast, cities have parks, gardens, and trees along the streets, and different kinds of flowers bloom from early spring to late autumn. City gardeners also tend to use fewer of these chemicals.\n\nRooftop honey is becoming popular, too. A hotel in one large city sells honey made by bees living on its roof, and the small jars often sell out within a few days. Some restaurants keep their own bees and use the honey in their dishes, which attracts customers who want to eat food produced close to where they live.\n\nStill, experts say that the number of hives should not grow too quickly. If too many bees live in one area, they may not find enough flowers, and wild bees, which are also important for nature, may lose their food. Because of this, some cities now ask beekeepers to register their hives, and they are also planting more flowers to support all kinds of bees.",
-    "translation": "近年、大都市では、高いビルの屋上でミツバチを飼い始める人がどんどん増えている。最初は、ミツバチには花が必要なのに都会には花がほとんどなさそうだと思われ、多くの人が奇妙な考えだと感じた。しかし養蜂家たちは、都会で暮らすミツバチのほうが、田舎で暮らすものよりうまくいくことが多いと気づいた。\n\n理由の1つは、田舎が変わりつつあることだ。多くの農業地域では、広い畑で1種類の作物だけが育てられるので、ミツバチが食べ物を見つけられるのは1年のうちの短い期間だけになる。農家は作物を守るために化学薬品も使い、それがミツバチに害を与えることがある。対照的に、都会には公園や庭、街路樹があり、早春から晩秋までさまざまな花が咲く。都会の庭師はこうした薬品をあまり使わない傾向もある。\n\n屋上のはちみつも人気になりつつある。ある大都市のホテルは屋上のミツバチが作ったはちみつを売っていて、小さなびんは数日で売り切れることが多い。自分たちでミツバチを飼い、はちみつを料理に使うレストランもあり、近くで作られた物を食べたい客を引きつけている。\n\nそれでも専門家は、巣箱の数をあまり急に増やすべきではないと言う。1つの地域にミツバチが多すぎると、十分な花が見つからず、自然にとって大切な野生のハチが食べ物を失うかもしれないからだ。このため、養蜂家に巣箱の登録を求める都市もあり、あらゆる種類のハチを支えるために花をもっと植えている。",
-    "wordCount": 266,
+    "format": "email",
+    "title": "School trip in October",
+    "body": "From: Emily Parker <eparker@greenfield-ms.edu>\nTo: Hiroshi Tanaka <htanaka@kitamachi-museum.org>\nDate: June 9\nSubject: School trip in October\n\nDear Mr. Tanaka,\n\nI am a science teacher at Greenfield Middle School, and I am writing to inquire about a school trip to your museum this October. One of my students visited your planetarium with her family last year, and she was so impressed by the show that she talked about it for weeks. After hearing her story, I decided that I would like to take my whole class there.\n\nThere will be forty-two students in our group, and we hope to arrive at approximately ten in the morning. We would like to join a guided tour and watch a planetarium show. If possible, we would also like to participate in one of the hands-on workshops that are introduced on your website. However, our bus must leave the museum by two o'clock because the driver has another job in the evening. Currently, we are considering several dates in October, so it would be helpful if you could tell me which dates are available.\n\nI have two more questions. First, is there a room where students can eat their lunches if it rains? Second, does the price of the tour change for groups of more than forty people? Could you reply by the end of this month? I need to show the information to our principal before she can approve the trip.\n\nThank you very much for your help.\n\nSincerely,\nEmily Parker\nGreenfield Middle School",
+    "translation": "差出人：エミリー・パーカー／宛先：ヒロシ・タナカ／日付：6月9日／件名：10月の遠足\n\nタナカ様\n\n私はグリーンフィールド中学校の理科の教師です。今年の10月に貴館へ遠足に行けないかとお問い合わせしています。私の生徒の1人が昨年、家族とプラネタリウムを訪れ、そのショーにとても感動して、何週間もそのことを話していました。その話を聞いて、クラス全員を連れて行きたいと思いました。\n\n団体は42人で、午前10時ごろに到着したいと考えています。ガイド付きのツアーに参加し、プラネタリウムのショーを見たいです。可能であれば、貴館のウェブサイトで紹介されている体験ワークショップの1つにも参加したいと思います。ただし、運転手が夕方に別の仕事があるため、バスは2時までに博物館を出発しなければなりません。現在、10月の候補日をいくつか考えているので、空いている日を教えていただけると助かります。\n\nあと2つ質問があります。まず、雨の場合に生徒がお弁当を食べられる部屋はありますか。次に、40人を超える団体では、ツアーの料金は変わりますか。今月末までにお返事をいただけますでしょうか。校長が遠足を承認する前に、この情報を見せる必要があるのです。\n\nご協力に心から感謝いたします。\n\nエミリー・パーカー\nグリーンフィールド中学校",
+    "wordCount": 250,
     "items": [
       {
-        "id": "g2-p-article-001-q1",
+        "id": "g2-p-email-002-q1",
         "tags": [
           "read:detail"
         ],
         "difficulty": 1,
-        "stem": "Why did many people think that keeping bees in cities was strange at first?",
+        "stem": "What is one reason Emily Parker wants to take her class to the museum?",
         "choices": [
-          "They believed that cities do not have enough flowers.",
-          "They thought that bees could not live in tall buildings.",
-          "They were afraid that bees would sting people.",
-          "They knew that honey from cities does not taste good."
+          "One of her students enjoyed an earlier visit there.",
+          "A worker at the museum recommended it to her.",
+          "Her school is located right next to the museum, so it is easy to reach.",
+          "The museum gives lower prices to groups of science teachers."
         ],
         "answerIndex": 0,
-        "explanation": "第1段落に bees need flowers, and cities seem to have very few of them とある。花が少なそうだから奇妙に思われた。",
+        "explanation": "第1段落に、生徒の1人が昨年プラネタリウムを訪れ、そのショーについて何週間も話していたとある。それを聞いて連れて行きたいと思った。",
         "distractorNotes": [
-          "花が少ないと思われていた",
-          "高いビルに住めないとは書かれていない",
-          "刺される心配は出てこない",
-          "味の話は出てこない"
+          "前に訪れた生徒が楽しんだことがきっかけ",
+          "博物館の人から聞いた話は書かれていない",
+          "学校の場所は書かれていない",
+          "料金の割引は書かれていない"
         ]
       },
       {
-        "id": "g2-p-article-001-q2",
+        "id": "g2-p-email-002-q2",
         "tags": [
           "read:detail"
         ],
         "difficulty": 2,
-        "stem": "What is one problem for bees in farming areas?",
+        "stem": "Regarding the trip that Emily is planning,",
         "choices": [
-          "Chemicals used to protect crops can harm them.",
-          "Too many kinds of flowers bloom at the same time.",
-          "Farmers keep too many hives in their fields.",
-          "There are no trees to give them shade."
+          "the group has to leave the museum early in the afternoon.",
+          "it will be held on a weekend during the autumn holidays.",
+          "the students will see only the planetarium show.",
+          "fewer than forty students will be able to take part."
         ],
         "answerIndex": 0,
-        "explanation": "第2段落に、農家が使う chemicals can harm bees とある。",
+        "explanation": "第2段落に、バスは2時までに博物館を出発しなければならないとある。午後の早い時間に切り上げる。",
         "distractorNotes": [
-          "薬品が害になる",
-          "畑は1種類の作物が中心で、花の種類は少ない",
-          "巣箱が多すぎるのは都会の話で、農業地域の問題としては書かれていない",
-          "日陰の話は出てこない"
+          "2時までにバスが出発する",
+          "週末に行くとは書かれていない",
+          "ガイドツアーや体験ワークショップも希望している",
+          "参加者は42人で、40人より多い"
         ]
       },
       {
-        "id": "g2-p-article-001-q3",
+        "id": "g2-p-email-002-q3",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 2,
+        "stem": "Why does Emily mention her principal?",
+        "choices": [
+          "To explain why she wants a reply so soon.",
+          "To say that the principal has already approved the trip.",
+          "To ask the museum to send a letter to the principal.",
+          "To show that the principal will join the guided tour."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落の最後に、校長が承認する前にこの情報を見せる必要がある、とある。そのために月末までの返事を頼んでいる。",
+        "distractorNotes": [
+          "校長に見せる情報が必要だから、返事を急いでいる",
+          "承認はこれから。すでに承認とは書かれていない",
+          "校長への手紙の話は出てこない",
+          "校長が参加する話は出てこない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-email-003",
+    "section": "r-passage",
+    "format": "email",
+    "title": "Your volunteer application",
+    "body": "From: Sarah Miller <smiller@harbortown-library.org>\nTo: Kenji Mori <kmori@hightide-mail.net>\nDate: March 3\nSubject: Your volunteer application\n\nDear Kenji,\n\nThank you for applying to be a volunteer at Harbor Town Library. We received a large number of applications this spring, and I am happy to tell you that we would like you to join our Story Time program. In this program, volunteers read picture books to children between the ages of four and seven. The sessions run from ten to eleven thirty on Saturday mornings, and you would assist once or twice a month.\n\nBefore you start, there are two things you need to do. First, please attend our training meeting on March 20 in the main hall of the library. We will explain how to choose suitable books and how to keep the children's attention. Second, because you are under eighteen, we need a form signed by one of your parents. You can download it from our website or pick it up at the front desk.\n\nI should also mention that you will not be alone at first. For the first month, you will read together with an experienced volunteer. Mr. Ellis, who has led the program for six years, will sit beside you and give advice. If you cannot attend the meeting on March 20, please let me know by March 10 so that we can arrange another time.\n\nBest regards,\nSarah Miller\nVolunteer Coordinator\nHarbor Town Library",
+    "translation": "差出人：サラ・ミラー／宛先：ケンジ・モリ／日付：3月3日／件名：ボランティアのお申し込みについて\n\nケンジさん\n\nハーバータウン図書館のボランティアにお申し込みいただき、ありがとうございます。今春は多くの応募がありましたが、あなたにはぜひ「お話の時間」のプログラムに加わっていただきたく、うれしくご連絡します。このプログラムでは、ボランティアが4歳から7歳の子どもたちに絵本を読み聞かせます。活動は土曜日の午前10時から11時30分までで、月に1、2回お手伝いいただきます。\n\n始める前に、していただくことが2つあります。1つ目は、3月20日に図書館のメインホールで行う研修会に出席してください。ふさわしい本の選び方や、子どもたちの注意を引きつけ続ける方法を説明します。2つ目は、あなたは18歳未満なので、保護者のどなたかの署名がある書類が必要です。書類はウェブサイトからダウンロードするか、受付で受け取れます。\n\n最初は1人ではないことも伝えておきます。最初の1か月は、経験のあるボランティアといっしょに読みます。このプログラムを6年間まとめてきたエリスさんが、隣にすわってアドバイスをします。3月20日の研修会に出られない場合は、別の日を決められるよう、3月10日までに知らせてください。\n\nボランティア担当　サラ・ミラー\nハーバータウン図書館",
+    "wordCount": 238,
+    "items": [
+      {
+        "id": "g2-p-email-003-q1",
+        "tags": [
+          "read:main-idea"
+        ],
+        "difficulty": 1,
+        "stem": "Why did Sarah Miller write to Kenji?",
+        "choices": [
+          "To tell him that he has been accepted and what to do next.",
+          "To ask him to teach young children how to read and write.",
+          "To invite him to a party for all of the library's staff.",
+          "To inform him that the Story Time program has been canceled."
+        ],
+        "answerIndex": 0,
+        "explanation": "冒頭で、申し込みへのお礼と、プログラムに加わってほしいという結果を伝え、そのあと研修会や書類など次にすることを説明している。",
+        "distractorNotes": [
+          "採用の知らせと、このあとの流れ",
+          "読み方を教える依頼ではなく、絵本を読み聞かせる活動",
+          "パーティーの招待は書かれていない",
+          "中止の連絡ではなく、参加への歓迎"
+        ]
+      },
+      {
+        "id": "g2-p-email-003-q2",
         "tags": [
           "read:detail"
         ],
         "difficulty": 2,
-        "stem": "What is true about the honey made on rooftops?",
+        "stem": "Regarding the training meeting on March 20,",
         "choices": [
-          "Small jars of it can sell out in a few days.",
-          "It is cheaper than honey from the countryside.",
-          "It is sold only to restaurants.",
-          "It is made from only one kind of flower."
+          "volunteers will be shown how to pick books for the children.",
+          "all of the children's parents will be asked to attend as well.",
+          "it will take place on the morning of the first Saturday session.",
+          "the volunteers will practice reading to children there."
         ],
         "answerIndex": 0,
-        "explanation": "第3段落に the small jars often sell out within a few days とある。",
+        "explanation": "第2段落に、研修会では、ふさわしい本の選び方と、子どもたちの注意を引きつけ続ける方法を説明するとある。",
         "distractorNotes": [
-          "数日で売り切れることが多い",
+          "本の選び方と、子どもを飽きさせない方法を学ぶ",
+          "保護者を招く話は出てこない。親が必要なのは署名だけ",
+          "日にちは3月20日。最初の活動日とは書かれていない",
+          "実際に読む練習をするとは書かれていない"
+        ]
+      },
+      {
+        "id": "g2-p-email-003-q3",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 2,
+        "stem": "Why does Sarah mention Mr. Ellis?",
+        "choices": [
+          "To tell Kenji that he will get help when he begins.",
+          "To say that Mr. Ellis will take Kenji's place next month.",
+          "To explain who will sign the form for Kenji.",
+          "To ask Kenji to meet Mr. Ellis before the training."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落で、最初は1人ではなく、経験のあるエリスさんが隣で助言する、と書いている。始めたばかりでも助けがあると伝えるため。",
+        "distractorNotes": [
+          "始めるときは助けてもらえると伝えるため",
+          "エリスさんが代わる話は出てこない",
+          "署名するのは保護者",
+          "事前に会う話は出てこない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-email-004",
+    "section": "r-passage",
+    "format": "email",
+    "title": "Invitation to our Career Day",
+    "body": "From: Yoko Ota <yota@seasidehighschool.edu>\nTo: Rachel Evans <revans@bluewave-research.org>\nDate: September 14\nSubject: Invitation to our Career Day\n\nDear Dr. Evans,\n\nMy name is Yoko Ota, and I teach English at Seaside High School. Every November, our school holds a Career Day for second-year students, which gives them an opportunity to learn about a variety of jobs, and this year we would like to ask you to be one of our guest speakers. I read an interview with you in a magazine last month, and I was impressed by your research on protecting sea animals. Many of our students are enthusiastic about marine science, so I believe that your story would be a great encouragement to them.\n\nThe event will take place on November 18 in our school hall. We hope you can give a thirty-minute talk starting at one o'clock, followed by a short time for questions. Approximately one hundred and twenty students will attend. The hall has a large screen and a microphone, but if you need any other equipment, please let us know as soon as possible so that we can prepare it.\n\nUnfortunately, our school cannot pay a speaker's fee because the budget for the event is very small. However, we would be glad to pay for your train fare from the city to our school. Please send us the receipt after the event.\n\nI would be very grateful if you could give us your answer by the end of September.\n\nSincerely,\nYoko Ota\nSeaside High School",
+    "translation": "差出人：ヨウコ・オオタ／宛先：レイチェル・エバンス／日付：9月14日／件名：キャリアデーへのご招待\n\nエバンス博士\n\nシーサイド高校で英語を教えているオオタヨウコと申します。毎年11月に、本校では2年生のためにキャリアデーを開き、さまざまな職業について学ぶ機会を設けており、今年は博士にゲストスピーカーのお1人をお願いしたいと考えています。先月、雑誌で博士のインタビューを読み、海の生き物を守る研究に感銘を受けました。本校には海洋科学に熱心な生徒が多く、博士のお話は大きな励みになると信じています。\n\n行事は11月18日に本校の講堂で行います。1時から30分ほどお話しいただき、そのあと少し質問の時間を取る予定です。参加する生徒は約120人です。講堂には大きなスクリーンとマイクがありますが、ほかに必要な機器がありましたら、準備できるよう、なるべく早くお知らせください。\n\nあいにく、行事の予算がとても少ないため、本校は講演料をお支払いできません。ただ、市内から本校までの電車代はお支払いしたいと考えています。行事のあとに領収書をお送りください。\n\n9月末までにお返事をいただけましたら幸いです。\n\nシーサイド高校　オオタヨウコ",
+    "wordCount": 250,
+    "items": [
+      {
+        "id": "g2-p-email-004-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 1,
+        "stem": "Why does Yoko Ota want Dr. Evans to speak at her school?",
+        "choices": [
+          "She believes her students will be inspired by the talk.",
+          "She wants Dr. Evans to judge a science contest at school.",
+          "She hopes Dr. Evans will offer jobs to a few of the students.",
+          "She hopes to start a new school club for sea animals."
+        ],
+        "answerIndex": 0,
+        "explanation": "第1段落の最後に、海が好きな生徒が多いので、博士の話は great encouragement になると書かれている。",
+        "distractorNotes": [
+          "生徒が励まされると考えている",
+          "科学コンテストの審査を頼む話は出てこない",
+          "就職の世話の話は出てこない",
+          "新しいクラブの話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-email-004-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Regarding the Career Day,",
+        "choices": [
+          "the speaker will give a talk and then take questions.",
+          "the students will have lunch together with the guest speakers.",
+          "the event will be held in the school's gym at noon.",
+          "only a few students will be able to attend the talk."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落に、30分ほどの話のあと、少し質問の時間を取る予定とある。",
+        "distractorNotes": [
+          "話のあとに質問の時間がある",
+          "昼食の話は出てこない",
+          "場所は講堂で、1時から",
+          "参加する生徒は約120人"
+        ]
+      },
+      {
+        "id": "g2-p-email-004-q3",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 2,
+        "stem": "Why does Yoko mention the budget for the event?",
+        "choices": [
+          "To explain why the school cannot pay for the talk itself.",
+          "To show that the event is held only once every few years.",
+          "To ask Dr. Evans to bring her own screen to the hall.",
+          "To say that the school plans to ask other speakers."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落に、行事の予算がとても少ないので講演料は払えない、とある。予算の話は、講演料を払えない理由。",
+        "distractorNotes": [
+          "予算が少ないので、講演料は払えないという説明",
+          "毎年11月に開く行事。数年に一度ではない",
+          "スクリーンは講堂にある",
+          "ほかの講演者の話は、ここでは出てこない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-article-005",
+    "section": "r-passage",
+    "format": "article",
+    "title": "Bees on the Roof",
+    "body": "In recent years, more and more people in large cities have started keeping bees on the roofs of tall buildings. At first, many people thought that this was a strange idea. Bees need flowers, and cities seem to have very few of them. However, beekeepers have discovered that urban bees can find a surprising variety of food. Some studies suggest that city colonies can be as healthy as those in the countryside.\n\nOne reason is that rural areas are changing. In many farming regions, enormous fields grow only one kind of crop. As a result, bees can find food only during a short period of the year. Farmers also use chemicals to protect their crops, and some of these chemicals can harm bees. In contrast, cities have parks, gardens, and trees along the streets, and different kinds of flowers bloom from early spring to late autumn. City gardeners also tend to use fewer chemicals.\n\nRooftop honey is becoming popular, too. A hotel in one large city sells honey produced by bees living on its roof. The small jars often sell out within a few days. Some restaurants keep their own bees and use the honey in their dishes. This attracts customers who want to eat food produced close to where they live. A few beekeepers even offer classes, where office workers learn how to look after a hive during their lunch breaks. Many of them say that the hobby helps them relax.\n\nStill, experts warn that the number of hives should not grow too quickly. If too many bees live in one area, they may not find enough flowers. Wild bees, which are also important for nature, may lose their food. Because of this, some cities now ask beekeepers to register their hives. They are also planting more flowers to support all kinds of bees. Experts say that the best approach is to keep a balance between the needs of honey bees and wild species, so that the city's ecosystem remains healthy.",
+    "translation": "近年、大都市では、高いビルの屋上でミツバチを飼い始める人がどんどん増えている。最初は、ミツバチには花が必要なのに都会には花がほとんどなさそうだと思われ、多くの人が奇妙な考えだと感じた。しかし養蜂家たちは、都会のミツバチが驚くほど多様な食べ物を見つけられることに気づき、都会の群れが田舎の群れと同じくらい健康でいられるという研究もある。\n\n理由の1つは、田舎が変わりつつあることだ。多くの農業地域では、広大な畑で1種類の作物だけが育てられるので、ミツバチが食べ物を見つけられるのは1年のうちの短い期間だけになる。農家は作物を守るために化学薬品も使い、その一部はミツバチに害を与えることがある。対照的に、都会には公園や庭、街路樹があり、早春から晩秋までさまざまな花が咲く。都会の庭師は薬品をあまり使わない傾向もある。\n\n屋上のはちみつも人気になりつつある。ある大都市のホテルは屋上のミツバチが作ったはちみつを売っていて、小さなびんは数日で売り切れることが多い。自分たちでミツバチを飼い、はちみつを料理に使うレストランもあり、近くで作られた物を食べたい客を引きつけている。昼休みに巣箱の世話の仕方を学べる教室を開く養蜂家もいて、会社員の多くが、この趣味でリラックスできると言う。\n\nそれでも専門家は、巣箱の数をあまり急に増やすべきではないと警告する。1つの地域にミツバチが多すぎると、十分な花が見つからず、自然にとって大切な野生のハチが食べ物を失うかもしれないからだ。このため、養蜂家に巣箱の登録を求める都市もあり、あらゆる種類のハチを支えるために花をもっと植えている。専門家は、最善の方法は、セイヨウミツバチと野生の種の必要とのバランスを保ち、都市の生態系を健全に保つことだと言う。",
+    "wordCount": 332,
+    "items": [
+      {
+        "id": "g2-p-article-005-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 1,
+        "stem": "Why did many people consider keeping bees in cities strange at first?",
+        "choices": [
+          "They assumed that urban areas could not provide enough flowers.",
+          "They believed that city honey would not be safe to eat.",
+          "They thought that tall buildings would be too windy for bees.",
+          "They knew that bees had already disappeared from cities."
+        ],
+        "answerIndex": 0,
+        "explanation": "第1段落に、ミツバチには花が必要なのに都会にはほとんどなさそうだったので、奇妙に思われたとある。",
+        "distractorNotes": [
+          "花が足りないと思われていた",
+          "はちみつの安全性の話は出てこない",
+          "風の話は出てこない",
+          "すでにいなくなっていたとは書かれていない"
+        ]
+      },
+      {
+        "id": "g2-p-article-005-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "According to the passage, one problem for bees in farming regions is that",
+        "choices": [
+          "their food is available for only part of the year.",
+          "farmers keep too many hives close together.",
+          "most crops bloom throughout spring and autumn.",
+          "gardeners plant flowers that bees cannot use."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落に、畑で1種類の作物だけが育てられると、ミツバチが食べ物を見つけられるのは短い期間だけになるとある。",
+        "distractorNotes": [
+          "食べ物が1年のうちの一部の期間しかない",
+          "巣箱が多すぎるのは都会の話",
+          "さまざまな花が長く咲くのは都会の特徴",
+          "庭師の話は都会の説明に出てくる"
+        ]
+      },
+      {
+        "id": "g2-p-article-005-q3",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What is one reason that rooftop honey attracts customers?",
+        "choices": [
+          "It comes from a source close to where they live.",
+          "It is cheaper than honey made in the countryside.",
+          "It tastes sweeter than any other kind of honey.",
+          "It is available only to guests of certain hotels."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落に、レストランは自前のミツバチのはちみつを使い、近くで作られた物を食べたい客を引きつけているとある。",
+        "distractorNotes": [
+          "地元で作られたことが魅力",
           "値段の比較は書かれていない",
-          "ホテルが売る例があり、レストラン限定ではない",
-          "さまざまな花が咲くと書かれていて、1種類とは書かれていない"
+          "味の比較は書かれていない",
+          "ホテルの客限定とは書かれていない"
         ]
       },
       {
-        "id": "g2-p-article-001-q4",
+        "id": "g2-p-article-005-q4",
         "tags": [
           "read:detail"
         ],
         "difficulty": 2,
-        "stem": "What do some cities ask beekeepers to do?",
+        "stem": "Why do some cities ask beekeepers to register their hives?",
         "choices": [
-          "Register their hives.",
-          "Plant trees on their roofs.",
-          "Sell their honey at lower prices.",
-          "Stop keeping bees in tall buildings."
+          "To keep the number of bees low enough for wild bees to find food.",
+          "To collect an extra yearly fee from every beekeeper in the city.",
+          "To stop hotels from keeping bees on the roofs of their buildings.",
+          "To count all of the flowers that have been planted in city parks."
         ],
         "answerIndex": 0,
-        "explanation": "最後の段落に some cities now ask beekeepers to register their hives とある。",
+        "explanation": "第4段落に、ミツバチが増えすぎると野生のハチが食べ物を失うかもしれない、そのため巣箱の登録を求める都市がある、とある。",
         "distractorNotes": [
-          "巣箱を登録する",
-          "花を植えるのは都市のほうで、養蜂家への依頼ではない",
-          "値段の話は出てこない",
-          "禁止しているとは書かれていない"
+          "巣箱が増えすぎるのを防ぐため",
+          "お金を集める話は出てこない",
+          "ホテルの養蜂を禁止する話は出てこない",
+          "花の数を数える話は出てこない"
         ]
       },
       {
-        "id": "g2-p-article-001-q5",
+        "id": "g2-p-article-005-q5",
         "tags": [
           "read:main-idea"
         ],
         "difficulty": 3,
         "stem": "Which of the following statements would the writer most likely agree with?",
         "choices": [
-          "Keeping bees in cities can be good, but the number of hives needs care.",
-          "Bees should be kept only in the countryside.",
-          "City beekeepers should keep as many bees as they can.",
-          "Wild bees are not important for nature."
+          "Urban beekeeping is useful as long as the number of hives is kept in check.",
+          "Bees should be kept only in the countryside, where fields are large.",
+          "City beekeepers should place as many hives on roofs as they can.",
+          "Wild bees are not important for nature, so they can be ignored."
         ],
         "answerIndex": 0,
         "explanation": "都会のよさを述べつつ、最後に巣箱の数を急に増やすべきでないと注意している。この両面に合うのが正解。",
         "distractorNotes": [
-          "よい面と、数への注意の両方を述べている",
-          "都会のほうがうまくいくという本文と逆",
-          "最後の段落で「増やしすぎない」と警告している",
+          "よさと、数の管理の両方を述べている",
+          "田舎のほうがよいとは書かれていない",
+          "最後の段落で増やしすぎを警告している",
           "wild bees も important for nature と書かれている"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-article-002",
+    "section": "r-passage",
+    "format": "article",
+    "title": "The Woman Who Mapped the Sea Floor",
+    "body": "Marie Tharp was born in 1920 in the United States. Her father worked as a soil surveyor. She often traveled with him as a child, watching him draw maps of farmland. These trips taught her how to look carefully at the shape of the land. Years later, after finishing her studies in geology, she found a job at a research laboratory at Columbia University. There she began working with a scientist named Bruce Heezen.\n\nAt that time, women were not allowed to join research ships, so Tharp could not go to sea herself. Instead, Heezen and his team sailed across the Atlantic Ocean and measured the depth of the water with sound waves. Tharp stayed in the laboratory and turned thousands of numbers into drawings, line by line. The work required great determination and patience, because a single map could take months to finish. Gradually, the shape of the sea floor, which no one had ever seen, began to appear on her paper.\n\nWhile she was drawing, Tharp noticed a deep valley running along the middle of an underwater mountain range. She assumed that this might be a place where the Earth's surface was slowly pulling apart. Heezen did not believe her at first and called the idea \"girl talk.\" However, he compared her drawing with records of earthquakes under the sea. He found that the earthquakes were happening along the valley, and he finally accepted her idea. The discovery gave strong support to the theory that the continents move very slowly over time.\n\nIn 1977, Tharp and Heezen's map of the ocean floor was published. It showed the shape of the sea floor all over the world. Before their work, most people had imagined the bottom of the ocean as a flat and empty place. Many scientists had once doubted her research, but eventually its importance was recognized. She received several awards for her contribution to science. Today, Tharp is remembered as someone who transformed the way people see our planet. She did most of her work at a desk instead of on a ship.",
+    "translation": "マリー・サープは1920年にアメリカで生まれた。父親は土壌調査員で、彼女は子どものころ、父が農地の地図を描くのを見ながら、よくいっしょに旅をした。この旅で、彼女は土地の形を注意深く見る方法を学んだ。のちに地質学の勉強を終えると、コロンビア大学の研究所に職を得て、ブルース・ヒーゼンという科学者といっしょに働きはじめた。\n\n当時、女性は調査船に乗ることを許されていなかったので、サープは自分で海に出ることができなかった。かわりに、ヒーゼンと彼のチームが大西洋を航海し、音波で水の深さを測った。サープは研究所に残り、何千もの数字を1行ずつ絵に変えていった。この作業には強い決意と忍耐が必要で、地図1枚に何か月もかかることもあった。だれも見たことのない海底の形が、少しずつ紙の上に現れはじめた。\n\n描いているうちに、サープは海底の山脈の中央を走る深い谷に気づいた。彼女は、ここは地球の表面がゆっくり引き離されている場所かもしれないと考えた。ヒーゼンははじめ信じず、その考えを「女の子のたわごと」と呼んだ。しかし、彼女の図を海底地震の記録と比べると、地震がその谷に沿って起きていると分かり、ついに彼女の考えを受け入れた。この発見は、大陸がとてもゆっくり動くという説を強く裏づけた。\n\n1977年、サープとヒーゼンの海底地図が発行され、世界じゅうの海底の形を示した。二人の仕事より前は、多くの人が海の底を平らで何もない場所だと想像していた。かつて多くの科学者が彼女の研究を疑ったが、やがてその重要性は認められ、彼女は科学への貢献によっていくつかの賞を受けた。今日、サープは、仕事の大半を船の上ではなく机の前で行ったにもかかわらず、人々の地球の見方を変えた人として記憶されている。",
+    "wordCount": 346,
+    "items": [
+      {
+        "id": "g2-p-article-002-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 1,
+        "stem": "What did Marie Tharp learn by traveling with her father?",
+        "choices": [
+          "How to observe the features of the land closely.",
+          "How to measure the depth of water with sound waves.",
+          "How to sail a small boat across a large ocean.",
+          "How to grow crops that give a lot of food."
+        ],
+        "answerIndex": 0,
+        "explanation": "第1段落に、これらの旅で土地の形を注意深く見る方法を学んだとある。",
+        "distractorNotes": [
+          "土地の特徴をよく観察する方法",
+          "水深の測り方は、のちにヒーゼンの仕事で出てくる",
+          "航海の話は出てこない",
+          "作物を育てる話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-002-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Why did Tharp work in the laboratory while the ships sailed?",
+        "choices": [
+          "Rules of that period kept women from working at sea.",
+          "She was better at drawing maps than at measuring depth.",
+          "The ships were too small to carry a large crew.",
+          "Heezen preferred to work with a small team at sea."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落に、当時は女性が調査船に乗ることを許されていなかったので、自分では海に出られなかったとある。",
+        "distractorNotes": [
+          "当時の決まりで、女性は海で働けなかった",
+          "絵のほうが得意だったとは書かれていない",
+          "船の大きさの話は出てこない",
+          "ヒーゼンの好みの話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-002-q3",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What did Tharp notice in her drawing of the sea floor?",
+        "choices": [
+          "A deep trench in the center of a chain of mountains under the sea.",
+          "A wide, flat plain that stretched across the whole Atlantic Ocean floor.",
+          "A group of mountains that rose above the water to form islands.",
+          "A series of channels that ran from the coast to the open sea."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落に、海底の山脈の中央を走る深い谷に気づいたとある。",
+        "distractorNotes": [
+          "山脈の中央にある深い谷",
+          "広い平原の話は出てこない",
+          "島になる山の話は出てこない",
+          "海岸から沖へ向かう水路の話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-002-q4",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 3,
+        "stem": "What made Heezen change his mind about Tharp's idea?",
+        "choices": [
+          "The locations of undersea earthquakes matched her drawing.",
+          "Other scientists praised her skill at making maps.",
+          "Measurements that he took himself proved the valley was deep.",
+          "A newspaper wrote an article that praised her discovery."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落に、彼女の図を地震の記録と比べると、地震が谷に沿って起きていたので、考えを受け入れたとある。",
+        "distractorNotes": [
+          "地震の記録が谷の位置と合っていた",
+          "他の科学者の称賛は出てこない",
+          "自分で測った話は出てこない。深さではなく地震が決め手",
+          "新聞記事の話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-002-q5",
+        "tags": [
+          "read:main-idea"
+        ],
+        "difficulty": 3,
+        "stem": "Which of the following statements is true?",
+        "choices": [
+          "Her findings suggested that the continents are slowly shifting.",
+          "Heezen produced the 1977 map without any help from Tharp.",
+          "Tharp measured the depth of the ocean herself on board Heezen's ship.",
+          "Tharp's father taught her how to use sound waves at sea."
+        ],
+        "answerIndex": 0,
+        "explanation": "最後の2つの段落から、サープの発見は、大陸がゆっくり動くという説の裏づけになったと分かる。",
+        "distractorNotes": [
+          "発見は大陸移動の説を裏づけた",
+          "地図はサープとヒーゼンの2人のもの",
+          "サープは海に出られなかった（Tharp could not go to sea herself）。測ったのはヒーゼンのチーム",
+          "音波を使ったのはヒーゼンのチーム"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-article-003",
+    "section": "r-passage",
+    "format": "article",
+    "title": "A Safety Net for Seeds",
+    "body": "People have saved seeds for thousands of years, and agriculture still depends on them every spring. Today, countries around the world keep large collections of seeds in facilities called gene banks, so that genetic resources such as useful kinds of crops will not be lost. However, a gene bank can face many serious obstacles. Machines may stop working, money may run short, or workers may simply make mistakes. Some of the seeds come from crops that few people grow today, so losing a collection could mean losing a kind of crop forever.\n\nTo create a safety net, Norway built the Svalbard Global Seed Vault, which opened in 2008. It is located on a remote island far north of the Norwegian mainland, and the seed storage area lies more than one hundred meters inside a mountain. The mountain has permafrost, and a cooling system keeps the seeds at a constant temperature of minus eighteen degrees. Even if the cooling system stopped, the permafrost would keep the seeds frozen for a long time.\n\nThe vault does not belong to the farmers of any one country. Instead, gene banks in many countries send copies of their seeds, and each bank continues to own the seeds that it sends. Norway paid for the building, but it is not allowed to use the seeds. The vault currently holds more than one million different samples, including rice, wheat, and potatoes. If a gene bank loses its own collection, it can ask for its seeds back, and this has already happened.\n\nScientists say the vault will become far more significant in the future. As the climate changes, some regions are becoming hotter or drier, and farmers will need crops that can grow in harder conditions. The stored seeds may have traits, such as the ability to resist heat or to grow with little water, that today's crops do not have. Some experts also say that old and rare crops may become useful again as farmers search for new foods. In this way, the vault protects not only seeds but also the diversity of choices that farmers will have in the years ahead.",
+    "translation": "人々は何千年も前から種を保存してきたし、農業は今でも毎年春にその種に頼っている。今日、世界の国々は、役に立つ作物の品種などの遺伝資源が失われないよう、遺伝子銀行と呼ばれる施設に大量の種を保管している。しかし、遺伝子銀行にはさまざまな問題が起こりうる。機械が止まったり、お金が足りなくなったり、作業員が単純なミスをしたりするかもしれない。種の中には、今ではほとんど育てられていない作物のものもあり、コレクションを失うことは、ある作物を永遠に失うことになりかねない。\n\n安全網をつくるため、ノルウェーはスヴァールバル世界種子貯蔵庫を建設し、2008年に開設した。それはノルウェー本土のはるか北にある離れた島にあり、種の保管場所は山の中に100メートル以上入ったところにある。この山には永久凍土があり、冷却装置が種をマイナス18度の一定の温度に保っている。たとえ冷却装置が止まっても、永久凍土のおかげで、種は長いあいだ凍ったままでいられる。\n\nこの貯蔵庫は、どこか1つの国の農家のものではない。かわりに、多くの国の遺伝子銀行が種のコピーを送り、各銀行は送った種の所有者であり続ける。ノルウェーは建物の費用を負担したが、種を使うことは許されていない。貯蔵庫には現在、米、小麦、ジャガイモなど、100万を超える種類の見本がある。遺伝子銀行が自分の保管していた種を失った場合は、返してほしいと求めることができ、実際にそうしたことがすでに起きている。\n\n科学者は、この貯蔵庫は将来もっと重要になると言う。気候が変わるにつれて、暑くなったり乾いたりする地域が増え、農家はより厳しい条件で育つ作物を必要とするだろう。保存された種には、熱に耐える力や、少ない水で育つ力など、今日の作物にはない特性があるかもしれない。古くて珍しい作物が、農家が新しい食べ物を探すうちに再び役に立つかもしれないと言う専門家もいる。このように、貯蔵庫は種だけでなく、この先の年月に農家が持てる選択肢の多様さも守っているのだ。",
+    "wordCount": 355,
+    "items": [
+      {
+        "id": "g2-p-article-003-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 1,
+        "stem": "Why do gene banks need a safety net?",
+        "choices": [
+          "Their collections can be lost because of machine or money problems.",
+          "Farmers have stopped saving seeds because they can buy new ones easily.",
+          "Seeds cannot be kept longer than one year without being planted.",
+          "Too many people want to buy seeds from the gene banks every year."
+        ],
+        "answerIndex": 0,
+        "explanation": "第1段落に、機械が止まる・お金が足りなくなる・ミスなど、遺伝子銀行にはさまざまな問題が起こりうるとある。",
+        "distractorNotes": [
+          "機器の故障や資金不足で失われるおそれがある",
+          "農家が種を保存しなくなった話は出てこない",
+          "1年しかもたない話は出てこない",
+          "種を買いたい人の話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-003-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Why is the seed vault built inside a mountain on a remote island?",
+        "choices": [
+          "The frozen ground helps keep the seeds cold even without power.",
+          "It is close to the countries that send in the most seeds each year.",
+          "The mountain protects the seeds from strong winds.",
+          "Most of the world's other gene banks are on the same island."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落に、山には永久凍土があり、冷却装置が止まっても種は長いあいだ凍ったままでいられるとある。",
+        "distractorNotes": [
+          "凍った地面が、電気がなくても種を冷たく保つ",
+          "送ってくる国の近くとは書かれていない",
+          "風から守る話は出てこない",
+          "他の遺伝子銀行が同じ島にあるとは書かれていない"
+        ]
+      },
+      {
+        "id": "g2-p-article-003-q3",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Regarding the seeds stored in the vault,",
+        "choices": [
+          "they still belong to the gene banks that deposited them.",
+          "Norway can plant them on its own farms.",
+          "they are sold to farmers all over the world each spring.",
+          "they were all collected by scientists who live in Norway."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落に、各銀行は送った種の所有者であり続け、ノルウェーは使うことを許されていないとある。",
+        "distractorNotes": [
+          "送った銀行が持ち主のままである",
+          "ノルウェーは使えない",
+          "売る話は出てこない",
+          "多くの国から送られてくる"
+        ]
+      },
+      {
+        "id": "g2-p-article-003-q4",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "What can a gene bank do if it loses its own collection?",
+        "choices": [
+          "Get back the copies it had stored in the vault.",
+          "Borrow seeds that other gene banks have sent.",
+          "Ask Norway to pay for a new collection.",
+          "Move its remaining seeds to a different country."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落の最後に、自分の種を失った遺伝子銀行は種を返してほしいと求められ、実際に起きているとある。",
+        "distractorNotes": [
+          "預けたコピーを返してもらえる",
+          "種の持ち主は送った銀行。他の銀行の種を借りる話は出てこない",
+          "新しいコレクションの費用をノルウェーに頼む話は出てこない",
+          "残りの種を別の国に移す話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-003-q5",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 3,
+        "stem": "How might the stored seeds help farmers in the future?",
+        "choices": [
+          "They might offer crops that can survive harsh weather.",
+          "They could replace all of today's crops at once.",
+          "They would let farmers grow crops without any water.",
+          "They would let farmers stop planting seeds every spring."
+        ],
+        "answerIndex": 0,
+        "explanation": "第4段落に、保存された種には、熱に耐える力や少ない水で育つ力など、今の作物にない特性があるかもしれないとある。",
+        "distractorNotes": [
+          "厳しい天候でも育つ作物のもとになりうる",
+          "すべての作物を一度に置きかえる話は出てこない",
+          "水がなくても育つとは書かれていない。「少ない水で」",
+          "毎年植える必要がなくなる話は出てこない"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-p-article-004",
+    "section": "r-passage",
+    "format": "article",
+    "title": "The Clever Octopus",
+    "body": "When people think of intelligent animals, they usually imagine animals with large brains, such as dolphins, dogs, or monkeys. However, one of the cleverest animals in the sea is the octopus, a soft-bodied creature with no backbone. In laboratories, octopuses have learned to open jars with screw tops to get the food inside. Some have even escaped from their tanks at night by squeezing through very small openings. Their bodies are so soft that they can pass through any space larger than their beaks, and they can change the color of their skin in a moment to hide from enemies.\n\nThe nervous system of an octopus is very different from ours. It has about five hundred million nerve cells, which is far more than most animals without backbones have. However, about two thirds of these cells are in its eight arms, not in its head. As a result, each arm can feel, taste, and make simple decisions on its own. Scientists believe that this allows an octopus to do several things at once, such as searching a rock with one arm while holding food with another.\n\nOctopuses also seem to use tools. In one well-known study, researchers watched octopuses in the ocean pick up empty coconut shells, carry them across the sea floor, and later hide inside them. Carrying the shells was slow and awkward, and the animals did not need them at that moment. For this reason, many researchers think that the octopuses were planning for the future, not simply reacting to danger.\n\nWhat makes octopuses even more interesting is the way they learn. Most of them live for only a few years, and in many species the mother dies soon after her eggs hatch, so young octopuses never meet their parents and cannot copy adults. Every skill must be learned alone, through experience. Because of this, studying octopuses helps scientists think about intelligence in a new way. It shows that a brain does not have to be built like ours in order to be clever.",
+    "translation": "人は頭のよい動物と聞くと、イルカや犬やサルのように大きな脳を持つ動物を思い浮かべる。しかし、海でいちばん賢い動物の1つは、背骨のないやわらかい体の生き物、タコである。実験室では、タコがスクリューキャップのびんを開けて中の餌を取り出せるようになった例がある。夜のうちにとても小さなすき間をすり抜けて、水槽から逃げ出したタコさえいる。体がとてもやわらかく、くちばしより大きなすき間ならどこでも通り抜けられるし、一瞬で皮ふの色を変えて敵から身を隠すこともできる。\n\nタコの神経系は私たちとはまったく違う。神経細胞は約5億個あり、背骨のない動物の大半よりはるかに多い。しかし、その約3分の2は頭ではなく、8本の腕にある。そのため、それぞれの腕が自分で感じ、味わい、簡単な判断をすることができる。科学者は、これによってタコが、片方の腕で岩の中を探しながら別の腕で餌を持つなど、いくつものことを同時にできると考えている。\n\nタコは道具も使うようだ。有名なある研究では、研究者が海の中でタコが空のココナツの殻を拾い、海底を運び、あとでその中に隠れるのを観察した。殻を運ぶのは遅くて扱いにくく、そのときタコには殻が必要でもなかった。このため、多くの研究者は、タコが単に危険に反応しているのではなく、将来のために計画していたのだと考えている。\n\nタコをさらに興味深くしているのは、学び方である。ほとんどのタコは数年しか生きず、多くの種では卵がかえるとまもなく母親が死ぬので、若いタコは親に会うことがなく、大人のまねができない。どんな技も1匹で経験から身につけなければならない。そのため、タコを研究することは、科学者が知能を新しい見方で考える助けになる。頭のよい脳が、私たちと同じ作りである必要はないと教えてくれるのだ。",
+    "wordCount": 337,
+    "items": [
+      {
+        "id": "g2-p-article-004-q1",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 1,
+        "stem": "What have octopuses done in laboratories?",
+        "choices": [
+          "They have worked out how to reach food in sealed containers.",
+          "They have learned to recognize their keepers by the sound of their voices.",
+          "They have refused to eat any food that was kept in jars.",
+          "They have grown much larger than octopuses in the ocean."
+        ],
+        "answerIndex": 0,
+        "explanation": "第1段落に、実験室でタコがスクリューキャップのびんを開けて中の餌を取り出せるようになったとある。",
+        "distractorNotes": [
+          "閉じた容器から餌を取り出した",
+          "声で飼い主が分かる話は出てこない",
+          "びんの餌を拒否したとは書かれていない",
+          "大きさの比較は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-004-q2",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 2,
+        "stem": "Why can each arm of an octopus act on its own?",
+        "choices": [
+          "Most of its nerve cells are found in the arms.",
+          "Its head has more nerve cells than its arms do.",
+          "Each arm learned its skills from the mother.",
+          "Its brain sends strong signals to every arm at once."
+        ],
+        "answerIndex": 0,
+        "explanation": "第2段落に、神経細胞の約3分の2が腕にあるので、それぞれの腕が自分で感じ、判断できるとある。",
+        "distractorNotes": [
+          "神経細胞の大半が腕にある",
+          "頭より腕のほうが細胞が多い。本文と逆",
+          "若いタコは親に会わない。腕が親から技を教わる話は出てこない",
+          "脳から全部の腕に命令する話は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-004-q3",
+        "tags": [
+          "read:inference"
+        ],
+        "difficulty": 2,
+        "stem": "What did researchers think when they saw octopuses carry coconut shells?",
+        "choices": [
+          "The animals might have been preparing for a later need.",
+          "The animals were trying to hide from a nearby enemy.",
+          "The animals wanted to attract other octopuses to the shells.",
+          "The shells were too heavy for the animals to move far."
+        ],
+        "answerIndex": 0,
+        "explanation": "第3段落に、殻を運ぶのは遅く、そのときは必要でもなかったので、将来のために計画していたと考える研究者が多いとある。",
+        "distractorNotes": [
+          "あとで必要になることに備えていた",
+          "危険に反応しただけではない、と本文が否定している",
+          "ほかのタコを引きつける話は出てこない",
+          "運べなかったとは書かれていない"
+        ]
+      },
+      {
+        "id": "g2-p-article-004-q4",
+        "tags": [
+          "read:detail"
+        ],
+        "difficulty": 3,
+        "stem": "Why must young octopuses learn their skills by themselves?",
+        "choices": [
+          "They never have a chance to copy older octopuses.",
+          "Their parents live in a different part of the ocean.",
+          "They are too weak to swim in groups with other octopuses.",
+          "Their arms learn skills faster than their heads do."
+        ],
+        "answerIndex": 0,
+        "explanation": "第4段落に、若いタコは親に会うことがなく、大人のまねができないので、技は1匹で経験から身につけるとある。",
+        "distractorNotes": [
+          "まねできる年上のタコがいない",
+          "親の住む場所の話は出てこない",
+          "弱いからとは書かれていない",
+          "腕と頭の学ぶ速さの比較は出てこない"
+        ]
+      },
+      {
+        "id": "g2-p-article-004-q5",
+        "tags": [
+          "read:main-idea"
+        ],
+        "difficulty": 3,
+        "stem": "Which of the following statements would the writer most likely agree with?",
+        "choices": [
+          "Intelligence can develop in bodies very unlike those of humans.",
+          "Only animals with very large brains are able to solve hard problems.",
+          "Octopuses became clever because they live together in big groups.",
+          "Scientists already understand octopus intelligence completely."
+        ],
+        "answerIndex": 0,
+        "explanation": "最後の段落に、頭のよい脳が私たちと同じ作りである必要はないとある。筆者の主張はこの内容。",
+        "distractorNotes": [
+          "作りが違う脳でも賢くなれる",
+          "大きな脳が必要という考えを本文が否定している",
+          "タコは1匹で学ぶので、群れの話と逆",
+          "完全に分かったとは書かれていない"
         ]
       }
     ]

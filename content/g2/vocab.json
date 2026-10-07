@@ -21,31 +21,8 @@
       "inspect = 検査する。発売の意味にはならない",
       "combine = 組み合わせる",
       "rescue = 救出する"
-    ]
-  },
-  {
-    "id": "g2-v-002",
-    "section": "r-vocab",
-    "tags": [
-      "vocab:verb"
     ],
-    "difficulty": 2,
-    "stem": "Because of the heavy rain, the school festival was ( ) until the following week.",
-    "choices": [
-      "postponed",
-      "dismissed",
-      "invented",
-      "observed"
-    ],
-    "answerIndex": 0,
-    "translation": "大雨のため、学園祭は翌週まで延期された。",
-    "explanation": "postpone = 延期する。until the following week（翌週まで）と合う。受け身 was postponed の形で覚える。",
-    "distractorNotes": [
-      "postpone = 延期する",
-      "dismiss = 解散させる、解雇する",
-      "invent = 発明する",
-      "observe = 観察する、守る"
-    ]
+    "target": "launch"
   },
   {
     "id": "g2-v-003",
@@ -69,154 +46,8 @@
       "stubborn = 頑固な。気づかいとは逆の性格",
       "ordinary = ふつうの",
       "ambitious = 野心のある"
-    ]
-  },
-  {
-    "id": "g2-v-004",
-    "section": "r-vocab",
-    "tags": [
-      "vocab:verb",
-      "vocab:collocation"
     ],
-    "difficulty": 3,
-    "stem": "The sign asks visitors to ( ) from taking photos inside the museum.",
-    "choices": [
-      "refrain",
-      "escape",
-      "separate",
-      "distinguish"
-    ],
-    "answerIndex": 0,
-    "translation": "その掲示は、来館者に館内での写真撮影を控えるよう求めている。",
-    "explanation": "refrain from ~ing = ~するのを控える。from とセットで覚える。",
-    "distractorNotes": [
-      "refrain from ~ing = ~を控える",
-      "escape from は「~から逃げる」で、後ろに動名詞は続かない",
-      "separate from は「~から分ける」",
-      "distinguish A from B は「AとBを区別する」"
-    ]
-  },
-  {
-    "id": "g2-v-005",
-    "section": "r-vocab",
-    "tags": [
-      "vocab:verb"
-    ],
-    "difficulty": 2,
-    "stem": "The city is trying to ( ) the number of cars downtown by building new bus lines.",
-    "choices": [
-      "reduce",
-      "acquire",
-      "measure",
-      "exchange"
-    ],
-    "answerIndex": 0,
-    "translation": "市は新しいバス路線を作って、中心部の車の数を減らそうとしている。",
-    "explanation": "バス路線を作る目的は車を減らすこと。reduce = 減らす。",
-    "distractorNotes": [
-      "reduce = 減らす",
-      "acquire = 手に入れる",
-      "measure = 測る",
-      "exchange = 交換する"
-    ]
-  },
-  {
-    "id": "g2-v-006",
-    "section": "r-vocab",
-    "tags": [
-      "vocab:adjective"
-    ],
-    "difficulty": 2,
-    "stem": "I was so ( ) at the news that I couldn't say a word.",
-    "choices": [
-      "astonished",
-      "accurate",
-      "ordinary",
-      "familiar"
-    ],
-    "answerIndex": 0,
-    "translation": "その知らせにとても驚いて、私は一言も言えなかった。",
-    "explanation": "so ~ that I couldn't say a word（言葉が出ないほど~）から、強い感情だと分かる。astonished at ~ = ~に驚いて。",
-    "distractorNotes": [
-      "astonished = 驚いた",
-      "accurate = 正確な",
-      "ordinary = ふつうの",
-      "familiar = 見慣れた、よく知っている"
-    ]
-  },
-  {
-    "id": "g2-v-007",
-    "section": "r-vocab",
-    "tags": [
-      "vocab:verb",
-      "grammar:perfect"
-    ],
-    "difficulty": 2,
-    "stem": "Mary's English has ( ) a lot since she started studying abroad.",
-    "choices": [
-      "improved",
-      "divided",
-      "expressed",
-      "replaced"
-    ],
-    "answerIndex": 0,
-    "translation": "留学を始めてから、メアリーの英語はとても上達した。",
-    "explanation": "has + 過去分詞 の現在完了。主語が English なので improve（上達する）が自然。",
-    "distractorNotes": [
-      "improve = 上達する、よくなる",
-      "divide = 分ける",
-      "express = 表現する",
-      "replace = 取りかえる"
-    ]
-  },
-  {
-    "id": "g2-v-008",
-    "section": "r-vocab",
-    "tags": [
-      "vocab:adjective"
-    ],
-    "difficulty": 3,
-    "stem": "The scientist gave a ( ) explanation of how the new machine works, and everyone understood it.",
-    "choices": [
-      "thorough",
-      "temporary",
-      "fragile",
-      "jealous"
-    ],
-    "answerIndex": 0,
-    "translation": "その科学者は新しい機械のしくみを徹底的に説明し、全員が理解した。",
-    "explanation": "全員が理解できた説明、という流れ。thorough = 徹底した、くわしい。",
-    "distractorNotes": [
-      "thorough = 徹底した",
-      "temporary = 一時的な",
-      "fragile = こわれやすい",
-      "jealous = うらやむ、嫉妬した"
-    ]
-  },
-  {
-    "id": "g2-v-009",
-    "section": "r-vocab",
-    "tags": [
-      "vocab:verb",
-      "grammar:infinitive"
-    ],
-    "difficulty": 3,
-    "stem": "Tom ( ) his teacher to give him more time to finish the report.",
-    "choices": [
-      "persuaded",
-      "insisted",
-      "suggested",
-      "hoped"
-    ],
-    "answerIndex": 0,
-    "translation": "トムは先生を説得して、レポートを仕上げる時間をもう少しもらった。",
-    "explanation": "〈動詞 + 人 + to ~〉の形がとれるのは persuade だけ。insist / suggest / hope は目的語のあとに to ~ を直接置けない。",
-    "distractorNotes": [
-      "persuade 人 to ~ = 人を説得して~させる",
-      "insist は insist that ~ の形をとる",
-      "suggest も suggest that ~ / ~ing の形をとる",
-      "hope は hope to ~ / hope that ~ の形。人を目的語にとらない"
-    ]
+    "target": "considerate"
   },
   {
     "id": "g2-v-010",
@@ -240,31 +71,8 @@
       "medical = 医療の",
       "equal = 等しい",
       "guilty = 有罪の"
-    ]
-  },
-  {
-    "id": "g2-v-011",
-    "section": "r-vocab",
-    "tags": [
-      "vocab:adjective"
     ],
-    "difficulty": 2,
-    "stem": "The movie was so ( ) that many people in the theater began to cry.",
-    "choices": [
-      "touching",
-      "rapid",
-      "similar",
-      "fortunate"
-    ],
-    "answerIndex": 0,
-    "translation": "その映画はとても感動的で、劇場の多くの人が泣き出した。",
-    "explanation": "観客が泣いた、が根拠。touching = 感動的な。",
-    "distractorNotes": [
-      "touching = 感動させる",
-      "rapid = 速い",
-      "similar = 似ている",
-      "fortunate = 幸運な"
-    ]
+    "target": "historic"
   },
   {
     "id": "g2-v-012",
@@ -288,150 +96,2032 @@
       "ignore = 無視する。問題が起きたら電話、の流れに合わない",
       "satisfy = 満足させる",
       "contribute は contribute to ~ の形"
+    ],
+    "target": "encounter"
+  },
+  {
+    "id": "g2-v-101",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "Hana worked in Spain for three years. She was able to ( ) a great deal of experience in marketing there.",
+    "choices": [
+      "acquire",
+      "accuse",
+      "abandon",
+      "delay"
+    ],
+    "answerIndex": 0,
+    "target": "acquire",
+    "translation": "ハナは3年間スペインで働いた。そこでマーケティングの経験をたくさん積むことができた。",
+    "explanation": "experience（経験）を目的語にとって自然なのは acquire = (知識・経験などを)身につける。",
+    "distractorNotes": [
+      "acquire = 身につける",
+      "accuse = 責める、非難する",
+      "abandon = 見捨てる",
+      "delay = 遅らせる"
     ]
   },
   {
-    "id": "g2-v-013",
+    "id": "g2-v-102",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "Many students move to a new school every year. Most of them ( ) quickly, but a few need more time.",
+    "choices": [
+      "adapt",
+      "resist",
+      "hesitate",
+      "interrupt"
+    ],
+    "answerIndex": 0,
+    "target": "adapt",
+    "translation": "毎年、多くの生徒が新しい学校に移る。たいていはすぐに慣れるが、もう少し時間がかかる生徒もいる。",
+    "explanation": "後半の「時間がかかる生徒もいる」から、慣れる速さの話。adapt = 順応する。",
+    "distractorNotes": [
+      "adapt = 順応する、慣れる",
+      "resist = 抵抗する",
+      "hesitate = ためらう",
+      "interrupt = 話をさえぎる"
+    ]
+  },
+  {
+    "id": "g2-v-103",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "Many tourists cannot read the local language. Volunteers at the station ( ) them by answering questions and showing the way.",
+    "choices": [
+      "assist",
+      "accuse",
+      "interrupt",
+      "threaten"
+    ],
+    "answerIndex": 0,
+    "target": "assist",
+    "translation": "地元の言葉が読めない観光客は多い。駅のボランティアは、質問に答えたり道を教えたりして、彼らを助ける。",
+    "explanation": "by answering questions and showing the way（質問に答え、道を教えて）が手がかり。assist = 手伝う、助ける。",
+    "distractorNotes": [
+      "assist = 手伝う、助ける",
+      "accuse = 責める",
+      "interrupt = 話をさえぎる",
+      "threaten = おどす"
+    ]
+  },
+  {
+    "id": "g2-v-104",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "Summer is a slow season for the company. A new advertising campaign helped to ( ) its sales during those months.",
+    "choices": [
+      "boost",
+      "restrict",
+      "evaluate",
+      "abandon"
+    ],
+    "answerIndex": 0,
+    "target": "boost",
+    "translation": "夏は会社にとって売れ行きの落ちる時期だ。新しい広告キャンペーンが、その間の売り上げを押し上げるのに役立った。",
+    "explanation": "広告キャンペーンが売り上げに役立った、という流れ。boost = 押し上げる、高める。",
+    "distractorNotes": [
+      "boost = 押し上げる、高める",
+      "restrict = 制限する。売り上げを増やす話と逆",
+      "evaluate = 評価する",
+      "abandon = 見捨てる"
+    ]
+  },
+  {
+    "id": "g2-v-105",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "A nature photographer climbed the hill before sunrise. He hoped to ( ) the moment when the first light touched the lake.",
+    "choices": [
+      "capture",
+      "inherit",
+      "restrict",
+      "adjust"
+    ],
+    "answerIndex": 0,
+    "target": "capture",
+    "translation": "自然写真家は日の出前に丘に登った。最初の光が湖にふれる瞬間を写真に収めたいと思っていた。",
+    "explanation": "photographer（写真家）と the moment（その瞬間）から、capture = (場面を)とらえる、写真に収める。",
+    "distractorNotes": [
+      "capture = とらえる、写真に収める",
+      "inherit = 受け継ぐ",
+      "restrict = 制限する",
+      "adjust = 調整する"
+    ]
+  },
+  {
+    "id": "g2-v-106",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "The festival committee prepared hundreds of flyers. Volunteers will ( ) them in front of the station on Sunday.",
+    "choices": [
+      "distribute",
+      "convert",
+      "evaluate",
+      "concentrate"
+    ],
+    "answerIndex": 0,
+    "target": "distribute",
+    "translation": "学園祭の実行委員会は何百枚ものチラシを用意した。ボランティアが日曜日に駅前でそれを配る。",
+    "explanation": "flyers（チラシ）を in front of the station で配る、は distribute。",
+    "distractorNotes": [
+      "distribute = 配る",
+      "convert = 変える",
+      "evaluate = 評価する",
+      "concentrate = 集中する"
+    ]
+  },
+  {
+    "id": "g2-v-107",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "The coach gave a short speech before the final game. He wanted to ( ) that teamwork is more important than winning.",
+    "choices": [
+      "emphasize",
+      "adjust",
+      "hesitate",
+      "consult"
+    ],
+    "answerIndex": 0,
+    "target": "emphasize",
+    "translation": "コーチは決勝戦の前に短い話をした。勝つことよりチームワークが大切だと強調したかったのだ。",
+    "explanation": "後ろの that 以下の内容を強く言う、は emphasize = 強調する。",
+    "distractorNotes": [
+      "emphasize = 強調する",
+      "adjust = 調整する",
+      "hesitate = ためらう",
+      "consult = 相談する"
+    ]
+  },
+  {
+    "id": "g2-v-108",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "A new bridge will open next year. It will ( ) residents of the island to reach the city in ten minutes.",
+    "choices": [
+      "enable",
+      "forbid",
+      "threaten",
+      "decline"
+    ],
+    "answerIndex": 0,
+    "target": "enable",
+    "translation": "来年、新しい橋が開通する。島の住民は10分で市内に行けるようになる。",
+    "explanation": "enable A to ~ = Aが~できるようにする。後ろの to reach とつながる。",
+    "distractorNotes": [
+      "enable A to ~ = Aが~できるようにする",
+      "forbid A to ~ = Aが~するのを禁じる。橋の働きと逆",
+      "threaten = おどす",
+      "decline = 断る、減る"
+    ]
+  },
+  {
+    "id": "g2-v-109",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "The teacher wants to know how much her students have learned. She uses short tests to ( ) their progress.",
+    "choices": [
+      "evaluate",
+      "applaud",
+      "attach",
+      "imitate"
+    ],
+    "answerIndex": 0,
+    "target": "evaluate",
+    "translation": "先生は生徒がどれだけ学んだかを知りたい。そこで短いテストを使って進み具合を評価する。",
+    "explanation": "tests（テスト）で progress（進み具合）を測る、は evaluate = 評価する。",
+    "distractorNotes": [
+      "evaluate = 評価する",
+      "applaud = 拍手する",
+      "attach = 取りつける",
+      "imitate = まねる"
+    ]
+  },
+  {
+    "id": "g2-v-110",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "Many students came to the library during the exam period. So the staff decided to ( ) its opening hours until ten o'clock.",
+    "choices": [
+      "extend",
+      "conquer",
+      "shrink",
+      "absorb"
+    ],
+    "answerIndex": 0,
+    "target": "extend",
+    "translation": "試験期間中、多くの生徒が図書館に来た。そこで職員は、開館時間を10時まで延長することにした。",
+    "explanation": "来館者が多いので、時間を延ばす。extend = 延ばす、広げる。",
+    "distractorNotes": [
+      "extend = 延ばす",
+      "conquer = 征服する",
+      "shrink = 縮む。来館者が多い状況と逆",
+      "absorb = 吸収する"
+    ]
+  },
+  {
+    "id": "g2-v-111",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "Plastic bags caused trouble for sea animals. The government decided to ( ) them in all supermarkets.",
+    "choices": [
+      "ban",
+      "boost",
+      "distribute",
+      "acquire"
+    ],
+    "answerIndex": 0,
+    "target": "ban",
+    "translation": "ビニール袋は海の生き物に害を与えていた。政府は、すべてのスーパーでビニール袋を禁止することにした。",
+    "explanation": "前の文で害になっているとある。だから禁止する。ban = 禁止する。",
+    "distractorNotes": [
+      "ban = 禁止する",
+      "boost = 増やす。害を与えている話と逆",
+      "distribute = 配る",
+      "acquire = 手に入れる"
+    ]
+  },
+  {
+    "id": "g2-v-112",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "The island has strong winds all year round. Its wind farms ( ) enough electricity for all of its homes.",
+    "choices": [
+      "generate",
+      "absorb",
+      "rotate",
+      "accompany"
+    ],
+    "answerIndex": 0,
+    "target": "generate",
+    "translation": "その島では一年じゅう強い風が吹く。風力発電所が、島のすべての家庭に十分な電気をつくり出している。",
+    "explanation": "wind farms（風力発電所）と electricity（電気）から generate = (電気などを)つくり出す。",
+    "distractorNotes": [
+      "generate = つくり出す",
+      "absorb = 吸収する",
+      "rotate = 回転する",
+      "accompany = 付き添う"
+    ]
+  },
+  {
+    "id": "g2-v-113",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "Ken's father plays the guitar every evening. Ken ( ) his love of music from him.",
+    "choices": [
+      "inherited",
+      "scolded",
+      "assisted",
+      "weighed"
+    ],
+    "answerIndex": 0,
+    "target": "inherit",
+    "translation": "ケンの父は毎晩ギターを弾く。ケンは父から音楽好きを受け継いだ。",
+    "explanation": "inherit A from B = BからAを受け継ぐ。財産だけでなく、好みや性格にも使う。",
+    "distractorNotes": [
+      "inherit ~ from ... = ...から~(性質・好みなど)を受け継ぐ",
+      "scold = しかる",
+      "assist = 手伝う",
+      "weigh = 重さをはかる"
+    ]
+  },
+  {
+    "id": "g2-v-114",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "Passengers trust airlines to keep them safe. Engineers ( ) every part of each plane with great care before it takes off.",
+    "choices": [
+      "inspect",
+      "applaud",
+      "scatter",
+      "accompany"
+    ],
+    "answerIndex": 0,
+    "target": "inspect",
+    "translation": "乗客は航空会社が安全を守ってくれると信じている。技術者は、離陸の前に、機体のすべての部分を細心の注意で点検する。",
+    "explanation": "with great care（細心の注意で）と every part から inspect = 点検する。",
+    "distractorNotes": [
+      "inspect = 点検する",
+      "applaud = 拍手する",
+      "scatter = まき散らす",
+      "accompany = 同行する"
+    ]
+  },
+  {
+    "id": "g2-v-115",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "The narrow streets of the old market are crowded with walkers. The town decided to ( ) the number of cars that can enter them.",
+    "choices": [
+      "restrict",
+      "extend",
+      "concentrate",
+      "recall"
+    ],
+    "answerIndex": 0,
+    "target": "restrict",
+    "translation": "旧市場の狭い通りは歩く人でいっぱいだ。町は、そこに入れる車の数を制限することにした。",
+    "explanation": "歩く人でいっぱい → 車を減らしたい。restrict = 制限する。",
+    "distractorNotes": [
+      "restrict = 制限する",
+      "extend = 増やす、延ばす。目的と逆",
+      "concentrate = 集中する",
+      "recall = 思い出す"
+    ]
+  },
+  {
+    "id": "g2-v-116",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "The empty factory stood unused for years. A group of artists decided to ( ) it into a museum.",
+    "choices": [
+      "transform",
+      "translate",
+      "transport",
+      "transplant"
+    ],
+    "answerIndex": 0,
+    "target": "transform",
+    "translation": "空き工場は何年も使われないままだった。芸術家の一団が、それを博物館に作りかえることに決めた。",
+    "explanation": "transform A into B = AをBに作りかえる。into a museum と合うのは transform。",
+    "distractorNotes": [
+      "transform A into B = AをBに変える",
+      "translate は「翻訳する」",
+      "transport は「運ぶ」",
+      "transplant は「移植する」"
+    ]
+  },
+  {
+    "id": "g2-v-117",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "The farmers could not grow anything on the dry land. In the end, they had to ( ) the fields and move to the city.",
+    "choices": [
+      "abandon",
+      "inherit",
+      "investigate",
+      "capture"
+    ],
+    "answerIndex": 0,
+    "target": "abandon",
+    "translation": "農家は乾いた土地では何も育てられなかった。結局、畑を捨てて都会に移らなければならなかった。",
+    "explanation": "何も育たない → 畑を捨てて引っ越す。abandon = 見捨てる、あきらめて去る。",
+    "distractorNotes": [
+      "abandon = 見捨てる",
+      "inherit = 受け継ぐ",
+      "investigate = 調査する",
+      "capture = とらえる"
+    ]
+  },
+  {
+    "id": "g2-v-118",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "My little sister is nervous on her first day of school. My mother will ( ) her to the school gate.",
+    "choices": [
+      "accompany",
+      "resist",
+      "refuse",
+      "weigh"
+    ],
+    "answerIndex": 0,
+    "target": "accompany",
+    "translation": "妹は入学初日に緊張している。母が校門まで付き添う予定だ。",
+    "explanation": "accompany A to B = AをBまで連れて行く、付き添う。",
+    "distractorNotes": [
+      "accompany = 付き添う",
+      "resist = 抵抗する",
+      "refuse = 断る",
+      "weigh = 重さをはかる"
+    ]
+  },
+  {
+    "id": "g2-v-119",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "Dark clouds covered the sky above the stadium. The weather ( ) to stop the game before it started.",
+    "choices": [
+      "threatened",
+      "applauded",
+      "assisted",
+      "adjusted"
+    ],
+    "answerIndex": 0,
+    "target": "threaten",
+    "translation": "スタジアムの上の空は黒い雲におおわれた。天気が、試合が始まる前に中止に追いこみそうだった。",
+    "explanation": "threaten to ~ = ~しそうだ、~するおそれがある。悪いことが起こりそうなときに使う。",
+    "distractorNotes": [
+      "threaten to ~ = ~しそうだ",
+      "applaud = 拍手する",
+      "assist = 手伝う",
+      "adjust = 調整する"
+    ]
+  },
+  {
+    "id": "g2-v-120",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "Aiko has wanted to be a pilot since she was little. She studied hard to ( ) her dream.",
+    "choices": [
+      "fulfill",
+      "oppose",
+      "confess",
+      "scold"
+    ],
+    "answerIndex": 0,
+    "target": "fulfill",
+    "translation": "アイコは小さいころからパイロットになりたかった。夢をかなえるために熱心に勉強した。",
+    "explanation": "dream を目的語にとって「かなえる」は fulfill。",
+    "distractorNotes": [
+      "fulfill = (夢などを)かなえる",
+      "oppose = 反対する",
+      "confess = 打ち明ける",
+      "scold = しかる"
+    ]
+  },
+  {
+    "id": "g2-v-121",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 2,
+    "stem": "The pianist finished her last song. The audience stood up and began to ( ) loudly.",
+    "choices": [
+      "applaud",
+      "react",
+      "scatter",
+      "tremble"
+    ],
+    "answerIndex": 0,
+    "target": "applaud",
+    "translation": "ピアニストが最後の曲を弾き終えた。観客は立ち上がって大きな拍手を始めた。",
+    "explanation": "演奏が終わって観客が立ち上がる場面。applaud = 拍手する。",
+    "distractorNotes": [
+      "applaud = 拍手する",
+      "react = 反応する",
+      "scatter = まき散らす",
+      "tremble = ふるえる"
+    ]
+  },
+  {
+    "id": "g2-v-122",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "This device is designed to protect homes from fire. It can ( ) smoke early and sound an alarm.",
+    "choices": [
+      "detect",
+      "cure",
+      "distribute",
+      "transform"
+    ],
+    "answerIndex": 0,
+    "target": "detect",
+    "translation": "この装置は家を火事から守るために作られている。煙を早く見つけて警報を鳴らすことができる。",
+    "explanation": "and sound an alarm（警報を鳴らす）につながるのは、見つけること。detect = 検知する。",
+    "distractorNotes": [
+      "detect = 検知する、見つけ出す",
+      "cure = 治す",
+      "distribute = 配る",
+      "transform = 変える"
+    ]
+  },
+  {
+    "id": "g2-v-123",
     "section": "r-vocab",
     "tags": [
       "vocab:adjective"
     ],
     "difficulty": 3,
-    "stem": "She was ( ) to find her lost passport in the pocket of her coat.",
+    "stem": "Tom did not know anyone at the party. He felt ( ) standing alone with a glass in his hand.",
     "choices": [
-      "relieved",
-      "annoyed",
-      "ashamed",
-      "hesitant"
+      "awkward",
+      "ancient",
+      "spacious",
+      "widespread"
     ],
     "answerIndex": 0,
-    "translation": "彼女はなくしたパスポートがコートのポケットから出てきて、ほっとした。",
-    "explanation": "なくした大事な物が見つかったときの気持ち。relieved = ほっとした。",
+    "target": "awkward",
+    "translation": "トムはパーティーに知り合いが一人もいなかった。グラスを手に1人で立っていて、気まずかった。",
+    "explanation": "知り合いがいない場で1人で立つ気持ち。awkward = 気まずい、ぎこちない。",
     "distractorNotes": [
-      "relieved = ほっとした",
-      "annoyed = いらいらした",
-      "ashamed = 恥ずかしい",
-      "hesitant = ためらっている"
+      "awkward = 気まずい",
+      "ancient = 古代の",
+      "spacious = 広々とした",
+      "widespread = 広く行きわたった"
     ]
   },
   {
-    "id": "g2-v-014",
+    "id": "g2-v-124",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "The path along the cliff is narrow and wet. You should be very ( ) when you walk there.",
+    "choices": [
+      "cautious",
+      "curious",
+      "generous",
+      "fluent"
+    ],
+    "answerIndex": 0,
+    "target": "cautious",
+    "translation": "崖ぞいの道は狭くてぬれている。そこを歩くときはとても用心しなければならない。",
+    "explanation": "狭くてぬれている道。注意が必要なので cautious = 用心深い。",
+    "distractorNotes": [
+      "cautious = 用心深い",
+      "curious = 好奇心の強い",
+      "generous = 気前のよい",
+      "fluent = 流ちょうな"
+    ]
+  },
+  {
+    "id": "g2-v-125",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "This new washing machine finishes a load in half the time. It is also ( ), using much less water.",
+    "choices": [
+      "efficient",
+      "fragile",
+      "vacant",
+      "enthusiastic"
+    ],
+    "answerIndex": 0,
+    "target": "efficient",
+    "translation": "この新しい洗濯機は半分の時間で洗い終える。水もずっと少なくてすむので効率がよい。",
+    "explanation": "時間も水も少ない、は efficient = 効率のよい。",
+    "distractorNotes": [
+      "efficient = 効率のよい",
+      "fragile = こわれやすい",
+      "vacant = 空いている",
+      "enthusiastic = 熱心な"
+    ]
+  },
+  {
+    "id": "g2-v-126",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "Aiko lived in Canada for ten years. She is now ( ) in both English and French.",
+    "choices": [
+      "fluent",
+      "flexible",
+      "fierce",
+      "fragile"
+    ],
+    "answerIndex": 0,
+    "target": "fluent",
+    "translation": "アイコはカナダに10年住んだ。いまでは英語もフランス語も流ちょうに話せる。",
+    "explanation": "fluent in ~ = ~が流ちょうな。in English and French とつながる。",
+    "distractorNotes": [
+      "fluent in ~ = ~が流ちょうな",
+      "flexible = 柔軟な",
+      "fierce = 激しい",
+      "fragile = こわれやすい"
+    ]
+  },
+  {
+    "id": "g2-v-127",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 2,
+    "stem": "Please carry this box slowly with both hands. The glasses inside are very ( ).",
+    "choices": [
+      "fragile",
+      "spacious",
+      "urgent",
+      "widespread"
+    ],
+    "answerIndex": 0,
+    "target": "fragile",
+    "translation": "この箱は両手でゆっくり運んでください。中のグラスはとてもこわれやすいのです。",
+    "explanation": "「ゆっくり両手で運んで」の理由。fragile = こわれやすい。",
+    "distractorNotes": [
+      "fragile = こわれやすい",
+      "spacious = 広々とした",
+      "urgent = 緊急の",
+      "widespread = 広く行きわたった"
+    ]
+  },
+  {
+    "id": "g2-v-128",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 2,
+    "stem": "Our old apartment had only two small rooms. The new one is much more ( ), so we bought a big table.",
+    "choices": [
+      "spacious",
+      "awkward",
+      "enthusiastic",
+      "compact"
+    ],
+    "answerIndex": 0,
+    "target": "spacious",
+    "translation": "前のアパートは小さな部屋が2つしかなかった。新しいアパートはずっと広いので、大きなテーブルを買った。",
+    "explanation": "大きなテーブルが置ける、が根拠。spacious = 広々とした。",
+    "distractorNotes": [
+      "spacious = 広々とした",
+      "awkward = 気まずい",
+      "enthusiastic = 熱心な",
+      "compact = 小型の。「広い」の逆"
+    ]
+  },
+  {
+    "id": "g2-v-129",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "Smartphones are now used by people of all ages. They have become so ( ) that even young children own one.",
+    "choices": [
+      "widespread",
+      "vacant",
+      "unfortunate",
+      "awkward"
+    ],
+    "answerIndex": 0,
+    "target": "widespread",
+    "translation": "スマートフォンはいまやあらゆる年齢の人が使っている。幼い子どもまで持っているほど広く普及した。",
+    "explanation": "so ~ that 幼い子どもまで持つ、は普及の広さ。widespread = 広く行きわたった。",
+    "distractorNotes": [
+      "widespread = 広く行きわたった",
+      "vacant = 空いている",
+      "unfortunate = 不運な",
+      "awkward = 気まずい"
+    ]
+  },
+  {
+    "id": "g2-v-130",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "The campers brought plenty of food and water. They believed that their supplies would be ( ) for the whole week.",
+    "choices": [
+      "adequate",
+      "sticky",
+      "faint",
+      "ridiculous"
+    ],
+    "answerIndex": 0,
+    "target": "adequate",
+    "translation": "キャンプの参加者は食べ物と水をたっぷり持ってきた。1週間ぶんの備えは十分だと考えていた。",
+    "explanation": "plenty of（たっぷり）が手がかり。adequate = 十分な。",
+    "distractorNotes": [
+      "adequate = 十分な",
+      "sticky = ねばねばした",
+      "faint = かすかな",
+      "ridiculous = ばかげた"
+    ]
+  },
+  {
+    "id": "g2-v-131",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "Mika's apology was not just polite words. She was truly ( ), and everyone could see it in her face.",
+    "choices": [
+      "sincere",
+      "rapid",
+      "harmless",
+      "primitive"
+    ],
+    "answerIndex": 0,
+    "target": "sincere",
+    "translation": "ミカの謝罪は、ただ礼儀正しい言葉ではなかった。彼女は心からそう思っていて、みんなそれが顔に出ているのが分かった。",
+    "explanation": "言葉だけでなく心から、は sincere = 誠実な。",
+    "distractorNotes": [
+      "sincere = 誠実な、心からの",
+      "rapid = 速い",
+      "harmless = 害のない",
+      "primitive = 原始的な"
+    ]
+  },
+  {
+    "id": "g2-v-132",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adverb"
+    ],
+    "difficulty": 3,
+    "stem": "The train was delayed several times by signal trouble. It ( ) arrived at the station two hours late.",
+    "choices": [
+      "eventually",
+      "steadily",
+      "previously",
+      "occasionally"
+    ],
+    "answerIndex": 0,
+    "target": "eventually",
+    "translation": "電車は信号のトラブルで何度も遅れた。2時間遅れでようやく駅に着いた。",
+    "explanation": "何度も遅れた末に着いた、は eventually = ついに、結局は。",
+    "distractorNotes": [
+      "eventually = ついに、結局は",
+      "steadily = 着実に",
+      "previously = 以前に",
+      "occasionally = ときどき"
+    ]
+  },
+  {
+    "id": "g2-v-133",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adverb"
+    ],
+    "difficulty": 3,
+    "stem": "The number of foreign visitors has risen every year. It has been increasing ( ) for the past ten years.",
+    "choices": [
+      "steadily",
+      "previously",
+      "accurately",
+      "eventually"
+    ],
+    "answerIndex": 0,
+    "target": "steadily",
+    "translation": "外国人の訪問者数は毎年増えている。この10年、着実に増え続けている。",
+    "explanation": "毎年少しずつ増える、は steadily = 着実に。",
+    "distractorNotes": [
+      "steadily = 着実に",
+      "previously = 以前に",
+      "accurately = 正確に",
+      "eventually = ついに"
+    ]
+  },
+  {
+    "id": "g2-v-134",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adverb"
+    ],
+    "difficulty": 3,
+    "stem": "Ms. Lee now works as a manager at a bank. ( ), she was a teacher at a high school for ten years.",
+    "choices": [
+      "Previously",
+      "Currently",
+      "Eventually",
+      "Steadily"
+    ],
+    "answerIndex": 0,
+    "target": "previously",
+    "translation": "リーさんはいま銀行で支店長として働いている。以前は10年間、高校の教師だった。",
+    "explanation": "now（いま）と対になる「以前は」は Previously。後ろの過去形 was とも合う。",
+    "distractorNotes": [
+      "previously = 以前は",
+      "currently = 現在は。過去形 was と合わない",
+      "eventually = ついに",
+      "steadily = 着実に"
+    ]
+  },
+  {
+    "id": "g2-v-135",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "Many people move to other countries for work. For them, language is often a big ( ) in daily life.",
+    "choices": [
+      "barrier",
+      "attraction",
+      "donation",
+      "priority"
+    ],
+    "answerIndex": 0,
+    "target": "barrier",
+    "translation": "仕事で他の国に移る人は多い。そうした人にとって、言葉は日常生活での大きな壁になることが多い。",
+    "explanation": "a barrier = さまたげ、壁。言葉が生活のさまたげになる。",
+    "distractorNotes": [
+      "barrier = 壁、障壁",
+      "attraction = 魅力、呼び物",
+      "donation = 寄付",
+      "priority = 優先事項"
+    ]
+  },
+  {
+    "id": "g2-v-136",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "The new concert hall is very large. It has a seating ( ) of two thousand people.",
+    "choices": [
+      "capacity",
+      "achievement",
+      "obstacle",
+      "priority"
+    ],
+    "answerIndex": 0,
+    "target": "capacity",
+    "translation": "新しいコンサートホールはとても大きい。座席の収容人数は2000人だ。",
+    "explanation": "seating capacity = 座席の収容人数。人数をとれるのは capacity。",
+    "distractorNotes": [
+      "capacity = 収容人数",
+      "achievement = 達成、業績",
+      "obstacle = 障害",
+      "priority = 優先事項"
+    ]
+  },
+  {
+    "id": "g2-v-137",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "The school festival raised a lot of money. The students made a ( ) of all of it to a group that helps children.",
+    "choices": [
+      "donation",
+      "obstacle",
+      "barrier",
+      "merit"
+    ],
+    "answerIndex": 0,
+    "target": "donation",
+    "translation": "学園祭でたくさんのお金が集まった。生徒たちは、そのすべてを子どもを助ける団体に寄付した。",
+    "explanation": "make a donation of ~ to ... = ~を...に寄付する。",
+    "distractorNotes": [
+      "donation = 寄付",
+      "obstacle = 障害",
+      "barrier = 壁",
+      "merit = 長所"
+    ]
+  },
+  {
+    "id": "g2-v-138",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "Our team wanted to finish the project in June. The biggest ( ) was a lack of money.",
+    "choices": [
+      "obstacle",
+      "capacity",
+      "donation",
+      "attraction"
+    ],
+    "answerIndex": 0,
+    "target": "obstacle",
+    "translation": "私たちのチームは6月にプロジェクトを終えたかった。最大の障害は資金不足だった。",
+    "explanation": "an obstacle = 障害。a lack of money（資金不足）が障害の中身。",
+    "distractorNotes": [
+      "obstacle = 障害",
+      "capacity = 収容力",
+      "donation = 寄付",
+      "attraction = 魅力、呼び物"
+    ]
+  },
+  {
+    "id": "g2-v-139",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "Our school has many rules. The safety of students is always the top ( ).",
+    "choices": [
+      "priority",
+      "barrier",
+      "capacity",
+      "opportunity"
+    ],
+    "answerIndex": 0,
+    "target": "priority",
+    "translation": "私たちの学校にはたくさんの決まりがある。生徒の安全がいつも最優先だ。",
+    "explanation": "the top priority = 最優先事項。top と組み合わさる語。",
+    "distractorNotes": [
+      "priority = 優先事項",
+      "barrier = 壁",
+      "capacity = 収容力",
+      "opportunity = 機会"
+    ]
+  },
+  {
+    "id": "g2-v-140",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "The company's main factory had to close suddenly. It faced a serious ( ) and could not make any products.",
+    "choices": [
+      "crisis",
+      "rival",
+      "index",
+      "exception"
+    ],
+    "answerIndex": 0,
+    "target": "crisis",
+    "translation": "その会社の主力工場が突然閉鎖された。深刻な危機に直面し、製品がまったく作れなくなった。",
+    "explanation": "工場が止まって製品が作れない状況、は crisis = 危機。",
+    "distractorNotes": [
+      "crisis = 危機",
+      "rival = ライバル",
+      "index = 指標",
+      "exception = 例外"
+    ]
+  },
+  {
+    "id": "g2-v-141",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:noun"
+    ],
+    "difficulty": 3,
+    "stem": "Students must wear the school uniform every day. There is only one ( ): they may wear sports clothes on the day of the sports festival.",
+    "choices": [
+      "exception",
+      "penalty",
+      "achievement",
+      "rank"
+    ],
+    "answerIndex": 0,
+    "target": "exception",
+    "translation": "生徒は毎日制服を着なければならない。例外は1つだけで、運動会の日はスポーツウェアでもよい。",
+    "explanation": "「毎日制服」の決まりに対して「この日だけは別」。exception = 例外。",
+    "distractorNotes": [
+      "exception = 例外",
+      "penalty = 罰",
+      "achievement = 達成、業績",
+      "rank = 順位"
+    ]
+  },
+  {
+    "id": "g2-v-142",
     "section": "r-vocab",
     "tags": [
       "vocab:phrasal-verb"
     ],
-    "difficulty": 2,
-    "stem": "The tennis match was called ( ) because the court was too wet to play on.",
-    "choices": [
-      "off",
-      "on",
-      "up",
-      "out"
-    ],
-    "answerIndex": 0,
-    "translation": "コートがぬれすぎて使えなかったので、テニスの試合は中止になった。",
-    "explanation": "call off = 中止する。cancel とほぼ同じ意味の句動詞で、受け身 was called off の形でよく出る。",
-    "distractorNotes": [
-      "call off = 中止する",
-      "call on は「訪ねる、頼む」",
-      "call up は「電話をかける」",
-      "call out は「大声で呼ぶ」"
-    ]
-  },
-  {
-    "id": "g2-v-015",
-    "section": "r-vocab",
-    "tags": [
-      "grammar:conjunction"
-    ],
-    "difficulty": 2,
-    "stem": "( ) the heavy traffic, we arrived at the airport on time.",
-    "choices": [
-      "Despite",
-      "Although",
-      "While",
-      "Unless"
-    ],
-    "answerIndex": 0,
-    "translation": "ひどい渋滞にもかかわらず、私たちは空港に時間どおり着いた。",
-    "explanation": "後ろが名詞句 the heavy traffic なので、前置詞の despite（~にもかかわらず）が入る。Although / While / Unless は後ろに〈主語＋動詞〉が必要。",
-    "distractorNotes": [
-      "despite + 名詞 = ~にもかかわらず",
-      "although は接続詞。後ろに文が来る",
-      "while も接続詞。後ろに文が来る",
-      "unless は「~でない限り」。意味も合わない"
-    ]
-  },
-  {
-    "id": "g2-v-016",
-    "section": "r-vocab",
-    "tags": [
-      "grammar:relative"
-    ],
-    "difficulty": 2,
-    "stem": "Paul is the only member of the team ( ) can speak Spanish.",
-    "choices": [
-      "who",
-      "whom",
-      "whose",
-      "which"
-    ],
-    "answerIndex": 0,
-    "translation": "ポールは、チームでスペイン語を話せる唯一のメンバーだ。",
-    "explanation": "空所の後ろに主語がなく動詞 can speak が続くので、人を表す主格の関係代名詞 who を使う。",
-    "distractorNotes": [
-      "who = 人・主格",
-      "whom は目的格。後ろに主語が必要",
-      "whose は所有格。後ろに名詞が来る",
-      "which は人には使わない"
-    ]
-  },
-  {
-    "id": "g2-v-017",
-    "section": "r-vocab",
-    "tags": [
-      "grammar:tense"
-    ],
     "difficulty": 3,
-    "stem": "I wish I ( ) more time to spend with my family.",
+    "stem": "The scientists collected plants from the forest. Next week they will ( ) an experiment to see how the plants grow in the dark.",
     "choices": [
-      "had",
-      "have",
-      "having",
-      "would have"
+      "carry out",
+      "put away",
+      "hold on to",
+      "stand by"
     ],
     "answerIndex": 0,
-    "translation": "家族と過ごす時間がもっとあればいいのに。",
-    "explanation": "I wish + 過去形 = 現在の事実と反対の願望（仮定法）。時間がないのが事実なので had を使う。",
+    "target": "carry out",
+    "translation": "科学者たちは森から植物を集めた。来週、暗闇でどう育つかを調べる実験を行う予定だ。",
+    "explanation": "carry out an experiment = 実験を行う。実行するものを目的語にとる。",
     "distractorNotes": [
-      "I wish + 過去形 = ~ならいいのに",
-      "have は現在形。仮定法にならない",
-      "having は動詞の形として成り立たない",
-      "would have は I wish のあとでは使わない"
+      "carry out = 実行する",
+      "put away = かたづける",
+      "hold on to = しがみつく",
+      "stand by = そばで待機する"
     ]
   },
   {
-    "id": "g2-v-018",
+    "id": "g2-v-143",
     "section": "r-vocab",
     "tags": [
       "vocab:phrasal-verb"
     ],
     "difficulty": 3,
-    "stem": "Our teacher asked us to ( ) a good idea for the school festival.",
+    "stem": "Workers were repairing an old street light. They had to ( ) the electricity before they started.",
     "choices": [
-      "come up with",
+      "cut off",
+      "pick up",
+      "turn around",
+      "hand in"
+    ],
+    "answerIndex": 0,
+    "target": "cut off",
+    "translation": "作業員は古い街灯を修理していた。作業を始める前に電気を止めなければならなかった。",
+    "explanation": "cut off ~ = (電気・水などを)止める。修理の前に電気を切る、という流れ。",
+    "distractorNotes": [
+      "cut off = (電気などを)止める",
+      "pick up = 拾う",
+      "turn around = 向きを変える",
+      "hand in = 提出する"
+    ]
+  },
+  {
+    "id": "g2-v-144",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "We took the wrong bus by mistake. We ( ) in a small town that we had never heard of.",
+    "choices": [
+      "ended up",
+      "kept up",
+      "spoke up",
+      "backed up"
+    ],
+    "answerIndex": 0,
+    "target": "end up",
+    "translation": "私たちは間違ったバスに乗ってしまった。結局、聞いたこともない小さな町にたどり着いた。",
+    "explanation": "end up in ~ = 結局~にたどり着く。予定外の結果を表す。",
+    "distractorNotes": [
+      "end up = 結局~になる",
+      "keep up = 続ける",
+      "speak up = 大きな声で言う",
+      "back up = 支える"
+    ]
+  },
+  {
+    "id": "g2-v-145",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "My little brother cried in the toy shop for an hour. At last our mother ( ) and bought him the robot.",
+    "choices": [
+      "gave in",
+      "set out",
+      "worked out",
+      "turned out"
+    ],
+    "answerIndex": 0,
+    "target": "give in",
+    "translation": "弟は1時間おもちゃ屋で泣いた。ついに母は折れて、ロボットを買ってやった。",
+    "explanation": "give in = 折れる、屈する。泣かれてついに買った、という流れ。",
+    "distractorNotes": [
+      "give in = 折れる",
+      "set out = 出発する",
+      "work out = うまくいく",
+      "turn out = ~だと分かる"
+    ]
+  },
+  {
+    "id": "g2-v-146",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "These flowers open only at night. They ( ) a sweet smell that attracts insects.",
+    "choices": [
+      "give off",
+      "break through",
+      "put off",
+      "turn off"
+    ],
+    "answerIndex": 0,
+    "target": "give off",
+    "translation": "これらの花は夜にだけ開く。虫を引きつける甘いにおいを出す。",
+    "explanation": "give off ~ = (においなどを)出す。smell を目的語にとるのは give off。",
+    "distractorNotes": [
+      "give off = (においなどを)出す",
+      "break through = 突破する",
+      "put off = 延期する",
+      "turn off = (スイッチを)切る"
+    ]
+  },
+  {
+    "id": "g2-v-147",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "My grandmother grew up in a poor village. She ( ) many hard times when she was young, but she always smiles.",
+    "choices": [
+      "went through",
+      "came from",
+      "set up",
+      "took after"
+    ],
+    "answerIndex": 0,
+    "target": "go through",
+    "translation": "祖母は貧しい村で育った。若いころ多くの苦しい時期を経験したが、いつも笑顔だ。",
+    "explanation": "go through ~ = (つらいことを)経験する。hard times を目的語にとる定番。",
+    "distractorNotes": [
+      "go through = (つらいことを)経験する",
+      "come from = ~の出身だ",
+      "set up = 設立する",
+      "take after = (親に)似る"
+    ]
+  },
+  {
+    "id": "g2-v-148",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "A truck broke down on the highway. It ( ) the traffic for more than an hour.",
+    "choices": [
+      "held up",
+      "picked up",
+      "gave up",
+      "turned up"
+    ],
+    "answerIndex": 0,
+    "target": "hold up",
+    "translation": "トラックが高速道路で故障した。1時間以上、交通をとどこおらせた。",
+    "explanation": "hold up ~ = ~を遅らせる、停滞させる。",
+    "distractorNotes": [
+      "hold up = 遅らせる",
+      "pick up = 拾う",
+      "give up = あきらめる",
+      "turn up = 現れる"
+    ]
+  },
+  {
+    "id": "g2-v-149",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "Residents complained about the noise from a building site. The city office promised to ( ) the problem.",
+    "choices": [
+      "look into",
+      "look up to",
+      "look out of",
+      "look back on"
+    ],
+    "answerIndex": 0,
+    "target": "look into",
+    "translation": "住民は工事現場の騒音について苦情を言った。市役所はその問題を調べると約束した。",
+    "explanation": "look into ~ = (原因・問題を)調べる。苦情への対応の定番。",
+    "distractorNotes": [
+      "look into = 調べる",
+      "look up to = 尊敬する",
+      "look out of = ~から外を見る",
+      "look back on = 振り返る"
+    ]
+  },
+  {
+    "id": "g2-v-150",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "My classmate read my report before I handed it in. She ( ) a spelling mistake in the second paragraph.",
+    "choices": [
+      "pointed out",
+      "spread out",
+      "looked through",
+      "blew out"
+    ],
+    "answerIndex": 0,
+    "target": "point out",
+    "translation": "提出する前に、クラスメートが私のレポートを読んだ。彼女は第2段落のつづりの間違いを指摘してくれた。",
+    "explanation": "point out ~ = ~を指摘する。mistake を目的語にとる定番。",
+    "distractorNotes": [
+      "point out = 指摘する",
+      "spread out = 広げる",
+      "look through = ざっと目を通す",
+      "blow out = 吹き消す"
+    ]
+  },
+  {
+    "id": "g2-v-151",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "Her bright red coat was easy to see. It made her ( ) in the crowd.",
+    "choices": [
+      "stand out",
+      "stand for",
+      "stand by",
+      "stand over"
+    ],
+    "answerIndex": 0,
+    "target": "stand out",
+    "translation": "彼女の真っ赤なコートは見つけやすかった。人ごみの中で目立っていた。",
+    "explanation": "stand out = 目立つ。make her stand out（彼女を目立たせる）の形。",
+    "distractorNotes": [
+      "stand out = 目立つ",
+      "stand for = 意味する",
+      "stand by = 待機する",
+      "stand over = 見張る"
+    ]
+  },
+  {
+    "id": "g2-v-152",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "The head coach is moving to another club next month. A young assistant will ( ) the team.",
+    "choices": [
+      "take over",
+      "take part in",
+      "take down",
+      "take away"
+    ],
+    "answerIndex": 0,
+    "target": "take over",
+    "translation": "ヘッドコーチは来月、別のクラブに移る。若いアシスタントがチームを引き継ぐ。",
+    "explanation": "take over ~ = ~を引き継ぐ。コーチが去ったあとの話。",
+    "distractorNotes": [
+      "take over = 引き継ぐ",
+      "take part in = 参加する",
+      "take down = 書きとめる",
+      "take away = 持ち去る"
+    ]
+  },
+  {
+    "id": "g2-v-153",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "The company offered Mika a job in another city. She ( ) the offer because she wanted to stay with her family.",
+    "choices": [
+      "turned down",
+      "turned up",
+      "turned around",
+      "turned on"
+    ],
+    "answerIndex": 0,
+    "target": "turn down",
+    "translation": "会社はミカに別の都市での仕事を提案した。家族と暮らしたかったので、彼女はその話を断った。",
+    "explanation": "turn down ~ = ~を断る。offer を目的語にとる定番。because 以下が断った理由。",
+    "distractorNotes": [
+      "turn down = 断る",
+      "turn up = 現れる",
+      "turn around = 向きを変える",
+      "turn on = (スイッチを)入れる"
+    ]
+  },
+  {
+    "id": "g2-v-154",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "The club had only two weeks before the festival. They ( ) a plan to finish all the posters in time.",
+    "choices": [
+      "worked out",
+      "got out",
+      "held out",
+      "put up with"
+    ],
+    "answerIndex": 0,
+    "target": "work out",
+    "translation": "クラブには学園祭まで2週間しかなかった。部員たちは、すべてのポスターを間に合わせる計画を考え出した。",
+    "explanation": "work out a plan = 計画を練り上げる。",
+    "distractorNotes": [
+      "work out = 考え出す",
+      "get out = 外に出る",
+      "hold out = 差し出す",
+      "put up with = がまんする"
+    ]
+  },
+  {
+    "id": "g2-v-155",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "The teacher stopped for a moment because of a loud noise. Then she smiled and ( ) with her lesson.",
+    "choices": [
+      "carried on",
+      "gave off",
+      "stood out",
+      "held up"
+    ],
+    "answerIndex": 0,
+    "target": "carry on",
+    "translation": "大きな物音で先生は少し話を止めた。そして笑顔で授業を続けた。",
+    "explanation": "carry on with ~ = ~を続ける。いったん止めたあとに再開する場面。",
+    "distractorNotes": [
+      "carry on = 続ける",
+      "give off = (においなどを)出す",
+      "stand out = 目立つ",
+      "hold up = 遅らせる"
+    ]
+  },
+  {
+    "id": "g2-v-156",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "I was cleaning my desk yesterday. I ( ) a letter that my friend wrote to me three years ago.",
+    "choices": [
+      "came across",
+      "came from",
+      "came about",
+      "came off"
+    ],
+    "answerIndex": 0,
+    "target": "come across",
+    "translation": "きのう机を掃除していた。3年前に友達が書いてくれた手紙を偶然見つけた。",
+    "explanation": "come across ~ = ~を偶然見つける。探していなかった物に出会うとき。",
+    "distractorNotes": [
+      "come across = 偶然見つける",
+      "come from = ~の出身だ",
+      "come about = 起こる",
+      "come off = はがれる"
+    ]
+  },
+  {
+    "id": "g2-v-157",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "Many students feel nervous before exams. Learning how to ( ) stress is important.",
+    "choices": [
+      "cope with",
+      "give off",
+      "hold up",
+      "keep up with"
+    ],
+    "answerIndex": 0,
+    "target": "cope with",
+    "translation": "試験の前に緊張する生徒は多い。ストレスにうまく対処する方法を学ぶことは大切だ。",
+    "explanation": "cope with ~ = ~にうまく対処する。stress を目的語にとる。",
+    "distractorNotes": [
+      "cope with = 対処する",
+      "give off = (においなどを)出す",
+      "hold up = 遅らせる",
+      "keep up with ~ = ~についていく"
+    ]
+  },
+  {
+    "id": "g2-v-158",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "Many large animals lived in the area long ago. Scientists believe that they ( ) when the climate changed.",
+    "choices": [
+      "died out",
+      "gave out",
+      "broke out",
+      "ran out"
+    ],
+    "answerIndex": 0,
+    "target": "die out",
+    "translation": "昔、その地域には多くの大型動物がいた。気候が変わったときに絶滅したと科学者は考えている。",
+    "explanation": "die out = (種などが)絶滅する。動物が主語のときの定番。",
+    "distractorNotes": [
+      "die out = 絶滅する",
+      "give out = 配る、尽きる",
+      "break out = (戦争・火事などが)起こる",
+      "run out = 尽きる"
+    ]
+  },
+  {
+    "id": "g2-v-159",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "The students had many pieces of information. They worked as a team to ( ) a short report.",
+    "choices": [
+      "put together",
+      "put away",
+      "put off",
+      "put on"
+    ],
+    "answerIndex": 0,
+    "target": "put together",
+    "translation": "生徒たちはたくさんの情報を持っていた。チームで協力して短いレポートをまとめ上げた。",
+    "explanation": "put together ~ = ~をまとめる、組み立てる。",
+    "distractorNotes": [
+      "put together = まとめる",
+      "put away = かたづける",
+      "put off = 延期する",
+      "put on = 着る"
+    ]
+  },
+  {
+    "id": "g2-v-160",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "Tokyo is crowded and busy. ( ), the village where my grandfather lives is quiet and calm.",
+    "choices": [
+      "In contrast",
+      "In advance",
+      "In particular",
+      "In total"
+    ],
+    "answerIndex": 0,
+    "target": "in contrast",
+    "translation": "東京は人が多くてせわしない。それに対して、祖父が住む村は静かで穏やかだ。",
+    "explanation": "前の文と反対の様子を述べているので、対比を表す In contrast（対照的に）。",
+    "distractorNotes": [
+      "in contrast = 対照的に",
+      "in advance = 前もって",
+      "in particular = とくに。対比ではない",
+      "in total = 合計で"
+    ]
+  },
+  {
+    "id": "g2-v-161",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "A neighbor looked after our cat while we were away. We gave her a cake ( ).",
+    "choices": [
+      "in return",
+      "in time",
+      "in case",
+      "in public"
+    ],
+    "answerIndex": 0,
+    "target": "in return",
+    "translation": "留守のあいだ、隣の人が猫の世話をしてくれた。お礼にケーキをあげた。",
+    "explanation": "in return = お返しに。世話をしてもらったお返し、という流れ。",
+    "distractorNotes": [
+      "in return = お返しに",
+      "in time = 間に合って",
+      "in case = 念のため",
+      "in public = 人前で"
+    ]
+  },
+  {
+    "id": "g2-v-162",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "Some students read thirty books a year, and others read only two or three. ( ), the students in this class read about ten books a year.",
+    "choices": [
+      "On average",
+      "At random",
+      "As a result",
+      "By the way"
+    ],
+    "answerIndex": 0,
+    "target": "on average",
+    "translation": "1年に30冊読む生徒もいれば、2、3冊しか読まない生徒もいる。平均すると、このクラスの生徒は1年に約10冊読む。",
+    "explanation": "人によって差がある数字をまとめて言うので、on average = 平均して。",
+    "distractorNotes": [
+      "on average = 平均して",
+      "at random = 無作為に",
+      "as a result = その結果。原因の文がない",
+      "by the way = ところで"
+    ]
+  },
+  {
+    "id": "g2-v-163",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "This guidebook was printed fifteen years ago. It is ( ), and many of the shops in it have already closed.",
+    "choices": [
+      "out of date",
+      "out of order",
+      "out of breath",
+      "out of reach"
+    ],
+    "answerIndex": 0,
+    "target": "out of date",
+    "translation": "このガイドブックは15年前に印刷された。古くなっていて、載っている店の多くはもう閉店している。",
+    "explanation": "out of date = 古くなった。載っている情報が今と合わない、という意味。",
+    "distractorNotes": [
+      "out of date = 古くなった",
+      "out of order = 故障中",
+      "out of breath = 息切れして",
+      "out of reach = 手が届かない"
+    ]
+  },
+  {
+    "id": "g2-v-164",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "Don't worry about your future too much. ( ), you will find work that you really enjoy.",
+    "choices": [
+      "Sooner or later",
+      "By the way",
+      "As usual",
+      "Not at all"
+    ],
+    "answerIndex": 0,
+    "target": "sooner or later",
+    "translation": "将来のことをあまり心配しないで。遅かれ早かれ、本当に楽しめる仕事が見つかるよ。",
+    "explanation": "sooner or later = 遅かれ早かれ、そのうち。励ましの場面でよく使う。",
+    "distractorNotes": [
+      "sooner or later = 遅かれ早かれ",
+      "by the way = ところで",
+      "as usual = いつものように",
+      "not at all = 全然~ない"
+    ]
+  },
+  {
+    "id": "g2-v-165",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "This small robot looks weak. However, it is ( ) lifting a box ten times heavier than itself.",
+    "choices": [
+      "capable of",
+      "fond of",
+      "afraid of",
+      "tired of"
+    ],
+    "answerIndex": 0,
+    "target": "be capable of",
+    "translation": "この小さなロボットは弱そうに見える。しかし、自分の10倍も重い箱を持ち上げることができる。",
+    "explanation": "be capable of ~ing = ~する能力がある。However のあとで、見た目と逆の力を述べている。",
+    "distractorNotes": [
+      "be capable of ~ing = ~できる",
+      "be fond of = ~が好きだ",
+      "be afraid of = ~をこわがる",
+      "be tired of = ~にあきている"
+    ]
+  },
+  {
+    "id": "g2-v-166",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "Our club has five members. Each member is ( ) cleaning the room on a different day.",
+    "choices": [
+      "responsible for",
+      "short of",
+      "jealous of",
+      "sure of"
+    ],
+    "answerIndex": 0,
+    "target": "be responsible for",
+    "translation": "私たちのクラブには5人の部員がいる。部員はそれぞれ別の日に部屋の掃除を担当している。",
+    "explanation": "be responsible for ~ = ~に責任がある、~を受け持つ。当番を決める場面でよく使う。",
+    "distractorNotes": [
+      "be responsible for = ~に責任がある",
+      "be short of = ~が足りない",
+      "be jealous of = ~をねたむ",
+      "be sure of = ~を確信している"
+    ]
+  },
+  {
+    "id": "g2-v-167",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "Mina gave two reasons for joining the club. ( ), she loves music, and she also wanted to make new friends.",
+    "choices": [
+      "To begin with",
+      "In the end",
+      "As usual",
+      "At last"
+    ],
+    "answerIndex": 0,
+    "target": "to begin with",
+    "translation": "ミナはクラブに入る理由を2つ挙げた。まず、音楽が大好きだから。それに、新しい友達も作りたかった。",
+    "explanation": "理由を順に挙げる最初の1つ目は To begin with（まず第一に）。後ろの also が2つ目への流れ。",
+    "distractorNotes": [
+      "to begin with = まず第一に",
+      "in the end = 結局",
+      "as usual = いつものように",
+      "at last = ついに"
+    ]
+  },
+  {
+    "id": "g2-v-168",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "The bus will arrive in about twenty minutes. ( ), let's have a cup of tea at the cafe next to the stop.",
+    "choices": [
+      "In the meantime",
+      "On the contrary",
+      "As a result",
+      "For example"
+    ],
+    "answerIndex": 0,
+    "target": "in the meantime",
+    "translation": "バスは約20分後に来る。それまでのあいだ、バス停の隣のカフェでお茶を飲もう。",
+    "explanation": "バスが来るまでの20分を指して「そのあいだに」は In the meantime。",
+    "distractorNotes": [
+      "in the meantime = そのあいだに",
+      "on the contrary = それどころか",
+      "as a result = その結果",
+      "for example = たとえば"
+    ]
+  },
+  {
+    "id": "g2-v-169",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "The new phone is very light and easy to use. ( ), it costs less than the old model.",
+    "choices": [
+      "What is more",
+      "On the other hand",
+      "For instance",
+      "At last"
+    ],
+    "answerIndex": 0,
+    "target": "what is more",
+    "translation": "新しい電話はとても軽くて使いやすい。そのうえ、古い型より安い。",
+    "explanation": "よい点にさらによい点を足す What is more（そのうえ）。",
+    "distractorNotes": [
+      "what is more = そのうえ",
+      "on the other hand = 一方で。逆の内容ではない",
+      "for instance = たとえば",
+      "at last = ついに"
+    ]
+  },
+  {
+    "id": "g2-v-170",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "Our school trip was very cheap. Each student paid ( ) three thousand yen.",
+    "choices": [
+      "no more than",
+      "more than ever",
+      "no less than",
+      "anything but"
+    ],
+    "answerIndex": 0,
+    "target": "no more than",
+    "translation": "私たちの修学旅行はとても安かった。生徒1人が払ったのは3000円だけだった。",
+    "explanation": "no more than ~ = ~しか、わずか~。very cheap（とても安い）と合う。no less than は「~も」で逆の意味。",
+    "distractorNotes": [
+      "no more than = わずか~",
+      "more than ever = これまで以上に",
+      "no less than = ~も（多い）。「とても安い」と逆",
+      "anything but = ~では決してない"
+    ]
+  },
+  {
+    "id": "g2-v-171",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "A: I can't decide which university to apply to.\nB: Why don't you ( ) your homeroom teacher? She knows a lot about it.",
+    "choices": [
+      "consult",
+      "recommend",
+      "decline",
+      "oppose"
+    ],
+    "answerIndex": 0,
+    "target": "consult",
+    "translation": "A: どの大学に出願するか決められないんだ。\nB: 担任の先生に相談したら？ そのことをよく知っているよ。",
+    "explanation": "決められない人に勧める行動。consult = 相談する。後ろに人を直接置ける。",
+    "distractorNotes": [
+      "consult = 相談する",
+      "recommend = すすめる",
+      "decline = 断る、減る",
+      "oppose = 反対する"
+    ]
+  },
+  {
+    "id": "g2-v-172",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:verb"
+    ],
+    "difficulty": 3,
+    "stem": "A: Could you turn down the TV? The baby is trying to sleep.\nB: Sure. I'll ( ) the volume right now.",
+    "choices": [
+      "adjust",
+      "attach",
+      "convert",
+      "weigh"
+    ],
+    "answerIndex": 0,
+    "target": "adjust",
+    "translation": "A: テレビの音を下げてくれる？ 赤ちゃんが寝ようとしているの。\nB: いいよ。すぐに音量を調整するね。",
+    "explanation": "volume（音量）を目的語にとるのは adjust = 調整する。",
+    "distractorNotes": [
+      "adjust = 調整する",
+      "attach = 取りつける",
+      "convert = 変える",
+      "weigh = 重さをはかる"
+    ]
+  },
+  {
+    "id": "g2-v-173",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "A: Did you get my message?\nB: Yes. It said it was ( ), so I called you right away.",
+    "choices": [
+      "urgent",
+      "ancient",
+      "steep",
+      "casual"
+    ],
+    "answerIndex": 0,
+    "target": "urgent",
+    "translation": "A: 私のメッセージ、届いた？\nB: うん。緊急だと書いてあったから、すぐに電話したよ。",
+    "explanation": "right away（すぐに）電話した理由。urgent = 緊急の。",
+    "distractorNotes": [
+      "urgent = 緊急の",
+      "ancient = 古代の",
+      "steep = 険しい、急な",
+      "casual = 気軽な"
+    ]
+  },
+  {
+    "id": "g2-v-174",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "A: Can I wear sandals for tomorrow's mountain hike?\nB: No. They're not ( ) for walking on rocks. Wear hiking boots.",
+    "choices": [
+      "suitable",
+      "steep",
+      "curious",
+      "circular"
+    ],
+    "answerIndex": 0,
+    "target": "suitable",
+    "translation": "A: あしたの山歩きにサンダルで行ってもいい？\nB: だめだよ。岩の上を歩くのには向いていない。登山靴をはいて。",
+    "explanation": "suitable for ~ = ~に適した。Wear hiking boots（登山靴を）が根拠。",
+    "distractorNotes": [
+      "suitable for ~ = ~に適した",
+      "steep = 険しい、急な",
+      "curious = 好奇心の強い",
+      "circular = 円形の"
+    ]
+  },
+  {
+    "id": "g2-v-175",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:adjective"
+    ],
+    "difficulty": 3,
+    "stem": "A: Can I trust this map? I don't want to get lost.\nB: Yes, it's very ( ). Every little street is on it.",
+    "choices": [
+      "accurate",
+      "fierce",
+      "unfortunate",
+      "dull"
+    ],
+    "answerIndex": 0,
+    "target": "accurate",
+    "translation": "A: この地図は信用できる？ 迷いたくないんだ。\nB: うん、とても正確だよ。細い道までぜんぶ載っている。",
+    "explanation": "細い道までぜんぶ載っている地図。accurate = 正確な。",
+    "distractorNotes": [
+      "accurate = 正確な",
+      "fierce = 激しい",
+      "unfortunate = 不運な",
+      "dull = 退屈な、鈍い"
+    ]
+  },
+  {
+    "id": "g2-v-176",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "A: Will you be at the station by seven tomorrow morning?\nB: Of course. You can ( ) me. I'm never late.",
+    "choices": [
+      "count on",
+      "run out",
+      "give up on",
+      "look forward to"
+    ],
+    "answerIndex": 0,
+    "target": "count on",
+    "translation": "A: あしたの朝7時までに駅に来られる？\nB: もちろん。任せて。遅れたことはないよ。",
+    "explanation": "count on ~ = ~をあてにする。You can count on me（任せて）の定番表現。",
+    "distractorNotes": [
+      "count on = 頼りにする",
+      "run out = 尽きる",
+      "give up on = 見限る。「任せて」と逆",
+      "look forward to = 楽しみに待つ"
+    ]
+  },
+  {
+    "id": "g2-v-177",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "A: Why are you still working on that puzzle box?\nB: I can't ( ) how to open it. There seems to be no lid.",
+    "choices": [
+      "figure out",
+      "look after",
+      "take part",
+      "get along with"
+    ],
+    "answerIndex": 0,
+    "target": "figure out",
+    "translation": "A: まだそのパズルの箱をやっているの？\nB: 開け方が分からないんだ。ふたがないみたいで。",
+    "explanation": "figure out how to ~ = ~のやり方を理解する。分からなくて困っている場面。",
+    "distractorNotes": [
+      "figure out = 理解する",
+      "look after = 世話をする",
+      "take part は take part in ~ の形",
+      "get along with = ~と仲よくやる"
+    ]
+  },
+  {
+    "id": "g2-v-178",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "A: I'm sorry I forgot your birthday.\nB: It's all right.\nA: I'll ( ) it by taking you out to dinner this weekend.",
+    "choices": [
+      "make up for",
       "put up with",
-      "catch up with",
-      "run out of"
+      "get along with",
+      "keep up with"
     ],
     "answerIndex": 0,
-    "translation": "先生は私たちに、学園祭のよいアイデアを思いつくよう求めた。",
-    "explanation": "come up with ~ = ~を思いつく。アイデアや案が目的語のときの定番。",
+    "target": "make up for",
+    "translation": "A: 誕生日を忘れてごめんね。\nB: いいよ。\nA: 今週末の夕食に連れて行って埋め合わせするよ。",
+    "explanation": "make up for ~ = ~の埋め合わせをする。忘れたことへの償い。",
     "distractorNotes": [
-      "come up with = 思いつく",
-      "put up with = ~をがまんする",
-      "catch up with = ~に追いつく",
-      "run out of = ~を使い果たす"
+      "make up for = 埋め合わせる",
+      "put up with = がまんする",
+      "get along with = ~と仲よくやる",
+      "keep up with = ~についていく"
+    ]
+  },
+  {
+    "id": "g2-v-179",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:phrasal-verb"
+    ],
+    "difficulty": 3,
+    "stem": "A: Your room is full of old magazines.\nB: I know. I need to ( ) them before we move to the new house.",
+    "choices": [
+      "get rid of",
+      "make fun of",
+      "run out of",
+      "look forward to"
+    ],
+    "answerIndex": 0,
+    "target": "get rid of",
+    "translation": "A: あなたの部屋は古い雑誌でいっぱいね。\nB: 分かってる。新しい家に引っ越す前に処分しなくちゃ。",
+    "explanation": "get rid of ~ = ~を処分する、取りのぞく。引っ越し前に古い物を片づける場面。",
+    "distractorNotes": [
+      "get rid of = 処分する",
+      "make fun of = からかう",
+      "run out of = 使い果たす",
+      "look forward to = 楽しみに待つ"
+    ]
+  },
+  {
+    "id": "g2-v-180",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "A: I'd like to buy the new game, please.\nB: I'm sorry. It's ( ) at the moment, but we'll get more next week.",
+    "choices": [
+      "out of stock",
+      "out of order",
+      "out of control",
+      "out of sight"
+    ],
+    "answerIndex": 0,
+    "target": "out of stock",
+    "translation": "A: 新しいゲームを買いたいのですが。\nB: すみません、いまは在庫切れです。来週また入ります。",
+    "explanation": "we'll get more next week（来週また入る）が手がかり。out of stock = 在庫切れ。",
+    "distractorNotes": [
+      "out of stock = 在庫切れ",
+      "out of order = 故障中",
+      "out of control = 手に負えない",
+      "out of sight = 見えない"
+    ]
+  },
+  {
+    "id": "g2-v-181",
+    "section": "r-vocab",
+    "tags": [
+      "vocab:idiom"
+    ],
+    "difficulty": 3,
+    "stem": "A: Can I send the form by e-mail?\nB: No, you have to bring it ( ) to the office.",
+    "choices": [
+      "in person",
+      "in detail",
+      "in public",
+      "in general"
+    ],
+    "answerIndex": 0,
+    "target": "in person",
+    "translation": "A: 書類はメールで送ってもいいですか。\nB: いいえ、事務所へ直接持ってきてください。",
+    "explanation": "in person = 本人が直接。by e-mail と対になる表現。",
+    "distractorNotes": [
+      "in person = 直接",
+      "in detail = くわしく",
+      "in public = 人前で",
+      "in general = 一般に"
     ]
   }
 ]

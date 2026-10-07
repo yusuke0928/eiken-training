@@ -497,6 +497,189 @@ for (const r of g2Rows.speaking) {
 
 reportAnswerDistribution('2級 ', g2Positions);
 
+/* ---------- 2級：問題の質の検査（P3-A / P3-A-R）----------
+   「迷ったら一番長い（短い）のを選ぶ」で取れる問題集にしないための数と、
+   大問1の正解語・誤答語が本当に2級の水準か、長文が本番の長さ・語彙の密度に届いているかの確認。
+   種の監査（G2-02・G2-03）と P3-A の監査で見つかった癖を、数で止める。 */
+{
+  // 正解の長さの癖の上限。偶然なら最長・最短とも25%。これを超えると長さで当てられる（または逆に外せる）
+  const LENGTH_LIMIT = 0.3;
+  // 正解が最長か。同じ長さの選択肢があれば最長とみなす（きびしい側の数え方）
+  const isLongest = (item) => {
+    const lens = item.choices.map((c) => c.length);
+    const correct = lens[item.answerIndex];
+    return lens.every((l, i) => i === item.answerIndex || correct >= l);
+  };
+  const isStrictLongest = (item) => {
+    const lens = item.choices.map((c) => c.length);
+    const correct = lens[item.answerIndex];
+    return lens.every((l, i) => i === item.answerIndex || correct > l);
+  };
+  // 最短は「同じ長さを除く」で数える。大問1は1語どうしで同じ長さになりやすく、ふくめると偶然でも3割を超えるため
+  const isStrictShortest = (item) => {
+    const lens = item.choices.map((c) => c.length);
+    const correct = lens[item.answerIndex];
+    return lens.every((l, i) => i === item.answerIndex || correct < l);
+  };
+  const isShortest = (item) => {
+    const lens = item.choices.map((c) => c.length);
+    const correct = lens[item.answerIndex];
+    return lens.every((l, i) => i === item.answerIndex || correct <= l);
+  };
+  const batches = [
+    ['大問1 短文', g2Rows.vocab],
+    ['大問2 長文空所', g2Passages.filter((p) => p.section === 'r-cloze').flatMap((p) => p.items)],
+    ['大問3A Eメール', g2Passages.filter((p) => p.section === 'r-passage' && p.format === 'email').flatMap((p) => p.items)],
+    ['大問3B 説明文', g2Passages.filter((p) => p.section === 'r-passage' && p.format === 'article').flatMap((p) => p.items)],
+  ];
+  const pct = (a, n) => (n ? `${a}/${n} = ${Math.round((a / n) * 100)}%` : '0/0');
+  console.log('\n2級 正解の長さの癖（上限30%。最長は同じ長さも含める／最短は同じ長さを除く。カッコ内は逆の数え方）:');
+  const tot = { n: 0, long: 0, strictLong: 0, short: 0, strictShort: 0 };
+  for (const [label, items] of batches) {
+    const n = items.length;
+    const long = items.filter(isLongest).length;
+    const strictLong = items.filter(isStrictLongest).length;
+    const short = items.filter(isShortest).length;
+    const strictShort = items.filter(isStrictShortest).length;
+    tot.n += n; tot.long += long; tot.strictLong += strictLong; tot.short += short; tot.strictShort += strictShort;
+    console.log(`  ${label}: 最長 ${pct(long, n)}（同長を除くと ${strictLong}）／最短 ${pct(strictShort, n)}（同長を含むと ${short}）`);
+    if (n >= 10 && long / n > LENGTH_LIMIT) errors.push(`2級 ${label}: 正解が最長の選択肢になる率が${Math.round((long / n) * 100)}%（上限${LENGTH_LIMIT * 100}%）。選択肢の長さをそろえること`);
+    if (n >= 10 && strictShort / n > LENGTH_LIMIT) errors.push(`2級 ${label}: 正解が最短の選択肢になる率が${Math.round((strictShort / n) * 100)}%（上限${LENGTH_LIMIT * 100}%）。「短いのが正解」の癖になっている`);
+  }
+  console.log(`  全体（大問1〜3B）: 最長 ${pct(tot.long, tot.n)}（同長を除くと ${tot.strictLong}）／最短 ${pct(tot.strictShort, tot.n)}（同長を含むと ${tot.short}）`);
+  if (tot.n >= 10 && tot.long / tot.n > LENGTH_LIMIT) errors.push(`2級 全体: 最長正解率が${Math.round((tot.long / tot.n) * 100)}%（上限30%）`);
+  if (tot.n >= 10 && tot.strictShort / tot.n > LENGTH_LIMIT) errors.push(`2級 全体: 最短正解率が${Math.round((tot.strictShort / tot.n) * 100)}%（上限30%）`);
+  // リスニングは P3-B の範囲。いまは数だけ出して落とさない
+  const listenItems = g2Rows.listening;
+  if (listenItems.length > 0) {
+    console.log(`  （参考）リスニング: 最長 ${pct(listenItems.filter(isLongest).length, listenItems.length)}。P3-B で見る`);
+  }
+
+  // 単語の見出し語レベル表。活用形は原形に戻して引く（正解語は target で明示、誤答は語形から推定）
+  const levelOf = new Map(load('content/words-core.json').words.map((w) => [w[0], w[3]]));
+  const lemmaLevel = (raw) => {
+    const w = raw.toLowerCase();
+    if (levelOf.has(w)) return levelOf.get(w);
+    const cands = [w.replace(/s$/, ''), w.replace(/es$/, ''), w.replace(/ed$/, ''), w.replace(/d$/, ''), w.replace(/ing$/, ''), w.replace(/ing$/, 'e'), w.replace(/ied$/, 'y'), w.replace(/ly$/, ''), w.replace(/ically$/, 'ic')];
+    for (const c of cands) if (c !== w && levelOf.has(c)) return levelOf.get(c);
+    return null;
+  };
+
+  // 大問1：正解にする語（target）が g2 レベルか。誤答も2級の語に寄せる（準2級以下は半分以下）
+  const dist = {};
+  const distractor = {};
+  let typeWord = 0;
+  let typePhrase = 0;
+  for (const item of g2Rows.vocab) {
+    const at = `g2/vocab.json / ${item.id}`;
+    if (!item.target) {
+      errors.push(`${at}: target（正解にする語の原形。words-core.json の見出し語）がない`);
+      continue;
+    }
+    const lv = levelOf.get(item.target) ?? '未収録';
+    dist[lv] = (dist[lv] ?? 0) + 1;
+    if (lv !== 'g2') errors.push(`${at}: 正解語 "${item.target}" のレベルが ${lv}。大問1の正解語は g2 レベルにすること`);
+    if (/\s/.test(item.target)) typePhrase++;
+    else typeWord++;
+    if ((item.stem.match(/\(\s\)/g) ?? []).length !== 1) errors.push(`${at}: stem に「( )」がちょうど1つ必要`);
+    item.choices.forEach((c, i) => {
+      if (i === item.answerIndex) return;
+      const l = lemmaLevel(c) ?? '不明';
+      distractor[l] = (distractor[l] ?? 0) + 1;
+    });
+  }
+  console.log(`\n2級 大問1の正解語のレベル分布: ${Object.entries(dist).map(([k, v]) => `${k}=${v}`).join(' / ') || '(なし)'}（単語${typeWord}・句${typePhrase}）`);
+  const known = Object.entries(distractor).filter(([k]) => k !== '不明').reduce((a, [, v]) => a + v, 0);
+  const easy = (distractor.jhs ?? 0) + (distractor.p2 ?? 0);
+  console.log(`2級 大問1の誤答のレベル分布: ${Object.entries(distractor).map(([k, v]) => `${k}=${v}`).join(' / ')} ／ 準2級以下の割合 ${known ? Math.round((easy / known) * 100) : 0}%（照合できた${known}個のうち。上限50%）`);
+  if (known >= 50 && easy / known > 0.5) errors.push(`2級 大問1: 誤答のうち準2級以下の語が${Math.round((easy / known) * 100)}%。2級の語に寄せること（上限50%）`);
+
+  // 大問1の形：公式（2026-1）は17問中13問が2文・2問が会話。1文だけの問題ばかりだと、手がかりを文脈から探す練習にならない
+  const isConv = (s) => /^A:/.test(s);
+  const sentences = (s) => (s.match(/[.?!](\s|$)/g) ?? []).length;
+  const conv = g2Rows.vocab.filter((x) => isConv(x.stem)).length;
+  const two = g2Rows.vocab.filter((x) => !isConv(x.stem) && sentences(x.stem) >= 2).length;
+  const one = g2Rows.vocab.length - conv - two;
+  console.log(`2級 大問1の形: 2文 ${two} / 会話 ${conv} / 1文 ${one}（計${g2Rows.vocab.length}。2文は6割以上、会話は10問以上）`);
+  if (g2Rows.vocab.length >= 50) {
+    if (two / g2Rows.vocab.length < 0.6) errors.push(`2級 大問1: 2文の問題が${two}問（6割未満）`);
+    if (conv < 10) errors.push(`2級 大問1: 会話の問題が${conv}問（10問以上必要）`);
+  }
+
+  // 大問1の誤答の使い回し：同じ語を誤答に何度も使うと「この語は正解にならない」と覚えられてしまう（最長の癖と同じ種類の抜け道）。
+  // 正解として使う語は数えない。上限は1語あたり2回
+  const MAX_DISTRACTOR_REUSE = 2;
+  const reuse = new Map();
+  for (const item of g2Rows.vocab) {
+    item.choices.forEach((c, i) => {
+      if (i === item.answerIndex) return;
+      const k = c.toLowerCase();
+      reuse.set(k, (reuse.get(k) ?? 0) + 1);
+    });
+  }
+  const worst = [...reuse.entries()].sort((a, b) => b[1] - a[1]);
+  console.log(`2級 大問1の誤答の最多使用回数: ${worst[0]?.[1] ?? 0}回（${worst[0]?.[0] ?? '-'}。上限${MAX_DISTRACTOR_REUSE}回）`);
+  for (const [w, n] of worst) {
+    if (n > MAX_DISTRACTOR_REUSE) errors.push(`2級 大問1: 誤答の "${w}" を${n}回使っている（上限${MAX_DISTRACTOR_REUSE}回）。ほかの語に替えること`);
+  }
+
+  // 日付に曜日を添えるなら実在のカレンダーと合わせる必要がある。年を書かない本文では合わせようがないので、曜日つきの日付は書かない
+  const MONTHS = 'January|February|March|April|May|June|July|August|September|October|November|December';
+  const DAYS = 'Mon|Tues?|Wed(?:nes)?|Thu(?:rs?)?|Fri|Sat(?:ur)?|Sun';
+  const weekdayDate = new RegExp(`\\b(${DAYS})(?:day)?\\.?,?\\s+(?:the\\s+\\d|(${MONTHS})\\s+\\d)|(${MONTHS})\\s+\\d+(?:st|nd|rd|th)?\\s*\\(?\\b(${DAYS})(?:day)?\\b`);
+  for (const p of g2Passages) {
+    const m = p.body?.match(weekdayDate);
+    if (m) errors.push(`g2/passage.json / ${p.id}: 曜日つきの日付 "${m[0]}"。年が無いので曜日は書かない`);
+  }
+
+  // 目標の数（WORK-ORDER-G2-P3 バッチ P3-A）
+  const countOf = (f) => g2Passages.filter(f).length;
+  const targets = [
+    ['大問1 短文の語句空所補充', g2Rows.vocab.length, 85],
+    ['大問2 長文の語句空所補充（セット）', countOf((p) => p.section === 'r-cloze'), 8],
+    ['大問3A Eメール（セット）', countOf((p) => p.section === 'r-passage' && p.format === 'email'), 4],
+    ['大問3B 説明文（セット）', countOf((p) => p.section === 'r-passage' && p.format === 'article'), 4],
+  ];
+  console.log('\n2級 P3-A の目標数:');
+  for (const [label, have, want] of targets) {
+    console.log(`  ${label}: ${have}/${want}`);
+    if (have < want) errors.push(`2級 P3-A: ${label} が${have}（目標${want}）`);
+  }
+
+  // 長文の語数と語彙の密度。公式の実測（2025-1〜3・2026-1）：大問2 240〜259語／3A 199〜241語／3B 351〜362語。
+  // 数えるのは本文の語だけ（空所の「( 1 )」とメールのヘッダーは除く）
+  const bodyWords = (p) => {
+    let t = p.body.replace(/\(\s*\d+\s*\)/g, ' ');
+    if (p.format === 'email') t = t.split('\n\n').slice(1).join('\n\n');
+    return t.match(/[A-Za-z]+(?:'[a-z]+)?/g) ?? [];
+  };
+  const WORD_MIN = { 'r-cloze': 240, email: 195, article: 300 };
+  const rows = [];
+  const ratios = [];
+  for (const p of g2Passages) {
+    const key = p.section === 'r-cloze' ? 'r-cloze' : p.format;
+    const ws = bodyWords(p);
+    if (ws.length < WORD_MIN[key]) errors.push(`g2/passage.json / ${p.id}: 本文が${ws.length}語。${key} は${WORD_MIN[key]}語以上`);
+    const hard = ws.filter((w) => ['g2', 'adv'].includes(lemmaLevel(w)));
+    const ratio = hard.length / ws.length;
+    ratios.push(ratio);
+    rows.push(`${p.id.replace('g2-p-', '')}=${ws.length}語/g2語${(ratio * 100).toFixed(1)}%(${new Set(hard.map((w) => w.toLowerCase())).size}種)`);
+  }
+  ratios.sort((a, b) => a - b);
+  const median = ratios.length ? ratios[Math.floor(ratios.length / 2)] : 0;
+  console.log(`  長文の語数と、本文の2級語（words-core の g2/adv）の割合: ${rows.join(' ')}`);
+  // 1文の平均語数（公式は大問2 12〜16語／3A 14〜17語／3B 14〜17語）。難しさを1文の長さで出さない。数字を見るだけで落とさない
+  const sentLen = (p) => {
+    let t = p.body.replace(/\(\s*\d+\s*\)/g, ' X ');
+    if (p.format === 'email') t = t.split('\n\n').slice(1).join('\n\n');
+    t = t.replace(/\b(Dr|Mr|Ms|Mrs)\./g, '$1');
+    const ss = t.split(/(?<=[.?!])\s+/).filter((x) => x.trim());
+    return ss.reduce((a, x) => a + (x.match(/[A-Za-z]+/g) ?? []).length, 0) / ss.length;
+  };
+  console.log(`  各本文の1文の平均語数: ${g2Passages.map((p) => `${p.id.replace('g2-p-', '')}=${sentLen(p).toFixed(1)}`).join(' ')}`);
+  console.log(`  2級語の割合の中央値: ${(median * 100).toFixed(1)}%（公式の過去問は 3.9% 前後。参考値で、落とさない）`);
+}
+
 /* ---------- id の接頭辞（級の絞り込みの前提） ----------
    アプリの級の絞り込み（src/grade.ts の inGrade）は id の接頭辞だけに頼っている。
    接頭辞の無い問題は、演習はできるのに記録・正答率・重点配分から黙って消える。

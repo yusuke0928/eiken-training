@@ -549,10 +549,58 @@ reportAnswerDistribution('2級 ', g2Positions);
   console.log(`  全体（大問1〜3B）: 最長 ${pct(tot.long, tot.n)}（同長を除くと ${tot.strictLong}）／最短 ${pct(tot.strictShort, tot.n)}（同長を含むと ${tot.short}）`);
   if (tot.n >= 10 && tot.long / tot.n > LENGTH_LIMIT) errors.push(`2級 全体: 最長正解率が${Math.round((tot.long / tot.n) * 100)}%（上限30%）`);
   if (tot.n >= 10 && tot.strictShort / tot.n > LENGTH_LIMIT) errors.push(`2級 全体: 最短正解率が${Math.round((tot.strictShort / tot.n) * 100)}%（上限30%）`);
-  // リスニングは P3-B の範囲。いまは数だけ出して落とさない
-  const listenItems = g2Rows.listening;
-  if (listenItems.length > 0) {
-    console.log(`  （参考）リスニング: 最長 ${pct(listenItems.filter(isLongest).length, listenItems.length)}。P3-B で見る`);
+  // リスニング（P3-B）。会話・文とも、長さで当てられる問題集にしない。部ごとに最長・最短の正解率を30%以下に止める
+  for (const [label, sec] of [['リスニング第1部 会話', 'l-part2'], ['リスニング第2部 文', 'l-part3']]) {
+    const items = g2Rows.listening.filter((x) => x.section === sec);
+    const n = items.length;
+    if (n === 0) continue;
+    const long = items.filter(isLongest).length;
+    const strictShort = items.filter(isStrictShortest).length;
+    console.log(`  ${label}: 最長 ${pct(long, n)}（同長を除くと ${items.filter(isStrictLongest).length}）／最短 ${pct(strictShort, n)}`);
+    if (n >= 10 && long / n > LENGTH_LIMIT) errors.push(`2級 ${label}: 正解が最長の選択肢になる率が${Math.round((long / n) * 100)}%（上限30%）`);
+    if (n >= 10 && strictShort / n > LENGTH_LIMIT) errors.push(`2級 ${label}: 正解が最短の選択肢になる率が${Math.round((strictShort / n) * 100)}%（上限30%）`);
+  }
+  // 読み上げ原稿の語数。公式（2025-1・2）：第1部 45〜76語（平均62）／第2部 58〜75語（平均65）
+  {
+    const wc = (x) => x.dialogue.reduce((a, l) => a + (l.text.match(/[A-Za-z0-9]+(?:['’-][A-Za-z]+)*/g) ?? []).length, 0);
+    const RANGE = { 'l-part2': [45, 80], 'l-part3': [55, 80] };
+    for (const [label, sec] of [['第1部', 'l-part2'], ['第2部', 'l-part3']]) {
+      const ws = g2Rows.listening.filter((x) => x.section === sec).map((x) => [x.id, wc(x)]);
+      if (ws.length === 0) continue;
+      const avg = ws.reduce((a, [, w]) => a + w, 0) / ws.length;
+      console.log(`  ${label}の語数: ${Math.min(...ws.map((w) => w[1]))}〜${Math.max(...ws.map((w) => w[1]))}語（平均${avg.toFixed(1)}）`);
+      for (const [id, w] of ws) if (w < RANGE[sec][0] || w > RANGE[sec][1]) errors.push(`g2/listening.json / ${id}: 原稿が${w}語（${label}は${RANGE[sec][0]}〜${RANGE[sec][1]}語）`);
+    }
+  }
+  // 誤答の「言い切り」と、原稿の2級語の割合（P3-B-R）。どちらも数字を見るだけで落とさない。
+  // 言い切り（only / never / all / ...）の誤答は常識で消えるので、聞かずに解ける問題になりやすい。公式は誤答を原稿の語の組み合わせで作る
+  {
+    const ABS = /\b(only|never|all|always|cannot|nothing|everyone)\b/i;
+    const lv = new Map(load('content/words-core.json').words.map((w) => [w[0], w[3]]));
+    const lemmaOf = (raw) => {
+      const w = raw.toLowerCase();
+      if (lv.has(w)) return lv.get(w);
+      for (const c of [w.replace(/s$/, ''), w.replace(/es$/, ''), w.replace(/ed$/, ''), w.replace(/d$/, ''), w.replace(/ing$/, ''), w.replace(/ing$/, 'e'), w.replace(/ied$/, 'y'), w.replace(/ly$/, '')]) if (c !== w && lv.has(c)) return lv.get(c);
+      return null;
+    };
+    for (const [label, sec] of [['第1部', 'l-part2'], ['第2部', 'l-part3']]) {
+      const items = g2Rows.listening.filter((x) => x.section === sec);
+      if (items.length === 0) continue;
+      let wrong = 0, abs = 0, words = 0, hard = 0;
+      for (const x of items) {
+        x.choices.forEach((c, i) => { if (i !== x.answerIndex) { wrong++; if (ABS.test(c)) abs++; } });
+        for (const l of x.dialogue) for (const w of l.text.match(/[A-Za-z]+/g) ?? []) { words++; if (['g2', 'adv'].includes(lemmaOf(w))) hard++; }
+      }
+      console.log(`  ${label}: 誤答の言い切り ${abs}/${wrong} = ${Math.round((abs / wrong) * 100)}%／原稿の2級語 ${(hard / words * 100).toFixed(1)}%（公式 第1部0.9% 第2部2.0%）`);
+    }
+  }
+  // 読み上げで聞き取れない書き方（記号・括弧・略語の羅列・数字）を止める。数字は英単語で書く
+  for (const x of g2Rows.listening) {
+    const texts = [...x.dialogue.map((l) => l.text), x.question];
+    for (const t of texts) {
+      if (/[&/()\[\]<>@#*_=+~^|\\]/.test(t)) errors.push(`g2/listening.json / ${x.id}: 読み上げに向かない記号がある "${t.slice(0, 40)}"`);
+      if (/\d/.test(t)) errors.push(`g2/listening.json / ${x.id}: 数字が数字のまま。英単語で書く "${t.slice(0, 40)}"`);
+    }
   }
 
   // 単語の見出し語レベル表。活用形は原形に戻して引く（正解語は target で明示、誤答は語形から推定）
@@ -639,11 +687,13 @@ reportAnswerDistribution('2級 ', g2Positions);
     ['大問2 長文の語句空所補充（セット）', countOf((p) => p.section === 'r-cloze'), 8],
     ['大問3A Eメール（セット）', countOf((p) => p.section === 'r-passage' && p.format === 'email'), 4],
     ['大問3B 説明文（セット）', countOf((p) => p.section === 'r-passage' && p.format === 'article'), 4],
+    ['リスニング第1部 会話（l-part2）', g2Rows.listening.filter((x) => x.section === 'l-part2').length, 45],
+    ['リスニング第2部 文（l-part3）', g2Rows.listening.filter((x) => x.section === 'l-part3').length, 45],
   ];
-  console.log('\n2級 P3-A の目標数:');
+  console.log('\n2級 P3-A / P3-B の目標数:');
   for (const [label, have, want] of targets) {
     console.log(`  ${label}: ${have}/${want}`);
-    if (have < want) errors.push(`2級 P3-A: ${label} が${have}（目標${want}）`);
+    if (have < want) errors.push(`2級 目標数: ${label} が${have}（目標${want}）`);
   }
 
   // 長文の語数と語彙の密度。公式の実測（2025-1〜3・2026-1）：大問2 240〜259語／3A 199〜241語／3B 351〜362語。

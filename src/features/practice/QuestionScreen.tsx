@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ITEM_BY_ID, PASSAGES } from '../../content';
+import { GRADE } from '../../grade';
 import { db, bumpDayLog, clearSession, saveSession } from '../../data/db';
+import { snapshotExtraBeforeSession } from '../../lib/dailyExtra';
 import { applyResult } from '../../engine/srs';
 import { choicesAreSpoken, isListening, type PracticeMode } from '../../types';
 import { Button, ProgressBar, Screen, TopBar, renderStem } from '../../ui/primitives';
@@ -70,6 +72,10 @@ export function QuestionScreen({
   const [results, setResults] = useState<SessionResult[]>(resume?.results ?? []);
   const [confirmExit, setConfirmExit] = useState(false);
   const [audioPlayed, setAudioPlayed] = useState(false);
+  // 2級：始める前に「今日のもう1つ」が済んでいたかを控える（結果画面は、この演習で済んだときだけ ✓ を出す）
+  useEffect(() => {
+    void snapshotExtraBeforeSession();
+  }, []);
   const [textFallback, setTextFallback] = useState(false);
   const goHome = useGoHome();
   const sessionId = useRef(`s-${Date.now()}`).current;
@@ -202,6 +208,7 @@ export function QuestionScreen({
       {/* 本文・設問・選択肢はまとめてスクロール。決定ボタンだけを親指の届く位置に固定する */}
       <main className="flex-1 px-4 pt-5 pb-40">
         {listening ? (
+          <>
           <ListeningPanel
             key={item.id}
             item={item}
@@ -209,6 +216,21 @@ export function QuestionScreen({
             forceScript={textFallback}
             onPlayedOnce={() => setAudioPlayed(true)}
           />
+          {/* 2級の第2部は選択肢が最初から見えるので、第1部のような「文字で出す」の入口が無かった。
+              音が出せない場所（電車・教室）で行き止まりにならないよう、同じ逃げ道を置く（新中-C） */}
+          {GRADE === 'g2' && item.section === 'l-part3' && !textFallback && (
+            <button
+              type="button"
+              onClick={() => {
+                setTextFallback(true);
+                setAudioPlayed(true);
+              }}
+              className="-mt-2 mb-4 min-h-[44px] w-full text-center text-[13px] font-medium text-primary underline underline-offset-4"
+            >
+              音が出せない場所なら、スクリプトを読む
+            </button>
+          )}
+          </>
         ) : (
           passage && <PassageView passage={passage} activeBlank={blankNo} showTranslation={!isExamLike} />
         )}

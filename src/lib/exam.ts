@@ -122,6 +122,10 @@ export function nextMilestone(grade: Grade, from: Date = new Date()): Countdown 
 function nextMilestoneG2(from: Date): Countdown {
   const toExam = daysUntil(EXAM_G2.examDate, from);
   const toResult = daysUntil(EXAM_G2.resultDate, from);
+  // 当日18時以降は、上の帯（examPhase の 'dayAfter'）が「おつかれさま」と言う。タイルだけ「今日が本番」のままだと食い違う
+  if (toExam === 0 && from.getHours() >= 18) {
+    return { label: '2級の試験', text: 'おつかれさま', note: `結果は${formatJp(EXAM_G2.resultDate)}`, days: null, urgent: false };
+  }
   if (toExam === 0) return { label: '2級の試験', text: '今日が本番', days: null, urgent: false };
   if (toResult === 0) return { label: '2級の結果', text: '今日が結果の日', days: null, urgent: false };
   if (toExam >= 0) {

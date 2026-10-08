@@ -290,7 +290,8 @@ export function MockSetupScreen({
             )}
             <p className="mt-3 border-t border-line pt-3 text-[12px] leading-relaxed text-ink-faint">
               合格ラインの目安は一次{scoringOf(GRADE).firstStageMax}点中 {scoringOf(GRADE).firstStagePass}点。
-              問題は受けるたびに選び直されます（長文も毎回ちがう本文から出ます）。
+              問題は受けるたびに選び直されます（{/* 2級は長文3Bが4本しかなく、5回目からは同じ本文が出る。「毎回」は事実と違うので、2級だけ言い換える（準2級の文言は配布済みなので変えない） */}
+              {GRADE === 'g2' ? '長文はできるだけちがう本文から出ます' : '長文も毎回ちがう本文から出ます'}）。
             </p>
           </div>
         </section>

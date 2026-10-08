@@ -59,7 +59,7 @@ export async function buildBackup(): Promise<BackupFile> {
       days,
       writings,
       mocks,
-      kv: kv.filter((r) => !String(r.key).startsWith('draft:') && r.key !== 'session' && r.key !== 'mock'),
+      kv: kv.filter((r) => !String(r.key).startsWith('draft:') && !String(r.key).startsWith('wsub:') && r.key !== 'session' && r.key !== 'mock'),
       words,
     },
   };

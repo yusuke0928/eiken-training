@@ -35,7 +35,36 @@ export interface Grader {
 }
 
 const REASON_MARKERS = ['first', 'second'];
-const CLOSING_MARKERS = ['for these reasons', 'that is why', "that's why", 'for this reason', 'so i think'];
+// 締めの合図は書き方が多い。狭いと「For these two reasons」や「In conclusion」で書いた子に赤が出るので、
+// よくある言い回しを足して広げた。ただし単語の区切り（\b）つきで探す（「It was a result of」に当たらない）
+const CLOSING_MARKERS = [
+  'for these reasons',
+  'for these two reasons',
+  'for the reasons above',
+  'for the above reasons',
+  'for those reasons',
+  'that is why',
+  "that's why",
+  'for this reason',
+  'so i think',
+  'in conclusion',
+  'in summary',
+  'to sum up',
+  'to conclude',
+  'all in all',
+];
+// 理由の途中でも使う接続語。文中にあるだけでは締めと数えず、最後の1〜2文にあるときだけ数える
+// （理由の途中に As a result があるだけで、まとめを書いていないのに青になるのを防ぐ）
+const WEAK_CLOSING_MARKERS = ['therefore', 'as a result'];
+
+const markerRe = (m: string) => new RegExp(`\\b${m.replace(/'/g, "['’]")}\\b`, 'i');
+
+function hasClosing(text: string): boolean {
+  if (CLOSING_MARKERS.some((m) => markerRe(m).test(text))) return true;
+  const sentences = text.split(/(?<=[.!?])\s+/).filter((x) => x.trim());
+  const tail = sentences.slice(-2).join(' ');
+  return WEAK_CLOSING_MARKERS.some((m) => markerRe(m).test(tail));
+}
 
 function wordsCheck(prompt: WritingPrompt, words: number): AutoCheck {
   const spec = WRITING_SPEC[prompt.section];
@@ -115,8 +144,8 @@ export const mechanicalGrader: Grader = {
         checks.push({
           id: 'closing',
           label: 'まとめの文',
-          ok: CLOSING_MARKERS.some((m) => lower.includes(m)),
-          hint: CLOSING_MARKERS.some((m) => lower.includes(m))
+          ok: hasClosing(text),
+          hint: hasClosing(text)
             ? 'ちゃんと締めている'
             : 'For these reasons, ... で締めると構成点が上がる',
           level: 'must',

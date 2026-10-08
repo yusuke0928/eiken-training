@@ -88,7 +88,7 @@ type Route =
   | { k: 'focus' }
   | { k: 'history' }
   | { k: 'words' }
-  | { k: 'speaking' }
+  | { k: 'speaking'; direct?: boolean }
   | { k: 'mockSetup' }
   | { k: 'mockRun'; paper: MockPaper; restore?: SavedMock }
   | { k: 'mockResult'; mockId: number }
@@ -308,10 +308,12 @@ export default function App() {
           return;
         }
         case 'interview':
-          push({ k: 'speaking' });
+          // どのカードをやるか選ばせず、まだやっていないカードへ直接入る（G2SpeakingScreen の direct）
+          push({ k: 'speaking', direct: true });
           return;
         case 'review': {
-          const ids = await buildReviewQueue(20);
+          // カードが「復習を10問」と言っているので、10問で区切る（20問出すと「1/20」で話が違う）
+          const ids = await buildReviewQueue(10);
           // 復習が空っぽの日は、模試の入口から結果を見直せるようにする
           if (ids.length > 0) push({ k: 'practice', ids, mode: 'review', title: '復習' });
           else push({ k: 'mockSetup' });
@@ -415,7 +417,7 @@ export default function App() {
 
       case 'speaking':
         // 2級の面接は形が違う（3コマ・No.1〜4・No.2 の後にカードを伏せる）ので別画面。準2級の画面には級の分岐を入れない
-        return GRADE === 'g2' ? <G2SpeakingScreen onBack={back} /> : <SpeakingScreen onBack={back} />;
+        return GRADE === 'g2' ? <G2SpeakingScreen onBack={back} direct={route.direct} /> : <SpeakingScreen onBack={back} />;
 
       case 'mockSetup':
         return (

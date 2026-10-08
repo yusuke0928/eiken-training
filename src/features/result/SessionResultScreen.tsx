@@ -1,8 +1,11 @@
+import { useLiveQuery } from 'dexie-react-hooks';
 import { ITEM_BY_ID } from '../../content';
 import { GRADE } from '../../grade';
 import { TAG_LABEL } from '../../types';
 import { Button, ProgressRing, Screen, TopBar } from '../../ui/primitives';
 import { ChevronRight } from '../../ui/icons';
+import { extraFinishedBySession } from '../../lib/dailyExtra';
+import { Check } from '../../ui/icons';
 import type { SessionResult } from '../practice/QuestionScreen';
 
 export function SessionResultScreen({
@@ -32,6 +35,13 @@ export function SessionResultScreen({
     }
   }
 
+  // 2級：今日のもう1つがこの演習で済んだなら、一言で知らせる（低-g）。記録は結果画面を開く前に書かれている
+  const extraDone = useLiveQuery(
+    async () => (GRADE === 'g2' ? extraFinishedBySession() : false),
+    [],
+    false,
+  );
+
   return (
     <Screen>
       <TopBar title="おつかれさま" />
@@ -47,6 +57,13 @@ export function SessionResultScreen({
               : `まちがえた${missed.length}問は、あとでもう1回出すね。`}
           </p>
         </div>
+
+        {extraDone && (
+          <p className="mb-6 flex items-center justify-center gap-2 rounded-2xl bg-correct-soft px-4 py-3 text-[14px] font-bold text-correct">
+            <Check size={16} />
+            今日のもう1つ ✓
+          </p>
+        )}
 
         {missedTags.size > 0 && (
           <section className="mb-6">

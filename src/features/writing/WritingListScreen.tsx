@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { writingPromptsIn } from '../../content';
-import { db } from '../../data/db';
+import { db, loadSubmittedMap } from '../../data/db';
 import { GRADE, GRADE_META } from '../../grade';
 import { wordRangeText } from '../../engine/writing';
 import { WRITING_SPEC, type WritingSection } from '../../types';
@@ -13,6 +13,10 @@ const SECTIONS: WritingSection[] = (['w-opinion', 'w-email', 'w-summary'] as Wri
   (s) => writingPromptsIn(s).length > 0,
 );
 
+// 一覧→課題→戻る、で一覧が作り直されても、開いていたタブを覚えておく。
+// 覚えていないと、要約を書いて戻ったのに「意見論述」のタブが開く（低-j）
+let lastSection: WritingSection = 'w-opinion';
+
 export function WritingListScreen({
   onPick,
   onBack,
@@ -20,7 +24,11 @@ export function WritingListScreen({
   onPick: (promptId: string) => void;
   onBack: () => void;
 }) {
-  const [section, setSection] = useState<WritingSection>('w-opinion');
+  const [section, setSectionState] = useState<WritingSection>(SECTIONS.includes(lastSection) ? lastSection : SECTIONS[0] ?? 'w-opinion');
+  const setSection = (s: WritingSection) => {
+    lastSection = s;
+    setSectionState(s);
+  };
   const spec = WRITING_SPEC[section];
   const prompts = writingPromptsIn(section);
 
@@ -38,6 +46,16 @@ export function WritingListScreen({
       const rows = await db.kv.where('key').startsWith('draft:').toArray();
       return new Set(rows.filter((r) => typeof r.value === 'string' && r.value.trim()).map((r) => String(r.key).slice(6)));
     },
+    [],
+    new Set<string>(),
+  );
+
+  // 提出したのに自己採点していない題。書きかけより強い状態なので、あれば「未採点」を出す
+  const submitted = useLiveQuery(loadSubmittedMap, [], new Map<string, number>());
+
+  // 模試の中で書いた題。道場の一覧に印が無いと、同じ題をまた「まだ」と思って選んでしまう（低-j）
+  const mockWritten = useLiveQuery(
+    async () => new Set((await db.mocks.toArray()).flatMap((m) => m.writings.filter((w) => w.wordCount > 0).map((w) => w.promptId))),
     [],
     new Set<string>(),
   );
@@ -103,9 +121,18 @@ export function WritingListScreen({
                     <span className="block text-[15px] font-semibold text-ink">{p.topic}</span>
                     <span className="mt-1 flex items-center gap-2 text-[12px] text-ink-faint">
                       <Level value={p.difficulty} />
-                      {drafts?.has(p.id) && (
+                      {submitted?.has(p.id) ? (
+                        <span className="rounded-full bg-again-soft px-2 py-0.5 text-[11px] font-bold text-again">
+                          未採点
+                        </span>
+                      ) : drafts?.has(p.id) && (
                         <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-bold text-accent">
                           書きかけ
+                        </span>
+                      )}
+                      {mockWritten?.has(p.id) && (
+                        <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[11px] font-bold text-ink-sub">
+                          模試で書いた
                         </span>
                       )}
                       {score !== undefined && (

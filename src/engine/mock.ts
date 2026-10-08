@@ -157,6 +157,14 @@ export async function loadLastSeen(): Promise<Map<string, number>> {
     const cur = out.get(a.itemId) ?? 0;
     if (a.answeredAt > cur) out.set(a.itemId, a.answeredAt);
   }
+  // ライティングの題も同じ地図に載せる（id が違うので混ざらない）。
+  // 道場で書いた題と、模試で書いた題の両方を見ないと、2本目の模試で要約の題が1本目と同じになる（新中-D）
+  const touch = (id: string, t: number) => {
+    if (t > (out.get(id) ?? 0)) out.set(id, t);
+  };
+  for (const w of await db.writings.toArray()) touch(w.promptId, w.submittedAt);
+  // 0語（白紙で時間切れ）は書いたことにしない
+  for (const m of await db.mocks.toArray()) for (const w of m.writings) if (w.wordCount > 0) touch(w.promptId, m.finishedAt);
   return out;
 }
 
@@ -253,7 +261,11 @@ export function buildPaper(scope: MockScope, lastSeen: LastSeen = new Map()): Mo
       ? []
       : WRITTEN_BLUEPRINT.flatMap((block): MockQuestion[] => {
           if (block.kind === 'writing') {
-            const pool = shuffle(WRITING_PROMPTS.filter((p) => p.section === block.section));
+            // まだ書いていない題を先に、書いたものは古い順に（長文・語彙と同じ考え方）
+            const pool = freshFirst(
+              WRITING_PROMPTS.filter((p) => p.section === block.section),
+              (p) => lastSeen.get(p.id) ?? 0,
+            );
             return pool.slice(0, block.count).map((p) => ({
               kind: 'writing' as const,
               promptId: p.id,

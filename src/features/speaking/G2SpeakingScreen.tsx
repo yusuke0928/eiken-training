@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { SPEAKING_RAW } from '../../content';
 import { useSpeech } from '../../lib/speech';
-import { markInterviewDone } from '../../lib/dailyExtra';
+import { loadInterviewDoneIds, markInterviewDone } from '../../lib/dailyExtra';
+import { useGoHome } from '../../ui/nav';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import { Check, ChevronRight, Play, Warning } from '../../ui/icons';
 import { SceneImage } from './scenes';
@@ -86,6 +87,36 @@ function ScenesView({ card, compact = false }: { card: G2Card; compact?: boolean
           イラストは準備中です。いまは日本語の説明で練習します。コマの上の英語（時間の言葉）は本番と同じです。
         </p>
       )}
+      {/* 考える20秒は、3コマを横に並べて小さく見せる。縦に積むと390×844で3コマ目と言い出しの1文が
+          スクロールしないと見えない（本番は20秒のあいだ3コマを見て考える）。絵が全部ある時だけ。
+          4:3 と 16:9 が混ざるが、1枚の中では自然な縦横比のまま（w-full・高さ自動）なので崩れない。
+          タップで拡大できるので、細部は拡大して見る */}
+      {compact && !anyMissing ? (
+        <ol className="grid grid-cols-2 items-start gap-2">
+          {card.scenes.map((s) => (
+            <li key={s.no} className="min-w-0">
+              <p className="en mb-0.5 min-h-[2.4em] text-[12px] font-bold !leading-tight text-ink">
+                <span className="mr-1 text-ink-faint">{s.no}</span>
+                {s.label}
+              </p>
+              <SceneImage src={G2_IMAGES[`./art/g2/${s.image}`]} alt={`面接カードのコマ${s.no}`} label={`コマ${s.no}`} thumb />
+            </li>
+          ))}
+          {/* 4つ目の枠（2段目の右）に、吹き出し・思っていることの日本語を置く。空いている場所を使うので縦に伸びない */}
+          <li className="min-w-0 pt-5">
+            <ul className="flex flex-col gap-1">
+              {card.scenes.flatMap((s) =>
+                s.speech.map((sp) => (
+                  <li key={`${s.no}-${sp.ja}`} className="rounded-xl bg-surface px-2.5 py-1 text-[12px] leading-snug text-ink-sub">
+                    <span className="mr-1 font-bold text-ink-faint">{s.no}</span>
+                    {sp.who}：「{sp.ja}」
+                  </li>
+                )),
+              )}
+            </ul>
+          </li>
+        </ol>
+      ) : (
       <ol className={compact ? 'flex flex-col gap-1.5' : 'flex flex-col gap-3'}>
         {card.scenes.map((s) => {
           const src = s.image ? G2_IMAGES[`./art/g2/${s.image}`] : undefined;
@@ -123,6 +154,7 @@ function ScenesView({ card, compact = false }: { card: G2Card; compact?: boolean
           );
         })}
       </ol>
+      )}
     </section>
   );
 }
@@ -137,8 +169,12 @@ function PassageView({ card }: { card: G2Card }) {
   );
 }
 
-export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
+export function G2SpeakingScreen({ onBack, direct = false }: { onBack: () => void; direct?: boolean }) {
+  const goHome = useGoHome();
   const [card, setCard] = useState<G2Card | null>(null);
+  // やったカードの id。一覧に印を出す。direct（ホームの「もう1つ」から）なら、読み込みが済むまで一覧を見せない
+  const [doneIds, setDoneIds] = useState<string[]>([]);
+  const [booting, setBooting] = useState(direct);
   const [step, setStep] = useState<Step>('silent');
   const [left, setLeft] = useState(SILENT_SEC);
   const [showModel, setShowModel] = useState(false);
@@ -170,8 +206,45 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
   // 「おわり」まで進めた日を kv に残す（ホームの「今日のもう1つ」が済んだか見るため）。
   // 途中でやめた日は残らない。No.4 まで通して初めて「1枚やった」と数える
   useEffect(() => {
-    if (step === 'done') void markInterviewDone();
-  }, [step]);
+    if (step === 'done' && card) void markInterviewDone(card.id).then(() => loadInterviewDoneIds().then(setDoneIds));
+  }, [step, card]);
+
+  // 一覧に印を出すために、やったカードを読む。ホームの「今日のもう1つ」から来たときは、
+  // 一覧を挟まず、まだやっていないカードへ直接入る（どれをやるか選ばせない）。全部やっていれば先頭から
+  useEffect(() => {
+    let alive = true;
+    // 読み込みが失敗・固まっても先頭のカードへ入る（1.5秒で打ち切り）。行き止まりにしない
+    void Promise.race([
+      loadInterviewDoneIds().catch(() => [] as string[]),
+      new Promise<string[]>((resolve) => setTimeout(() => resolve([]), 1500)),
+    ]).then((ids) => {
+      if (!alive) return;
+      setDoneIds(ids);
+      if (direct) {
+        const next = CARDS.find((c) => !ids.includes(c.id)) ?? CARDS[0];
+        if (next) startCard(next);
+        setBooting(false);
+      }
+    });
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function startCard(c: G2Card) {
+    setCard(c);
+    setStep('silent');
+    setLeft(SILENT_SEC);
+    resetClips();
+    setShowModel(false);
+    setSaid(null);
+    setReasonReset(false);
+    setPeeked(false);
+    setTextFor(null);
+    // 一覧の下のほうで押すと、前の画面のスクロール位置のまま黙読が始まってずれていた
+    window.scrollTo({ top: 0 });
+  }
 
   /** 読み上げの前に録音を止める（iOS はマイクを掴んでいる間、読み上げが極端に小さくなる） */
   async function speakAfterStop(lines: Parameters<typeof speak>[0], rate: number) {
@@ -180,6 +253,14 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
   }
 
   /* ---------------- カード選択 ---------------- */
+
+  if (!card && booting) {
+    return (
+      <Screen>
+        <TopBar title="面接シミュレーター" onBack={onBack} />
+      </Screen>
+    );
+  }
 
   if (!card) {
     return (
@@ -216,17 +297,7 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
                 <li key={c.id}>
                   <button
                     type="button"
-                    onClick={() => {
-                      setCard(c);
-                      setStep('silent');
-                      setLeft(SILENT_SEC);
-                      resetClips();
-                      setShowModel(false);
-                      setSaid(null);
-                      setReasonReset(false);
-                      setPeeked(false);
-                      setTextFor(null);
-                    }}
+                    onClick={() => startCard(c)}
                     className="flex min-h-[60px] w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left active:bg-surface-2"
                   >
                     <span className="flex-1">
@@ -235,6 +306,9 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
                         パッセージ {c.passage.split(/\s+/).length}語 ・ 質問4つ
                       </span>
                     </span>
+                    {doneIds.includes(c.id) && (
+                      <span className="rounded-full bg-correct-soft px-2.5 py-0.5 text-[11px] font-bold text-correct">やった</span>
+                    )}
                     <span className="text-ink-faint">
                       <ChevronRight size={18} />
                     </span>
@@ -374,6 +448,14 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
             <Button full onClick={() => setCard(null)}>
               カード一覧にもどる
             </Button>
+            {/* 「今日のもう1つ」から直接入った子が、一覧を経由せずにホームへ戻れるように */}
+            {goHome && (
+              <div className="mt-3">
+                <Button full variant="ghost" onClick={goHome}>
+                  ホームへ
+                </Button>
+              </div>
+            )}
           </>
         ) : (
           <>

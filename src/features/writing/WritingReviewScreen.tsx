@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { WRITING_BY_ID } from '../../content';
 import { gradeOfId } from '../../grade';
 import { OtherGradeNotice } from '../grade/GradeSwitch';
-import { bumpDayLog, clearDraft, db } from '../../data/db';
+import { bumpDayLog, clearDraft, clearSubmitted, db } from '../../data/db';
 import { countWords, mechanicalGrader, totalScore } from '../../engine/writing';
 import { RUBRIC, RUBRIC_NOTE, WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
@@ -31,14 +31,19 @@ function WritingReviewScreenBody({
   const total = totalScore(prompt.section, scores);
 
   async function save() {
-    await db.writings.add({
-      promptId,
-      section: prompt.section,
-      text,
-      wordCount: words,
-      submittedAt: Date.now(),
-      scores,
-      total,
+    // 記録の追加と「未採点」の印の削除を1つのトランザクションにする。別々だと、片方だけ成功して
+    // 「採点済みなのに未採点」や「記録が無いのに印だけ消えた」になりうる。テーブルが複数なので配列で渡す
+    await db.transaction('rw', [db.writings, db.kv], async () => {
+      await db.writings.add({
+        promptId,
+        section: prompt.section,
+        text,
+        wordCount: words,
+        submittedAt: Date.now(),
+        scores,
+        total,
+      });
+      await clearSubmitted(promptId);
     });
     // ライティング1題は選択問題1問と同じ重みではない（600点の半分を左右する）
     await bumpDayLog(total >= spec.goal, 3);

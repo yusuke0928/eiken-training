@@ -161,9 +161,8 @@ export function gradeOfMock(m: {
 export const mockInGrade = (m: Parameters<typeof gradeOfMock>[0]): boolean => gradeOfMock(m) === GRADE;
 
 /**
- * 2級を公開してよいか。false のあいだは、準2級のホームに「2級にきりかえる？」のカードを出さない。
- * content/g2 にいま入っているのは動作確認用の種データで、親戚に見せる品質ではないため
- * （種を見せないための二重の鍵。#grade からは入れるので検証はできる）。
- * ★ Phase 3 の監査が終わったら、管理がこの1行を true にする。
+ * 2級を公開してよいか。false のあいだは、準2級のホームに「2級にきりかえる？」のカードを出さない（#grade からは入れるので検証はできる）。
+ * ★ Ver.1.11（G2-UX-R3）で true にした。content/g2 は本番用の中身が入っている。
+ *   カードは日付の条件（準2級の二次の翌日 2026-11-16）で出るので、それまでは誰の画面にも出ない。
  */
-export const G2_RELEASED = false;
+export const G2_RELEASED = true;

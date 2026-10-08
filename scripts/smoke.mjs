@@ -2790,15 +2790,17 @@ const SCENE_LABELS = ['Ten minutes later', 'A few months later'];
   t = await bodyText();
   if (!t.includes('One Saturday morning, Yui and her father went to a community garden near their house.')) throw new Error('No.2 の考慮時間に言い出しの1文が出ていない');
   for (const l of SCENE_LABELS) if (!t.includes(l)) throw new Error(`3コマの時間ラベル「${l}」が出ていない`);
-  if (!t.includes('イラストは準備中')) throw new Error('イラストが無いのに「準備中」の案内が出ていない');
-  if (await pg.locator('main img').count()) throw new Error('イラストが無いのに img（壊れた画像）が出ている');
+  // G2-ILLUST：絵が入ったので「準備中」は出ず、3コマの絵（3枚）が出る。3枚とも読み込めている
+  if (t.includes('イラストは準備中')) throw new Error('絵があるのに「準備中」の案内が出ている');
+  if ((await pg.locator('main img').count()) !== 3) throw new Error('考える画面にイラストが3枚出ていない');
+  await pg.waitForFunction(() => [...document.querySelectorAll('main img')].every((i) => i.complete && i.naturalWidth > 0), null, { timeout: 8000 }).catch(() => { throw new Error('イラストが読み込めていない（壊れた画像）'); });
   if (t.includes('was holding') || t.includes('was digging')) throw new Error('考慮時間中に答え（過去進行形の英文）が出ている');
   // R-8：考える20秒のあいだ、スクロールせずに3コマ目と言い出しの1文が見える（絵を見て考える時間が実質短くならない）
   {
     const barTop = (await pg.locator('div.fixed.bottom-0').first().boundingBox()).y;
     for (const [label, loc] of [
       ['3コマ目のラベル', pg.getByText('A few months later').first()],
-      ['3コマ目の説明', pg.getByText('トマトが赤く実っている', { exact: false }).first()],
+      ['3コマ目の絵', pg.locator('main img').nth(2)],
       ['言い出しの1文', pg.getByText('One Saturday morning, Yui and her father went').first()],
     ]) {
       const bb = await loc.boundingBox();
@@ -2906,6 +2908,8 @@ const SCENE_LABELS = ['Ten minutes later', 'A few months later'];
   if ((await liveMics(pg)) !== 0) throw new Error('録音を止めたのに生きたマイクが残っている');
   await pg.getByRole('button', { name: 'おわる' }).click();
   await pg.getByText('おつかれさま').waitFor({ timeout: 8000 });
+  // 低-g：面接の終わりに「ホームへ」（直接入った子が一覧を経由せずに戻れる）
+  await pg.getByRole('button', { name: 'ホームへ' }).waitFor({ timeout: 3000 });
   t = await bodyText();
   if (!t.includes('No.4（Yes / No）') || !t.includes('No.4（理由）')) throw new Error('No.4 の録音が2本（Yes/No と理由）に分かれていない');
   {
@@ -3345,8 +3349,12 @@ for (const grade of ['pre2', 'g2']) {
   const passageIds = new Set(
     JSON.parse(readFileSync(join(root, `content/${grade === 'g2' ? 'g2' : 'pre2'}/passage.json`), 'utf8')).flatMap((p) => p.items.map((i) => i.id)),
   );
+  // 新中-C：最初の3問のリスニングは1問まで。音が出せない場所で3問ができなくなるため
+  const listeningIds = new Set(
+    JSON.parse(readFileSync(join(root, `content/${grade === 'g2' ? 'g2' : 'pre2'}/listening.json`), 'utf8')).map((i) => i.id),
+  );
   const { c, pg } = await ux1Open(`ux1-mini(${grade})`, { grade });
-  for (let k = 0; k < 8; k++) {
+  for (let k = 0; k < 20; k++) {
     await idleOrigin(pg);
     await patchKv(pg, 'session', 'return undefined;');
     await pg.goto(URL, { waitUntil: 'networkidle' });
@@ -3362,10 +3370,12 @@ for (const grade of ['pre2', 'g2']) {
     const head = kv.session.ids.slice(0, 3);
     const bad = head.filter((id) => passageIds.has(id));
     if (bad.length > 0) throw new Error(`中-4：${grade} のミニ演習の最初の3問に長文が入っている: ${head.join(', ')}`);
+    const nL = head.filter((id) => listeningIds.has(id)).length;
+    if (nL > 1) throw new Error(`新中-C：${grade} のミニ演習の最初の3問にリスニングが${nL}問ある: ${head.join(', ')}`);
   }
   await c.close();
 }
-console.log('  ✓ 中-4：ミニ演習の最初の3問は、両方の級とも8回続けて長文（r-passage / r-cloze）にならない');
+console.log('  ✓ 中-4・新中-C：ミニ演習の最初の3問は、両方の級とも20回続けて長文（r-passage / r-cloze）が0・リスニングが1問以下');
 
 /* ---------- 中-5：要約の本文と入力欄が同時に見える（キーボードの高さ約300pxを引いた範囲で） ---------- */
 {
@@ -3399,8 +3409,36 @@ console.log('  ✓ 中-4：ミニ演習の最初の3問は、両方の級とも8
   await pg.locator('main ul button').first().click();
   await pg.locator('textarea').waitFor({ timeout: 8000 });
   if (await pg.locator('[data-pinned="true"]').count()) throw new Error('中-5：フォーカス前から本文が貼りついている');
-  await pg.locator('textarea').fill('Many cities now have gardens on the roofs of buildings.');
+  // 新中-B：空の入力欄にフォーカス→本文の枠のすぐ下まで画面を送る→**打ちはじめる**。
+  // 最初の1字で帯が現れて本文の枠が下がり、入力欄の上にかぶっていた（fill 済みから測ると見えない）。
+  // 1文・3文を打ったあとに、入力欄の上端が本文の枠の下にあることを測る
   await pg.locator('textarea').focus();
+  {
+    await pg.waitForTimeout(300);
+    const cb0 = await pg.locator('[data-pinned="true"]').boundingBox();
+    const tb0 = await pg.locator('textarea').boundingBox();
+    await pg.evaluate((d) => window.scrollBy(0, d), tb0.y - (cb0.y + cb0.height) - 12);
+    await pg.waitForTimeout(300);
+    const overlapNow = async (n) => {
+      await pg.waitForTimeout(500);
+      const cb = await pg.locator('[data-pinned="true"]').boundingBox();
+      const tb = await pg.locator('textarea').boundingBox();
+      if (cb.y + cb.height > tb.y + 1) throw new Error(`新中-B：${n}文を打ったあと、本文の枠が入力欄にかぶっている（枠の下端 ${Math.round(cb.y + cb.height)}／入力欄の上端 ${Math.round(tb.y)}）`);
+    };
+    await pg.keyboard.type('Many cities now have gardens on the roofs of buildings.', { delay: 4 });
+    await overlapNow(1);
+    await pg.screenshot({ path: join(OUT, 'ux3-pin-1sent.png'), clip: { x: 0, y: 0, width: 390, height: VISIBLE } });
+    await pg.keyboard.type(' These gardens help to cool the buildings in summer. People can also grow vegetables there.', { delay: 4 });
+    await overlapNow(3);
+    await pg.screenshot({ path: join(OUT, 'ux3-pin-3sent.png'), clip: { x: 0, y: 0, width: 390, height: VISIBLE } });
+    // R3-R 中1：本文を丸写しした文にすると、帯のヒントが長くなる。帯の高さが伸びても枠が入力欄にかぶらない
+    const src = await pg.locator('[data-pinned="true"] p.en').first().innerText();
+    await pg.locator('textarea').fill(`${src} Mobile payment is also growing in many shops and restaurants around the town.`);
+    await overlapNow('丸写し');
+    await pg.screenshot({ path: join(OUT, 'ux3-pin-verbatim.png'), clip: { x: 0, y: 0, width: 390, height: VISIBLE } });
+    await pg.locator('textarea').fill('Many cities now have gardens on the roofs of buildings. These gardens help to cool the buildings in summer. People can also grow vegetables there.');
+    await pg.waitForTimeout(300);
+  }
   await check(pg, '道場', 'pin-editor');
   // R-中-3：枠の中の「日本語で読む」を押しても、入力欄のフォーカスは外れず、本文の固定も保たれる
   await pg.getByRole('button', { name: '日本語で読む' }).click();
@@ -3528,6 +3566,469 @@ console.log('  ✓ 中-4：ミニ演習の最初の3問は、両方の級とも8
   if (!t2.includes('20問・約15分の診断テストです。本番の大問構成をそのまま縮めています。')) throw new Error('低-3：準2級のようこその文言が変わっている');
   await p.c.close();
   console.log('  ✓ 低-3：2級のようこそは「読む問題だけ」と書く／準2級の文言は変わらない');
+}
+
+/* ============================================================
+   G2-UX-R3：開放前の最後の手直し（新中-A〜E・低-a〜j・開放）
+   ============================================================ */
+console.log('G2-UX-R3：開放前の最後の手直し');
+
+const R3_SHOT = (name) => join(OUT, `ux3-${name}.png`);
+const R3_LONG = 'Many cities now have gardens on the roofs of buildings. These gardens keep the buildings cool in summer, and people can grow vegetables there too.';
+const R3_G2_SPEAKING = JSON.parse(readFileSync(join(root, 'content/g2/speaking.json'), 'utf8'));
+const R3_G2_VOCAB = JSON.parse(readFileSync(join(root, 'content/g2/vocab.json'), 'utf8'));
+
+/** アプリを止めた状態で書いて、開き直す（自動保存に上書きされないため） */
+async function r3Seed(pg, fn) {
+  await idleOrigin(pg);
+  await fn();
+  await pg.goto(URL, { waitUntil: 'networkidle' });
+  await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+}
+const r3Ms = (iso) => new Date(iso).getTime();
+
+/** ホームからライティング道場の一覧へ。tab があればそのタブを開く。first なら先頭の題を開く */
+async function r3OpenList(pg, tab) {
+  await pg.locator('button', { hasText: 'ライティング道場' }).first().click();
+  await pg.locator('main ul button').first().waitFor({ timeout: 8000 });
+  if (tab) await pg.getByRole('button', { name: tab }).first().click();
+}
+async function r3OpenFirst(pg) {
+  await pg.locator('main ul button').first().click();
+  await pg.locator('textarea').waitFor({ timeout: 8000 });
+}
+async function r3Draft(pg, expected, label) {
+  for (let i = 0; i < 30; i++) {
+    if ((await pg.locator('textarea').inputValue()) === expected) return;
+    await pg.waitForTimeout(100);
+  }
+  throw new Error(`${label}：編集画面に書いた全文が残っていない（実際: ${JSON.stringify((await pg.locator('textarea').inputValue()).slice(0, 80))}）`);
+}
+
+/* ---------- 新中-A：提出直前の入力が残る／提出したのに自己採点していない状態が見える ---------- */
+{
+  // 2級・要約。書いて「すぐ」提出 → 見くらべで「もどる」→ 全文が残る（400msの遅延保存が間に合わなくても）
+  const { c, pg } = await ux1Open('ux3-A(g2)', { grade: 'g2', iso: '2026-10-12T12:00:00+09:00' });
+  await r3OpenList(pg, /英文要約/);
+  await r3OpenFirst(pg);
+  await pg.locator('textarea').fill(R3_LONG);
+  await pg.getByRole('button', { name: '提出してモデル解答を見る' }).click();
+  await pg.getByText('モデル解答と見くらべる').waitFor({ timeout: 8000 });
+  await pg.getByRole('button', { name: 'もどる' }).click();
+  await pg.locator('textarea').waitFor({ timeout: 8000 });
+  await r3Draft(pg, R3_LONG, '新中-A(g2・提出直後)');
+  // 一覧に「未採点」。書きかけではなく
+  await pg.getByRole('button', { name: 'もどる' }).click();
+  await pg.getByText('未採点').first().waitFor({ timeout: 5000 });
+  await pg.waitForTimeout(300);
+  await pg.screenshot({ path: R3_SHOT('A-list-unscored') });
+  // 月曜の「今日のもう1つ」は、提出していれば自己採点の前でも ✓
+  await pg.getByRole('button', { name: 'ホーム' }).first().click();
+  await pg.getByText('今日のもう1つ ✓').waitFor({ timeout: 8000 });
+  await pg.waitForTimeout(300);
+  await pg.screenshot({ path: R3_SHOT('A-home-extra-done') });
+  // 自己採点を保存すると「未採点」は消え、自己採点の点が出る
+  await r3OpenList(pg, /英文要約/);
+  await r3OpenFirst(pg);
+  await r3Draft(pg, R3_LONG, '新中-A(g2・再び開く)');
+  await pg.getByRole('button', { name: '提出してモデル解答を見る' }).click();
+  await pg.getByText('モデル解答と見くらべる').waitFor({ timeout: 8000 });
+  const fours = pg.getByRole('button', { name: '4', exact: true });
+  const nFours = await fours.count();
+  for (let i = 0; i < nFours; i++) await fours.nth(i).click();
+  await pg.getByRole('button', { name: '記録して終わる' }).click();
+  await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  await r3OpenList(pg, /英文要約/);
+  if (await pg.getByText('未採点').count()) throw new Error('新中-A：自己採点を保存したのに「未採点」が残っている');
+  await pg.getByText(/自己採点 \d+\//).first().waitFor({ timeout: 5000 });
+  await pg.getByRole('button', { name: 'もどる' }).click();
+
+  // 書いたまま「もどる」（提出しない）。遅延保存が間に合わない速さでも、離れるときに保存する
+  await r3OpenList(pg, /意見論述/);
+  await r3OpenFirst(pg);
+  await pg.locator('textarea').fill(R3_LONG);
+  await pg.getByRole('button', { name: 'もどる' }).click();
+  await pg.locator('main ul button').first().waitFor({ timeout: 5000 });
+  await pg.getByText('書きかけ').first().waitFor({ timeout: 5000 });
+  await r3OpenFirst(pg);
+  await r3Draft(pg, R3_LONG, '新中-A(g2・離れるとき)');
+  await c.close();
+
+  // 準2級にも効く（両方の級）
+  const p = await ux1Open('ux3-A(pre2)', { grade: 'pre2' });
+  await r3OpenList(p.pg, null);
+  await r3OpenFirst(p.pg);
+  await p.pg.locator('textarea').fill(R3_LONG);
+  await p.pg.getByRole('button', { name: '提出してモデル解答を見る' }).click();
+  await p.pg.getByText('モデル解答と見くらべる').waitFor({ timeout: 8000 });
+  await p.pg.getByRole('button', { name: 'もどる' }).click();
+  await p.pg.locator('textarea').waitFor({ timeout: 8000 });
+  await r3Draft(p.pg, R3_LONG, '新中-A(pre2・提出直後)');
+  await p.pg.getByRole('button', { name: 'もどる' }).click();
+  await p.pg.getByText('未採点').first().waitFor({ timeout: 5000 });
+  await p.c.close();
+  console.log('  ✓ 新中-A：書いてすぐ提出→見くらべで戻っても全文が残り、一覧に「未採点」・月曜の「もう1つ」は ✓、自己採点で印が消える（両方の級）');
+}
+
+/* ---------- R3-R 中3・4：保存が固まっても提出できる／二度押しで見くらべが2枚積まれない ---------- */
+{
+  const { c, pg } = await ux1Open('ux3-R-submit', { grade: 'g2' });
+  await pg.addInitScript(() => {
+    // kv への draft:/wsub: の書き込みだけを永遠に終わらせない（保存が固まる端末のつもり）
+    const orig = IDBObjectStore.prototype.put;
+    IDBObjectStore.prototype.put = function (v, k) {
+      if (window.__hangPut && v && typeof v.key === 'string' && (v.key.startsWith('draft:') || v.key.startsWith('wsub:'))) return {};
+      return orig.call(this, v, k);
+    };
+  });
+  await pg.reload({ waitUntil: 'networkidle' });
+  await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  await r3OpenList(pg, /意見論述/);
+  await r3OpenFirst(pg);
+  await pg.evaluate(() => { window.__hangPut = true; });
+  await pg.locator('textarea').fill(R3_LONG);
+  await pg.getByRole('button', { name: '提出してモデル解答を見る' }).dblclick();
+  await pg.getByText('モデル解答と見くらべる').waitFor({ timeout: 6000 });
+  // 二度押しでも見くらべは1枚だけ：1回「もどる」で編集画面に戻る
+  await pg.getByRole('button', { name: 'もどる' }).click();
+  await pg.locator('textarea').waitFor({ timeout: 5000 });
+  await c.close();
+  console.log('  ✓ R3-R 中3・4：保存が固まっていても提出は先へ進み、二度押しでも見くらべは1枚だけ');
+}
+
+/* ---------- 新中-D：2本目の模試で、書いていない要約の題が先に選ばれる ---------- */
+{
+  const { c, pg } = await ux1Open('ux3-D', { grade: 'g2' });
+  const seen = new Set();
+  for (let round = 0; round < 5; round++) {
+    const m = await ux1StartFullMock(pg);
+    const ws = m.paper.written.filter((q) => q.kind === 'writing').map((q) => q.promptId);
+    const sum = ws.find((id) => id.includes('w-summary'));
+    if (!sum) throw new Error('新中-D：模試に要約が入っていない');
+    if (seen.has(sum)) throw new Error(`新中-D：${round + 1}本目の模試の要約が、書いたことのある題と同じ: ${sum}（既出 ${[...seen].join(', ')}）`);
+    seen.add(sum);
+    // この模試で書いたことにして、次の模試を組む
+    await idleOrigin(pg);
+    await patchKv(pg, 'mock', 'return undefined;');
+    await addRow(pg, 'mocks', { scope: 'full', startedAt: 1, finishedAt: Date.now(), writtenElapsedMs: 1, answers: [], writings: ws.map((id) => ({ promptId: id, text: 'x', wordCount: 1 })) });
+    await pg.goto(URL, { waitUntil: 'networkidle' });
+    await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  }
+  await c.close();
+  console.log('  ✓ 新中-D：模試を5本続けて組むと、要約の題は毎回ちがう（書いたことのない題が先）');
+}
+
+/* ---------- 新中-E：まとめの判定の言い回し ---------- */
+{
+  const { c, pg } = await ux1Open('ux3-E', { grade: 'g2' });
+  await r3OpenList(pg, /意見論述/);
+  await r3OpenFirst(pg);
+  const body = 'I think students should wear uniforms. First, they look neat. Second, they save time in the morning. ';
+  const chip = () => pg.locator('div.sticky span', { hasText: 'まとめの文' }).first();
+  const classOf = async () => (await chip().getAttribute('class')) ?? '';
+  for (const phrase of ['For these two reasons, I agree.', 'For the reasons above, I agree.', 'In conclusion, I agree.', 'Therefore, I agree.', 'To sum up, I agree.']) {
+    await pg.locator('textarea').fill(body + phrase);
+    await pg.waitForTimeout(150);
+    if (!(await classOf()).includes('correct')) throw new Error(`新中-E：「${phrase}」でまとめの文が青にならない`);
+  }
+  // R3-R 中2：理由の途中の As a result は締めではない。最後にまとめが無ければ赤
+  await pg.locator('textarea').fill('I think students should wear uniforms. First, they look neat. As a result, the school looks tidy. Second, they save time in the morning. Many students say that this is very helpful. Some teachers like it too.');
+  await pg.waitForTimeout(150);
+  if ((await classOf()).includes('correct')) throw new Error('中2：理由の途中の As a result だけで、まとめの文が青になっている');
+  await pg.locator('textarea').fill(body + 'It was a result of many tests that I like it.');
+  await pg.waitForTimeout(150);
+  if ((await classOf()).includes('correct')) throw new Error('中2：「It was a result of」でまとめの文が青になっている');
+  await pg.locator('textarea').fill(body + 'As a result, I agree with the idea.');
+  await pg.waitForTimeout(150);
+  if (!(await classOf()).includes('correct')) throw new Error('中2：最後の文の As a result が締めと数えられない');
+  await pg.locator('textarea').fill(body + 'I like it.');
+  await pg.waitForTimeout(150);
+  if ((await classOf()).includes('correct')) throw new Error('新中-E：まとめを書いていないのに青になっている');
+  await c.close();
+  console.log('  ✓ 新中-E：For these two reasons / For the reasons above / In conclusion / Therefore / To sum up がまとめの文として青になる（無いと青にならない）');
+}
+
+/* ---------- 新中-C：第2部（l-part3）に「スクリプトを読む」の逃げ道（2級） ---------- */
+{
+  const { c, pg } = await ux1Open('ux3-C-script', { grade: 'g2', iso: '2026-11-17T12:00:00+09:00' });
+  await pg.locator('button', { hasText: '今日のもう1つ' }).click();
+  await pg.getByText('リスニング第2部').first().waitFor({ timeout: 8000 });
+  const esc = pg.getByRole('button', { name: /音が出せない場所なら、スクリプトを読む/ });
+  await esc.waitFor({ timeout: 5000 });
+  await esc.click();
+  // 会話（スクリプト）が文字で出る。1回聞かなくても読める
+  await pg.locator('.anim-fade p.en').first().waitFor({ timeout: 3000 });
+  if (!(await pg.locator('main').innerText()).includes('英文を文字で出しています')) throw new Error('低11：第2部の逃げ道の説明が「英文を…」になっていない');
+  await pg.waitForTimeout(300);
+  await pg.screenshot({ path: R3_SHOT('C-part3-script') });
+  await c.close();
+  console.log('  ✓ 新中-C：2級の第2部に「音が出せない場所なら、スクリプトを読む」があり、押すと文字で出る');
+}
+
+/* ---------- 低-a・低-f：2級の「つづきから」を控えめに／土曜に所要時間 ---------- */
+{
+  const { c, pg } = await ux1Open('ux3-a', { grade: 'g2', iso: '2026-11-17T12:00:00+09:00' });
+  await r3Seed(pg, async () => addRow(pg, 'days', { date: '2026-11-17', answered: 3, correct: 3 }));
+  const btn = pg.getByRole('button', { name: 'つづきから' });
+  const cls = (await btn.getAttribute('class')) ?? '';
+  if (!cls.includes('bg-surface-2') || cls.includes('bg-primary')) throw new Error(`低-a：達成後で「もう1つ」が未達なのに、「つづきから」が主役の見た目: ${cls}`);
+  await pg.waitForTimeout(300);
+  await pg.screenshot({ path: R3_SHOT('a-home-after-mission') });
+  await c.close();
+  // ミッション前は今までどおり主役
+  const m = await ux1Open('ux3-a-before', { grade: 'g2', iso: '2026-11-17T12:00:00+09:00' });
+  const cls2 = (await m.pg.getByRole('button', { name: 'はじめる' }).getAttribute('class')) ?? '';
+  if (!cls2.includes('bg-primary')) throw new Error('低-a：ミッション前の「はじめる」が主役でない');
+  await m.c.close();
+  // 準2級は常に主役（準2級のホームは変えない）
+  const p = await ux1Open('ux3-a-pre2', { grade: 'pre2', iso: '2026-10-20T12:00:00+09:00' });
+  await r3Seed(p.pg, async () => addRow(p.pg, 'days', { date: '2026-10-20', answered: 3, correct: 3 }));
+  const cls3 = (await p.pg.getByRole('button', { name: 'つづきから' }).getAttribute('class')) ?? '';
+  if (!cls3.includes('bg-primary')) throw new Error('低-a：準2級の「つづきから」の見た目が変わっている');
+  await p.c.close();
+  // 土曜
+  const s = await ux1Open('ux3-f', { grade: 'g2', iso: '2026-11-21T12:00:00+09:00' });
+  const st = await s.pg.locator('main').innerText();
+  if (!st.includes('約110分')) throw new Error('低-f：土曜のカードに所要時間（約110分）が無い');
+  await s.pg.waitForTimeout(300);
+  await s.pg.screenshot({ path: R3_SHOT('f-home-sat') });
+  await s.c.close();
+  console.log('  ✓ 低-a・f：2級は達成後「つづきから」が控えめ（準2級・達成前は主役のまま）／土曜のカードに「約110分」');
+}
+
+/* ---------- 低-b・低-c・低-g：日曜の復習 ---------- */
+{
+  const SUN = '2026-11-22T12:00:00+09:00';
+  const ids = R3_G2_VOCAB.slice(0, 25).map((x) => x.id);
+  const srsRows = (n) => ids.slice(0, n).map((itemId) => ({ itemId, box: 1, dueAt: 0, lapses: 0, lastAt: 0 }));
+  const seedSrs = async (pg, n) => { for (const r of srsRows(n)) await addRow(pg, 'srs', r); };
+  // 復習が25問ある日曜：タイルは「今日の分 20問（ぜんぶで25）」、カードは10問で区切る
+  {
+    const { c, pg } = await ux1Open('ux3-b1', { grade: 'g2', iso: SUN });
+    await r3Seed(pg, () => seedSrs(pg, 25));
+    const t = await pg.locator('main').innerText();
+    if (!t.includes('今日の分 20問（ぜんぶで25）')) throw new Error(`低-c：復習タイルの文言が違う: ${t.slice(0, 600)}`);
+    if (t.includes('今日はここまで（ぜんぶで')) throw new Error('低-c：古い文言「今日はここまで」が残っている');
+    await pg.waitForTimeout(300);
+    await pg.screenshot({ path: R3_SHOT('b-home-sun-25') });
+    await pg.locator('button', { hasText: '今日のもう1つ' }).click();
+    await pg.getByText('1 / 10', { exact: true }).waitFor({ timeout: 8000 });
+    await c.close();
+  }
+  // 10問やったが復習がまだ残っている：「空っぽ」とは言わない
+  {
+    const { c, pg } = await ux1Open('ux3-b2', { grade: 'g2', iso: SUN });
+    await r3Seed(pg, async () => {
+      await seedSrs(pg, 25);
+      for (let i = 0; i < 10; i++) await addRow(pg, 'attempts', { itemId: ids[i], sessionId: 's', mode: 'review', answeredAt: r3Ms(SUN) + i, selected: 0, correct: true, elapsedMs: 1000 });
+    });
+    const t = await pg.locator('main').innerText();
+    if (!t.includes('今日のもう1つ ✓') || t.includes('復習はいま空っぽ') || !t.includes('10問できたよ')) throw new Error(`低-b：10問済み・残りありの文言が違う: ${t.slice(0, 600)}`);
+    await pg.waitForTimeout(300);
+    await pg.screenshot({ path: R3_SHOT('b-home-sun-done10') });
+    await c.close();
+  }
+  // 本当に空：「空っぽ」
+  {
+    const { c, pg } = await ux1Open('ux3-b3', { grade: 'g2', iso: SUN });
+    await pg.getByText('今日のもう1つ ✓').waitFor({ timeout: 8000 });
+    const t = await pg.locator('main').innerText();
+    if (!t.includes('復習はいま空っぽ。おつかれさま')) throw new Error(`低-b：復習が本当に空のとき「空っぽ」が出ない: ${t.slice(0, 400)}`);
+    await c.close();
+  }
+  // R3-R 低9：始める前からすでに済んでいた日は、結果画面に「今日のもう1つ ✓」を出さない（この演習で済んだわけではない）
+  {
+    const { c, pg } = await ux1Open('ux3-g2', { grade: 'g2', iso: SUN });
+    await r3Seed(pg, async () => {
+      await seedSrs(pg, 1);
+      for (let i = 1; i < 11; i++) await addRow(pg, 'attempts', { itemId: ids[i], sessionId: 's', mode: 'review', answeredAt: r3Ms(SUN) + i, selected: 0, correct: true, elapsedMs: 1000 });
+    });
+    await pg.getByText('今日のもう1つ ✓').waitFor({ timeout: 8000 });
+    await pg.locator('button', { hasText: '今日のもう1つ' }).click();
+    const choices = pg.locator('main ul > li > button');
+    await choices.first().waitFor({ timeout: 8000 });
+    await choices.first().click();
+    await pg.getByRole('button', { name: '決定' }).click();
+    await pg.getByRole('button', { name: '結果を見る' }).click();
+    await pg.getByText('おつかれさま').first().waitFor({ timeout: 8000 });
+    await pg.waitForTimeout(500);
+    if (await pg.getByText('今日のもう1つ ✓').count()) throw new Error('低9：始める前から済んでいたのに、結果画面に「今日のもう1つ ✓」が出ている');
+    await c.close();
+  }
+  // 低-g：もう1つを済ませた結果画面に「今日のもう1つ ✓」
+  {
+    const { c, pg } = await ux1Open('ux3-g', { grade: 'g2', iso: SUN });
+    // 復習が1問だけ残り、今日すでに9問やった状態。この1問で10問になって「もう1つ」が済む
+    await r3Seed(pg, async () => {
+      await seedSrs(pg, 1);
+      for (let i = 1; i < 10; i++) await addRow(pg, 'attempts', { itemId: ids[i], sessionId: 's', mode: 'review', answeredAt: r3Ms(SUN) + i, selected: 0, correct: true, elapsedMs: 1000 });
+    });
+    if (await pg.getByText('今日のもう1つ ✓').count()) throw new Error('低-g：まだ9問なのに済みになっている');
+    await pg.locator('button', { hasText: '今日のもう1つ' }).click();
+    const choices = pg.locator('main ul > li > button');
+    await choices.first().waitFor({ timeout: 8000 });
+    await choices.first().click();
+    await pg.getByRole('button', { name: '決定' }).click();
+    await pg.getByRole('button', { name: '結果を見る' }).click();
+    await pg.getByText('おつかれさま').first().waitFor({ timeout: 8000 });
+    await pg.getByText('今日のもう1つ ✓').waitFor({ timeout: 5000 });
+    await pg.waitForTimeout(300);
+    await pg.screenshot({ path: R3_SHOT('g-result-extra') });
+    await c.close();
+  }
+  console.log('  ✓ 低-b・c・g：日曜の復習は10問で区切る／「今日の分 20問（ぜんぶで25）」／空っぽは本当に空のときだけ／済ませた結果画面に「今日のもう1つ ✓」');
+}
+
+/* ---------- 低-d：12/12 18時以降はタイルも「おつかれさま」 ---------- */
+{
+  const tile = async (iso) => {
+    const { c, pg } = await ux1Open(`ux3-d-${iso}`, { grade: 'g2', iso });
+    const t = await pg.locator('main').innerText();
+    await pg.waitForTimeout(300);
+    await pg.screenshot({ path: R3_SHOT(`d-home-${iso.slice(5, 13)}`) });
+    await c.close();
+    return t;
+  };
+  const before = await tile('2026-12-12T17:59:00+09:00');
+  if (!before.includes('今日が本番')) throw new Error('低-d：12/12 17:59 のタイルが「今日が本番」でない');
+  const after = await tile('2026-12-12T18:00:00+09:00');
+  if (after.includes('今日が本番') || !after.includes('おつかれさま')) throw new Error(`低-d：12/12 18:00 のタイルが「おつかれさま」側に揃っていない: ${after.slice(0, 500)}`);
+  console.log('  ✓ 低-d：12/12 17:59 はタイル「今日が本番」・18:00 からは「おつかれさま」');
+}
+
+/* ---------- 低-e：木曜の面接は、まだやっていないカードへ直接入る／一覧にやった印 ---------- */
+{
+  const THU = '2026-11-19T12:00:00+09:00';
+  const [first, second] = R3_G2_SPEAKING;
+  // 何もやっていない：先頭のカード
+  {
+    const { c, pg } = await ux1Open('ux3-e1', { grade: 'g2', iso: THU });
+    await pg.locator('button', { hasText: '今日のもう1つ' }).click();
+    await pg.getByText('黙読', { exact: true }).first().waitFor({ timeout: 8000 });
+    const h = await pg.locator('header').innerText();
+    if (!h.includes(first.title)) throw new Error(`低-e：やっていないのに先頭のカードに入っていない: ${h}`);
+    await pg.waitForTimeout(300);
+    await pg.screenshot({ path: R3_SHOT('e-direct-first') });
+    await c.close();
+  }
+  // 先頭をやった：2枚目へ。一覧の先頭に「やった」
+  {
+    const { c, pg } = await ux1Open('ux3-e2', { grade: 'g2', iso: THU });
+    await r3Seed(pg, async () => { await patchKv(pg, 'g2InterviewCards', `return ['${first.id}'];`); });
+    await pg.locator('button', { hasText: '今日のもう1つ' }).click();
+    await pg.getByText('黙読', { exact: true }).first().waitFor({ timeout: 8000 });
+    const h = await pg.locator('header').innerText();
+    if (!h.includes(second.title) || h.includes(first.title)) throw new Error(`低-e：やったカードを飛ばして次へ入っていない: ${h}`);
+    // 黙読中の「もどる」は一覧へ。やった印が見える
+    await pg.getByRole('button', { name: 'もどる' }).click();
+    await pg.getByText('問題カード', { exact: true }).waitFor({ timeout: 5000 });
+    await pg.getByText('やった', { exact: true }).first().waitFor({ timeout: 3000 });
+    if ((await pg.getByText('やった', { exact: true }).count()) !== 1) throw new Error('低-e：「やった」の印がやったカードの数と合わない');
+    await pg.waitForTimeout(300);
+    await pg.screenshot({ path: R3_SHOT('e-list-done-mark') });
+    await c.close();
+  }
+  console.log('  ✓ 低-e：木曜の「面接」は未経験のカードへ直接入り、やったカードは一覧に「やった」の印');
+}
+
+/* ---------- 低-h：模試の入口の文言（2級は「できるだけ」・準2級は変えない） ---------- */
+{
+  for (const grade of ['g2', 'pre2']) {
+    const { c, pg } = await ux1Open(`ux3-h(${grade})`, { grade });
+    await pg.locator('button', { hasText: '模擬テスト' }).first().click();
+    await pg.getByText('本番でいちばん効くのは、時間配分。').waitFor({ timeout: 8000 });
+    const t = await pg.locator('main').innerText();
+    if (grade === 'g2' && (t.includes('長文も毎回ちがう本文') || !t.includes('長文はできるだけちがう本文から出ます'))) throw new Error('低-h：2級の入口の文言が事実に合っていない');
+    if (grade === 'pre2' && !t.includes('（長文も毎回ちがう本文から出ます）')) throw new Error('低-h：準2級の入口の文言が変わっている');
+    await c.close();
+  }
+  console.log('  ✓ 低-h：2級の模試の入口は「長文はできるだけちがう本文から」／準2級の文言は変わらない');
+}
+
+/* ---------- 低-i：連続日数（今日がまだのときに途切れて見えない／11/15 までの準2級は変わらない） ---------- */
+{
+  const streakText = async (pg) => (await pg.locator('p', { hasText: /^つづいてる$/ }).first().locator('xpath=following-sibling::p[1]').innerText()).replace(/\s+/g, '');
+  const runCase = async (grade, iso, days, expected, label) => {
+    const { c, pg } = await ux1Open(`ux3-i(${label})`, { grade, iso });
+    await r3Seed(pg, async () => { for (const date of days) await addRow(pg, 'days', { date, answered: 3, correct: 3 }); });
+    const got = await streakText(pg);
+    if (got !== `${expected}日`) throw new Error(`低-i(${label})：つづいてる 期待=${expected}日 実際=${got}`);
+    await pg.waitForTimeout(300);
+    await pg.screenshot({ path: R3_SHOT(`i-${label}`) });
+    await c.close();
+  };
+  // 11/15 までの準2級（11/14）：これまでと同じ値であること（古い計算で手計算した値）
+  await runCase('pre2', '2026-11-14T12:00:00+09:00', ['2026-11-11', '2026-11-12', '2026-11-13'], 3, 'pre2-1114-yesterday-active');
+  await runCase('pre2', '2026-11-14T12:00:00+09:00', ['2026-11-12', '2026-11-13', '2026-11-14'], 3, 'pre2-1114-today-active');
+  await runCase('pre2', '2026-11-14T12:00:00+09:00', ['2026-11-10', '2026-11-12', '2026-11-13'], 3, 'pre2-1114-rest-day-between');
+  await runCase('pre2', '2026-11-14T12:00:00+09:00', [], 0, 'pre2-1114-empty');
+  // R3-R 中5：11/15 より前でも「昨日休み・今日まだ」なら、0 ではなく続きの日数（10/17・10/18 をやって 10/19 は休み → 2日）
+  await runCase('pre2', '2026-10-20T12:00:00+09:00', ['2026-10-17', '2026-10-18'], 2, 'pre2-1020-rest-yesterday');
+  await runCase('pre2', '2026-10-20T12:00:00+09:00', ['2026-10-17', '2026-10-18', '2026-10-19'], 3, 'pre2-1020-yesterday-active');
+  // 二次の翌日（11/16）：11/15 は休み、今日もまだ。前日までの3日が生きていて「3日」と出る（以前は 0 → 1問で2に跳ねた）
+  await runCase('pre2', '2026-11-16T12:00:00+09:00', ['2026-11-12', '2026-11-13', '2026-11-14'], 3, 'pre2-1116-after-exam');
+  // 長く空いたら途切れる（おやすみは2日まで）
+  await runCase('pre2', '2026-11-16T12:00:00+09:00', ['2026-11-10', '2026-11-11'], 0, 'pre2-1116-long-gap');
+  // 1問解いて今日になったら +1（跳ねない）
+  await runCase('pre2', '2026-11-16T12:00:00+09:00', ['2026-11-12', '2026-11-13', '2026-11-14', '2026-11-16'], 4, 'pre2-1116-solved');
+  // 2級も同じ計算
+  await runCase('g2', '2026-11-17T12:00:00+09:00', ['2026-11-13', '2026-11-14', '2026-11-15'], 3, 'g2-yesterday-gap-bridged');
+  console.log('  ✓ 低-i：11/14 の準2級の連続日数は従来どおり（3・3・3・0）／11/16 は前日までの3日が「3日」と出て、解くと4（跳ねない）／長く空けば0');
+}
+
+/* ---------- 低-j：面接の下のほうのカードを開いたときのずれ／道場の「模試で書いた」／タブの記憶 ---------- */
+{
+  const { c, pg } = await ux1Open('ux3-j', { grade: 'g2', iso: '2026-11-20T12:00:00+09:00' });
+  // 道場：要約タブから題を開いて戻っても、要約タブのまま
+  await r3OpenList(pg, /英文要約/);
+  await r3OpenFirst(pg);
+  await pg.getByRole('button', { name: 'もどる' }).click();
+  await pg.locator('main ul button').first().waitFor({ timeout: 5000 });
+  const summaryTabOn = await pg.getByRole('button', { name: /英文要約/ }).first().evaluate((el) => el.className.includes('shadow-sm'));
+  if (!summaryTabOn) throw new Error('低-j：要約から戻ったのに要約タブが選ばれていない');
+  // 模試で書いた題に印
+  const firstId = 'g2-w-summary-002';
+  await r3Seed(pg, async () => addRow(pg, 'mocks', { scope: 'full', startedAt: 1, finishedAt: Date.now(), writtenElapsedMs: 1, answers: [], writings: [{ promptId: firstId, text: 'x', wordCount: 1 }] }));
+  await r3OpenList(pg, /英文要約/);
+  await pg.getByText('模試で書いた', { exact: true }).first().waitFor({ timeout: 5000 });
+  // R3-R 低7：0語（白紙で時間切れ）の題には印を付けない
+  await pg.getByRole('button', { name: 'もどる' }).click();
+  await r3Seed(pg, async () => addRow(pg, 'mocks', { scope: 'full', startedAt: 1, finishedAt: Date.now(), writtenElapsedMs: 1, answers: [], writings: [{ promptId: 'g2-w-summary-003', text: '', wordCount: 0 }] }));
+  await r3OpenList(pg, /英文要約/);
+  await pg.getByText('模試で書いた', { exact: true }).first().waitFor({ timeout: 5000 });
+  if ((await pg.getByText('模試で書いた', { exact: true }).count()) !== 1) throw new Error('低7：0語の模試の題にも「模試で書いた」が付いている');
+  await c.close();
+  // 面接：一覧の下のほうのカードを押して始めると、画面の先頭から始まる
+  const m = await ux1Open('ux3-j-scroll', { grade: 'g2' });
+  await m.pg.locator('button', { hasText: '面接シミュレーター' }).click();
+  await m.pg.getByText('問題カード', { exact: true }).waitFor({ timeout: 8000 });
+  const lastCard = m.pg.locator('main ul button').last();
+  await lastCard.scrollIntoViewIfNeeded();
+  await lastCard.click();
+  await m.pg.getByText('黙読', { exact: true }).first().waitFor({ timeout: 5000 });
+  await m.pg.waitForTimeout(300);
+  const y = await m.pg.evaluate(() => window.scrollY);
+  if (y > 2) throw new Error(`低-j：下のほうのカードを開いたら、黙読の画面が先頭から始まらない（scrollY=${y}）`);
+  await m.pg.screenshot({ path: R3_SHOT('j-interview-last-card') });
+  await m.c.close();
+  console.log('  ✓ 低-j：要約から戻っても要約タブのまま／模試で書いた題に印／面接の下のほうのカードも先頭から始まる');
+}
+
+/* ---------- 開放：準2級のホームは 11/15 までカードが出ない・11/16 から出る（切り替え導線の日付ループが見ている） ---------- */
+{
+  const src = readFileSync(join(root, 'src/grade.ts'), 'utf8');
+  if (!/export const G2_RELEASED = true;/.test(src)) throw new Error('開放：G2_RELEASED が true になっていない');
+  for (const [date, shown] of [['2026-10-20', false], ['2026-11-14', false], ['2026-11-15', false], ['2026-11-16', true]]) {
+    const { c, pg } = await ux1Open(`ux3-release(${date})`, { grade: 'pre2', iso: `${date}T12:00:00+09:00` });
+    const has = (await pg.getByText('準2級おつかれさま。2級にきりかえる？').count()) > 0;
+    if (has !== shown) throw new Error(`開放：${date} の準2級ホームのカード 期待=${shown ? '出る' : '出ない'} 実際=${has ? '出る' : '出ない'}`);
+    if (date === '2026-11-16') {
+      await pg.waitForTimeout(300);
+      await pg.screenshot({ path: R3_SHOT('release-home-1116') });
+    }
+    await c.close();
+  }
+  console.log('  ✓ 開放：G2_RELEASED=true。準2級のホームは 10/20・11/14・11/15 にカードが出ず、11/16 から出る');
 }
 
 await browser.close();

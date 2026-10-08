@@ -95,6 +95,26 @@ export async function buildMiniQueue(size: number): Promise<string[]> {
   // 長文が重みで多く当たると、8問のうち長文ではない問題が3問に満たないことがある（2級で約2割）。
   // そのまま shortFirst に渡すと「最初の3問に長文が来ない」が守れないので、
   // 足りない分は末尾（重み抽選の側）の長文を、長文ではない問題に差し替えて確保する
+  // 加えて、最初の3問のリスニングは1問まで（新中-C）。音が出せない場所で3問ができなくなるため、
+  // 長文ではなくリスニングでもない問題を最低 MISSION_SIZE-1 問は確保する。同じ要領で末尾から差し替える
+  const plain = (id: string) => {
+    const sec = ITEM_BY_ID.get(id)?.section;
+    return !!sec && !isPassageSection(sec) && !isListening(sec);
+  };
+  const lackPlain = MISSION_SIZE - 1 - picked.filter(plain).length;
+  if (lackPlain > 0) {
+    const have = new Set(picked);
+    const extra = weightedPick(
+      usable.filter((i) => !have.has(i.id) && plain(i.id)),
+      (i) => itemWeight(i.id, report),
+      lackPlain,
+    ).map((i) => i.id);
+    for (const id of extra) {
+      const at = picked.map(plain).lastIndexOf(false);
+      if (at < 0) break;
+      picked.splice(at, 1, id);
+    }
+  }
   const short = (id: string) => !isPassageSection(ITEM_BY_ID.get(id)?.section);
   const lack = MISSION_SIZE - picked.filter(short).length;
   if (lack > 0) {
@@ -126,8 +146,28 @@ const MISSION_SIZE = 3;
  * 長文は4問目以降へ回す。残りの並びは崩さないので、同じ本文の設問は隣り合ったまま
  */
 function shortFirst(ids: string[], n: number): string[] {
-  const isPassage = (id: string) => isPassageSection(ITEM_BY_ID.get(id)?.section);
-  const head = ids.filter((id) => !isPassage(id)).slice(0, n);
+  const sec = (id: string) => ITEM_BY_ID.get(id)?.section;
+  const isPassage = (id: string) => isPassageSection(sec(id));
+  const isListen = (id: string) => {
+    const x = sec(id);
+    return !!x && isListening(x);
+  };
+  // リスニングは最初の n 問に1問まで。足りないときだけ、リスニングで埋める（長文よりはまし）
+  const head: string[] = [];
+  let listens = 0;
+  for (const id of ids) {
+    if (head.length >= n) break;
+    if (isPassage(id)) continue;
+    if (isListen(id)) {
+      if (listens >= 1) continue;
+      listens++;
+    }
+    head.push(id);
+  }
+  for (const id of ids) {
+    if (head.length >= n) break;
+    if (!isPassage(id) && !head.includes(id)) head.push(id);
+  }
   const taken = new Set(head);
   return [...head, ...ids.filter((id) => !taken.has(id))];
 }

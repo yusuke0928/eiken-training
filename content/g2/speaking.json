@@ -8,7 +8,7 @@
       {
         "no": 1,
         "note": "土曜の朝。女の子と父親が、家の近くの市民農園に着いたところ。父親は種の袋を持っていて、女の子が父親に話しかけている。",
-        "image": null,
+        "image": "g2-s-002-1.webp",
         "actions": [
           {
             "ja": "父親が種の袋を持っている",
@@ -31,7 +31,7 @@
         "no": 2,
         "label": "Ten minutes later",
         "note": "10分後。父親がくわで土に穴を掘り、女の子がその穴に種を入れている。近くで年配の女性が2人を見て笑っている。",
-        "image": null,
+        "image": "g2-s-002-2.webp",
         "actions": [
           {
             "ja": "父親が土に穴を掘っている",
@@ -56,7 +56,7 @@
         "no": 3,
         "label": "A few months later",
         "note": "数か月後。畑にはトマトが赤く実っている。女の子がトマトを摘んでいて、頭の中では、近所の人たちが食べて喜ぶ姿を思い浮かべている。",
-        "image": null,
+        "image": "g2-s-002-3.webp",
         "actions": [
           {
             "ja": "女の子がトマトを摘んでいる",
@@ -143,7 +143,7 @@
       {
         "no": 1,
         "note": "夏の朝、海岸に着いた男の子と母親。母親はごみ袋を持っていて、男の子が母親に話しかけている。",
-        "image": null,
+        "image": "g2-s-003-1.webp",
         "drawing": {
           "en": "A boy and his mother stand on a sandy beach on a summer morning. The mother holds a large trash bag, and the boy points along the beach with a bright smile. Light summer clothes with sleeves and hats. No text, no sweat.",
           "ja": "夏の朝、砂浜に立つ男の子と母親。母親は大きなごみ袋を持ち、男の子が明るい笑顔で砂浜の先を指さしている。袖のある軽い夏服と帽子。文字・汗は入れない。"
@@ -166,7 +166,7 @@
         "no": 2,
         "label": "Twenty minutes later",
         "note": "20分後。男の子がペットボトルを拾っていて、母親は空き缶を袋に入れている。近くで、カメラを肩にかけ大きなリュックを背負った旅行者の女の子が、2人に手をふっている。",
-        "image": null,
+        "image": "g2-s-003-2.webp",
         "drawing": {
           "en": "The boy bends down to pick up a plastic bottle, and his mother puts a can into her trash bag. A tourist girl with a camera on her shoulder, a guidebook in one hand and a large backpack stands nearby and waves at them. No text, no sweat.",
           "ja": "男の子が体をかがめてペットボトルを拾い、母親が空き缶をごみ袋に入れている。肩にカメラをかけ、片手にガイドブックを持ち、大きなリュックを背負った旅行者の女の子が近くに立ち、2人に手をふっている。文字・汗は入れない。"
@@ -191,7 +191,7 @@
         "no": 3,
         "label": "One hour later",
         "note": "1時間後。海岸はすっかりきれいになっている。男の子が海岸を見わたしていて、頭の中では、来年もまた参加したいと思っている。",
-        "image": null,
+        "image": "g2-s-003-3.webp",
         "drawing": {
           "en": "The beach is clean. The boy stands with his mother and looks at the sea with a happy face. A small thought bubble (no words inside) shows the boy with a trash bag on the same beach next summer. No text, no sweat.",
           "ja": "海岸はきれいになっている。男の子が母親のそばに立ち、うれしそうに海を見ている。考えの吹き出し（中に文字は入れない）には、来年の夏、同じ海岸でごみ袋を持つ男の子の姿。文字・汗は入れない。"
@@ -278,7 +278,7 @@
       {
         "no": 1,
         "note": "日曜の午後、駅前の自転車ステーションに着いた女の子と母親。母親はスマートフォンで地図を見ていて、女の子が母親に話しかけている。",
-        "image": null,
+        "image": "g2-s-004-1.webp",
         "drawing": {
           "en": "A girl and her mother stand next to a row of rental bicycles at a bicycle station in front of a train station on a Sunday afternoon. The mother looks at a map on her phone, and the girl points ahead with a smile. Simple casual clothes with sleeves. No text, no sweat.",
           "ja": "日曜の午後、駅前に並んだレンタル自転車のそばに立つ女の子と母親。母親はスマートフォンの地図を見ていて、女の子が笑顔で前方を指さしている。袖のある普通の私服。文字・汗は入れない。"
@@ -301,7 +301,7 @@
         "no": 2,
         "label": "Twenty minutes later",
         "note": "20分後。女の子が川ぞいの道を自転車で走っていて、母親がそのうしろについて走っている。近くで、年配の男性が犬の散歩をしている。",
-        "image": null,
+        "image": "g2-s-004-2.webp",
         "drawing": {
           "en": "The girl rides a bicycle along a riverside path, and her mother rides behind her. Both wear bicycle helmets. An old man walks a small dog on the path nearby. Bright daytime scene. No text, no sweat.",
           "ja": "女の子が川ぞいの道を自転車で走り、そのうしろを母親が走っている。2人とも自転車用のヘルメットをかぶっている。近くの道では、年配の男性が小さな犬を散歩させている。明るい昼の場面。文字・汗は入れない。"
@@ -326,7 +326,7 @@
         "no": 3,
         "label": "Forty minutes later",
         "note": "40分後。水族館の近くのステーション。女の子が自転車を返していて、母親は水族館を指さしている。女の子は、帰りもまた乗りたいと思っている。",
-        "image": null,
+        "image": "g2-s-004-3.webp",
         "drawing": {
           "en": "At a bicycle station near an aquarium building, the girl, wearing a bicycle helmet, parks her rental bicycle in a stand while her mother points at the aquarium. A small thought bubble (no words inside) shows the girl riding a bicycle. No text, no sweat.",
           "ja": "水族館の建物の近くのステーションで、自転車用のヘルメットをかぶった女の子が借りた自転車をスタンドに止め、母親が水族館を指さしている。考えの吹き出し（中に文字は入れない）には、自転車に乗る女の子の姿。文字・汗は入れない。"
@@ -417,7 +417,7 @@
       {
         "no": 1,
         "note": "8月の朝、空港に着いた女の子と両親。父親は女の子のスーツケースを運んでいて、母親が女の子に話しかけている。",
-        "image": null,
+        "image": "g2-s-005-1.webp",
         "drawing": {
           "en": "A girl and her parents walk through an airport hall. The father carries her suitcase, and the mother talks to the girl with a gentle smile. Simple casual clothes with sleeves. No text, no sweat.",
           "ja": "空港のロビーを歩く女の子と両親。父親が女の子のスーツケースを運び、母親がやさしくほほえみながら女の子に話しかけている。袖のある普通の私服。文字・汗は入れない。"
@@ -440,7 +440,7 @@
         "no": 2,
         "label": "Three days later at the host family's house",
         "note": "3日後、ホストファミリーの家の台所。女の子がホストマザーといっしょに夕食を作っていて、ホストファーザーが食卓を整えている。",
-        "image": null,
+        "image": "g2-s-005-2.webp",
         "drawing": {
           "en": "In a bright home kitchen, the girl cooks dinner with her host mother, and the host father sets plates on a table behind them. Everyone smiles. Simple casual clothes with aprons. No text, no sweat.",
           "ja": "明るい家庭の台所で、女の子がホストマザーといっしょに夕食を作り、そのうしろでホストファーザーが食卓に皿を並べている。みんな笑顔。エプロンをした普通の私服。文字・汗は入れない。"
@@ -461,7 +461,7 @@
         "no": 3,
         "label": "Two weeks later at the airport",
         "note": "2週間後、空港。女の子がホストファミリーに手をふってお別れをしていて、ホストファミリーも手をふり返している。女の子は、またいつか会いたいと思っている。",
-        "image": null,
+        "image": "g2-s-005-3.webp",
         "drawing": {
           "en": "In the airport departure lobby, the girl with a backpack waves goodbye to three host family members, who wave back with warm smiles. A small thought bubble (no words inside) shows the host family sitting around a dinner table. No text, no sweat.",
           "ja": "空港の出発ロビーで、リュックを背負った女の子が、ホストファミリー3人に手をふってお別れをしている。3人はあたたかい笑顔で手をふり返している。考えの吹き出し（中に文字は入れない）には、食卓を囲むホストファミリーの姿。文字・汗は入れない。"
@@ -552,7 +552,7 @@
       {
         "no": 1,
         "note": "土曜の朝。男の子と祖父が、町の陶芸教室に着いたところ。祖父はエプロンを2枚持っていて、男の子が祖父に話しかけている。",
-        "image": null,
+        "image": "g2-s-006-1.webp",
         "drawing": {
           "en": "Sota (14, short black hair, olive-green long-sleeved T-shirt, dark gray trousers) and his grandfather (70s, short white hair, round glasses, brown cardigan, beige trousers). On a sunny Saturday morning, Sota and his grandfather stand at the wooden entrance of a small pottery workshop with several round bowls and cups on a shelf behind the glass door. The grandfather holds two light blue aprons in his hands. Sota looks up at him with an excited smile and is talking to him. Both full body, seen from the front at a slight angle. No text, no sweat.",
           "ja": "晴れた土曜の朝、陶芸教室の木の入り口に立つソウタと祖父。ガラス戸の奥の棚には丸いお椀やカップが並ぶ。祖父は水色のエプロンを2枚、手に持っている。ソウタがわくわくした顔で祖父を見上げて話しかけている。文字・汗は入れない。"
@@ -575,7 +575,7 @@
         "no": 2,
         "label": "Thirty minutes later",
         "note": "30分後。男の子がろくろの上の粘土で形を作り、祖父がそれを見ている。近くで陶芸家の女性が2人に使い方を教えている。",
-        "image": null,
+        "image": "g2-s-006-2.webp",
         "drawing": {
           "en": "Sota (olive-green T-shirt, light blue apron), his grandfather (white hair, round glasses, light blue apron over a brown cardigan) and a woman potter (white cloth over her hair, indigo work clothes). Medium shot inside the workshop, seen from a little distance. Sota sits at a potter's wheel with both hands simply wrapped around a small clay bowl on the wheel (not a close-up of the hands). His grandfather sits beside him and watches with a gentle smile. A few steps away, the woman potter points at the wheel and explains how to use it. No text, no sweat.",
           "ja": "教室の中を少しはなれて中くらいの距離から描く。ソウタがろくろの前に座り、ろくろの上の小さな粘土のお椀を両手でそっと包んでいる（手元のアップにはしない）。祖父がとなりでやさしくほほえんで見守る。数歩はなれて、陶芸家の女性がろくろを指さして使い方を説明している。文字・汗は入れない。"
@@ -600,7 +600,7 @@
         "no": 3,
         "label": "One month later",
         "note": "1か月後。教室にもどり、焼き上がったお椀を男の子が手に持っている。祖父が拍手している。男の子は、次は祖父にカップを作りたいと思っている。",
-        "image": null,
+        "image": "g2-s-006-3.webp",
         "drawing": {
           "en": "Sota (olive-green T-shirt, dark gray trousers) and his grandfather (white hair, round glasses, brown cardigan). Back at the workshop, Sota proudly holds a finished glazed blue bowl in both hands. His grandfather stands next to him and claps with a big smile. Next to Sota's head there is a small cloud-shaped thought bubble with NO words inside; in the bubble, Sota gives a small cup to his grandfather. No text, no sweat.",
           "ja": "教室にもどり、ソウタが釉薬のかかった青いお椀を両手で誇らしげに持っている。となりで祖父が笑顔で拍手している。ソウタの頭の横の考えの吹き出し（文字なし）には、ソウタが祖父に小さなカップを差し出す様子。文字・汗は入れない。"
@@ -691,7 +691,7 @@
       {
         "no": 1,
         "note": "金曜の夕方。男の子と姉が、家の近くの図書館に着いたところ。姉は本の入ったバッグを持っていて、男の子が姉に話しかけている。",
-        "image": null,
+        "image": "g2-s-007-1.webp",
         "drawing": {
           "en": "Haruto (14, short black hair, navy hooded jacket, white T-shirt, gray trousers) and his older sister Saki (18, long straight black hair, pink cardigan, white top, dark green long skirt). On a Friday evening, Haruto and Saki stand in front of a modern public library with large glass windows glowing with warm light (no signs). Saki carries a tote bag with a few books with plain colored spines, no letters. Haruto looks at her with a bright smile, points toward the entrance, and is talking to her. Both full body, seen from the front at a slight angle. No text, no sweat.",
           "ja": "金曜の夕方、あたたかい明かりのともる大きなガラス窓の現代的な図書館（看板なし）の前に立つハルトと姉のサキ。サキは、背表紙が無地の色だけで文字のない本が数冊入ったトートバッグを持っている。ハルトが明るい笑顔で入り口を指さして話しかけている。文字・汗は入れない。"
@@ -714,7 +714,7 @@
         "no": 2,
         "label": "Thirty minutes later",
         "note": "30分後。図書館の会議室。男の子が熱心に聞き、姉はメモを取っている。前では作家の女性が自分の本を聴衆に見せている。",
-        "image": null,
+        "image": "g2-s-007-2.webp",
         "drawing": {
           "en": "Haruto (navy hooded jacket, white T-shirt), Saki (pink cardigan, dark green long skirt) and a woman writer (short gray hair, red glasses, charcoal jacket). In a bright meeting room of the library, about ten people sit on chairs facing the front. Haruto and Saki sit in the second row; Haruto listens with interest, and Saki writes in a small notebook, seen from the side so that the pages are not visible. At the front, the woman writer holds up a book with a plain blue cover and no letters, and smiles at the audience. No bookshelves with visible spines. No text, no sweat.",
           "ja": "図書館の明るい会議室で、10人ほどがいすに座って前を向いている。ハルトとサキは2列目で、ハルトは興味深そうに聞き、サキは小さなノートに書いている（横から見た角度で、ページは見えない）。前では作家の女性が、文字のない無地の青い表紙の本を持ち上げて聴衆にほほえんでいる。背表紙が見える本棚は描かない。文字・汗は入れない。"
@@ -739,7 +739,7 @@
         "no": 3,
         "label": "One hour later",
         "note": "1時間後。図書館の貸出カウンター。男の子が作家の本を借りていて、姉は待っている。男の子は、今夜それを読みたいと思っている。",
-        "image": null,
+        "image": "g2-s-007-3.webp",
         "drawing": {
           "en": "Haruto (navy hooded jacket, white T-shirt) and Saki (pink cardigan, dark green long skirt). At the checkout counter of the library, Haruto holds a book with a plain blue cover and no letters out to the librarian. Saki stands behind Haruto with her tote bag and smiles. No computer screen on the counter, no bookshelves with visible spines. Next to Haruto's head there is a small cloud-shaped thought bubble with NO words inside; in the bubble, Haruto reads a book at home under a warm desk lamp. No text, no sweat.",
           "ja": "図書館の貸出カウンターで、ハルトが文字のない無地の青い表紙の本を司書に差し出している。サキがトートバッグを持ってうしろでほほえんでいる。カウンターにパソコンの画面は置かない。背表紙が見える本棚は描かない。ハルトの頭の横の考えの吹き出し（文字なし）には、家で暖かい電気スタンドのもとで本を読む自分の姿。文字・汗は入れない。"
@@ -830,7 +830,7 @@
       {
         "no": 1,
         "note": "日曜の朝。女の子と父親が、科学館の前に着いたところ。父親が入り口の大きなロボットの模型を指さし、女の子が父親に話しかけている。",
-        "image": null,
+        "image": "g2-s-008-1.webp",
         "drawing": {
           "en": "Rena (13, dark-brown hair in a short ponytail, red long-sleeved T-shirt, dark blue jeans) and her father (40s, short black hair, black-rimmed glasses, green jacket, khaki trousers). On a bright Sunday morning, Rena and her father stand in front of a science museum entrance (a building with a big round glass dome, no signs). A large silver robot model stands beside the entrance. The father points at the robot, and Rena looks up at it with sparkling eyes and a big smile and is talking to her father. Both full body. No text, no sweat.",
           "ja": "晴れた日曜の朝、大きな丸いガラスのドームのある科学館（看板なし）の入り口の前に立つレナと父親。入り口のそばに大きな銀色のロボットの模型がある。父親がロボットを指さし、レナが目を輝かせて父親に話しかけている。文字・汗は入れない。"
@@ -853,7 +853,7 @@
         "no": 2,
         "label": "Forty minutes later",
         "note": "40分後。工作教室の机。女の子が小さなロボットの部品をつなぎ、父親が部品を手渡している。近くで職員の女性が作り方を説明している。",
-        "image": null,
+        "image": "g2-s-008-2.webp",
         "drawing": {
           "en": "Rena (red T-shirt, jeans), her father (glasses, green jacket) and a woman staff member (black hair in a bun, light blue vest). At a long workshop table in the museum, Rena holds a half-built small robot with both hands. Her father sits next to her and hands her one large robot arm. Standing across the table, the woman staff member holds up a similar large arm and explains how to build it with a friendly smile. Only a few large parts on the table, no small parts, no instruction sheets. Other tables are in the background. No text, no sweat.",
           "ja": "科学館の長い工作机で、レナが作りかけの小さなロボットを両手で持っている。となりに座る父親が、大きなロボットの腕のパーツを1つ手渡している。机の向こうに立つ職員の女性が、同じような大きな腕のパーツを持ち上げてやさしく作り方を説明している。机の上の部品は大きいものが数個だけ。小さな部品と説明書は描かない。背景に他の机。文字・汗は入れない。"
@@ -878,7 +878,7 @@
         "no": 3,
         "label": "Two hours later",
         "note": "2時間後。机の上で、女の子が作ったロボットが歩いていて、父親が拍手している。女の子は、次はもっと大きなロボットを作りたいと思っている。",
-        "image": null,
+        "image": "g2-s-008-3.webp",
         "drawing": {
           "en": "Rena (red T-shirt, jeans) and her father (glasses, green jacket). On the workshop table, the small robot Rena built walks across the table on two legs. Rena watches it with a big smile, and her father next to her claps happily. Next to Rena's head there is a small cloud-shaped thought bubble with NO words inside; in the bubble, a much larger robot stands. No text, no sweat.",
           "ja": "工作机の上で、レナが作った小さなロボットが2本の足で歩いている。レナが満面の笑みで見つめ、となりで父親がうれしそうに拍手している。レナの頭の横の考えの吹き出し（文字なし）には、もっと大きなロボット。文字・汗は入れない。"
@@ -969,7 +969,7 @@
       {
         "no": 1,
         "note": "土曜の午後。女の子と祖母が、公民館のスマホ教室に着いたところ。祖母は新しいスマホを両手で持っていて、女の子が祖母に話しかけている。",
-        "image": null,
+        "image": "g2-s-009-1.webp",
         "drawing": {
           "en": "Nanami (15, shoulder-length black hair with a small white hairpin, white blouse, navy cardigan, gray skirt, plain yellow apron) and her grandmother (70s, gray hair in a bun, glasses, lavender cardigan, long gray skirt). On a Saturday afternoon, Nanami and her grandmother stand at the door of a bright community center classroom with rows of tables behind them. The grandmother holds a smartphone carefully with both hands, with the back of the phone toward the viewer, and looks a little nervous. Nanami smiles warmly at her and is talking to her. Both full body, seen from the front at a slight angle. No text, no sweat.",
           "ja": "土曜の午後、公民館の明るい教室の入り口に立つナナミと祖母。うしろには机が並ぶ。祖母はスマホの裏側が見える向きで両手でそっと持ち、少し緊張した顔。ナナミがやさしくほほえんで祖母に話しかけている。文字・汗は入れない。"
@@ -992,7 +992,7 @@
         "no": 2,
         "label": "Twenty minutes later",
         "note": "20分後。女の子が画面を指さして教え、祖母が画面をそっと触っている。となりの席では、年配の男性が別の学生に教わっている。",
-        "image": null,
+        "image": "g2-s-009-2.webp",
         "drawing": {
           "en": "Nanami (white hairpin, navy cardigan, yellow apron), her grandmother (gray bun, glasses, lavender cardigan) and, at the next table, an old man (white hair, gray sweater) with a young student helper (yellow apron). At a classroom table, Nanami sits next to her grandmother and points at the smartphone screen; the screen is plain and bright, with no icons or text. The grandmother touches the screen carefully with one finger and smiles. At the next table, an elderly man in a gray sweater listens while a young male student in a yellow apron shows him how to use his smartphone. No text, no sweat.",
           "ja": "教室の机で、ナナミが祖母のとなりに座ってスマホの画面を指さしている（画面は無地で明るく、アイコンも文字もない）。祖母は指1本で画面をそっと触り、ほほえんでいる。となりの机では、灰色のセーターの年配の男性が、黄色いエプロンの男子学生にスマホの使い方を教えてもらっている。文字・汗は入れない。"
@@ -1017,7 +1017,7 @@
         "no": 3,
         "label": "One hour later",
         "note": "1時間後。祖母がスマホでビデオ通話をして、画面に映った孫と話している。女の子はほほえんで見ている。女の子は、ほかの高齢者も手伝いたいと思っている。",
-        "image": null,
+        "image": "g2-s-009-3.webp",
         "drawing": {
           "en": "Nanami (white hairpin, navy cardigan, yellow apron) and her grandmother (gray bun, glasses, lavender cardigan). Seen from behind and slightly to the side of the grandmother, so that the phone screen is visible over her shoulder. The grandmother holds the smartphone in front of her and talks happily; the screen shows only a simple picture of a smiling little boy waving, with no icons, buttons or text. Nanami sits beside her and watches with a gentle smile. Next to Nanami's head there is a small cloud-shaped thought bubble with NO words inside; in the bubble, Nanami helps another elderly person with a smartphone. No text, no sweat.",
           "ja": "祖母の肩ごしの構図（祖母のうしろやや横から、肩ごしにスマホの画面が見える）。祖母がスマホを目の前に持ってうれしそうに話している。画面にはシンプルな、手をふる笑顔の小さな男の子の絵だけで、アイコン・ボタン・文字は入れない。ナナミがとなりでやさしくほほえんで見ている。ナナミの頭の横の考えの吹き出し（文字なし）には、別の高齢者のスマホを手伝うナナミの姿。文字・汗は入れない。"

@@ -1,6 +1,6 @@
-import { db, getKv, setKv, localDateKey } from '../data/db';
-import { ITEM_BY_ID } from '../content';
-import { inGrade, mockInGrade } from '../grade';
+import { db, getKv, setKv, localDateKey, loadSubmittedMap } from '../data/db';
+import { ITEM_BY_ID, WRITING_BY_ID } from '../content';
+import { GRADE, inGrade, mockInGrade } from '../grade';
 import { reviewBacklog } from '../engine/srs';
 import { EXAM_G2, daysUntil } from './exam';
 
@@ -29,7 +29,7 @@ export const G2_EXTRA_BY_WEEKDAY: Record<number, ExtraPlan> = {
   3: { kind: 'opinion', title: '意見論述を1題', sub: '80〜100語。意見と理由を2つ' },
   4: { kind: 'interview', title: '面接を1枚 No.4 まで', sub: '本番と同じ順に、最後まで通す' },
   5: { kind: 'passage', title: '長文（大問3）を1セット', sub: '本文1つぶんの設問を通して解く' },
-  6: { kind: 'mock', title: '模擬テスト（フル）', sub: '本番と同じ順で、時間も計る' },
+  6: { kind: 'mock', title: '模擬テスト（フル）', sub: '約110分。時間のとれる日に。本番と同じ順で計る' },
   0: { kind: 'review', title: '今週の答え合わせ', sub: 'まちがえた問題の復習を10問' },
 };
 
@@ -52,12 +52,46 @@ export function extraPlanFor(now: Date = new Date()): ExtraPlan | null {
   return examPhase(now) === 'normal' ? G2_EXTRA_BY_WEEKDAY[now.getDay()] : null;
 }
 
+/* ---- 演習の開始前に「もう1つ」が済んでいたか（結果画面の「今日のもう1つ ✓」は、この演習で済んだときだけ出す） ---- */
+let doneBeforeSession: boolean | null = null;
+
+/** 演習を始めたとき（QuestionScreen の最初の描画）に呼ぶ。2級以外・「もう1つ」の無い日は null */
+export async function snapshotExtraBeforeSession(): Promise<void> {
+  doneBeforeSession = null;
+  const plan = extraPlanFor();
+  if (!plan || GRADE !== 'g2') return;
+  try {
+    doneBeforeSession = await isExtraDone(plan.kind);
+  } catch {
+    doneBeforeSession = null;
+  }
+}
+
+/** 「いま済んでいて、始める前は済んでいなかった」ときだけ true */
+export async function extraFinishedBySession(): Promise<boolean> {
+  const plan = extraPlanFor();
+  if (!plan || doneBeforeSession !== false) return false;
+  return isExtraDone(plan.kind);
+}
+
 /* ---- 面接を済ませた日（Dexie のスキーマは増やさず kv に持つ） ---- */
 const INTERVIEW_KEY = 'g2InterviewDay';
 
-/** 面接を「おわり」まで進めたので、今日の日付を残す */
-export async function markInterviewDone(): Promise<void> {
+/** やったカードの id の一覧（カード一覧に「やった」の印を出し、木曜は未経験のカードへ直接入るため） */
+const INTERVIEW_CARDS_KEY = 'g2InterviewCards';
+
+export async function loadInterviewDoneIds(): Promise<string[]> {
+  const v = await getKv<unknown>(INTERVIEW_CARDS_KEY);
+  return Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [];
+}
+
+/** 面接を「おわり」まで進めたので、今日の日付とカードを残す。Dexie のスキーマは増やさず kv に持つ */
+export async function markInterviewDone(cardId?: string): Promise<void> {
   await setKv(INTERVIEW_KEY, localDateKey());
+  if (cardId) {
+    const ids = await loadInterviewDoneIds();
+    if (!ids.includes(cardId)) await setKv(INTERVIEW_CARDS_KEY, [...ids, cardId]);
+  }
 }
 
 /** 日付つき（端末のローカル日付）の [開始, 終了) ミリ秒 */
@@ -77,7 +111,12 @@ export async function isExtraDone(kind: ExtraKind, now: Date = new Date()): Prom
     case 'summary':
     case 'opinion': {
       const section = kind === 'summary' ? 'w-summary' : 'w-opinion';
-      return (await db.writings.toArray()).some((w) => w.section === section && inGrade(w.promptId) && inDay(w.submittedAt));
+      if ((await db.writings.toArray()).some((w) => w.section === section && inGrade(w.promptId) && inDay(w.submittedAt))) return true;
+      // 提出したが自己採点の前に閉じた日も、書いたことには変わりない（新中-A）
+      for (const [id, at] of await loadSubmittedMap()) {
+        if (inGrade(id) && inDay(at) && WRITING_BY_ID.get(id)?.section === section) return true;
+      }
+      return false;
     }
     case 'listening2':
       return (await countAttempts((a) => ITEM_BY_ID.get(a.itemId)?.section === 'l-part3')) >= NEED.listening2;

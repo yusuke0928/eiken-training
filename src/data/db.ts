@@ -93,6 +93,18 @@ export const saveDraft = (promptId: string, text: string) => setKv(draftKey(prom
 export const loadDraft = (promptId: string) => getKv<string>(draftKey(promptId));
 export const clearDraft = (promptId: string) => db.kv.delete(draftKey(promptId));
 
+/* ---- 提出したが自己採点していない印（新中-A） ----
+   提出だけでは writings に何も残らず、自己採点の前に「もどる」と一覧にも「今日のもう1つ」にも出なかった。
+   Dexie のスキーマは増やさず kv に持つ。値は提出した時刻（ms）。自己採点を保存すると消す。 */
+const submittedKey = (promptId: string) => `wsub:${promptId}`;
+export const markSubmitted = (promptId: string) => setKv(submittedKey(promptId), Date.now());
+export const clearSubmitted = (promptId: string) => db.kv.delete(submittedKey(promptId));
+/** 未採点の提出: promptId → 提出時刻 */
+export async function loadSubmittedMap(): Promise<Map<string, number>> {
+  const rows = await db.kv.where('key').startsWith('wsub:').toArray();
+  return new Map(rows.filter((r) => typeof r.value === 'number').map((r) => [String(r.key).slice(5), r.value as number]));
+}
+
 /* ---------------- 答え合わせ：どこまで見たか ----------------
    模試・診断テストの答え合わせは28問51画面ぶんあり、途中でやめると次に開いたとき
    1問目に戻っていた（WORK-ORDER-REVIEW-C C-1）。「どこまで見たか」は学習の記録
@@ -179,7 +191,18 @@ export async function todayWordCount(): Promise<number> {
 export function computeStreak(activeDates: Set<string>): number {
   const today = localDateKey();
   // 今日まだ解いていなくても、昨日まで続いていれば記録は生きているとみなす
-  let cursor = activeDates.has(today) ? today : shiftDays(today, -1);
+  if (activeDates.has(today)) return walkStreak(activeDates, today);
+  const fromYesterday = walkStreak(activeDates, shiftDays(today, -1));
+  if (fromYesterday > 0) return fromYesterday;
+  // 昨日も休んでいた日（二次試験の翌日など）。そのまま数えると 0 になり、1問解いた瞬間に「おやすみ」で
+  // つながって 2 に跳ねて見える。「今日やったことにした場合の日数」から今日の1日ぶんを引いて、
+  // 解く前から途切れて見えないようにする。昨日までつながっている日（fromYesterday > 0）は今までと同じ値
+  return Math.max(0, walkStreak(new Set([...activeDates, today]), today) - 1);
+}
+
+/** cursor の日から過去へ歩いて、連続日数を数える（おやすみの扱いは computeStreak の説明のとおり） */
+function walkStreak(activeDates: Set<string>, start: string): number {
+  let cursor = start;
   let streak = 0;
   let walked = 0;
   let freezesLeft = 2;

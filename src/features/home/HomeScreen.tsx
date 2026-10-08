@@ -179,7 +179,9 @@ export function HomeScreen({
             </div>
           </div>
           <div className="mt-4">
-            <Button full onClick={onMini}>
+            {/* 2級でミッション達成後は、「今日のもう1つ」が主役。同じ強さのボタンが2つ並ぶと、
+                また3問を続けるほうへ押してしまうので、こちらは控えめにする（低-a） */}
+            <Button full onClick={onMini} variant={isG2 && goalMet && extra && !extraDone ? 'ghost' : 'primary'}>
               {today > 0 ? 'つづきから' : 'はじめる'}
             </Button>
           </div>
@@ -206,7 +208,12 @@ export function HomeScreen({
               </span>
               <span className="mt-0.5 block text-[16px] font-bold leading-snug text-ink">{extra.title}</span>
               <span className="mt-0.5 block text-[12px] text-ink-sub">
-                {extra.kind === 'review' && extraDone ? '復習はいま空っぽ。おつかれさま' : extra.sub}
+                {extra.kind === 'review' && extraDone
+                  ? // 「空っぽ」は本当に空のときだけ。10問やっただけで残りがあるのに空っぽと言うと、タイルと矛盾する
+                    backlog === 0
+                    ? '復習はいま空っぽ。おつかれさま'
+                    : '10問できたよ。おつかれさま'
+                  : extra.sub}
               </span>
             </span>
           </button>
@@ -347,7 +354,7 @@ export function HomeScreen({
               {backlog === 0
                 ? 'いまは空っぽ'
                 : GRADE === 'g2' && backlog > REVIEW_RUN
-                  ? `今日はここまで（ぜんぶで${backlog}問）`
+                  ? `今日の分 ${REVIEW_RUN}問（ぜんぶで${backlog}）`
                   : 'そろそろ出しどき'}
             </p>
           </Card>

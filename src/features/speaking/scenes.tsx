@@ -42,7 +42,7 @@ const CARD_IMAGES: Record<string, { a: string; b?: string }> = {
  * - タップで全画面表示にする。イラストAは脇役が実寸だと小さく、本番同様
  *   手元でじっくり見る場面なので拡大できるようにした。Bも含め挙動を揃えている。
  */
-export function SceneImage({ src, alt, label }: { src: string; alt: string; label: string }) {
+export function SceneImage({ src, alt, label, thumb = false }: { src: string; alt: string; label: string; thumb?: boolean }) {
   const [open, setOpen] = useState(false);
   // 拡大時、コンテナ幅より画像の描画幅が大きく、横スクロールが要るか。
   // 【中1】拡大しても絵の一部しか見えないのに、横に続く手がかりが無い、への対応。
@@ -70,12 +70,17 @@ export function SceneImage({ src, alt, label }: { src: string; alt: string; labe
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`${label}を拡大表示`}
-        className="relative block w-full overflow-hidden rounded-2xl border border-line bg-white p-1.5 active:scale-[0.99] transition-transform"
+        className={`relative block w-full overflow-hidden border border-line bg-white active:scale-[0.99] transition-transform ${
+          thumb ? 'rounded-lg p-0.5' : 'rounded-2xl p-1.5'
+        }`}
       >
-        <img src={src} alt={alt} className="w-full rounded-xl" />
-        <span className="absolute bottom-2.5 right-2.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold text-white">
-          タップで拡大
-        </span>
+        <img src={src} alt={alt} className={thumb ? 'w-full rounded-md' : 'w-full rounded-xl'} />
+        {/* 小さな並びでは札が絵を隠すので出さない（押せば拡大できることは、広い表示の札で分かる） */}
+        {!thumb && (
+          <span className="absolute bottom-2.5 right-2.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold text-white">
+            タップで拡大
+          </span>
+        )}
       </button>
 
       {open && (

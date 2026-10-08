@@ -170,7 +170,7 @@ export function ListeningPanel({
         <>
           {forceScript && !showScript && (
             <p className="mt-3 rounded-xl bg-surface px-3 py-2 text-[12px] leading-relaxed text-ink-sub">
-              音声のかわりに会話の中身を文字で出しています。本番は音だけなので、
+              音声のかわりに{item.section === 'l-part3' ? '英文' : '会話の中身'}を文字で出しています。本番は音だけなので、
               音が出せる環境ではイヤホンをつけて受け直してみて。
             </p>
           )}

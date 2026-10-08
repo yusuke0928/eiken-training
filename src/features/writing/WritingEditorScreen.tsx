@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { WRITING_BY_ID } from '../../content';
 import { GRADE, GRADE_META, gradeOfId } from '../../grade';
 import { OtherGradeNotice } from '../grade/GradeSwitch';
-import { loadDraft, saveDraft } from '../../data/db';
+import { loadDraft, markSubmitted, saveDraft } from '../../data/db';
 import { TEMPLATE, TEMPLATE_NOTE, checkTone, countWords, mechanicalGrader, pickHint, wordTone } from '../../engine/writing';
 import { Paragraphs, PinnedSource, useElementHeight } from './WritingParts';
 import { WRITING_SPEC } from '../../types';
@@ -47,6 +47,33 @@ function WritingEditorScreenBody({
     return () => window.clearTimeout(t);
   }, [text, loaded, promptId]);
 
+  // 400ms の遅延保存は、その間に画面を離れる（提出・戻る）と取り消されて最後の入力が消える。
+  // 離れるときに最新の文をその場で保存し直すため、最新値を ref に持つ
+  const latest = useRef({ text: '', loaded: false });
+  latest.current = { text, loaded };
+  useEffect(() => {
+    return () => {
+      if (latest.current.loaded) void saveDraft(promptId, latest.current.text);
+    };
+  }, [promptId]);
+
+  // 二度押しで見くらべが2枚積まれないよう、ref で弾く（state だと次の描画まで効かない）
+  const submitting = useRef(false);
+  const [busy, setBusy] = useState(false);
+  async function submit() {
+    if (submitting.current) return;
+    submitting.current = true;
+    setBusy(true);
+    // 遷移の前に保存を終わらせる。見くらべから戻ったとき全文が残っている必要がある。
+    // ただし保存が固まる・失敗する端末でも提出は止めない（QuestionScreen の clearSessionBestEffort と同じ形）。
+    // 書いた文は見くらべ画面が props で持っているので、保存に失敗しても失われない
+    await Promise.race([
+      Promise.all([saveDraft(promptId, text), markSubmitted(promptId)]).catch((e) => console.error('submit save failed:', e)),
+      new Promise<void>((resolve) => setTimeout(resolve, 1500)),
+    ]);
+    onSubmit(text);
+  }
+
   const words = countWords(text);
   const [min, max] = spec.wordRange;
   const tone = wordTone(prompt.section, words);
@@ -79,31 +106,40 @@ function WritingEditorScreenBody({
       />
 
       {/* 書きながら見えないと意味がないので、ヘッダー直下に貼りつける */}
-      {text.trim() && (
+      {/* 要約は、書きはじめる前から帯の場所を取っておく。最初の1字で帯が現れると、本文の枠が帯の高さぶん
+          下がって入力欄の上にかぶり、いま書いている文が隠れた（新中-B）。書く前は同じ高さの灰色の帯にしておく。
+          準2級の課題には要約が無いので、ほかの課題は今までどおり書きはじめてから出す */}
+      {(text.trim() || prompt.section === 'w-summary') && (
         <div
           ref={stripRef}
-          className="sticky z-10 border-b border-line bg-bg/95 px-5 py-2 backdrop-blur"
+          className="sticky z-10 border-b border-line bg-bg/95 px-5 py-2 backdrop-blur [overflow-anchor:none]"
           style={{ top: 'calc(56px + env(safe-area-inset-top))' }}
         >
           <div className="flex flex-wrap gap-1.5">
-            {checks.map((c) => (
-              <span
-                key={c.id}
-                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[12px] font-semibold ${
-                  checkTone(c) === 'ok'
-                    ? 'bg-correct-soft text-correct'
-                    : checkTone(c) === 'note'
+            {checks.map((c) => {
+              const blank = !text.trim();
+              return (
+                <span
+                  key={c.id}
+                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[12px] font-semibold ${
+                    blank || checkTone(c) === 'note'
                       ? 'bg-surface-2 text-ink-sub'
-                      : 'bg-again-soft text-again'
-                }`}
-              >
-                {c.ok ? <Check size={13} /> : <Alert size={13} />}
-                {c.label}
-              </span>
-            ))}
+                      : checkTone(c) === 'ok'
+                        ? 'bg-correct-soft text-correct'
+                        : 'bg-again-soft text-again'
+                  }`}
+                >
+                  {/* アイコンも同じ大きさの空きで確保する（有無で高さが変わらないように） */}
+                  {blank ? <span className="inline-block h-[13px] w-[13px]" aria-hidden /> : c.ok ? <Check size={13} /> : <Alert size={13} />}
+                  {c.label}
+                </span>
+              );
+            })}
           </div>
-          <p className="mt-1.5 text-[12px] leading-snug text-ink-sub">
-            {pickHint(checks)}
+          {/* 要約は1行に切る。丸写しの注意が2〜3行に伸びると帯が高くなり、本文の枠が入力欄にかぶる
+              （全文は見くらべの画面で見せる）。ほかの課題は今までどおり折り返す */}
+          <p className={`mt-1.5 text-[12px] leading-snug text-ink-sub ${prompt.section === 'w-summary' ? 'truncate' : ''}`}>
+            {text.trim() ? pickHint(checks) : '書きはじめると、ここにチェックが出るよ'}
           </p>
         </div>
       )}
@@ -247,7 +283,7 @@ function WritingEditorScreenBody({
       </main>
 
       <div className="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-[560px] bg-gradient-to-t from-bg via-bg to-transparent px-5 pt-6 pb-[calc(16px+env(safe-area-inset-bottom))]">
-        <Button full onClick={() => onSubmit(text)} disabled={words < 10}>
+        <Button full onClick={() => void submit()} disabled={words < 10 || busy}>
           {words < 10 ? '書けたら提出' : '提出してモデル解答を見る'}
         </Button>
       </div>

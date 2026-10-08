@@ -703,7 +703,7 @@ reportAnswerDistribution('2級 ', g2Positions);
     ['リスニング第2部 文（l-part3）', g2Rows.listening.filter((x) => x.section === 'l-part3').length, 45],
     ['英文要約（w-summary）', g2Rows.writing.filter((w) => w.section === 'w-summary').length, 6],
     ['意見論述（w-opinion）', g2Rows.writing.filter((w) => w.section === 'w-opinion').length, 8],
-    ['面接カード', g2Rows.speaking.length, 4],
+    ['面接カード', g2Rows.speaking.length, 8],
   ];
   console.log('\n2級 P3-A / P3-B / P3-C の目標数:');
   for (const [label, have, want] of targets) {

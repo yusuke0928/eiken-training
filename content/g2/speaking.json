@@ -542,5 +542,561 @@
         ]
       }
     ]
+  },
+  {
+    "id": "g2-s-006",
+    "title": "Traditional Craft Workshops",
+    "passage": "Traditional craft workshops are becoming popular in many parts of Japan. Local craftspeople teach visitors how to make pottery and paper and how to dye cloth by hand. Some workshops let visitors make their own cups and plates. In this way, visitors can experience traditional culture. Craftspeople hope that these lessons will encourage young people to learn their skills and keep them alive.",
+    "passageJa": "伝統工芸の体験教室が、日本の多くの地域で人気になっている。地元の職人が、陶器や紙の作り方や、布を手で染める方法を訪れた人に教えている。自分のカップや皿を作らせてくれる教室もある。こうして、訪れた人は伝統文化を体験できる。職人たちは、こうした教室が若い人たちに技を学び、受けついでいく気持ちを起こさせることを願っている。",
+    "scenes": [
+      {
+        "no": 1,
+        "note": "土曜の朝。男の子と祖父が、町の陶芸教室に着いたところ。祖父はエプロンを2枚持っていて、男の子が祖父に話しかけている。",
+        "image": null,
+        "drawing": {
+          "en": "Sota (14, short black hair, olive-green long-sleeved T-shirt, dark gray trousers) and his grandfather (70s, short white hair, round glasses, brown cardigan, beige trousers). On a sunny Saturday morning, Sota and his grandfather stand at the wooden entrance of a small pottery workshop with several round bowls and cups on a shelf behind the glass door. The grandfather holds two light blue aprons in his hands. Sota looks up at him with an excited smile and is talking to him. Both full body, seen from the front at a slight angle. No text, no sweat.",
+          "ja": "晴れた土曜の朝、陶芸教室の木の入り口に立つソウタと祖父。ガラス戸の奥の棚には丸いお椀やカップが並ぶ。祖父は水色のエプロンを2枚、手に持っている。ソウタがわくわくした顔で祖父を見上げて話しかけている。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "祖父がエプロンを2枚持っている",
+            "en": "Sota's grandfather was holding two aprons."
+          }
+        ],
+        "speech": [
+          {
+            "who": "男の子",
+            "ja": "大きなお椀を作りたい！",
+            "en": "I want to make a big bowl!"
+          }
+        ]
+      },
+      {
+        "no": 2,
+        "label": "Thirty minutes later",
+        "note": "30分後。男の子がろくろの上の粘土で形を作り、祖父がそれを見ている。近くで陶芸家の女性が2人に使い方を教えている。",
+        "image": null,
+        "drawing": {
+          "en": "Sota (olive-green T-shirt, light blue apron), his grandfather (white hair, round glasses, light blue apron over a brown cardigan) and a woman potter (white cloth over her hair, indigo work clothes). Medium shot inside the workshop, seen from a little distance. Sota sits at a potter's wheel with both hands simply wrapped around a small clay bowl on the wheel (not a close-up of the hands). His grandfather sits beside him and watches with a gentle smile. A few steps away, the woman potter points at the wheel and explains how to use it. No text, no sweat.",
+          "ja": "教室の中を少しはなれて中くらいの距離から描く。ソウタがろくろの前に座り、ろくろの上の小さな粘土のお椀を両手でそっと包んでいる（手元のアップにはしない）。祖父がとなりでやさしくほほえんで見守る。数歩はなれて、陶芸家の女性がろくろを指さして使い方を説明している。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "男の子が粘土で形を作っている",
+            "en": "Sota was shaping clay on a potter's wheel."
+          },
+          {
+            "ja": "祖父が見ている",
+            "en": "His grandfather was watching him."
+          },
+          {
+            "ja": "陶芸家の女性が教えている",
+            "en": "A potter nearby was showing them how to use the wheel."
+          }
+        ],
+        "speech": []
+      },
+      {
+        "no": 3,
+        "label": "One month later",
+        "note": "1か月後。教室にもどり、焼き上がったお椀を男の子が手に持っている。祖父が拍手している。男の子は、次は祖父にカップを作りたいと思っている。",
+        "image": null,
+        "drawing": {
+          "en": "Sota (olive-green T-shirt, dark gray trousers) and his grandfather (white hair, round glasses, brown cardigan). Back at the workshop, Sota proudly holds a finished glazed blue bowl in both hands. His grandfather stands next to him and claps with a big smile. Next to Sota's head there is a small cloud-shaped thought bubble with NO words inside; in the bubble, Sota gives a small cup to his grandfather. No text, no sweat.",
+          "ja": "教室にもどり、ソウタが釉薬のかかった青いお椀を両手で誇らしげに持っている。となりで祖父が笑顔で拍手している。ソウタの頭の横の考えの吹き出し（文字なし）には、ソウタが祖父に小さなカップを差し出す様子。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "男の子が焼き上がったお椀を持っている",
+            "en": "Sota was holding the finished bowl."
+          },
+          {
+            "ja": "祖父が拍手している",
+            "en": "His grandfather was clapping."
+          },
+          {
+            "ja": "次は祖父にカップを作ろうと考えている",
+            "en": "He was thinking that he wanted to make a cup for his grandfather next."
+          }
+        ],
+        "speech": [
+          {
+            "who": "男の子（心の中）",
+            "ja": "次はおじいちゃんにカップを作ろう。",
+            "en": "I'll make a cup for Grandpa next."
+          }
+        ]
+      }
+    ],
+    "openingSentence": "One Saturday morning, Sota and his grandfather went to a pottery workshop in their town.",
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how can visitors experience traditional culture?",
+        "model": "By making their own cups and plates in the workshops.",
+        "checks": [
+          "By ~ing の形で答えられた",
+          "In this way の前の文（Some workshops let visitors make their own cups and plates）から答えを取れた",
+          "主語をつけすぎず簡潔に言えた"
+        ]
+      },
+      {
+        "no": 2,
+        "kind": "story",
+        "prompt": "Now, please look at the pictures. You have 20 seconds to prepare. Your story should begin with this sentence:",
+        "model": "One Saturday morning, Sota and his grandfather went to a pottery workshop in their town. Sota's grandfather was holding two aprons, and Sota said to him, \"I want to make a big bowl!\" Thirty minutes later, Sota was shaping clay on a potter's wheel, and his grandfather was watching him. A potter nearby was showing them how to use the wheel. One month later, Sota was holding the finished bowl, and his grandfather was clapping. Sota was thinking that he wanted to make a cup for his grandfather next.",
+        "checks": [
+          "言い出しの1文を、そのまま最初に言えた",
+          "3つのコマすべてに触れた",
+          "コマの動作を過去進行形（was / were ~ing）で言えた",
+          "2・3コマ目の時間の言葉（ラベル）を使えた",
+          "1コマ目のセリフを said to ..., \"...\" の形で入れられた",
+          "3コマ目の思っていることを入れられた"
+        ]
+      },
+      {
+        "no": 3,
+        "prompt": "Some people say that traditional skills will disappear in the future. What do you think about that?",
+        "model": "I agree. First, fewer young people want to become craftspeople. Second, machines can make the same things more cheaply.",
+        "checks": [
+          "I agree. / I disagree. をはっきり言えた",
+          "理由を2つ言えた",
+          "First / Second などでつないで、止まらずに話せた"
+        ],
+        "modelAlt": "I disagree. First, many people still love traditional products. Second, workshops and schools teach young people these skills."
+      },
+      {
+        "no": 4,
+        "prompt": "Today, many people watch movies at home on the Internet. Do you think fewer people will go to movie theaters in the future?",
+        "followUp": {
+          "yes": "Why?",
+          "no": "Why not?"
+        },
+        "model": "Yes, I do. People can watch movies at home at a low price. Also, they can watch them whenever they like.",
+        "modelNo": "No, I don't. Some people like watching movies on a big screen. Also, going to a movie theater is a good way to spend time with friends.",
+        "checks": [
+          "Yes / No を先にはっきり言えた",
+          "Why? / Why not? と聞かれたら、すぐに理由を言えた",
+          "理由を2つ言えた"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-s-007",
+    "title": "Library Events",
+    "passage": "Public libraries are changing in many towns. Some libraries organize events such as storytelling for small children and talks by local writers. Many people participate in these events and enjoy talking with others who share their interests. In this way, they can make new friends in their communities. Libraries also try to attract more visitors by staying open until late at night.",
+    "passageJa": "多くの町で、公共図書館が変わりつつある。小さい子ども向けの読み聞かせや、地元の作家の講演などの催しを開く図書館もある。多くの人がこうした催しに参加し、同じ趣味をもつ人と話すのを楽しんでいる。こうして、地域で新しい友だちをつくることができる。図書館は、夜おそくまで開けておくことで、より多くの人を引きつけようともしている。",
+    "scenes": [
+      {
+        "no": 1,
+        "note": "金曜の夕方。男の子と姉が、家の近くの図書館に着いたところ。姉は本の入ったバッグを持っていて、男の子が姉に話しかけている。",
+        "image": null,
+        "drawing": {
+          "en": "Haruto (14, short black hair, navy hooded jacket, white T-shirt, gray trousers) and his older sister Saki (18, long straight black hair, pink cardigan, white top, dark green long skirt). On a Friday evening, Haruto and Saki stand in front of a modern public library with large glass windows glowing with warm light (no signs). Saki carries a tote bag with a few books with plain colored spines, no letters. Haruto looks at her with a bright smile, points toward the entrance, and is talking to her. Both full body, seen from the front at a slight angle. No text, no sweat.",
+          "ja": "金曜の夕方、あたたかい明かりのともる大きなガラス窓の現代的な図書館（看板なし）の前に立つハルトと姉のサキ。サキは、背表紙が無地の色だけで文字のない本が数冊入ったトートバッグを持っている。ハルトが明るい笑顔で入り口を指さして話しかけている。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "姉が本の入ったバッグを持っている",
+            "en": "Haruto's sister was carrying a bag of books."
+          }
+        ],
+        "speech": [
+          {
+            "who": "男の子",
+            "ja": "作家さんの話を聞きに行こうよ！",
+            "en": "Let's listen to the writer's talk!"
+          }
+        ]
+      },
+      {
+        "no": 2,
+        "label": "Thirty minutes later",
+        "note": "30分後。図書館の会議室。男の子が熱心に聞き、姉はメモを取っている。前では作家の女性が自分の本を聴衆に見せている。",
+        "image": null,
+        "drawing": {
+          "en": "Haruto (navy hooded jacket, white T-shirt), Saki (pink cardigan, dark green long skirt) and a woman writer (short gray hair, red glasses, charcoal jacket). In a bright meeting room of the library, about ten people sit on chairs facing the front. Haruto and Saki sit in the second row; Haruto listens with interest, and Saki writes in a small notebook, seen from the side so that the pages are not visible. At the front, the woman writer holds up a book with a plain blue cover and no letters, and smiles at the audience. No bookshelves with visible spines. No text, no sweat.",
+          "ja": "図書館の明るい会議室で、10人ほどがいすに座って前を向いている。ハルトとサキは2列目で、ハルトは興味深そうに聞き、サキは小さなノートに書いている（横から見た角度で、ページは見えない）。前では作家の女性が、文字のない無地の青い表紙の本を持ち上げて聴衆にほほえんでいる。背表紙が見える本棚は描かない。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "男の子が熱心に聞いている",
+            "en": "Haruto was listening carefully."
+          },
+          {
+            "ja": "姉がメモを取っている",
+            "en": "His sister was taking notes."
+          },
+          {
+            "ja": "作家が本を見せている",
+            "en": "A writer was showing her book to the audience."
+          }
+        ],
+        "speech": []
+      },
+      {
+        "no": 3,
+        "label": "One hour later",
+        "note": "1時間後。図書館の貸出カウンター。男の子が作家の本を借りていて、姉は待っている。男の子は、今夜それを読みたいと思っている。",
+        "image": null,
+        "drawing": {
+          "en": "Haruto (navy hooded jacket, white T-shirt) and Saki (pink cardigan, dark green long skirt). At the checkout counter of the library, Haruto holds a book with a plain blue cover and no letters out to the librarian. Saki stands behind Haruto with her tote bag and smiles. No computer screen on the counter, no bookshelves with visible spines. Next to Haruto's head there is a small cloud-shaped thought bubble with NO words inside; in the bubble, Haruto reads a book at home under a warm desk lamp. No text, no sweat.",
+          "ja": "図書館の貸出カウンターで、ハルトが文字のない無地の青い表紙の本を司書に差し出している。サキがトートバッグを持ってうしろでほほえんでいる。カウンターにパソコンの画面は置かない。背表紙が見える本棚は描かない。ハルトの頭の横の考えの吹き出し（文字なし）には、家で暖かい電気スタンドのもとで本を読む自分の姿。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "男の子が作家の本を借りている",
+            "en": "Haruto was checking out the writer's book."
+          },
+          {
+            "ja": "姉が待っている",
+            "en": "His sister was waiting for him."
+          },
+          {
+            "ja": "今夜読みたいと考えている",
+            "en": "He was thinking that he wanted to read it that night."
+          }
+        ],
+        "speech": [
+          {
+            "who": "男の子（心の中）",
+            "ja": "今夜、これを読むのが楽しみだな。",
+            "en": "I can't wait to read this tonight."
+          }
+        ]
+      }
+    ],
+    "openingSentence": "One Friday evening, Haruto and his older sister went to a public library near their house.",
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how can people make new friends in their communities?",
+        "model": "By participating in library events and talking with others.",
+        "checks": [
+          "By ~ing の形で答えられた",
+          "In this way の前の文（Many people participate in these events and enjoy talking with others）から答えを取れた",
+          "主語をつけすぎず簡潔に言えた"
+        ]
+      },
+      {
+        "no": 2,
+        "kind": "story",
+        "prompt": "Now, please look at the pictures. You have 20 seconds to prepare. Your story should begin with this sentence:",
+        "model": "One Friday evening, Haruto and his older sister went to a public library near their house. Haruto's sister was carrying a bag of books, and Haruto said to her, \"Let's listen to the writer's talk!\" Thirty minutes later, Haruto was listening carefully, and his sister was taking notes. A writer was showing her book to the audience. One hour later, Haruto was checking out the writer's book, and his sister was waiting for him. He was thinking that he wanted to read it that night.",
+        "checks": [
+          "言い出しの1文を、そのまま最初に言えた",
+          "3つのコマすべてに触れた",
+          "コマの動作を過去進行形（was / were ~ing）で言えた",
+          "2・3コマ目の時間の言葉（ラベル）を使えた",
+          "1コマ目のセリフを said to ..., \"...\" の形で入れられた",
+          "3コマ目の思っていることを入れられた"
+        ]
+      },
+      {
+        "no": 3,
+        "prompt": "Some people say that every town should have a public library. What do you think about that?",
+        "model": "I agree. First, people can read books for free there. Second, a library gives people a place to study and meet others.",
+        "checks": [
+          "I agree. / I disagree. をはっきり言えた",
+          "理由を2つ言えた",
+          "First / Second などでつないで、止まらずに話せた"
+        ],
+        "modelAlt": "I disagree. First, building and keeping a library costs a lot of money. Second, many people can read books on their phones now."
+      },
+      {
+        "no": 4,
+        "prompt": "Today, many supermarkets have self-checkout machines. Do you think more stores will use machines instead of workers in the future?",
+        "followUp": {
+          "yes": "Why?",
+          "no": "Why not?"
+        },
+        "model": "Yes, I do. Machines can work all day without a break. Also, stores can save money on workers.",
+        "modelNo": "No, I don't. Some customers find the machines difficult to use. Also, many people like talking with store staff.",
+        "checks": [
+          "Yes / No を先にはっきり言えた",
+          "Why? / Why not? と聞かれたら、すぐに理由を言えた",
+          "理由を2つ言えた"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-s-008",
+    "title": "Science Museum Workshops",
+    "passage": "Many science museums now hold workshops for children. Museum staff help the children build small robots and solar-powered cars with their own hands. In this way, children can become interested in science. Some museums also let the children take home what they have made. Museums hope that the workshops will help children develop their ideas and choose a career in science.",
+    "passageJa": "多くの科学館が、いまは子ども向けの工作教室を開いている。科学館の職員が、子どもたちが小さなロボットやソーラーカーを自分の手で作るのを手伝う。こうして、子どもたちは科学に興味をもつことができる。作ったものを持ち帰らせてくれる科学館もある。科学館は、この教室が子どもたちの発想を育て、科学の仕事を選ぶ助けになることを願っている。",
+    "scenes": [
+      {
+        "no": 1,
+        "note": "日曜の朝。女の子と父親が、科学館の前に着いたところ。父親が入り口の大きなロボットの模型を指さし、女の子が父親に話しかけている。",
+        "image": null,
+        "drawing": {
+          "en": "Rena (13, dark-brown hair in a short ponytail, red long-sleeved T-shirt, dark blue jeans) and her father (40s, short black hair, black-rimmed glasses, green jacket, khaki trousers). On a bright Sunday morning, Rena and her father stand in front of a science museum entrance (a building with a big round glass dome, no signs). A large silver robot model stands beside the entrance. The father points at the robot, and Rena looks up at it with sparkling eyes and a big smile and is talking to her father. Both full body. No text, no sweat.",
+          "ja": "晴れた日曜の朝、大きな丸いガラスのドームのある科学館（看板なし）の入り口の前に立つレナと父親。入り口のそばに大きな銀色のロボットの模型がある。父親がロボットを指さし、レナが目を輝かせて父親に話しかけている。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "父親が大きなロボットを指さしている",
+            "en": "Rena's father was pointing at a large robot."
+          }
+        ],
+        "speech": [
+          {
+            "who": "女の子",
+            "ja": "あんなロボットを作りたい！",
+            "en": "I want to build a robot like that!"
+          }
+        ]
+      },
+      {
+        "no": 2,
+        "label": "Forty minutes later",
+        "note": "40分後。工作教室の机。女の子が小さなロボットの部品をつなぎ、父親が部品を手渡している。近くで職員の女性が作り方を説明している。",
+        "image": null,
+        "drawing": {
+          "en": "Rena (red T-shirt, jeans), her father (glasses, green jacket) and a woman staff member (black hair in a bun, light blue vest). At a long workshop table in the museum, Rena holds a half-built small robot with both hands. Her father sits next to her and hands her one large robot arm. Standing across the table, the woman staff member holds up a similar large arm and explains how to build it with a friendly smile. Only a few large parts on the table, no small parts, no instruction sheets. Other tables are in the background. No text, no sweat.",
+          "ja": "科学館の長い工作机で、レナが作りかけの小さなロボットを両手で持っている。となりに座る父親が、大きなロボットの腕のパーツを1つ手渡している。机の向こうに立つ職員の女性が、同じような大きな腕のパーツを持ち上げてやさしく作り方を説明している。机の上の部品は大きいものが数個だけ。小さな部品と説明書は描かない。背景に他の机。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "女の子がロボットの部品をつないでいる",
+            "en": "Rena was connecting the parts of a small robot."
+          },
+          {
+            "ja": "父親が部品を渡している",
+            "en": "Her father was handing her a part."
+          },
+          {
+            "ja": "職員が説明している",
+            "en": "A staff member nearby was explaining how to build it."
+          }
+        ],
+        "speech": []
+      },
+      {
+        "no": 3,
+        "label": "Two hours later",
+        "note": "2時間後。机の上で、女の子が作ったロボットが歩いていて、父親が拍手している。女の子は、次はもっと大きなロボットを作りたいと思っている。",
+        "image": null,
+        "drawing": {
+          "en": "Rena (red T-shirt, jeans) and her father (glasses, green jacket). On the workshop table, the small robot Rena built walks across the table on two legs. Rena watches it with a big smile, and her father next to her claps happily. Next to Rena's head there is a small cloud-shaped thought bubble with NO words inside; in the bubble, a much larger robot stands. No text, no sweat.",
+          "ja": "工作机の上で、レナが作った小さなロボットが2本の足で歩いている。レナが満面の笑みで見つめ、となりで父親がうれしそうに拍手している。レナの頭の横の考えの吹き出し（文字なし）には、もっと大きなロボット。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "女の子がロボットを見つめている",
+            "en": "Rena was watching her robot walk."
+          },
+          {
+            "ja": "父親が拍手している",
+            "en": "Her father was clapping."
+          },
+          {
+            "ja": "次はもっと大きなロボットを作りたいと考えている",
+            "en": "She was thinking that she wanted to build a bigger robot next time."
+          }
+        ],
+        "speech": [
+          {
+            "who": "女の子（心の中）",
+            "ja": "次はもっと大きいのを作ろう。",
+            "en": "I'll build a bigger one next time."
+          }
+        ]
+      }
+    ],
+    "openingSentence": "One Sunday morning, Rena and her father went to a science museum to join a workshop.",
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how can children become interested in science?",
+        "model": "By building small robots and solar-powered cars with their own hands.",
+        "checks": [
+          "By ~ing の形で答えられた",
+          "In this way の前の文（Museum staff help the children build small robots and solar-powered cars）から答えを取れた",
+          "主語をつけすぎず簡潔に言えた"
+        ]
+      },
+      {
+        "no": 2,
+        "kind": "story",
+        "prompt": "Now, please look at the pictures. You have 20 seconds to prepare. Your story should begin with this sentence:",
+        "model": "One Sunday morning, Rena and her father went to a science museum to join a workshop. Rena's father was pointing at a large robot, and Rena said to him, \"I want to build a robot like that!\" Forty minutes later, Rena was connecting the parts of a small robot, and her father was handing her a part. A staff member nearby was explaining how to build it. Two hours later, Rena was watching her robot walk, and her father was clapping. Rena was thinking that she wanted to build a bigger robot next time.",
+        "checks": [
+          "言い出しの1文を、そのまま最初に言えた",
+          "3つのコマすべてに触れた",
+          "コマの動作を過去進行形（was / were ~ing）で言えた",
+          "2・3コマ目の時間の言葉（ラベル）を使えた",
+          "1コマ目のセリフを said to ..., \"...\" の形で入れられた",
+          "3コマ目の思っていることを入れられた"
+        ]
+      },
+      {
+        "no": 3,
+        "prompt": "Some people say that museums should be free for children. What do you think about that?",
+        "model": "I agree. First, all families can visit museums without worrying about the cost. Second, children can learn many things outside school.",
+        "checks": [
+          "I agree. / I disagree. をはっきり言えた",
+          "理由を2つ言えた",
+          "First / Second などでつないで、止まらずに話せた"
+        ],
+        "modelAlt": "I disagree. First, museums need money to keep their exhibits and pay their staff. Second, free museums may become too crowded."
+      },
+      {
+        "no": 4,
+        "prompt": "Today, many students use tablets in class. Do you think more schools will use tablets for all of their classes in the future?",
+        "followUp": {
+          "yes": "Why?",
+          "no": "Why not?"
+        },
+        "model": "Yes, I do. One tablet can hold many textbooks, so students' bags will be lighter. Also, they can look up information quickly.",
+        "modelNo": "No, I don't. Students may play games or watch videos during class. Also, writing by hand helps them remember things better.",
+        "checks": [
+          "Yes / No を先にはっきり言えた",
+          "Why? / Why not? と聞かれたら、すぐに理由を言えた",
+          "理由を2つ言えた"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "g2-s-009",
+    "title": "Smartphone Classes for Seniors",
+    "passage": "Some community centers hold smartphone classes for elderly people. Local students volunteer as teachers and show the seniors how to make video calls. In this way, the seniors can talk with their grandchildren living far away. Many seniors say that they feel happier after the classes. The students also gain confidence by explaining things in simple words.",
+    "passageJa": "公民館のなかには、高齢者向けのスマートフォン教室を開いているところがある。地元の学生がボランティアで先生役をつとめ、高齢者にビデオ通話のやり方を教える。こうして、高齢者は遠くに住む孫と話すことができる。教室のあとは気持ちが明るくなる、と話す高齢者は多い。学生も、やさしい言葉で説明することで自信をつける。",
+    "scenes": [
+      {
+        "no": 1,
+        "note": "土曜の午後。女の子と祖母が、公民館のスマホ教室に着いたところ。祖母は新しいスマホを両手で持っていて、女の子が祖母に話しかけている。",
+        "image": null,
+        "drawing": {
+          "en": "Nanami (15, shoulder-length black hair with a small white hairpin, white blouse, navy cardigan, gray skirt, plain yellow apron) and her grandmother (70s, gray hair in a bun, glasses, lavender cardigan, long gray skirt). On a Saturday afternoon, Nanami and her grandmother stand at the door of a bright community center classroom with rows of tables behind them. The grandmother holds a smartphone carefully with both hands, with the back of the phone toward the viewer, and looks a little nervous. Nanami smiles warmly at her and is talking to her. Both full body, seen from the front at a slight angle. No text, no sweat.",
+          "ja": "土曜の午後、公民館の明るい教室の入り口に立つナナミと祖母。うしろには机が並ぶ。祖母はスマホの裏側が見える向きで両手でそっと持ち、少し緊張した顔。ナナミがやさしくほほえんで祖母に話しかけている。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "祖母がスマホを両手で持っている",
+            "en": "Nanami's grandmother was holding a smartphone with both hands."
+          }
+        ],
+        "speech": [
+          {
+            "who": "女の子",
+            "ja": "だいじょうぶ、私が教えるよ！",
+            "en": "Don't worry. I'll help you!"
+          }
+        ]
+      },
+      {
+        "no": 2,
+        "label": "Twenty minutes later",
+        "note": "20分後。女の子が画面を指さして教え、祖母が画面をそっと触っている。となりの席では、年配の男性が別の学生に教わっている。",
+        "image": null,
+        "drawing": {
+          "en": "Nanami (white hairpin, navy cardigan, yellow apron), her grandmother (gray bun, glasses, lavender cardigan) and, at the next table, an old man (white hair, gray sweater) with a young student helper (yellow apron). At a classroom table, Nanami sits next to her grandmother and points at the smartphone screen; the screen is plain and bright, with no icons or text. The grandmother touches the screen carefully with one finger and smiles. At the next table, an elderly man in a gray sweater listens while a young male student in a yellow apron shows him how to use his smartphone. No text, no sweat.",
+          "ja": "教室の机で、ナナミが祖母のとなりに座ってスマホの画面を指さしている（画面は無地で明るく、アイコンも文字もない）。祖母は指1本で画面をそっと触り、ほほえんでいる。となりの机では、灰色のセーターの年配の男性が、黄色いエプロンの男子学生にスマホの使い方を教えてもらっている。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "女の子が画面を指さしている",
+            "en": "Nanami was pointing at the screen."
+          },
+          {
+            "ja": "祖母が画面を触っている",
+            "en": "Her grandmother was touching it carefully."
+          },
+          {
+            "ja": "年配の男性が別の学生に教わっている",
+            "en": "An old man nearby was learning from another student."
+          }
+        ],
+        "speech": []
+      },
+      {
+        "no": 3,
+        "label": "One hour later",
+        "note": "1時間後。祖母がスマホでビデオ通話をして、画面に映った孫と話している。女の子はほほえんで見ている。女の子は、ほかの高齢者も手伝いたいと思っている。",
+        "image": null,
+        "drawing": {
+          "en": "Nanami (white hairpin, navy cardigan, yellow apron) and her grandmother (gray bun, glasses, lavender cardigan). Seen from behind and slightly to the side of the grandmother, so that the phone screen is visible over her shoulder. The grandmother holds the smartphone in front of her and talks happily; the screen shows only a simple picture of a smiling little boy waving, with no icons, buttons or text. Nanami sits beside her and watches with a gentle smile. Next to Nanami's head there is a small cloud-shaped thought bubble with NO words inside; in the bubble, Nanami helps another elderly person with a smartphone. No text, no sweat.",
+          "ja": "祖母の肩ごしの構図（祖母のうしろやや横から、肩ごしにスマホの画面が見える）。祖母がスマホを目の前に持ってうれしそうに話している。画面にはシンプルな、手をふる笑顔の小さな男の子の絵だけで、アイコン・ボタン・文字は入れない。ナナミがとなりでやさしくほほえんで見ている。ナナミの頭の横の考えの吹き出し（文字なし）には、別の高齢者のスマホを手伝うナナミの姿。文字・汗は入れない。"
+        },
+        "actions": [
+          {
+            "ja": "祖母がビデオ通話で話している",
+            "en": "Her grandmother was talking to her grandson on a video call."
+          },
+          {
+            "ja": "女の子がほほえんでいる",
+            "en": "Nanami was smiling at her."
+          },
+          {
+            "ja": "ほかの高齢者も手伝いたいと考えている",
+            "en": "She was thinking that she wanted to help other seniors, too."
+          }
+        ],
+        "speech": [
+          {
+            "who": "女の子（心の中）",
+            "ja": "ほかの人にも教えてあげたいな。",
+            "en": "I want to help other seniors, too."
+          }
+        ]
+      }
+    ],
+    "openingSentence": "One Saturday afternoon, Nanami and her grandmother went to a smartphone class at a community center.",
+    "questions": [
+      {
+        "no": 1,
+        "prompt": "According to the passage, how can the seniors talk with their grandchildren living far away?",
+        "model": "By learning how to make video calls from local students.",
+        "checks": [
+          "By ~ing の形で答えられた",
+          "In this way の前の文（Local students volunteer as teachers and show the seniors how to make video calls）から答えを取れた",
+          "主語をつけすぎず簡潔に言えた"
+        ]
+      },
+      {
+        "no": 2,
+        "kind": "story",
+        "prompt": "Now, please look at the pictures. You have 20 seconds to prepare. Your story should begin with this sentence:",
+        "model": "One Saturday afternoon, Nanami and her grandmother went to a smartphone class at a community center. Nanami's grandmother was holding a smartphone with both hands, and Nanami said to her, \"Don't worry. I'll help you!\" Twenty minutes later, Nanami was pointing at the screen, and her grandmother was touching it carefully. An old man nearby was learning from another student. One hour later, Nanami's grandmother was talking to her grandson on a video call, and Nanami was smiling at her. She was thinking that she wanted to help other seniors, too.",
+        "checks": [
+          "言い出しの1文を、そのまま最初に言えた",
+          "3つのコマすべてに触れた",
+          "コマの動作を過去進行形（was / were ~ing）で言えた",
+          "2・3コマ目の時間の言葉（ラベル）を使えた",
+          "1コマ目のセリフを said to ..., \"...\" の形で入れられた",
+          "3コマ目の思っていることを入れられた"
+        ]
+      },
+      {
+        "no": 3,
+        "prompt": "Some people say that young people should spend more time with elderly people. What do you think about that?",
+        "model": "I agree. First, elderly people can teach young people many things from their experience. Second, spending time together makes both of them happy.",
+        "checks": [
+          "I agree. / I disagree. をはっきり言えた",
+          "理由を2つ言えた",
+          "First / Second などでつないで、止まらずに話せた"
+        ],
+        "modelAlt": "I disagree. First, young people are busy with their studies and club activities. Second, they can already talk with elderly people in their own families."
+      },
+      {
+        "no": 4,
+        "prompt": "Today, the number of electric cars is increasing. Do you think most cars will be electric cars in the future?",
+        "followUp": {
+          "yes": "Why?",
+          "no": "Why not?"
+        },
+        "model": "Yes, I do. Electric cars do not produce exhaust gas, so they are better for the environment. Also, they are cheaper to run than cars that use gasoline.",
+        "modelNo": "No, I don't. Electric cars are still expensive for many people. Also, there are not enough places to charge them.",
+        "checks": [
+          "Yes / No を先にはっきり言えた",
+          "Why? / Why not? と聞かれたら、すぐに理由を言えた",
+          "理由を2つ言えた"
+        ]
+      }
+    ]
   }
 ]

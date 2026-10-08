@@ -3033,13 +3033,36 @@ const idleOrigin = (pg) =>
 
 /** kv の値を code（v を受け取って新しい v を返す関数本体）で書き換える。idleOrigin の上で呼ぶ */
 async function patchKv(pg, key, code) {
+  // 直前にアプリから移ってきた直後は、ページが入れ替わって evaluate が
+  // 「Resulting promise was garbage collected」で打ち切られることがある（本番で間欠的に起きた）。
+  // 検査側の揺れなので、移り直して数回やり直す。書き換えは冪等ではない可能性があるので、
+  // 打ち切られた回は書き込みが完了していない（oncomplete 前に捨てられた）ものとして扱う
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await patchKvOnce(pg, key, code);
+      return;
+    } catch (e) {
+      if (attempt >= 4 || !/garbage collected|Execution context was destroyed|Target closed|navigat/i.test(String(e.message))) throw e;
+      console.log(`  (patchKv を移り直してやり直す ${attempt}/3: ${String(e.message).split('\n')[0]})`);
+      await pg.waitForTimeout(500);
+      await idleOrigin(pg);
+      await pg.waitForLoadState('load');
+    }
+  }
+}
+
+async function patchKvOnce(pg, key, code) {
   await pg.evaluate(
     ([key, code]) =>
       new Promise((resolve, reject) => {
         const req = indexedDB.open('eiken-pre2');
+        // 未解決の要求をどこからも参照しないと、GC に拾われて promise ごと消えることがある。window に持たせておく
+        window.__patchReq = req;
+        req.onblocked = () => reject(new Error('indexedDB blocked'));
         req.onerror = () => reject(req.error);
         req.onsuccess = () => {
           const tx = req.result.transaction('kv', 'readwrite');
+          window.__patchTx = tx;
           const st = tx.objectStore('kv');
           const g = st.get(key);
           g.onsuccess = () => {

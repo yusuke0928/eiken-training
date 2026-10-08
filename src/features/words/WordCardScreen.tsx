@@ -483,7 +483,8 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
                 accent
               />
             )}
-            {LEVEL_ORDER.map((lv) => {
+            {/* 2級のときは「英検2級」を先頭に置いて「おすすめ」を付ける（いま積む語はここ）。準2級の並びは今までどおり */}
+            {(GRADE === 'g2' ? DECK_ORDER_G2 : LEVEL_ORDER).map((lv) => {
               const all = wordsIn(lv);
               const doneN = all.filter((w) => (state.get(w.word)?.box ?? 0) >= 4).length;
               return (
@@ -492,6 +493,7 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
                   label={LEVEL_LABEL[lv]}
                   sub={`${all.length}語 ・ おぼえた ${doneN}語`}
                   onClick={() => start(lv)}
+                  badge={GRADE === 'g2' && lv === 'g2' ? 'おすすめ' : undefined}
                 />
               );
             })}
@@ -512,16 +514,20 @@ export function WordCardScreen({ onBack }: { onBack: () => void }) {
   );
 }
 
+const DECK_ORDER_G2: typeof LEVEL_ORDER = ['g2', 'jhs', 'p2', 'adv'];
+
 function DeckRow({
   label,
   sub,
   onClick,
   accent,
+  badge,
 }: {
   label: string;
   sub: string;
   onClick: () => void;
   accent?: boolean;
+  badge?: string;
 }) {
   return (
     <li>
@@ -533,7 +539,12 @@ function DeckRow({
         }`}
       >
         <span className="flex-1">
-          <span className="block text-[15px] font-semibold text-ink">{label}</span>
+          <span className="flex items-center gap-2 text-[15px] font-semibold text-ink">
+            {label}
+            {badge && (
+              <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-accent-ink">{badge}</span>
+            )}
+          </span>
           <span className="mt-0.5 block text-[12px] text-ink-faint">{sub}</span>
         </span>
         <span className="text-ink-faint">

@@ -74,7 +74,10 @@ export function TopBar({
   /** 試験中など、ホームに戻る前に確認したい画面はここで差し替える */
   onHome,
   hideHome,
+  wrapTitle,
 }: {
+  /** 長い題を省略（…）せず折り返す。題そのものが内容の画面（ライティングの題）で使う */
+  wrapTitle?: boolean;
   title?: string;
   onBack?: () => void;
   right?: ReactNode;
@@ -108,7 +111,17 @@ export function TopBar({
           <Home size={21} />
         </button>
       )}
-      {title && <h1 className="truncate text-[15px] font-semibold text-ink-sub">{title}</h1>}
+      {title && (
+        <h1
+          className={
+            wrapTitle
+              ? 'min-w-0 py-1 text-[14px] font-semibold leading-snug text-ink-sub'
+              : 'truncate text-[15px] font-semibold text-ink-sub'
+          }
+        >
+          {title}
+        </h1>
+      )}
       <div className="ml-auto shrink-0">{right}</div>
     </header>
   );

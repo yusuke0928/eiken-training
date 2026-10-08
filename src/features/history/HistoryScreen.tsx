@@ -148,6 +148,15 @@ export function HistoryScreen({
     const max = WRITING_SPEC[w.section].maxScore;
     bestWriting.set(w.promptId, Math.max(bestWriting.get(w.promptId) ?? 0, w.total / max));
   }
+  // 模試で自己採点したライティングも数える（以前は道場だけで、模試で採点しても「まだ提出なし」のままだった）。
+  // 同じ課題は promptId をキーに最高点へまとめるので、道場と模試の両方で解いても1題と数える
+  for (const m of mocks) {
+    for (const w of m.writings) {
+      const section = WRITING_BY_ID.get(w.promptId)?.section;
+      if (!section || w.total === undefined) continue;
+      bestWriting.set(w.promptId, Math.max(bestWriting.get(w.promptId) ?? 0, w.total / WRITING_SPEC[section].maxScore));
+    }
+  }
 
   // 模試のCSE目安の推移
   const mockTrend: TrendPoint[] = mocks

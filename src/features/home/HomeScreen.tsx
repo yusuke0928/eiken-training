@@ -37,6 +37,9 @@ function greeting(): string {
   return 'おかえり';
 }
 
+/** 復習は1回で解ける数（App の buildReviewQueue(20) と同じ）。2級は模試のあとに80問などと出ると借金に見えるので、タイルには今日の分だけ大きく出す */
+const REVIEW_RUN = 20;
+
 export function HomeScreen({
   onMini,
   onTraining,
@@ -338,10 +341,14 @@ export function HomeScreen({
           <Card onClick={backlog > 0 ? onReview : undefined} tone={backlog > 0 ? 'accent' : 'surface'}>
             <p className="mb-1.5 text-ink-sub"><Repeat size={22} /></p>
             <p className="text-[15px] font-bold text-ink">
-              復習{backlog > 0 && <span className="ml-1 text-accent">{backlog}</span>}
+              復習{backlog > 0 && <span className="ml-1 text-accent">{GRADE === 'g2' ? Math.min(backlog, REVIEW_RUN) : backlog}</span>}
             </p>
             <p className="text-[12px] text-ink-sub">
-              {backlog > 0 ? 'そろそろ出しどき' : 'いまは空っぽ'}
+              {backlog === 0
+                ? 'いまは空っぽ'
+                : GRADE === 'g2' && backlog > REVIEW_RUN
+                  ? `今日はここまで（ぜんぶで${backlog}問）`
+                  : 'そろそろ出しどき'}
             </p>
           </Card>
           <Card onClick={onHistory}>

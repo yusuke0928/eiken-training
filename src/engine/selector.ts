@@ -92,9 +92,30 @@ export async function buildMiniQueue(size: number): Promise<string[]> {
     ...weightedPick(usable, (i) => itemWeight(i.id, report), size - picked.length).map((i) => i.id),
   );
 
+  // 長文が重みで多く当たると、8問のうち長文ではない問題が3問に満たないことがある（2級で約2割）。
+  // そのまま shortFirst に渡すと「最初の3問に長文が来ない」が守れないので、
+  // 足りない分は末尾（重み抽選の側）の長文を、長文ではない問題に差し替えて確保する
+  const short = (id: string) => !isPassageSection(ITEM_BY_ID.get(id)?.section);
+  const lack = MISSION_SIZE - picked.filter(short).length;
+  if (lack > 0) {
+    const have = new Set(picked);
+    const extra = weightedPick(
+      usable.filter((i) => !have.has(i.id) && !isPassageSection(i.section)),
+      (i) => itemWeight(i.id, report),
+      lack,
+    ).map((i) => i.id);
+    for (const id of extra) {
+      const at = picked.map(short).lastIndexOf(false);
+      if (at < 0) break;
+      picked.splice(at, 1, id);
+    }
+  }
+
   const items = spread(picked.map((id) => ITEM_BY_ID.get(id)).filter((i): i is MCQItem => !!i));
   return shortFirst(groupByPassage(items.map((i) => i.id)), MISSION_SIZE);
 }
+
+const isPassageSection = (sec: string | undefined) => sec === 'r-passage' || sec === 'r-cloze';
 
 /** 今日のミッションの問題数（HomeScreen の DAILY_GOAL と同じ3問） */
 const MISSION_SIZE = 3;
@@ -105,10 +126,7 @@ const MISSION_SIZE = 3;
  * 長文は4問目以降へ回す。残りの並びは崩さないので、同じ本文の設問は隣り合ったまま
  */
 function shortFirst(ids: string[], n: number): string[] {
-  const isPassage = (id: string) => {
-    const sec = ITEM_BY_ID.get(id)?.section;
-    return sec === 'r-passage' || sec === 'r-cloze';
-  };
+  const isPassage = (id: string) => isPassageSection(ITEM_BY_ID.get(id)?.section);
   const head = ids.filter((id) => !isPassage(id)).slice(0, n);
   const taken = new Set(head);
   return [...head, ...ids.filter((id) => !taken.has(id))];

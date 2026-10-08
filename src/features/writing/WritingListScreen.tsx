@@ -31,6 +31,17 @@ export function WritingListScreen({
     return map;
   }, [], new Map<string, number>());
 
+  // 書きかけ（下書きが端末にある課題）。自己採点の前に閉じると提出は記録されず、
+  // 一覧に何も残らなくて「どこまで書いたか」が分からなくなる。下書きは自己採点を保存すると消える（WritingReviewScreen）
+  const drafts = useLiveQuery(
+    async () => {
+      const rows = await db.kv.where('key').startsWith('draft:').toArray();
+      return new Set(rows.filter((r) => typeof r.value === 'string' && r.value.trim()).map((r) => String(r.key).slice(6)));
+    },
+    [],
+    new Set<string>(),
+  );
+
   return (
     <Screen>
       <TopBar title="ライティング道場" onBack={onBack} />
@@ -92,6 +103,11 @@ export function WritingListScreen({
                     <span className="block text-[15px] font-semibold text-ink">{p.topic}</span>
                     <span className="mt-1 flex items-center gap-2 text-[12px] text-ink-faint">
                       <Level value={p.difficulty} />
+                      {drafts?.has(p.id) && (
+                        <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-bold text-accent">
+                          書きかけ
+                        </span>
+                      )}
                       {score !== undefined && (
                         <span className="text-ink-sub">
                           自己採点 {score}/{spec.maxScore}

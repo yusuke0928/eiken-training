@@ -56,10 +56,15 @@ function WritingEditorScreenBody({
     <Screen>
       <TopBar
         title={prompt.topic}
+        // 題が長いと語数の札に押されて「…」で切れる。何の課題か分からなくなるので折り返す
+        wrapTitle
         onBack={onBack}
         right={
           <span
-            className={`rounded-full px-3 py-1 text-[13px] font-bold tabular-nums ${
+            // 目安の札は長いので折り返せるようにして、題を押し縮めない（題は2行まで）
+            className={`block rounded-full px-3 py-1 text-center text-[13px] font-bold leading-tight tabular-nums ${
+              spec.wordLevel === 'guide' ? 'max-w-[8.5rem]' : ''
+            } ${
               tone === 'empty' || tone === 'note'
                 ? 'bg-surface-2 text-ink-faint'
                 : tone === 'ok'

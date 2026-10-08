@@ -3021,7 +3021,11 @@ async function ux1Open(label, { grade = 'g2', iso = null, skipWelcome = true } =
 }
 
 /** アプリを動かさずに IndexedDB だけ触れるページへ移る */
-const idleOrigin = (pg) => pg.goto(URL + '/src/grade.ts');
+// 本番（SMOKE_URL あり）では、dev 用の /src/grade.ts は無く、Service Worker が「見つからないページ」に
+// index.html を返してアプリが起動する（すると自動保存が、書き換えた kv を書き戻してしまう）。
+// 本番は precache にある実ファイル（registerSW.js）に移る。dev はこれまでどおり
+const idleOrigin = (pg) =>
+  pg.goto(process.env.SMOKE_URL ? URL.replace(/\/$/, '') + '/registerSW.js' : URL + '/src/grade.ts');
 
 /** kv の値を code（v を受け取って新しい v を返す関数本体）で書き換える。idleOrigin の上で呼ぶ */
 async function patchKv(pg, key, code) {

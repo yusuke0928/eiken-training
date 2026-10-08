@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { WRITING_BY_ID } from '../../content';
-import { gradeOfId } from '../../grade';
+import { GRADE, GRADE_META, gradeOfId } from '../../grade';
 import { OtherGradeNotice } from '../grade/GradeSwitch';
 import { loadDraft, saveDraft } from '../../data/db';
 import { TEMPLATE, TEMPLATE_NOTE, checkTone, countWords, mechanicalGrader, pickHint, wordTone } from '../../engine/writing';
-import { Paragraphs } from './WritingParts';
+import { Paragraphs, PinnedSource, useElementHeight } from './WritingParts';
 import { WRITING_SPEC } from '../../types';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import { Alert, Check } from '../../ui/icons';
@@ -24,6 +24,9 @@ function WritingEditorScreenBody({
   const [showHelp, setShowHelp] = useState(false);
   const [showJa, setShowJa] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  // 入力欄にフォーカスしている間、要約の本文を上に貼りつける（PinnedSource）
+  const [focused, setFocused] = useState(false);
+  const [stripRef, stripH] = useElementHeight<HTMLDivElement>();
 
   // 書きかけを失うのがいちばん痛いので、入力のたびに端末へ保存する
   useEffect(() => {
@@ -73,6 +76,7 @@ function WritingEditorScreenBody({
       {/* 書きながら見えないと意味がないので、ヘッダー直下に貼りつける */}
       {text.trim() && (
         <div
+          ref={stripRef}
           className="sticky z-10 border-b border-line bg-bg/95 px-5 py-2 backdrop-blur"
           style={{ top: 'calc(56px + env(safe-area-inset-top))' }}
         >
@@ -106,7 +110,11 @@ function WritingEditorScreenBody({
 
         {/* 課題文 */}
         {prompt.section === 'w-summary' ? (
-          <section className="mb-4 rounded-3xl border border-line bg-surface-2 p-4">
+          <PinnedSource
+            pinned={focused}
+            top={`calc(56px + env(safe-area-inset-top) + ${stripH}px)`}
+            className="mb-4 rounded-3xl border border-line bg-surface-2 p-4"
+          >
             <p className="mb-2 text-[12px] font-bold text-ink-faint">この英文を要約する</p>
             <Paragraphs text={prompt.sourceText ?? ''} className="en text-ink" />
             {/* 読めないと1文字も書けない問題なので逃げ道を置く。最初は隠して、まず英語で読ませる */}
@@ -114,6 +122,8 @@ function WritingEditorScreenBody({
               <>
                 <button
                   type="button"
+                  // 入力中に押しても入力欄のフォーカスを外さない（外れると本文の固定が解けて、押した位置がずれる）
+                  onMouseDown={(e) => e.preventDefault()}
                   onClick={() => setShowJa((v) => !v)}
                   className="mt-3 min-h-[44px] w-full rounded-2xl border border-dashed border-line text-[13px] font-semibold text-ink-sub active:bg-surface"
                 >
@@ -130,7 +140,7 @@ function WritingEditorScreenBody({
               自分の意見や感想は<span className="font-semibold">書かない</span>。
               本文の文をそのまま写さず、自分の言葉で言い換える。
             </p>
-          </section>
+          </PinnedSource>
         ) : prompt.section === 'w-email' ? (
           <section className="mb-4 rounded-3xl border border-line bg-surface-2 p-4">
             <p className="mb-2 text-[12px] font-bold text-ink-faint">相手からのメール</p>
@@ -217,12 +227,14 @@ function WritingEditorScreenBody({
           autoCapitalize="off"
           autoComplete="off"
           rows={9}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
           className="en w-full resize-y rounded-3xl border-2 border-line bg-surface p-4 text-ink outline-none focus:border-primary"
         />
         <p className="mt-2 text-[12px] leading-relaxed text-ink-faint">
           書いた内容は自動で保存されます。途中でアプリを閉じても消えません。
           <br />
-          自動修正はオフにしてあります。本番は手書きなので、スペルも自分で書けるようにしておこう。{' '}
+          自動修正はオフにしてあります。{GRADE_META[GRADE].handwritingNote}{' '}
           {prompt.section === 'w-summary'
             ? '上のチェックは語数・丸写し・意見の混入だけを見ています。要点が入っているかは判定しません（提出したあと、自分で確かめます）。'
             : '上のチェックは語数や疑問符の数など「数えられること」だけを見ていて、内容が合っているかは判定していません。'}

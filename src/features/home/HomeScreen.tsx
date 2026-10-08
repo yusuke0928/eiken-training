@@ -3,12 +3,14 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db, loadStreak, todayCount, todayWordCount } from '../../data/db';
 import { loadReport } from '../../engine/selector';
 import { reviewBacklog } from '../../engine/srs';
-import { scoreView } from '../../engine/scoring';
+import { scoreView, scoringOf } from '../../engine/scoring';
+import { mockCseTotal } from '../../engine/mock';
 import { APP_VERSION_LABEL } from '../../lib/appVersion';
 import { G2_HAS_CONTENT, GRADE_READY } from '../../content';
 import { G2_RELEASED, GRADE, GRADE_META, mockInGrade } from '../../grade';
 import { GradeOfferCard, GradeSwitchSheet } from '../grade/GradeSwitch';
-import { EXAM, applyReminder, daysUntil, formatJp, nextMilestone } from '../../lib/exam';
+import { EXAM, EXAM_G2, applyReminder, daysUntil, formatJp, nextMilestone } from '../../lib/exam';
+import { examPhase, extraPlanFor, isExtraDone, type ExtraKind } from '../../lib/dailyExtra';
 import { TAG_LABEL } from '../../types';
 import { Button, Card, ProgressRing, Screen } from '../../ui/primitives';
 import {
@@ -16,6 +18,7 @@ import {
   Book,
   Chart,
   Chat,
+  Check,
   ChevronRight,
   Headphones,
   Pen,
@@ -46,6 +49,7 @@ export function HomeScreen({
   onWords,
   onSpeaking,
   onOpenMockResult,
+  onExtra,
 }: {
   onMini: () => void;
   onTraining: () => void;
@@ -58,6 +62,8 @@ export function HomeScreen({
   onWords: () => void;
   onSpeaking: () => void;
   onOpenMockResult: (id: number) => void;
+  /** 2級の「今日のもう1つ」を押したとき、その画面に直接入る */
+  onExtra: (kind: ExtraKind) => void;
 }) {
   const today = useLiveQuery(() => todayCount(), [], 0) ?? 0;
   // 単語カードはミッションの重み0で「今日のミッション」には数えない設計（管理判断）。
@@ -71,6 +77,32 @@ export function HomeScreen({
     const rows = (await db.mocks.orderBy('finishedAt').reverse().toArray()).filter(mockInGrade).slice(0, 5);
     return rows.find((m) => m.writings.some((w) => w.total === undefined)) ?? null;
   }, [], null);
+
+  // 2級だけ。準2級のホームには何も足さない（plan は null、phase は 'normal' のまま）
+  const isG2 = GRADE === 'g2';
+  const phase = isG2 ? examPhase() : 'normal';
+  const extra = isG2 ? extraPlanFor() : null;
+  const extraDone = useLiveQuery(
+    async () => (extra ? isExtraDone(extra.kind) : false),
+    [extra?.kind, today],
+    false,
+  );
+
+  // 2級だけ：模試（通し・自己採点済み）の CSE の目安があれば、ホームの「合格ラインまで」はそちらを使う。
+  // 選択問題の正答率だけで出した目安と、模試の 1387/1950 が食い違って見えていたため
+  const mockView = useLiveQuery(
+    async () => {
+      if (!isG2) return null;
+      const rows = (await db.mocks.orderBy('finishedAt').reverse().toArray()).filter(mockInGrade);
+      for (const m of rows) {
+        const sum = mockCseTotal(m);
+        if (sum !== null) return { sum, at: m.finishedAt };
+      }
+      return null;
+    },
+    [isG2],
+    null,
+  );
 
   const [switchTo, setSwitchTo] = useState<'pre2' | 'g2' | null>(null);
   // 2級への導線は二次試験が終わってから。二次の直前に「2級にきりかえる？」を出すと、
@@ -127,7 +159,14 @@ export function HomeScreen({
                 {goalMet ? '今日のぶんは達成' : `あと${DAILY_GOAL - done}問で今日は達成`}
               </p>
               <p className="mt-1 text-[13px] text-ink-sub">
-                {goalMet ? 'ここから先はぜんぶおまけ' : '3問だけでも記録はつながるよ'}
+                {!goalMet
+                  ? '3問だけでも記録はつながるよ'
+                  : !isG2
+                    ? 'ここから先はぜんぶおまけ'
+                    : extra && !extraDone
+                      ? // 4週間しかない子に「3問でおしまい」と言わない。要約・面接・模試は「もう1つ」に入っている
+                        '次は今日のもう1つ'
+                      : '今日はここまでで十分'}
               </p>
               {todayWords > 0 && (
                 <p className="mt-1 text-[12px] font-semibold text-accent">
@@ -142,6 +181,55 @@ export function HomeScreen({
             </Button>
           </div>
         </div>
+
+        {extra && (
+          <button
+            type="button"
+            onClick={() => onExtra(extra.kind)}
+            className={`mb-4 flex w-full items-center gap-4 rounded-3xl border p-4 text-left transition-transform active:scale-[0.99] ${
+              extraDone ? 'border-correct bg-correct-soft' : 'border-primary bg-primary-soft'
+            }`}
+          >
+            <span
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+                extraDone ? 'bg-correct text-primary-ink' : 'bg-primary text-primary-ink'
+              }`}
+            >
+              {extraDone ? <Check size={20} /> : <ChevronRight size={20} />}
+            </span>
+            <span className="flex-1">
+              <span className={`block text-[12px] font-semibold tracking-wide ${extraDone ? 'text-correct' : 'text-primary'}`}>
+                {extraDone ? '今日のもう1つ ✓' : '今日のもう1つ'}
+              </span>
+              <span className="mt-0.5 block text-[16px] font-bold leading-snug text-ink">{extra.title}</span>
+              <span className="mt-0.5 block text-[12px] text-ink-sub">
+                {extra.kind === 'review' && extraDone ? '復習はいま空っぽ。おつかれさま' : extra.sub}
+              </span>
+            </span>
+          </button>
+        )}
+
+        {/* 試験の前日・当日は「もう1つ」を出さない。休むことも準備のうち */}
+        {phase === 'eve' && (
+          <div className="mb-4 rounded-3xl bg-accent-soft p-4">
+            <p className="text-[15px] font-bold leading-snug text-ink">
+              明日が本番。今日は軽めに：面接1枚と要約の型を見直して、早く寝よう
+            </p>
+          </div>
+        )}
+        {phase === 'day' && (
+          <div className="mb-4 rounded-3xl bg-accent-soft p-4">
+            {/* 「今日が本番」は右上の日数カードが言っている。ここは同じことを繰り返さず、声をかけるだけにする */}
+            <p className="text-[15px] font-bold leading-snug text-ink">がんばって。ふだんどおりでだいじょうぶ</p>
+          </div>
+        )}
+        {phase === 'dayAfter' && (
+          <div className="mb-4 rounded-3xl bg-accent-soft p-4">
+            <p className="text-[15px] font-bold leading-snug text-ink">
+              おつかれさま。結果は{formatJp(EXAM_G2.resultDate)}
+            </p>
+          </div>
+        )}
 
         <div className="mb-4 grid grid-cols-2 gap-3">
           <div className="rounded-3xl border border-line bg-surface p-4">
@@ -214,7 +302,11 @@ export function HomeScreen({
           <ChevronRight size={18} />
         </button>
 
-        {view && (
+        {mockView && (
+          <MockLine sum={mockView.sum} at={mockView.at} />
+        )}
+
+        {view && !mockView && (
           <div className="mb-4 rounded-3xl border border-line bg-surface p-5">
             <div className="mb-2 flex items-baseline justify-between">
               <p className="text-[13px] text-ink-sub">合格ラインまで（目安）</p>
@@ -359,5 +451,31 @@ export function HomeScreen({
       </main>
       {switchTo && <GradeSwitchSheet to={switchTo} onCancel={() => setSwitchTo(null)} />}
     </Screen>
+  );
+}
+
+/** 2級の「合格ラインまで」を模試の CSE の目安で出す（一次 1950 点満点中） */
+function MockLine({ sum, at }: { sum: number; at: number }) {
+  const SC = scoringOf(GRADE);
+  const diff = sum - SC.firstStagePass;
+  // 技能別の判定（60点刻み）を3技能ぶんに広げた幅
+  const label = diff >= 180 ? '余裕あり' : diff >= 0 ? '合格ライン上' : diff >= -180 ? 'あと少し' : '伸びしろ大きめ';
+  const d = new Date(at);
+  return (
+    <div className="mb-4 rounded-3xl border border-line bg-surface p-5">
+      <div className="mb-2 flex items-baseline justify-between">
+        <p className="text-[13px] text-ink-sub">合格ラインまで（目安）</p>
+        <p className="text-[13px] font-semibold text-ink">{label}</p>
+      </div>
+      <div className="relative h-2.5 overflow-hidden rounded-full bg-surface-2">
+        <div
+          className="h-full rounded-full bg-primary transition-[width] duration-500"
+          style={{ width: `${Math.min(100, (sum / SC.firstStagePass) * 100)}%` }}
+        />
+      </div>
+      <p className="mt-2 text-[12px] text-ink-faint">
+        {d.getMonth() + 1}月{d.getDate()}日の模試は {sum} / {SC.firstStageMax}点（合格ラインの目安 {SC.firstStagePass}点）
+      </p>
+    </div>
   );
 }

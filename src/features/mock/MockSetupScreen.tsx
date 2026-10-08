@@ -7,6 +7,7 @@ import {
   WRITING_TARGET_MIN,
   WRITTEN_BLUEPRINT,
   formatClock,
+  loadLastSeen,
   paperIsKnown,
   paperShortfall,
   scopeLabel,
@@ -30,7 +31,10 @@ const SCOPES: { scope: MockScope; minutes: number; note: string; noteCheckEach?:
   {
     scope: 'full',
     minutes: META.writtenMin + 25,
-    note: `本番と同じ。筆記${META.writtenMin}分＋リスニング約25分`,
+    // 2級（S-CBT）はリスニングが先。順番は文言にも出して、入ってから驚かないようにする
+    note: META.listeningFirst
+      ? `本番と同じ順。リスニング約25分→筆記${META.writtenMin}分`
+      : `本番と同じ。筆記${META.writtenMin}分＋リスニング約25分`,
     noteCheckEach: '筆記とリスニングの選択問題を1問ずつ。英作文は含みません',
   },
   {
@@ -62,7 +66,7 @@ export function MockSetupScreen({
   onOpenResult,
   onBack,
 }: {
-  onStart: (scope: MockScope, entryMode: MockEntryMode) => void;
+  onStart: (scope: MockScope, entryMode: MockEntryMode, lastSeen: ReadonlyMap<string, number>) => void;
   onResume: (saved: SavedMock) => void;
   onOpenResult: (id: number) => void;
   onBack: () => void;
@@ -70,6 +74,8 @@ export function MockSetupScreen({
   // 既定は「本番と同じ」。配布済みで、他人が慣れた挙動を変えないため（作業指示書 B-1）。
   const [entryMode, setEntryMode] = useState<MockEntryMode>('exam');
   const saved = useLiveQuery(() => loadMock(), [], undefined);
+  // 解いたことのある問題。模試の問題を選ぶとき、まだ解いていないものを先にするために使う
+  const lastSeen = useLiveQuery(() => loadLastSeen(), [], undefined);
   const past = useLiveQuery(
     async () =>
       (await db.mocks.orderBy('finishedAt').reverse().toArray()).filter(mockInGrade).slice(0, 5),
@@ -163,8 +169,9 @@ export function MockSetupScreen({
                 <li key={scope}>
                   <button
                     type="button"
-                    disabled={!ready}
-                    onClick={() => onStart(scope, entryMode)}
+                    // 解いた問題の一覧を読み終えるまで押せない。早く押すと空の一覧で組まれ、解いた本文を避けられない
+                    disabled={!ready || lastSeen === undefined}
+                    onClick={() => onStart(scope, entryMode, lastSeen ?? new Map())}
                     className="w-full rounded-3xl border border-line bg-surface p-5 text-left active:bg-surface-2 disabled:opacity-50"
                   >
                     <div className="flex items-baseline justify-between gap-3">
@@ -204,6 +211,14 @@ export function MockSetupScreen({
                 <li>・リスニングの放送は本番と同じく1回だけ。終わったらスクリプトと訳を見られます</li>
                 <li>・途中で閉じても、開き直せば同じところから続けられます</li>
                 <li>・ライティングは自動採点しません。終わってから自分で採点します</li>
+                {META.listeningFirst && (
+                  <>
+                    {/* S-CBT の本番は スピーキング→リスニング→リーディング→ライティング。スピーキングだけは模試に含めない */}
+                    <li>・本番は最初にスピーキングがあるよ（面接シミュレーターで練習）</li>
+                    <li>・リスニングが終わったら、筆記{META.writtenMin}分（リーディングとライティング）が始まります</li>
+                    {META.mockHandwritingRule && <li>・{META.mockHandwritingRule}</li>}
+                  </>
+                )}
               </>
             ) : (
               <>
@@ -224,6 +239,32 @@ export function MockSetupScreen({
             {entryMode === 'exam' ? '出題の構成' : '本番の構成'}
           </h2>
           <div className="rounded-3xl border border-line bg-surface p-5">
+            {META.listeningFirst ? (
+              <>
+            <p className="mb-2 text-[13px] font-semibold text-ink">リスニング 約25分</p>
+            <ul className="mb-4 flex flex-col gap-1 text-[13px] text-ink-sub">
+              {LISTENING_BLUEPRINT.map((b) => (
+                <li key={b.label} className="flex justify-between gap-3">
+                  <span>{b.label}</span>
+                  <span className="shrink-0 tabular-nums text-ink-faint">{b.count}問</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mb-2 text-[13px] font-semibold text-ink">筆記 {META.writtenMin}分</p>
+            <ul className="flex flex-col gap-1 text-[13px] text-ink-sub">
+              {WRITTEN_BLUEPRINT.map((b) => (
+                <li key={b.label} className="flex justify-between gap-3">
+                  <span>{b.label}</span>
+                  <span className="shrink-0 tabular-nums text-ink-faint">
+                    {b.count}
+                    {b.kind === 'writing' ? '題' : '問'}
+                  </span>
+                </li>
+              ))}
+            </ul>
+              </>
+            ) : (
+              <>
             <p className="mb-2 text-[13px] font-semibold text-ink">筆記 {META.writtenMin}分</p>
             <ul className="mb-4 flex flex-col gap-1 text-[13px] text-ink-sub">
               {WRITTEN_BLUEPRINT.map((b) => (
@@ -245,6 +286,8 @@ export function MockSetupScreen({
                 </li>
               ))}
             </ul>
+              </>
+            )}
             <p className="mt-3 border-t border-line pt-3 text-[12px] leading-relaxed text-ink-faint">
               合格ラインの目安は一次{scoringOf(GRADE).firstStageMax}点中 {scoringOf(GRADE).firstStagePass}点。
               問題は受けるたびに選び直されます（長文も毎回ちがう本文から出ます）。

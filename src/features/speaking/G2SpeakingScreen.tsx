@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SPEAKING_RAW } from '../../content';
 import { useSpeech } from '../../lib/speech';
+import { markInterviewDone } from '../../lib/dailyExtra';
 import { Button, Screen, TopBar } from '../../ui/primitives';
 import { Check, ChevronRight, Play, Warning } from '../../ui/icons';
 import { SceneImage } from './scenes';
@@ -151,6 +152,9 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
   const { clips, recording, starting, recSec, micError, startRec, stopRec, resetClips, dropClip } = useRecorder();
   // Yes/No を選び直して、前の理由の録音を捨てたことを一言伝える
   const [reasonReset, setReasonReset] = useState(false);
+  // No.3・No.4 は質問文を伏せて、読み上げ（耳）を主にする。文字で見たい問の番号を持つ（問が変われば自然に閉じる）。
+  // 本番は面接委員の声だけで質問が来るので、文字がずっと出ていると「耳で聞いて答える」練習にならない
+  const [textFor, setTextFor] = useState<number | null>(null);
   const { speak, stop, supported: canSpeak } = useSpeech();
 
   // 黙読と No.2 の考慮時間は同じ20秒カウント。0になっても自動では進めない（本番の間合いを自分で切る）
@@ -162,6 +166,12 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
   }, [step, left, card]);
 
   useEffect(() => () => stop(), [stop]);
+
+  // 「おわり」まで進めた日を kv に残す（ホームの「今日のもう1つ」が済んだか見るため）。
+  // 途中でやめた日は残らない。No.4 まで通して初めて「1枚やった」と数える
+  useEffect(() => {
+    if (step === 'done') void markInterviewDone();
+  }, [step]);
 
   /** 読み上げの前に録音を止める（iOS はマイクを掴んでいる間、読み上げが極端に小さくなる） */
   async function speakAfterStop(lines: Parameters<typeof speak>[0], rate: number) {
@@ -215,6 +225,7 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
                       setSaid(null);
                       setReasonReset(false);
                       setPeeked(false);
+                      setTextFor(null);
                     }}
                     className="flex min-h-[60px] w-full items-center gap-3 rounded-2xl border border-line bg-surface p-4 text-left active:bg-surface-2"
                   >
@@ -252,6 +263,8 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
   const q = typeof step === 'number' ? card.questions.find((x) => x.no === step) : null;
   const q2 = card.questions.find((x) => x.no === 2);
   const isDone = step === 'done';
+  /** No.3・No.4 の質問文を伏せるか。読み上げが使えない端末では伏せない（聞けないのに文字も無いと詰む） */
+  const hideText = !!q && (q.no === 3 || q.no === 4) && canSpeak && textFor !== q.no;
   /** No.3 以降。ここではカード（パッセージも3コマも）を画面に出さない */
   const flipped = step === 3 || step === 4;
   // 録音のキー。No.4 は Yes/No と理由で別々に録る
@@ -439,13 +452,35 @@ export function G2SpeakingScreen({ onBack }: { onBack: () => void }) {
             {q && (
               <div className="rounded-3xl border border-line bg-surface p-5">
                 <p className="mb-1 text-[12px] font-bold text-ink-faint">No.{q.no}</p>
-                <p className="en text-[17px] leading-relaxed text-ink">{q.prompt}</p>
+                {hideText ? (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => speakQ(q.prompt)}
+                      className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary text-[15px] font-bold text-primary-ink active:scale-[0.99]"
+                    >
+                      <Play size={18} /> 質問を聞く
+                    </button>
+                    <p className="mt-2 text-[13px] leading-relaxed text-ink-sub">
+                      本番は耳で聞くだけ。聞こえたとおりに答えよう。
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setTextFor(q.no)}
+                      className="mt-1 min-h-[44px] text-[13px] font-semibold text-ink-faint underline"
+                    >
+                      文字で見る
+                    </button>
+                  </div>
+                ) : (
+                  <p className="en text-[17px] leading-relaxed text-ink">{q.prompt}</p>
+                )}
                 {q.no === 2 && (
                   <p className="en mt-2 rounded-2xl bg-primary-soft p-3 text-[16px] leading-relaxed text-ink">
                     {card.openingSentence}
                   </p>
                 )}
-                {canSpeak && (
+                {canSpeak && !hideText && (
                   <button
                     type="button"
                     onClick={() =>

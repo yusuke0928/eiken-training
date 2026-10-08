@@ -102,9 +102,11 @@ export function MockResultScreen({
             </p>
             <p className="mt-2 text-[14px] leading-relaxed text-ink-sub">
               合格ラインの目安は {SC.firstStagePass}点。
-              {sum >= SC.firstStagePass
+              {sum > SC.firstStagePass
                 ? ` いまのところ ${sum - SC.firstStagePass}点うわまわっている。`
-                : ` あと ${SC.firstStagePass - sum}点。`}
+                : sum === SC.firstStagePass
+                  ? ' ちょうど届いている。' // 0点うわまわっている、とは言わない
+                  : ` あと ${SC.firstStagePass - sum}点。`}
             </p>
           </div>
         ) : (

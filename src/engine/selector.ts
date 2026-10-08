@@ -1,5 +1,6 @@
 import { db } from '../data/db';
-import { ALL_SECTIONS, ALL_TAGS, DIAGNOSTIC_PLAN, ITEMS, ITEM_BY_ID, itemsInSection } from '../content';
+import { ALL_SECTIONS, ALL_TAGS, DIAGNOSTIC_PLAN, ITEMS, ITEM_BY_ID, PASSAGES, itemsInSection } from '../content';
+import { loadLastSeen } from './mock';
 import { inGrade } from '../grade';
 import { dueCards } from './srs';
 import { buildReport, difficultyBand, itemWeight, weightedPick, type MasteryReport } from './mastery';
@@ -92,7 +93,37 @@ export async function buildMiniQueue(size: number): Promise<string[]> {
   );
 
   const items = spread(picked.map((id) => ITEM_BY_ID.get(id)).filter((i): i is MCQItem => !!i));
-  return groupByPassage(items.map((i) => i.id));
+  return shortFirst(groupByPassage(items.map((i) => i.id)), MISSION_SIZE);
+}
+
+/** 今日のミッションの問題数（HomeScreen の DAILY_GOAL と同じ3問） */
+const MISSION_SIZE = 3;
+
+/**
+ * 最初の n 問を、長文ではない問題（語彙・会話・リスニング）にする。
+ * ミッションの「3問」が355語の長文3問になると、3問だけの子には重すぎて続かない。
+ * 長文は4問目以降へ回す。残りの並びは崩さないので、同じ本文の設問は隣り合ったまま
+ */
+function shortFirst(ids: string[], n: number): string[] {
+  const isPassage = (id: string) => {
+    const sec = ITEM_BY_ID.get(id)?.section;
+    return sec === 'r-passage' || sec === 'r-cloze';
+  };
+  const head = ids.filter((id) => !isPassage(id)).slice(0, n);
+  const taken = new Set(head);
+  return [...head, ...ids.filter((id) => !taken.has(id))];
+}
+
+/** 長文を1セット（同じ本文の設問ぜんぶ）。まだ解いていない本文を先に、なければ古いものから */
+export async function buildPassageSetQueue(): Promise<string[]> {
+  const lastSeen = await loadLastSeen();
+  const sets = [...PASSAGES.values()]
+    .filter((p) => p.section === 'r-passage')
+    .map((p) => ITEMS.filter((i) => i.passageId === p.id))
+    .filter((set) => set.length > 0);
+  const seenAt = (set: MCQItem[]) => Math.max(0, ...set.map((i) => lastSeen.get(i.id) ?? 0));
+  const best = shuffle(sets).sort((a, b) => seenAt(a) - seenAt(b))[0];
+  return best ? best.map((i) => i.id) : [];
 }
 
 /** 論点別トレーニング */

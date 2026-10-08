@@ -5,11 +5,12 @@ import {
   LISTENING_ANSWER_MS,
   WRITTEN_MS,
   formatClock,
+  phaseOrder,
   type MockPaper,
   type MockQuestion,
 } from '../../engine/mock';
 import { countWords, wordRangeText, wordTone } from '../../engine/writing';
-import { Paragraphs } from '../writing/WritingParts';
+import { Paragraphs, PinnedSource, useElementHeight } from '../writing/WritingParts';
 import { WRITING_SPEC, choicesAreSpoken, isListening } from '../../types';
 import { Button, ProgressBar, Screen, renderStem } from '../../ui/primitives';
 import { Bookmark, Home } from '../../ui/icons';
@@ -25,6 +26,9 @@ export interface MockDraft {
   writingRemainingMs: number | null;
 }
 
+/** 残り5分で一度だけ帯を出す */
+const FIVE_MIN_MS = 5 * 60 * 1000;
+
 const keyOf = (q: MockQuestion) => (q.kind === 'mcq' ? q.itemId : q.promptId);
 
 export function MockRunScreen({
@@ -39,8 +43,11 @@ export function MockRunScreen({
   onExit: () => void;
 }) {
   const hasWritten = paper.written.length > 0;
+  // 通す順は paper が持つ（2級は リスニング→筆記。印の無い古い保存は 筆記→リスニング のまま）
+  const order = phaseOrder(paper);
+  const phaseHas = (p: 'written' | 'listening') => (p === 'written' ? hasWritten : paper.listening.length > 0);
   const [phase, setPhase] = useState<'written' | 'listening'>(
-    restore?.phase ?? (hasWritten ? 'written' : 'listening'),
+    restore?.phase ?? order.find(phaseHas) ?? 'listening',
   );
   const [cursor, setCursor] = useState(restore?.cursor ?? 0);
   const [mcq, setMcq] = useState<Record<string, number>>(restore?.mcq ?? {});
@@ -59,8 +66,12 @@ export function MockRunScreen({
   const [writingRemaining, setWritingRemaining] = useState<number | null>(
     restore?.writingRemainingMs ?? null,
   );
+  // 残り5分の帯は一度だけ。すでに5分を切った状態で再開したときは出さない（見せ直しても焦らせるだけ）
+  const fiveMinSeen = useRef((restore?.writtenRemainingMs ?? WRITTEN_MS) <= FIVE_MIN_MS);
+  const [fiveMinBanner, setFiveMinBanner] = useState(false);
   const startedAt = useRef(restore?.startedAt ?? Date.now());
   const goHome = useGoHome();
+  const [headerRef, headerH] = useElementHeight<HTMLElement>();
 
   const list = phase === 'written' ? paper.written : paper.listening;
   const q = list[cursor];
@@ -73,20 +84,47 @@ export function MockRunScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, phase]);
 
+  // 提出・やめるを押した時点で立てる。提出の処理は採点の書き込みが終わるまで画面が残るので、
+  // そのあいだにタイマーと自動保存が動いていると、消したばかりの kv `mock` を書き戻してしまう
+  // （2級は筆記が最後になり、普通の提出のたびに起きる。書き戻されると提出済みの模試が「続き」に出て、記録が二重になる）。
+  // 2回目以降の提出も、この印で何もしない
+  const submittedRef = useRef(false);
+  const [submitted, setSubmitted] = useState(false);
+
   /* ---- 筆記のタイマー ---- */
   useEffect(() => {
-    if (phase !== 'written') return;
+    if (phase !== 'written' || submitted) return;
     const t = window.setInterval(() => setRemaining((r) => Math.max(0, r - 1000)), 1000);
     return () => window.clearInterval(t);
-  }, [phase]);
+  }, [phase, submitted]);
+
+  // 時間切れは黙って画面を変えず、シートを1枚挟む（下の timeUp）。
+  // 状態を別に持たず「筆記で残り0」から導くので、シートを出したまま閉じても、開き直せばまたシートから始まる
+  const timeUp = phase === 'written' && remaining === 0;
+
+  // 書いている最中に時間が切れたら、キーボードを下ろしてシートが見えるようにする
+  useEffect(() => {
+    if (timeUp) (document.activeElement as HTMLElement | null)?.blur?.();
+  }, [timeUp]);
 
   useEffect(() => {
-    if (phase === 'written' && remaining === 0) goListening();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (phase !== 'written' || fiveMinSeen.current) return;
+    if (remaining > 0 && remaining <= FIVE_MIN_MS) {
+      fiveMinSeen.current = true;
+      setFiveMinBanner(true);
+    }
   }, [remaining, phase]);
+
+  // 帯は9秒で消す。出す側の effect に入れると、毎秒の remaining の更新でタイマーが捨てられて消えなくなる
+  useEffect(() => {
+    if (!fiveMinBanner) return;
+    const t = window.setTimeout(() => setFiveMinBanner(false), 9000);
+    return () => window.clearTimeout(t);
+  }, [fiveMinBanner]);
 
   /* ---- 途中で閉じても続けられるように、常に保存しておく ---- */
   useEffect(() => {
+    if (submittedRef.current) return;
     void saveMock({
       paper,
       phase,
@@ -106,7 +144,10 @@ export function MockRunScreen({
     if (answerWindow === null) return;
     if (answerWindow <= 0) {
       setAnswerWindow(null);
-      next();
+      // 自動で進むのはフェーズの中だけ。2級のリスニング最終問題で次へ進むと、押していないのに
+      // 筆記の85分が始まってしまう（画面は「筆記へを押すと始まる」と言っている）。
+      // 次のフェーズがある最終問題では止まる。準2級（最後のフェーズ）は従来どおり確認シートへ
+      if (cursor + 1 < list.length || !nextPhase) next();
       return;
     }
     const t = window.setTimeout(() => setAnswerWindow((v) => (v === null ? null : v - 250)), 250);
@@ -127,26 +168,38 @@ export function MockRunScreen({
   }
 
   function next() {
+    if (submittedRef.current) return;
     if (cursor + 1 < list.length) {
       goTo(cursor + 1);
-    } else if (phase === 'written' && paper.listening.length > 0) {
-      goListening();
+    } else if (nextPhase) {
+      goNextPhase();
     } else {
       setConfirmSubmit(true);
     }
   }
 
-  function goListening() {
-    if (paper.listening.length === 0) {
+  /** 通す順の次のフェーズ。無ければ（最後のフェーズ・片方だけの模試）null */
+  const nextPhase = ((): 'written' | 'listening' | null => {
+    const n = order[order.indexOf(phase) + 1];
+    return n && phaseHas(n) ? n : null;
+  })();
+
+  function goNextPhase() {
+    if (submittedRef.current) return;
+    if (!nextPhase) {
       submit();
       return;
     }
-    setPhase('listening');
+    setPhase(nextPhase);
     setCursor(0);
+    setFiveMinBanner(false);
     resetPerQuestion();
   }
 
   function submit() {
+    if (submittedRef.current) return;
+    submittedRef.current = true;
+    setSubmitted(true);
     void clearMock();
     onFinish(
       {
@@ -163,7 +216,9 @@ export function MockRunScreen({
     return (
       <Screen>
         <main className="flex flex-1 items-center justify-center px-6">
-          <Button onClick={submit}>結果を見る</Button>
+          <Button onClick={submit} disabled={submitted}>
+            結果を見る
+          </Button>
         </main>
       </Screen>
     );
@@ -187,7 +242,7 @@ export function MockRunScreen({
   return (
     <Screen>
       {/* 試験モードでは飾りを消して集中させる（DESIGN.md §3.2） */}
-      <header className="sticky top-0 z-20 bg-bg/95 px-4 pt-[calc(10px+env(safe-area-inset-top))] pb-2 backdrop-blur">
+      <header ref={headerRef} className="sticky top-0 z-20 bg-bg/95 px-4 pt-[calc(10px+env(safe-area-inset-top))] pb-2 backdrop-blur">
         <div className="mb-2 flex items-center gap-3">
           <button
             type="button"
@@ -232,11 +287,24 @@ export function MockRunScreen({
           {phase === 'listening' ? 'No.' : '問'} {q.no} / {list.length}
         </p>
 
+        {/* 2級はリスニングが先。最後の放送問題の次ボタンで筆記のタイマーが動き出すので、押す前に（問題番号のすぐ下で）伝える */}
+        {nextPhase === 'written' && cursor + 1 === list.length && (
+          <p className="mb-3 rounded-xl bg-accent-soft px-3 py-2 text-[12px] font-semibold text-ink-sub">
+            「筆記へ」を押すと、筆記の{Math.round(WRITTEN_MS / 60000)}分がスタートするよ
+          </p>
+        )}
+
+        {/* 模試の組み直しで、解いたことのある本文しか残っていなかったときだけ。大問の最初の1問にだけ添える */}
+        {q.kind === 'mcq' && q.seenBefore && list[cursor - 1]?.block !== q.block && (
+          <p className="mb-3 text-[12px] text-ink-faint">前にも読んだ本文だよ</p>
+        )}
+
         {q.kind === 'writing' ? (
           <WritingBlock
             promptId={q.promptId}
             value={writings[key] ?? ''}
             onChange={(v) => setWritings({ ...writings, [key]: v })}
+            stickyTop={headerH}
           />
         ) : (
           <McqBlock
@@ -295,18 +363,59 @@ export function MockRunScreen({
             </button>
           )}
           <div className="flex-1">
-            <Button full onClick={next}>
+            <Button full onClick={next} disabled={submitted}>
               {cursor + 1 < list.length
                 ? answered
                   ? '次へ'
                   : '答えずに次へ'
-                : phase === 'written' && paper.listening.length > 0
-                  ? 'リスニングへ'
+                : nextPhase
+                  ? nextPhase === 'listening'
+                    ? 'リスニングへ'
+                    : '筆記へ'
                   : '提出する'}
             </Button>
           </div>
         </div>
       </div>
+
+      {fiveMinBanner && !timeUp && (
+        <div
+          role="status"
+          className="anim-fade pointer-events-none fixed inset-x-0 top-[calc(120px+env(safe-area-inset-top))] z-40 mx-auto w-full max-w-[560px] px-4"
+        >
+          {/* 1行目で区切る。幅に任せると「大丈 / 夫」と割れる */}
+          <p className="rounded-2xl bg-ink px-4 py-3 text-[14px] font-semibold leading-relaxed text-bg shadow-lg">
+            <span className="block">あと5分。</span>
+            <span className="block">ライティングは書けたところまでで大丈夫</span>
+          </p>
+        </div>
+      )}
+
+      {timeUp && (
+        <div className="fixed inset-0 z-[60] flex items-end" role="dialog" aria-label="筆記の時間はおしまい">
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="anim-sheet relative w-full rounded-t-[28px] bg-surface p-5 pb-[calc(20px+env(safe-area-inset-bottom))]">
+            <p className="mb-1 text-[17px] font-bold text-ink">筆記の時間はおしまい</p>
+            <p className="text-[14px] leading-relaxed text-ink-sub">書いたところまで保存したよ。</p>
+            {/* 語数の組は折り返しで「3 / 語」と割れないよう、1つずつ改行しない箱に入れる */}
+            {savedWritingSummary(paper, writings).length > 0 && (
+              <p className="mt-1 flex flex-wrap gap-x-3 text-[15px] font-semibold text-ink">
+                {savedWritingSummary(paper, writings).map((t) => (
+                  <span key={t} className="whitespace-nowrap">
+                    {t}
+                  </span>
+                ))}
+              </p>
+            )}
+            <p className="mb-5 mt-2 text-[14px] leading-relaxed text-ink-sub">
+              {nextPhase === 'listening' ? 'つぎはリスニング。' : 'このまま結果を見よう。'}
+            </p>
+            <Button full onClick={goNextPhase} disabled={submitted}>
+              {nextPhase === 'listening' ? 'リスニングへ' : '結果を見る'}
+            </Button>
+          </div>
+        </div>
+      )}
 
       {navOpen && (
         <Navigator
@@ -343,7 +452,7 @@ export function MockRunScreen({
                 もどる
               </Button>
               <div className="flex-1">
-                <Button full onClick={submit}>
+                <Button full onClick={submit} disabled={submitted}>
                   提出する
                 </Button>
               </div>
@@ -351,6 +460,10 @@ export function MockRunScreen({
             <button
               type="button"
               onClick={() => {
+                // やめた後も画面が残る間にタイマーが書き戻さないよう、提出と同じ印を立てる
+                if (submittedRef.current) return;
+                submittedRef.current = true;
+                setSubmitted(true);
                 void clearMock();
                 onExit();
               }}
@@ -408,6 +521,20 @@ function unansweredCount(
   return list.filter((q) =>
     q.kind === 'mcq' ? mcq[q.itemId] === undefined : (writings[q.promptId] ?? '').trim().length === 0,
   ).length;
+}
+
+const WRITING_SHORT = { 'w-email': 'Eメール', 'w-opinion': '意見論述', 'w-summary': '要約' } as const;
+
+/** 時間切れシートの「意見論述12語」「要約0語」。ライティングが無い模試では空 */
+function savedWritingSummary(paper: MockPaper, writings: Record<string, string>): string[] {
+  const parts: string[] = [];
+  for (const q of paper.written) {
+    if (q.kind !== 'writing') continue;
+    const prompt = WRITING_BY_ID.get(q.promptId);
+    if (!prompt) continue;
+    parts.push(`${WRITING_SHORT[prompt.section]}${countWords(writings[q.promptId] ?? '')}語`);
+  }
+  return parts;
 }
 
 /**
@@ -581,11 +708,15 @@ function WritingBlock({
   promptId,
   value,
   onChange,
+  stickyTop,
 }: {
   promptId: string;
   value: string;
   onChange: (v: string) => void;
+  /** 上に貼りついているヘッダーの高さ。要約の本文を入力中だけ貼りつけるときの位置に使う */
+  stickyTop: number;
 }) {
+  const [focused, setFocused] = useState(false);
   const prompt = WRITING_BY_ID.get(promptId);
   if (!prompt) return null;
   const spec = WRITING_SPEC[prompt.section];
@@ -600,10 +731,14 @@ function WritingBlock({
       </p>
 
       {prompt.section === 'w-summary' ? (
-        <section className="mb-4 rounded-3xl border border-line bg-surface-2 p-4">
+        <PinnedSource
+          pinned={focused}
+          top={`${stickyTop}px`}
+          className="mb-4 rounded-3xl border border-line bg-surface-2 p-4"
+        >
           <p className="mb-2 text-[12px] font-bold text-ink-faint">この英文を要約する</p>
           <Paragraphs text={prompt.sourceText ?? ''} className="en text-ink" />
-        </section>
+        </PinnedSource>
       ) : prompt.section === 'w-email' ? (
         <section className="mb-4 rounded-3xl border border-line bg-surface-2 p-4">
           <p className="mb-2 text-[12px] font-bold text-ink-faint">相手からのメール</p>
@@ -636,6 +771,8 @@ function WritingBlock({
         autoCorrect="off"
         autoCapitalize="off"
         rows={10}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         className="en w-full resize-y rounded-3xl border-2 border-line bg-surface p-4 text-ink outline-none focus:border-primary"
       />
       {/* 語数はヘッダーにも常時出している。型や表現のヒントは試験モードでは出さない */}

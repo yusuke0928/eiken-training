@@ -157,7 +157,10 @@ function WritingReviewScreenBody({
             </p>
             <p className="mt-2 text-[14px] leading-relaxed text-ink-sub">
               {total >= spec.goal
-                ? `目標の${spec.goal}点を超えている。同じ型で他のお題も書いてみよう。`
+                ? // ちょうど目標点（total === goal）でも「超えている」は嘘になる。届いていれば「届いた」
+                  total > spec.goal
+                  ? `目標の${spec.goal}点を超えている。同じ型で他のお題も書いてみよう。`
+                  : `目標の${spec.goal}点に届いた。同じ型で他のお題も書いてみよう。`
                 : `目標は${spec.goal}点。あと${spec.goal - total}点。点の低かった観点だけ、モデル解答をもう一度見よう。`}
             </p>
           </div>

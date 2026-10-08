@@ -38,7 +38,9 @@ export function WelcomeScreen({ onStart, onSkip }: { onStart: () => void; onSkip
           位置を測ろう
         </h1>
         <p className="ja-body mb-8 text-ink-sub">
-          {DIAGNOSTIC_TOTAL}問・約15分の診断テストです。本番の大問構成をそのまま縮めています。
+          {DIAGNOSTIC_TOTAL}問・約15分の診断テストです。
+          {/* 準2級は従来の文言のまま。2級の診断は読む問題だけ（リスニングとライティングは入っていない） */}
+          {isG2 ? '読む問題だけで、リスニングとライティングは入っていません。' : '本番の大問構成をそのまま縮めています。'}
           <br />
           <span className="text-ink-faint">
             解説は出ません。分からなければ勘で選んでOK。ここで測った結果に合わせて、

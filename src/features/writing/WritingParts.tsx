@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { checkTone, type AutoCheck } from '../../engine/writing';
 import { Alert, Check } from '../../ui/icons';
 
@@ -106,4 +106,53 @@ export function Paragraphs({ text, className }: { text: string; className: strin
         ))}
     </div>
   );
+}
+
+/**
+ * 要約の本文カード。入力欄にフォーカスしている間は、画面の上に貼りつけて高さを決め（中でスクロール）、
+ * キーボードが出ても「本文の一部」と「入力欄」が同時に見えるようにする。
+ * 本文は3画面ぶんあり、普段の高さのままだと入力欄を開くと本文が画面の外に押し出されて読み返せなかった。
+ * 高さは vh ではなく dvh（iOS Safari は URL バーの伸縮で 100vh が変わる）。
+ * top は、すでに上に貼りついているもの（ヘッダー・語数メーター・形式チェック）の高さ。呼び出し側が測って渡す
+ */
+export function PinnedSource({
+  pinned,
+  top,
+  className,
+  children,
+}: {
+  pinned: boolean;
+  top: string;
+  className: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section
+      data-pinned={pinned ? 'true' : undefined}
+      className={`${className} ${pinned ? 'sticky z-10 max-h-[24dvh] overflow-y-auto overscroll-contain shadow-md' : ''}`}
+      style={pinned ? { top } : undefined}
+    >
+      {children}
+    </section>
+  );
+}
+
+/**
+ * 要素の高さ（px）を追いかける。貼りつく枠の top を、上に貼りついているものの実寸から決めるために使う。
+ * コールバック ref にしてあるのは、対象が条件つきで現れたり消えたりするため（要素が変わったときだけ観測し直す）
+ */
+export function useElementHeight<T extends HTMLElement>(): [(el: T | null) => void, number] {
+  const [el, setEl] = useState<T | null>(null);
+  const [h, setH] = useState(0);
+  useLayoutEffect(() => {
+    if (!el) {
+      setH(0);
+      return;
+    }
+    const ro = new ResizeObserver(() => setH(el.offsetHeight));
+    ro.observe(el);
+    setH(el.offsetHeight);
+    return () => ro.disconnect();
+  }, [el]);
+  return [setEl, h];
 }

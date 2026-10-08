@@ -1,6 +1,8 @@
+import { db } from '../data/db';
 import { ITEMS, ITEM_BY_ID, PASSAGES, WRITING_BY_ID, WRITING_PROMPTS } from '../content';
 import { GRADE, GRADE_META } from '../grade';
-import type { MCQItem, SectionId, WritingSection } from '../types';
+import { estimateSkillCse } from './scoring';
+import { WRITING_SPEC, type MCQItem, type MockRecord, type SectionId, type WritingSection } from '../types';
 
 /**
  * 模擬テスト（DESIGN.md §2.1 / §3.2）
@@ -117,13 +119,45 @@ export const LISTENING_APPROX_MS = 25 * 60 * 1000;
 export const LISTENING_ANSWER_MS = 10 * 1000;
 
 export type MockQuestion =
-  | { kind: 'mcq'; itemId: string; block: string; no: number }
+  | {
+      kind: 'mcq';
+      itemId: string;
+      block: string;
+      no: number;
+      /** 前に解いたことのある本文から出した問題。画面の大問の最初に「前にも読んだ本文だよ」と小さく添える */
+      seenBefore?: boolean;
+    }
   | { kind: 'writing'; promptId: string; block: string; no: number };
 
 export interface MockPaper {
   scope: MockScope;
   written: MockQuestion[];
   listening: MockQuestion[];
+  /**
+   * 通す順番。'listening-first' のときだけ付く（2級・S-CBT の本番どおり、リスニング→筆記）。
+   * 付いていなければ筆記→リスニング。Ver.1.7 までに中断した2級の模試（筆記が先）にはこの印が無いので、
+   * 印の有無で「元の順で再開」が自然に成り立つ。kv の中身が増えるだけで Dexie のスキーマは変わらない
+   */
+  order?: 'listening-first';
+}
+
+/** 通す順に並べたフェーズ。中身が空のフェーズ（筆記のみ／リスニングのみ）は MockRunScreen 側で飛ばす */
+export function phaseOrder(paper: MockPaper): ['written', 'listening'] | ['listening', 'written'] {
+  return paper.order === 'listening-first' ? ['listening', 'written'] : ['written', 'listening'];
+}
+
+/**
+ * 問題ごとに「最後に解いた時刻」を返す（解いたことが無ければ載らない）。
+ * 模試で同じ長文が続けて出ないよう、出題の選び方が新しさを見るために使う。
+ */
+export async function loadLastSeen(): Promise<Map<string, number>> {
+  const out = new Map<string, number>();
+  const rows = await db.attempts.toArray();
+  for (const a of rows) {
+    const cur = out.get(a.itemId) ?? 0;
+    if (a.answeredAt > cur) out.set(a.itemId, a.answeredAt);
+  }
+  return out;
 }
 
 /**
@@ -153,42 +187,65 @@ function passageSets(section: SectionId, formats?: string[]): MCQItem[][] {
     .map((p) => ITEMS.filter((i) => i.passageId === p.id));
 }
 
+type LastSeen = ReadonlyMap<string, number>;
+
+/**
+ * まだ解いていないものを先に、解いたものは古い順に並べる（同じ新しさの中はランダム）。
+ * 模試を続けて組むと、前回読んだ長文がまた出ていた（4本中3本）ため。
+ * 「解いたことがある」は演習・模試を問わない。足りなければ解いたものから借りる、が自然にできる並びにしている
+ */
+function freshFirst<T>(arr: T[], seenAt: (x: T) => number): T[] {
+  return shuffle(arr)
+    .map((x, i) => ({ x, i, t: seenAt(x) }))
+    .sort((a, b) => a.t - b.t || a.i - b.i)
+    .map((e) => e.x);
+}
+
+const setSeenAt = (lastSeen: LastSeen) => (set: MCQItem[]) =>
+  Math.max(0, ...set.map((i) => lastSeen.get(i.id) ?? 0));
+
 /**
  * 長文セットから count 問取る。exclude に入っている本文は使わない
  * （2級の大問2A・2Bが同じ本文にならないように。使った本文は呼び出し側が積む）。
+ * 設問数がちょうど合うセットを優先する、は従来どおり（その中で未出題を先に）。
  */
 function pickPassageItems(
   section: SectionId,
   count: number,
-  formats?: string[],
-  exclude: ReadonlySet<string> = new Set(),
-): MCQItem[] {
+  formats: string[] | undefined,
+  exclude: ReadonlySet<string>,
+  lastSeen: LastSeen,
+): { items: MCQItem[]; seenBefore: boolean } {
   const sets = passageSets(section, formats).filter((s) => !exclude.has(s[0]?.passageId ?? ''));
-  // 設問数がちょうど合うセットを優先する（足りなければ多いものから借りる）
   const exact = sets.filter((s) => s.length === count);
   const usable = exact.length > 0 ? exact : sets.filter((s) => s.length >= count);
-  const chosen = shuffle(usable.length > 0 ? usable : sets)[0] ?? [];
-  return chosen.slice(0, count);
+  const seenAt = setSeenAt(lastSeen);
+  const chosen = freshFirst(usable.length > 0 ? usable : sets, seenAt)[0] ?? [];
+  return { items: chosen.slice(0, count), seenBefore: chosen.length > 0 && seenAt(chosen) > 0 };
 }
 
 function pickItems(
   section: SectionId,
   count: number,
-  formats?: string[],
-  usedPassages?: Set<string>,
-): MCQItem[] {
+  formats: string[] | undefined,
+  usedPassages: Set<string> | undefined,
+  lastSeen: LastSeen,
+): { items: MCQItem[]; seenBefore: boolean } {
   if (section === 'r-cloze' || section === 'r-passage') {
-    const picked = pickPassageItems(section, count, formats, usedPassages);
-    const pid = picked[0]?.passageId;
+    const picked = pickPassageItems(section, count, formats, usedPassages ?? new Set(), lastSeen);
+    const pid = picked.items[0]?.passageId;
     if (pid) usedPassages?.add(pid);
     return picked;
   }
-  const pool = shuffle(ITEMS.filter((i) => i.section === section));
+  const pool = freshFirst(
+    ITEMS.filter((i) => i.section === section),
+    (i) => lastSeen.get(i.id) ?? 0,
+  );
   // 大問1は本番もおおむね易しい順に並ぶ
-  return pool.slice(0, count).sort((a, b) => a.difficulty - b.difficulty);
+  return { items: pool.slice(0, count).sort((a, b) => a.difficulty - b.difficulty), seenBefore: false };
 }
 
-export function buildPaper(scope: MockScope): MockPaper {
+export function buildPaper(scope: MockScope, lastSeen: LastSeen = new Map()): MockPaper {
   let no = 0;
   const usedPassages = new Set<string>();
   const written: MockQuestion[] =
@@ -204,11 +261,19 @@ export function buildPaper(scope: MockScope): MockPaper {
               no: ++no,
             }));
           }
-          return pickItems(block.section as SectionId, block.count, block.formats, usedPassages).map((i) => ({
+          const { items, seenBefore } = pickItems(
+            block.section as SectionId,
+            block.count,
+            block.formats,
+            usedPassages,
+            lastSeen,
+          );
+          return items.map((i) => ({
             kind: 'mcq' as const,
             itemId: i.id,
             block: block.label,
             no: ++no,
+            ...(seenBefore ? { seenBefore: true } : {}),
           }));
         });
 
@@ -217,7 +282,7 @@ export function buildPaper(scope: MockScope): MockPaper {
     scope === 'written'
       ? []
       : LISTENING_BLUEPRINT.flatMap((block) =>
-          pickItems(block.section as SectionId, block.count, block.formats).map((i) => ({
+          pickItems(block.section as SectionId, block.count, block.formats, undefined, lastSeen).items.map((i) => ({
             kind: 'mcq' as const,
             itemId: i.id,
             block: block.label,
@@ -225,7 +290,9 @@ export function buildPaper(scope: MockScope): MockPaper {
           })),
         );
 
-  return { scope, written, listening };
+  // 順番を入れ替えるのは通し（full）だけ。筆記のみ／リスニングのみは順番が無い
+  const order = scope === 'full' && GRADE_META[GRADE].listeningFirst ? ('listening-first' as const) : undefined;
+  return { scope, written, listening, ...(order ? { order } : {}) };
 }
 
 /** 用意できている問題数が本番の構成に足りているか（足りなければ画面で断る） */
@@ -264,7 +331,7 @@ export function paperShortfall(scope: MockScope): string[] {
 }
 
 export function scopeLabel(scope: MockScope): string {
-  return { full: 'フル（筆記＋リスニング）', written: '筆記のみ', listening: 'リスニングのみ' }[scope];
+  return { full: GRADE_META[GRADE].listeningFirst ? 'フル（リスニング＋筆記）' : 'フル（筆記＋リスニング）', written: '筆記のみ', listening: 'リスニングのみ' }[scope];
 }
 
 export function formatClock(ms: number): string {
@@ -272,4 +339,32 @@ export function formatClock(ms: number): string {
   const m = Math.floor(total / 60);
   const s = total % 60;
   return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+/**
+ * 模試1回ぶんの一次 CSE の目安（3技能の合計）。通し（full）で、ライティングを自己採点し終えたものだけ。
+ * 結果画面（MockResultScreen）と同じ計算で、ホームの「合格ラインまで」が模試の数字と食い違わないようにする。
+ */
+export function mockCseTotal(record: MockRecord): number | null {
+  if (record.scope !== 'full') return null;
+  const skill = (prefix: string) => {
+    const rows = record.answers.filter((a) => ITEM_BY_ID.get(a.itemId)?.section.startsWith(prefix));
+    return { correct: rows.filter((r) => r.correct).length, total: rows.length };
+  };
+  const reading = skill('r-');
+  const listening = skill('l-');
+  let wTotal = 0;
+  let wMax = 0;
+  for (const w of record.writings) {
+    if (w.total === undefined) return null;
+    wTotal += w.total;
+    const sec = WRITING_BY_ID.get(w.promptId)?.section;
+    if (sec) wMax += WRITING_SPEC[sec].maxScore;
+  }
+  if (reading.total === 0 || listening.total === 0 || wMax === 0) return null;
+  return (
+    estimateSkillCse(GRADE, reading.correct / reading.total) +
+    estimateSkillCse(GRADE, listening.correct / listening.total) +
+    estimateSkillCse(GRADE, wTotal / wMax)
+  );
 }

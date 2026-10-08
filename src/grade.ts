@@ -77,6 +77,19 @@ export interface GradeMeta {
   onboardedKey: string;
   /** 診断テストの結果の kv キー。準2級は既存キーのまま、2級は別キーにして上書きし合わない */
   diagnosticKey: string;
+  /**
+   * 模試（フル）の順番。準2級（従来型）は筆記→リスニング。2級（S-CBT）は本番どおり
+   * リスニング→（リーディング＋ライティング）。スピーキングは模試に含めない（面接シミュレーターがある）。
+   */
+  listeningFirst: boolean;
+  /**
+   * 「本番は手書き」に当たる一文。2級は S-CBT のライティングを申込時に筆記型／タイピング型から選ぶ。
+   * 依頼者の答え（2026-10-08）は筆記型なので、切り替えるときはここ1か所を直す。
+   * 準2級の文言は配布済みなので1文字も変えない
+   */
+  handwritingNote: string;
+  /** 模試①の入口「本番のルール」に足す1行。準2級は足さない（null） */
+  mockHandwritingRule: string | null;
 }
 
 export const GRADE_META: Record<Grade, GradeMeta> = {
@@ -95,6 +108,9 @@ export const GRADE_META: Record<Grade, GradeMeta> = {
     diagnosticReviewId: 'diagnostic',
     onboardedKey: 'onboarded',
     diagnosticKey: 'diagnostic',
+    listeningFirst: false,
+    handwritingNote: '本番は手書きなので、スペルも自分で書けるようにしておこう。',
+    mockHandwritingRule: null,
   },
   g2: {
     label: '英検2級',
@@ -111,6 +127,9 @@ export const GRADE_META: Record<Grade, GradeMeta> = {
     diagnosticReviewId: 'diagnostic-g2',
     onboardedKey: 'onboarded-g2',
     diagnosticKey: 'diagnostic-g2',
+    listeningFirst: true,
+    handwritingNote: '本番（S-CBT）は、ライティングだけ解答用紙に手で書くよ（筆記型）。スペルも手で書けるようにしておこう。',
+    mockHandwritingRule: 'ライティングは画面の問題を見て、解答用紙に手で書く（筆記型）',
   },
 };
 

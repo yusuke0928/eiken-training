@@ -3,6 +3,8 @@ import {
   buildDiagnosticQueue,
   buildListeningQueue,
   buildMiniQueue,
+  buildPassageSetQueue,
+  buildSectionQueue,
   buildReviewQueue,
   buildTagQueue,
 } from './engine/selector';
@@ -12,13 +14,14 @@ import { WordCardScreen } from './features/words/WordCardScreen';
 import { SpeakingScreen } from './features/speaking/SpeakingScreen';
 import { G2SpeakingScreen } from './features/speaking/G2SpeakingScreen';
 import { clearSession, db, getKv, loadMock, loadSession, setKv, type SavedMock } from './data/db';
-import { GRADE_READY, ITEM_BY_ID, SPEAKING_RAW, WRITING_BY_ID } from './content';
+import { GRADE_READY, ITEM_BY_ID, SPEAKING_RAW, WRITING_BY_ID, writingPromptsIn } from './content';
+import type { ExtraKind } from './lib/dailyExtra';
 import { GRADE, GRADE_META } from './grade';
 import { ComingSoonScreen } from './features/grade/GradeSwitch';
 import { applyResult } from './engine/srs';
 import { bumpDayLog } from './data/db';
 import { countWords } from './engine/writing';
-import { buildPaper, paperIsKnown, scopeLabel, type MockPaper, type MockQuestion, type MockScope } from './engine/mock';
+import { buildPaper, paperIsKnown, phaseOrder, scopeLabel, type MockPaper, type MockQuestion, type MockScope } from './engine/mock';
 import { MockSetupScreen, type MockEntryMode } from './features/mock/MockSetupScreen';
 import { MockRunScreen, type MockDraft } from './features/mock/MockRunScreen';
 import { MockResultScreen } from './features/mock/MockResultScreen';
@@ -276,6 +279,52 @@ export default function App() {
     if (ids.length > 0) push({ k: 'practice', ids, mode: 'training', title: 'リスニング' });
   }, [push]);
 
+  // 2級のホームの「今日のもう1つ」から、その画面に直接入る
+  const startExtra = useCallback(
+    async (kind: ExtraKind) => {
+      switch (kind) {
+        case 'summary':
+        case 'opinion': {
+          // まだ書いていない題を先に（同じ題が続くと「また同じ」になる）
+          const prompts = writingPromptsIn(kind === 'summary' ? 'w-summary' : 'w-opinion');
+          const written = new Set((await db.writings.toArray()).map((w) => w.promptId));
+          // 全部書き終えたら、いちばん前に書いた題から（同じ題が続かないように）
+          const lastAt = new Map<string, number>();
+          for (const w of await db.writings.toArray()) lastAt.set(w.promptId, Math.max(lastAt.get(w.promptId) ?? 0, w.submittedAt));
+          const pick =
+            prompts.find((p) => !written.has(p.id)) ??
+            [...prompts].sort((a, b) => (lastAt.get(a.id) ?? 0) - (lastAt.get(b.id) ?? 0))[0];
+          if (pick) push({ k: 'writingEditor', promptId: pick.id });
+          return;
+        }
+        case 'listening2': {
+          const ids = await buildSectionQueue('l-part3', 10);
+          if (ids.length > 0) push({ k: 'practice', ids, mode: 'training', title: 'リスニング第2部' });
+          return;
+        }
+        case 'passage': {
+          const ids = await buildPassageSetQueue();
+          if (ids.length > 0) push({ k: 'practice', ids, mode: 'training', title: '長文を1セット' });
+          return;
+        }
+        case 'interview':
+          push({ k: 'speaking' });
+          return;
+        case 'review': {
+          const ids = await buildReviewQueue(20);
+          // 復習が空っぽの日は、模試の入口から結果を見直せるようにする
+          if (ids.length > 0) push({ k: 'practice', ids, mode: 'review', title: '復習' });
+          else push({ k: 'mockSetup' });
+          return;
+        }
+        case 'mock':
+          push({ k: 'mockSetup' });
+          return;
+      }
+    },
+    [push],
+  );
+
   const startTag = useCallback(
     async (tag: string) => {
       const ids = await buildTagQueue(tag, 10);
@@ -338,6 +387,7 @@ export default function App() {
             onWords={() => push({ k: 'words' })}
             onSpeaking={() => push({ k: 'speaking' })}
             onOpenMockResult={(mockId) => push({ k: 'mockResult', mockId })}
+            onExtra={startExtra}
           />
       );
 
@@ -371,16 +421,19 @@ export default function App() {
         return (
           <MockSetupScreen
             onBack={back}
-            onStart={(scope: MockScope, entryMode: MockEntryMode) => {
-              // ①本番と同じ：MockRunScreen は1行も変えない（作業指示書 いちばん大事なこと）
+            onStart={(scope: MockScope, entryMode: MockEntryMode, lastSeen) => {
+              // lastSeen（解いたことのある問題）は入口の画面が先に読んでおく。ここで await すると、
+              // 押してから画面が変わるまでに隙間ができて、押した直後の画面を別の画面と取り違える
+              // 解いたことのある問題・本文は後回しにして選ぶ（engine/mock.ts）
+              // ①本番と同じ：MockRunScreen へ（中断復帰・時間切れ・級ごとの順番は MockRunScreen が持つ）
               if (entryMode === 'exam') {
-                push({ k: 'mockRun', paper: buildPaper(scope) });
+                push({ k: 'mockRun', paper: buildPaper(scope, lastSeen) });
                 return;
               }
               // ②1問ごとに答え合わせ：入口で行き先を変えるだけ。
               // QuestionScreen に mode: 'training' で流す（App.tsx で 'training' を
               // 特別扱いしている箇所は他になく、副作用が無いことを確認済み＝B-2）。
-              const ids = mockCheckEachIds(buildPaper(scope));
+              const ids = mockCheckEachIds(buildPaper(scope, lastSeen));
               if (ids.length === 0) return;
               push({
                 k: 'practice',
@@ -538,7 +591,9 @@ export default function App() {
  * （落ちた分の扱いは結果画面のライティング道場導線＝B-3 で補う）。
  */
 function mockCheckEachIds(paper: MockPaper): string[] {
-  return [...paper.written, ...paper.listening]
+  // 通す順（2級のフルはリスニング→筆記）に並べる
+  return phaseOrder(paper)
+    .flatMap((ph) => paper[ph])
     .filter((q): q is Extract<MockQuestion, { kind: 'mcq' }> => q.kind === 'mcq')
     .map((q) => q.itemId);
 }

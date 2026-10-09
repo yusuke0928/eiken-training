@@ -2,7 +2,7 @@ import { db, getKv, setKv, localDateKey, loadSubmittedMap } from '../data/db';
 import { ITEM_BY_ID, WRITING_BY_ID } from '../content';
 import { GRADE, inGrade, mockInGrade } from '../grade';
 import { reviewBacklog } from '../engine/srs';
-import { EXAM_G2, daysUntil } from './exam';
+import { daysUntil, nextExamG2 } from './exam';
 
 /**
  * 2級のホームの「今日のもう1つ」（WORK-ORDER-G2-UX-R1 中-1）。
@@ -38,14 +38,17 @@ const NEED = { listening2: 10, passage: 3, review: 10 } as const;
 
 /**
  * 試験前日・当日・それ以降の判定。当日は18時を境に「がんばって」→「おつかれさま」。
- * 'past' は試験日の翌日以降で、「もう1つ」は出さない（本番が終わったあとに宿題を出さない）
+ * 受験日は2回ある。判定の相手は「次に来る受験日」なので、1回目の翌日（12/13）からは
+ * 2回目に向かう 'normal' に戻り、「もう1つ」が1月まで続く。
+ * 'past' は最後の受験日の翌日以降で、「もう1つ」は出さない（本番が終わったあとに宿題を出さない）
  */
 export function examPhase(now: Date = new Date()): 'normal' | 'eve' | 'day' | 'dayAfter' | 'past' {
-  const d = daysUntil(EXAM_G2.examDate, now);
+  const next = nextExamG2(now);
+  if (!next) return 'past';
+  const d = daysUntil(next.date, now);
   if (d > 1) return 'normal';
   if (d === 1) return 'eve';
-  if (d === 0) return now.getHours() >= 18 ? 'dayAfter' : 'day';
-  return 'past';
+  return now.getHours() >= 18 ? 'dayAfter' : 'day';
 }
 
 export function extraPlanFor(now: Date = new Date()): ExtraPlan | null {

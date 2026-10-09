@@ -9,7 +9,7 @@ import { APP_VERSION_LABEL } from '../../lib/appVersion';
 import { G2_HAS_CONTENT, GRADE_READY } from '../../content';
 import { G2_RELEASED, GRADE, GRADE_META, mockInGrade } from '../../grade';
 import { GradeOfferCard, GradeSwitchSheet } from '../grade/GradeSwitch';
-import { EXAM, EXAM_G2, applyReminder, daysUntil, formatJp, nextMilestone } from '../../lib/exam';
+import { EXAM, EXAM_G2, applyReminder, daysUntil, formatJp, nextExamG2, nextMilestone } from '../../lib/exam';
 import { examPhase, extraPlanFor, isExtraDone, type ExtraKind } from '../../lib/dailyExtra';
 import { TAG_LABEL } from '../../types';
 import { Button, Card, ProgressRing, Screen } from '../../ui/primitives';
@@ -236,7 +236,10 @@ export function HomeScreen({
         {phase === 'dayAfter' && (
           <div className="mb-4 rounded-3xl bg-accent-soft p-4">
             <p className="text-[15px] font-bold leading-snug text-ink">
-              おつかれさま。結果は{formatJp(EXAM_G2.resultDate)}
+              {/* 1回目の夜は2回目へ、最後の夜は日付なし（2回目の結果日は未公表）。1回目の結果日は分かっている */}
+              {nextExamG2()?.isLast === false
+                ? `おつかれさま。次は${formatJp(EXAM_G2.examDates[(nextExamG2()?.index ?? 0) + 1])}。1回目の結果は${formatJp(EXAM_G2.firstResultDate)}`
+                : 'おつかれさま。結果はウェブで発表されるよ'}
             </p>
           </div>
         )}

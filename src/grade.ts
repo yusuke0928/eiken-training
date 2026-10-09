@@ -96,7 +96,7 @@ export const GRADE_META: Record<Grade, GradeMeta> = {
   pre2: {
     label: '英検準2級',
     short: '準2級',
-    appTitle: '英検準2級トレーニング',
+    appTitle: '英検トレーニング',
     idPrefix: 'p2-',
     wordLevel: 'p2',
     perSkillMax: 600,
@@ -115,7 +115,7 @@ export const GRADE_META: Record<Grade, GradeMeta> = {
   g2: {
     label: '英検2級',
     short: '2級',
-    appTitle: '英検2級トレーニング',
+    appTitle: '英検トレーニング',
     idPrefix: 'g2-',
     wordLevel: 'g2',
     perSkillMax: 650,

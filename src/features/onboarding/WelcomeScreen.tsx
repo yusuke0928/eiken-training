@@ -1,6 +1,6 @@
 import { DIAGNOSTIC_TOTAL } from '../../content';
 import { GRADE, GRADE_META } from '../../grade';
-import { EXAM, EXAM_G2, daysUntil, formatJp, nextMilestone } from '../../lib/exam';
+import { EXAM, daysUntil, examOrdinalLabelG2, formatJp, nextMilestone } from '../../lib/exam';
 import { Button, Screen } from '../../ui/primitives';
 
 export function WelcomeScreen({ onStart, onSkip }: { onStart: () => void; onSkip: () => void }) {
@@ -10,10 +10,10 @@ export function WelcomeScreen({ onStart, onSkip }: { onStart: () => void; onSkip
   const m = nextMilestone(GRADE);
   const days = m.days;
   // 試験の前（当日を除く）だけは、従来の言い回しのまま
-  const before = days !== null && days > 0 && m.label === (isG2 ? '2級の試験まで' : '一次試験まで');
+  const before = days !== null && days > 0 && (isG2 ? m.examIndex !== undefined : m.label === '一次試験まで');
   const label = before
     ? isG2
-      ? `2級の試験（${formatJp(EXAM_G2.examDate)}の予定）まで`
+      ? `${examOrdinalLabelG2(m.examIndex ?? 0)}（${m.note}の予定）まで`
       : `一次試験（${formatJp(EXAM.firstStage)}）まで`
     : `${m.label}${m.note ? `（${m.note}）` : ''}`;
   // 申込の締切や二次の日は、過ぎたものを出さない

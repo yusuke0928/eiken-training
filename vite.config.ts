@@ -39,9 +39,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icons/apple-touch-icon.png', 'icons/favicon-64.png'],
       manifest: {
-        name: '英検準2級トレーニング',
-        short_name: '準2級',
-        description: '英検準2級の一次試験対策。診断テスト・語彙・文法・長文・ライティング。',
+        name: '英検トレーニング',
+        short_name: '英検',
+        description: '英検準2級・2級の対策。診断テスト・語彙・長文・リスニング・ライティング・面接。',
         lang: 'ja',
         dir: 'ltr',
         start_url: '.',

@@ -88,7 +88,11 @@ export function useRecorder() {
   // 画面ロックやアプリ切り替えで裏に回ったときもマイクを手放す。録音は破棄せず正規に止める
   useEffect(() => {
     const onHide = () => {
-      if (document.visibilityState === 'hidden') void stopRec();
+      if (document.visibilityState !== 'hidden') return;
+      // マイクの許可ダイアログを待っている最中に hidden が飛ぶことがある（iPhone の初回）。
+      // ここで取り消すと「許可」しても録音が始まらず、何も出ないまま失敗する。待ち中は触らず、録音中だけ止める
+      if (startingRef.current) return;
+      void stopRec();
     };
     document.addEventListener('visibilitychange', onHide);
     return () => document.removeEventListener('visibilitychange', onHide);

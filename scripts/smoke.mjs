@@ -2968,6 +2968,90 @@ const SCENE_LABELS = ['Ten minutes later', 'A few months later'];
   await c.close();
 }
 
+/* PRE2-MIC：準2級の面接にも、R-3 と同じ偽マイクの検査。
+   準2級の SpeakingScreen は useRecorder を使わない別実装なので、2級側だけ直しても準2級は直らない。
+   getUserMedia を600ms遅らせ、待ち中の連打・次へ・画面を離れる、のどれでも生きたマイクが0本であること */
+{
+  const { c, pg } = await g2Open('pre2-mic(待ち中の連打・離脱)', { grade: 'pre2', date: '2026-10-07' });
+  await pg.addInitScript(FAKE_MIC);
+  await pg.reload({ waitUntil: 'networkidle' });
+  await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+  await pg.locator('button', { hasText: '面接シミュレーター' }).first().click();
+  await pg.getByText('本番の流れ').waitFor({ timeout: 8000 });
+  await pg.locator('main ul > li > button').first().click();
+  await pg.getByRole('button', { name: '音読へ' }).click({ timeout: 60000 });
+  const rec = pg.getByRole('button', { name: '● 録音' });
+  // (a) 待ち中の連打。マイクは1本しか掴まず、止めたら0になる
+  await rec.dblclick();
+  await pg.getByRole('button', { name: /■ 停止/ }).waitFor({ timeout: 8000 });
+  await pg.waitForTimeout(400);
+  await pg.getByRole('button', { name: /■ 停止/ }).click();
+  await pg.getByText('いまの録音').waitFor({ timeout: 8000 });
+  if ((await pg.evaluate(() => window.__mics.length)) !== 1) throw new Error('準2級：待ち中の連打で getUserMedia が2回走った（2本目のマイクが宙に浮く）');
+  if ((await liveMics(pg)) !== 0) throw new Error('準2級 (a) 連打のあと、止めたのに生きたマイクが残っている');
+  // (c) 待ち中に「No.1へ」（止める指示）
+  await rec.click();
+  await pg.getByRole('button', { name: 'No.1へ' }).click();
+  await pg.waitForTimeout(1500);
+  if ((await liveMics(pg)) !== 0) throw new Error('準2級 (c) 待ち中に次へ進んだのに、あとから届いたマイクが生きている');
+  if (await pg.getByRole('button', { name: /■ 停止/ }).count()) throw new Error('準2級 (c) 次へ進んだのに録音が始まっている');
+  // (b) 待ち中に画面を離れる
+  await rec.click();
+  await pg.getByLabel('もどる').click();
+  await pg.getByText('この面接をやめる？').waitFor({ timeout: 5000 });
+  await pg.getByRole('button', { name: 'カード一覧にもどる' }).click();
+  await pg.waitForTimeout(1500);
+  if ((await liveMics(pg)) !== 0) throw new Error('準2級 (b) 待ち中に画面を離れたのに、あとから届いたマイクが生きている（録音中の点が残る）');
+  console.log('  ✓ PRE2-MIC：準2級の面接も、マイク待ちの連打・次へ・画面を離れる、のどれでも生きたマイクは0本');
+  await c.close();
+}
+
+/* PRE2-MIC-R：マイク待ちの扱いを、取り消してよい経路と取り消してはいけない経路で分ける。
+   (b2) 端末の戻る＝本当の unmount は、待ち中でも届いたマイクを手放す。
+   (d) iPhone の初回は許可ダイアログの最中に visibilitychange hidden が飛びうる。それで取り消すと
+       「許可」しても録音が始まらず、何も出ないまま失敗する。待ち中の hidden は取り消さず、録音は始まること。
+   準2級（SpeakingScreen）と2級（useRecorder）は別実装なので、両方で見る。 */
+for (const grade of ['pre2', 'g2']) {
+  const name = grade === 'g2' ? '2級' : '準2級';
+  const openRec = async (label) => {
+    const { c, pg } = await g2Open(label, { grade, date: '2026-10-07' });
+    await pg.addInitScript(FAKE_MIC);
+    await pg.reload({ waitUntil: 'networkidle' });
+    await pg.getByText('今日のミッション').waitFor({ timeout: 8000 });
+    await pg.locator('button', { hasText: '面接シミュレーター' }).first().click();
+    await pg.getByText('本番の流れ').first().waitFor({ timeout: 8000 });
+    await pg.locator('main ul > li > button').first().click();
+    await pg.getByRole('button', { name: '音読へ' }).click({ timeout: 60000 });
+    return { c, pg };
+  };
+  {
+    const { c, pg } = await openRec(`${grade}-mic-b2(待ち中に端末の戻る)`);
+    await pg.getByRole('button', { name: '● 録音' }).click();
+    await pg.goBack();
+    await pg.waitForTimeout(1500);
+    if ((await liveMics(pg)) !== 0) throw new Error(`${name} (b2) 待ち中に端末の戻るで離れたのに、あとから届いたマイクが生きている`);
+    await c.close();
+  }
+  {
+    const { c, pg } = await openRec(`${grade}-mic-d(待ち中のhidden)`);
+    await pg.getByRole('button', { name: '● 録音' }).click();
+    await pg.evaluate(() => {
+      Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true });
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    await pg.getByRole('button', { name: /■ 停止/ }).waitFor({ timeout: 8000 }).catch(() => { throw new Error(`${name} (d) マイク待ち中の hidden で取り消されて、許可しても録音が始まらない`); });
+    await pg.evaluate(() => {
+      delete document.visibilityState;
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    await pg.getByRole('button', { name: /■ 停止/ }).click();
+    await pg.getByText('いまの録音').waitFor({ timeout: 8000 });
+    if ((await liveMics(pg)) !== 0) throw new Error(`${name} (d) 止めたのに生きたマイクが残っている`);
+    await c.close();
+  }
+  console.log(`  ✓ PRE2-MIC-R：${name}の面接。待ち中の端末の戻るは生きたマイク0本・待ち中の hidden では取り消されず録音が始まる`);
+}
+
 /* 準2級の面接は 38d5998 から1文字も変えていない。
    画面の文字列を、変更前のコードから採った scripts/baseline-pre2-speaking.json と突き合わせる（G2-03-R の R-1 と同じやり方） */
 {

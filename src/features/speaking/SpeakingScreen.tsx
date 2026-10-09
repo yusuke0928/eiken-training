@@ -53,6 +53,13 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
   // 黙読中（まだ何も録っていない）だけは確認なしで即戻る
   const [confirmExit, setConfirmExit] = useState(false);
   const rec = useRef<MediaRecorder | null>(null);
+  // マイクの許可・取得を待っている間（getUserMedia の await 中）。この間に2本目を始めたり、画面を離れたり、
+  // 止める指示が来たりすると、あとから届いたマイクを誰も手放さず掴みっぱなしになる（2級側 useRecorder の R-3 と同じ守り）
+  const [starting, setStarting] = useState(false);
+  const startingRef = useRef<Promise<void> | null>(null);
+  // 待っている間に「止めて」「離れた」が来たかどうか。来ていたら、届いたマイクは使わず即手放す
+  const cancelStart = useRef(false);
+  const unmounted = useRef(false);
   // 掴んだマイクは録音の停止とは別に必ず手放す必要があるので、録音機とは分けて持つ
   const mic = useRef<MediaStream | null>(null);
   const { speak, stop, supported: canSpeak } = useSpeech();
@@ -88,21 +95,26 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
   // unmount されるため、iPhone では録音中の表示（オレンジの点）が点いたまま残ってしまう。
   // 録音の保存はもう要らないので、onstop を外してから止める。
   useEffect(
-    () => () => {
-      const mr = rec.current;
-      rec.current = null;
-      if (mr && mr.state !== 'inactive') {
-        mr.ondataavailable = null;
-        mr.onstop = null;
-        try {
-          mr.stop();
-        } catch {
-          // すでに止まっていることがある。マイクの解放は下で必ず走る
+    () => {
+      // StrictMode は mount→cleanup→mount と走らせるので、mount のたびに戻しておく
+      unmounted.current = false;
+      return () => {
+        unmounted.current = true;
+        const mr = rec.current;
+        rec.current = null;
+        if (mr && mr.state !== 'inactive') {
+          mr.ondataavailable = null;
+          mr.onstop = null;
+          try {
+            mr.stop();
+          } catch {
+            // すでに止まっていることがある。マイクの解放は下で必ず走る
+          }
         }
-      }
-      mic.current?.getTracks().forEach((t) => t.stop());
-      mic.current = null;
-      Object.values(clipsRef.current).forEach((u) => URL.revokeObjectURL(u));
+        mic.current?.getTracks().forEach((t) => t.stop());
+        mic.current = null;
+        Object.values(clipsRef.current).forEach((u) => URL.revokeObjectURL(u));
+      };
     },
     [],
   );
@@ -115,7 +127,11 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
   // 撮れているところまでは保存されるようにする。
   useEffect(() => {
     const onHide = () => {
-      if (document.visibilityState === 'hidden') void stopRec();
+      if (document.visibilityState !== 'hidden') return;
+      // マイクの許可ダイアログを待っている最中に hidden が飛ぶことがある（iPhone の初回）。
+      // ここで取り消すと「許可」しても録音が始まらず、何も出ないまま失敗する。待ち中は触らず、録音中だけ止める
+      if (startingRef.current) return;
+      void stopRec();
     };
     document.addEventListener('visibilitychange', onHide);
     return () => document.removeEventListener('visibilitychange', onHide);
@@ -131,6 +147,8 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
   }, []);
 
   async function startRec(key: string) {
+    // 待っている最中や録音中の連打は無視する（2本目を始めると1本目のマイクが宙に浮く）
+    if (startingRef.current || rec.current) return;
     setMicError(null);
     // iOS 14.3 より前の Safari には MediaRecorder が無い。触る前に見分けて案内を変える
     if (typeof MediaRecorder === 'undefined') {
@@ -138,9 +156,18 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
       return;
     }
     let stream: MediaStream | null = null;
+    let done: () => void = () => {};
+    startingRef.current = new Promise<void>((r) => (done = r));
+    cancelStart.current = false;
+    setStarting(true);
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const owned = stream;
+      // 待っているあいだに画面を離れた／止める指示が来た。録音は始めず、掴んだマイクをここで手放す
+      if (unmounted.current || cancelStart.current) {
+        owned.getTracks().forEach((t) => t.stop());
+        return;
+      }
       const mr = new MediaRecorder(owned);
       // 録音機インスタンスごとに閉じ込める。コンポーネント共有の ref だと、
       // 連打で「止める→すぐ録り直す」をしたときに前の録音のチャンクと混ざりうる
@@ -167,7 +194,11 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
       // getUserMedia は通ったのに MediaRecorder の生成で落ちる端末がある。
       // ここで手放さないとマイクを掴んだままになる
       stream?.getTracks().forEach((t) => t.stop());
-      setMicError('マイクを使えませんでした。録音なしでも練習は続けられます。');
+      if (!unmounted.current) setMicError('マイクを使えませんでした。録音なしでも練習は続けられます。');
+    } finally {
+      startingRef.current = null;
+      done();
+      if (!unmounted.current) setStarting(false);
     }
   }
 
@@ -181,6 +212,11 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
     const mr = rec.current;
     rec.current = null;
     setRecording(false);
+    // マイクを待っている最中の「止めて」は、届いたマイクを使わず手放す合図。手放し終わるまで待たせる
+    if (startingRef.current) {
+      cancelStart.current = true;
+      return startingRef.current;
+    }
     // 二重に止めると InvalidStateError になるので状態を見てから
     if (!mr || mr.state === 'inactive') return Promise.resolve();
     return new Promise((resolve) => {
@@ -548,6 +584,8 @@ export function SpeakingScreen({ onBack }: { onBack: () => void }) {
               <button
                 type="button"
                 onClick={() => (recording ? stopRec() : startRec(stepKey))}
+                // マイクを待っている間は押せない（連打で2本目を始めさせない）。見た目は disabled の既存のまま
+                disabled={starting}
                 className={`min-h-[56px] rounded-2xl px-5 text-[14px] font-bold shadow-sm ${
                   recording ? 'bg-again text-again-ink' : 'bg-accent text-accent-ink'
                 }`}

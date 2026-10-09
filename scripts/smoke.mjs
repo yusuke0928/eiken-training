@@ -1710,8 +1710,9 @@ await g1.getByLabel('ホーム').click();
 await g1.getByText('今日のミッション').waitFor({ timeout: 8000 });
 const posBefore = (await readKv(g1, ['reviewPos:diagnostic']))['reviewPos:diagnostic'];
 if (!posBefore || posBefore.pos < 1) throw new Error(`検査の前提：準2級の診断の保存位置ができていない: ${JSON.stringify(posBefore)}`);
-if (await g1.getByText('2級にきりかえる').count()) throw new Error('準2級の一次後・二次前なのにホームに切り替え導線が出ている');
-console.log('  ✓ 空の端末は準2級で起動し、ホームに切り替え導線は出ない');
+// 1.12.0：切り替え導線は日付で隠さない。準2級のホームには（二次の前でも）カードが1枚出る
+if ((await g1.getByText('2級の練習もできるよ。きりかえる？').count()) !== 1) throw new Error('準2級のホームに切り替えカードが1枚出ていない');
+console.log('  ✓ 空の端末は準2級で起動し、ホームに切り替えカードが出る（二次の前でも）');
 
 // 準2級で模試を1本（ライティングつき）走らせる
 await g1.locator('button', { hasText: '模擬テスト' }).first().click();
@@ -1913,13 +1914,14 @@ async function startMidMock(ctxOpts, label, initScript) {
 // 出る条件は「2級に1問以上ある」かつ「公開フラグ G2_RELEASED が true」。
 // 種データしか無い2級へ全員を誘導しないため、フラグが false のあいだは 11/16 以降も出ない（M-1）。
 // 管理が Phase 3 のあとにフラグを true にすると、期待値が自動で「出る」に切り替わる
+// 1.12.0：日付で隠さない。どの日付でも（G2 が公開済みで中身があれば）出る
 const g2HasContent =
   ['vocab', 'passage', 'listening'].some(
     (f) => JSON.parse(readFileSync(join(root, `content/g2/${f}.json`), 'utf8')).length > 0,
   ) && /export const G2_RELEASED = true;/.test(readFileSync(join(root, 'src/grade.ts'), 'utf8'));
 for (const [date, shown] of [
-  ['2026-10-06', false],
-  ['2026-11-15', false],
+  ['2026-10-06', g2HasContent],
+  ['2026-11-15', g2HasContent],
   ['2026-11-16', g2HasContent],
   ['2026-12-31', g2HasContent],
 ]) {
@@ -1933,12 +1935,12 @@ for (const [date, shown] of [
   await dp.goto(URL, { waitUntil: 'networkidle' });
   await dp.getByRole('button', { name: 'あとにする' }).click();
   await dp.getByText('今日のミッション').waitFor({ timeout: 8000 });
-  const has = (await dp.getByText('準2級おつかれさま。2級にきりかえる？').count()) > 0;
+  const has = (await dp.getByText('2級の練習もできるよ。きりかえる？').count()) > 0;
   if (has !== shown) throw new Error(`${date} の切り替え導線: 期待=${shown ? '出る' : '隠れる'} 実際=${has ? '出る' : '隠れる'}`);
   await dp.screenshot({ path: join(OUT, `g2-04-home-${date}.png`) });
   await dctx.close();
 }
-console.log(`  ✓ 切り替え導線は 2026-10-06 / 11-15 は隠れ、11-16・12-31 は ${g2HasContent ? '出る' : '公開前（G2_RELEASED=false）なので出ない'}`);
+console.log(`  ✓ 切り替え導線は 2026-10-06 / 11-15 / 11-16 / 12-31 のどの日も ${g2HasContent ? '出る' : '公開前（G2_RELEASED=false）なので出ない'}`);
 
 /* ---- G2-02：一次の形式差（リスニング2部・模試・診断・CSE・日程）----
    既存ステップは1行も触らず、末尾に足す。
@@ -3281,7 +3283,8 @@ const UX1_SHOT = (name) => join(OUT, `ux1-${name}.png`);
   // 準2級のホームには「今日のもう1つ」が出ない（月曜の11/16、10/06、12/11 の3日で見る）
   for (const iso of ['2026-11-16T12:00:00+09:00', '2026-10-06T12:00:00+09:00', '2026-12-11T12:00:00+09:00']) {
     const { c, pg } = await ux1Open(`ux1-pre2(${iso.slice(0, 10)})`, { grade: 'pre2', iso });
-    const t = await pg.locator('main').innerText();
+    // 1.12.0：切り替えカード1枚だけは準2級のホームにも出る。それ以外に2級の要素が無いことを見る
+    const t = (await pg.locator('main').innerText()).replace('2級の練習もできるよ。きりかえる？', '');
     if (t.includes('今日のもう1つ') || t.includes('次は今日のもう1つ') || t.includes('明日が本番') || /の模試は \d+ \//.test(t)) throw new Error(`中-1：準2級のホームに2級の要素が漏れている(${iso}): ${t.slice(0, 300)}`);
     await c.close();
   }
@@ -4121,13 +4124,13 @@ async function r3Draft(pg, expected, label) {
   console.log('  ✓ 低-j：要約から戻っても要約タブのまま／模試で書いた題に印／面接の下のほうのカードも先頭から始まる');
 }
 
-/* ---------- 開放：準2級のホームは 11/15 までカードが出ない・11/16 から出る（切り替え導線の日付ループが見ている） ---------- */
+/* ---------- 開放：準2級のホームは今日（どの日付でも）カードが出る（1.12.0 で日付の条件を外した） ---------- */
 {
   const src = readFileSync(join(root, 'src/grade.ts'), 'utf8');
   if (!/export const G2_RELEASED = true;/.test(src)) throw new Error('開放：G2_RELEASED が true になっていない');
-  for (const [date, shown] of [['2026-10-20', false], ['2026-11-14', false], ['2026-11-15', false], ['2026-11-16', true]]) {
+  for (const [date, shown] of [['2026-10-09', true], ['2026-10-20', true], ['2026-11-14', true], ['2026-11-15', true], ['2026-11-16', true]]) {
     const { c, pg } = await ux1Open(`ux3-release(${date})`, { grade: 'pre2', iso: `${date}T12:00:00+09:00` });
-    const has = (await pg.getByText('準2級おつかれさま。2級にきりかえる？').count()) > 0;
+    const has = (await pg.getByText('2級の練習もできるよ。きりかえる？').count()) > 0;
     if (has !== shown) throw new Error(`開放：${date} の準2級ホームのカード 期待=${shown ? '出る' : '出ない'} 実際=${has ? '出る' : '出ない'}`);
     if (date === '2026-11-16') {
       await pg.waitForTimeout(300);
@@ -4135,7 +4138,7 @@ async function r3Draft(pg, expected, label) {
     }
     await c.close();
   }
-  console.log('  ✓ 開放：G2_RELEASED=true。準2級のホームは 10/20・11/14・11/15 にカードが出ず、11/16 から出る');
+  console.log('  ✓ 開放：G2_RELEASED=true。準2級のホームは 10/09・10/20・11/14・11/15・11/16 のどの日もカードが出る');
 }
 
 await browser.close();

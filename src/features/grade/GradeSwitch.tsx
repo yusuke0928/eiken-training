@@ -131,7 +131,13 @@ export function GradeScreen() {
   );
 }
 
-/** ホームに出す1枚。二次のあと（準2級のとき）だけ HomeScreen が出す */
+/**
+ * カードの文言はここ1か所。二次の前でも後でも、受かっても落ちても自然に読めるよう、
+ * 「おつかれさま」のような試験の結果を前提にした言い方は避け、煽らない。
+ */
+export const GRADE_OFFER_TEXT = '2級の練習もできるよ。きりかえる？';
+
+/** ホームに出す1枚。準2級のとき HomeScreen が出す（日付の条件は無い） */
 export function GradeOfferCard({ onClick }: { onClick: () => void }) {
   return (
     <button
@@ -140,7 +146,7 @@ export function GradeOfferCard({ onClick }: { onClick: () => void }) {
       className="mb-4 flex w-full items-center gap-3 rounded-2xl bg-accent-soft px-4 py-3 text-left"
     >
       <span className="flex-1 text-[14px] font-semibold text-ink">
-        準2級おつかれさま。2級にきりかえる？
+        {GRADE_OFFER_TEXT}
       </span>
       <span className="text-ink-faint">
         <ChevronRight size={18} />

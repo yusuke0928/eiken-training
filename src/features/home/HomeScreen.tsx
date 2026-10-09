@@ -108,13 +108,13 @@ export function HomeScreen({
   );
 
   const [switchTo, setSwitchTo] = useState<'pre2' | 'g2' | null>(null);
-  // 2級への導線は二次試験が終わってから。二次の直前に「2級にきりかえる？」を出すと、
-  // 二次の練習（面接も2級のものになる）から気を逸らす。
-  // この判定の EXAM は準2級のもの。GRADE === 'pre2' のときしか読まれない
+  // 2級への導線は日付で隠さず、今日から出す（依頼者の判断 2026-10-09「2級をもう出してほしい」）。
+  // 以前は二次(11/15)の翌日からだったが、受かる前から2級を始めたい子もいるため外した。
+  // 切り替えは確認シートを挟み、準2級に戻せて記録も消えない。文言も二次の前後どちらでも自然にしてある。
   // 2級の中身がまだ空なら出さない（「準備中」しか無い級へ誘導しないため）
   // G2_RELEASED は公開フラグ（grade.ts）。種データしか無い2級へ全員を誘導しないため、両方そろって出す
   const showGradeOffer =
-    GRADE === 'pre2' && G2_RELEASED && G2_HAS_CONTENT && daysUntil(EXAM.secondStage) < 0;
+    GRADE === 'pre2' && G2_RELEASED && G2_HAS_CONTENT;
 
   const milestone = nextMilestone(GRADE);
   const reminder = applyReminder(GRADE);
